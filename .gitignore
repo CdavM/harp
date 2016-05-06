@@ -1,3 +1,6 @@
 .meteor/storage
 .meteor-spk
 .idea
+export*
+!export.py
+!exportfields.txt
