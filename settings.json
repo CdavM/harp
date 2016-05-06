@@ -1,0 +1,21 @@
+{
+  "threshold_workers": 1,
+  "questions": [
+    {"question_ID":0, "text":"Mechanism 0", "busy": true, "grade": "an A"},
+    {"question_ID":1, "text":"Mechanism 1", "busy": false, "grade": "an A"},
+    {"question_ID":2, "text":"Mechanism 2", "busy": false, "grade": "an A"}
+  ],
+  "randomize_questions": true,
+  "questions_subset_size" : 1,
+  "payment_function": "payment123",
+  "public": {
+    "answer_forms": [
+      {"answer_ID":0, "template": "answer1", "timer": 0}
+    ],
+    "show_payment": false,
+    "show_timer": false,
+    "show_history": false,
+    "history_duration": 3,
+    "history_fields": ["Answer", "Payment", "monies"]
+  }
+}
