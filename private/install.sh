@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Welcome to the CrowdConverge installation process."
+echo "Welcome to the Harp experiment installation process."
 echo "Checking for administrator privileges"
 
 if [[ $EUID -ne 0 ]]; then
@@ -9,18 +9,18 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "Administrator privileges verified"
 
-echo "We will install the following packages: mongodb-org, meteor, curl and git. We will move app specific files into a folder called 'survey'. Proceed? (y/n)"
+echo "We will install the following packages: mongodb-org, meteor, curl and git. We will move app specific files into a folder called 'harp'. Proceed? (y/n)"
 read foldercreation
 if (foldercreation != 'y'); then
 	echo "Exiting script..."
 	exit 1
 fi
 
-if [ ! -d "survey" ]; then
-  mkdir survey
+if [ ! -d "harp" ]; then
+  mkdir harp
 fi
 
-cd survey
+cd harp
 
 echo "Checking for Meteor"
 if type meteor > /dev/null; then
@@ -38,7 +38,7 @@ echo "Checking for git"
 if type git > /dev/null; then
     echo "git found."
 else
-	sudo apt-get install git
+	sudo apt-get install -y git
 fi
 
 echo "Checking for mongodb-org-tools"
@@ -51,10 +51,10 @@ else
   sudo apt-get install -y mongodb-org
 
 echo "Copying files"
-git clone https://github.com/CdavM/bts/ .
-echo "Installation done. Please run the command 'meteor --settings settings.json' to start"
+git clone https://github.com/CdavM/harp/ .
+echo "Installation done. Please run the command 'meteor --settings settings.json run' to start"
 echo "Would you like us to run the command for you? (y/n)"
 read runcommand
 if (runcommand == 'y'); then
-	meteor --settings settings.json
+	meteor --settings settings.json run
 fi
