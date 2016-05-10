@@ -1,6 +1,4 @@
 //This code only executed on the server
-//Kadira.connect('eh5MW5C97zHJup75Z', '5511d144-17a9-489e-af56-551a0d592371'); //performance benchmark
-
 
 Meteor.publish("answers", function(){return Answers.find()});
 Meteor.publish("questions", function(){return Questions.find()});
@@ -144,7 +142,7 @@ Meteor.methods({
             if (Meteor.settings.questions_subset_size){
                 selection_size = Math.min(num_of_questions,Meteor.settings.questions_subset_size);
             }
-            var next_question = -1
+            var next_question = -1;
             if(Meteor.settings.randomize_questions){
                 //generate random question
                 do{
@@ -152,9 +150,9 @@ Meteor.methods({
                 } while ((counters[experiment_id_value]['random_counter'].indexOf(next_question) != -1
                 && counters[experiment_id_value]['random_counter'].length < selection_size)
                     || Questions.findOne({"question_ID": next_question}).busy == true)
-                console.log("selected question " + next_question)
+                console.log("selected question " + next_question);
             } else {
-                next_question = curr_experiment.current_question
+                next_question = curr_experiment.current_question;
                 do {
                     next_question ++;
                 } while (Questions.findOne({"question_ID": next_question}).busy == true)
@@ -168,6 +166,11 @@ Meteor.methods({
                 //store result
                 counters[experiment_id_value]['random_counter'][counters[experiment_id_value]['random_counter'].length]= next_question;
                 Answers.update({experiment_id: experiment_id_value}, {$set: {current_question: next_question, current_answer: 0}}, {upsert: true, multi: true});
+                // only questions 0 and 1 can be busy!
+                if (next_question < 2){
+                    //set the busy flag.
+                    Questions.update({"question_id": next_question}, {$set: {"busy": true}});
+                }
                 console.log("question for experiment " + experiment_id_value + " changed to " + next_question);
             }
 
@@ -318,7 +321,7 @@ Meteor.methods({
         var payment_temp = [];
         for (var i = 0; i < answer_array.length; i++) {
             payment_temp[i] = 0.04+i;
-        };
+        }
         return payment_temp;
     }
 });
