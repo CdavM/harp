@@ -157,6 +157,12 @@ Meteor.methods({
                     next_question ++;
                 } while (Questions.findOne({"question_ID": next_question}).busy == true)
             }
+            if (curr_experiment.current_question != null){
+                //remove the busy flag.
+                console.log("removing busy flag from " + curr_experiment.current_question);
+                Questions.update({"question_ID": curr_experiment.current_question}, {$set:{"busy":false}});
+            }
+
             if (counters[experiment_id_value]['random_counter'].length == selection_size){
                 Meteor.clearInterval(intervals[experiment_id_value]);
                 intervals[experiment_id_value]=0;
@@ -165,12 +171,13 @@ Meteor.methods({
             } else {
                 //store result
                 counters[experiment_id_value]['random_counter'][counters[experiment_id_value]['random_counter'].length]= next_question;
-                Answers.update({experiment_id: experiment_id_value}, {$set: {current_question: next_question, current_answer: 0}}, {upsert: true, multi: true});
                 // only questions 0 and 1 can be busy!
                 if (next_question < 2){
                     //set the busy flag.
-                    Questions.update({"question_id": next_question}, {$set: {"busy": true}});
+                    console.log("setting busy flag to " + next_question);
+                    Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
                 }
+                Answers.update({experiment_id: experiment_id_value}, {$set: {current_question: next_question, current_answer: 0}}, {upsert: true, multi: true});
                 console.log("question for experiment " + experiment_id_value + " changed to " + next_question);
             }
 
@@ -256,66 +263,7 @@ Meteor.methods({
 });
 Meteor.methods({
     payment: function(existing_entry){
-        var num_of_questions = Questions.find().count();
-        var current_question = existing_entry.current_question;
-        var question_data = Questions.findOne({question_ID: current_question});
-        var cat_solution = (question_data.prior_deck0 * question_data.deck0_opt0 * question_data.deck0_opt0 + question_data.prior_deck1 * question_data.deck1_opt0 * question_data.deck1_opt0)/
-            (question_data.prior_deck0 * question_data.deck0_opt0 + question_data.prior_deck1 * question_data.deck1_opt0);
-        var dog_solution = (question_data.prior_deck0 * question_data.deck0_opt1 * question_data.deck0_opt1 + question_data.prior_deck1 * question_data.deck1_opt1 * question_data.deck1_opt1)/
-            (question_data.prior_deck0 * question_data.deck0_opt1 + question_data.prior_deck1 * question_data.deck1_opt1);
-
-
-        var entries = Answers.find({experiment_id: existing_entry.experiment_id}).fetch();
-        var num_of_workers = entries.length;
-        //var solution_answer = Solutions.findOne().answer1[current_question];
-        var payments_value = [];
-        var existing_payments = existing_entry.payments;
-        if (existing_payments){
-            payments_value = existing_payments;
-        } else {
-            //create new payments array
-            for (i = 0; i < num_of_questions; i++) {
-                payments_value[payments_value.length] = 0;
-            }
-        }
-
-        var reward = 0;
-        if (num_of_workers > 1){
-            entries.forEach(function(post){
-                if (post.worker_ID != existing_entry.worker_ID){
-                    if (!post.answer1 || post.answer1[current_question] == -1){
-                        reward = 0;
-                    } else if (post.answer1[current_question] == solution_answer){
-                        reward = 1;
-                    } else {
-                        reward = 0.3;
-                    }
-                }
-            });
-        } else {
-            entries.forEach(function(post){
-                var distance;
-                if (post.answer1[current_question].card_type == "Cat"){
-                    distance = Math.abs(Math.floor(parseInt(post.answer1[current_question].percentage_radio)/10) - (Math.ceil(cat_solution)-1));
-                } else if (post.answer1[current_question].card_type == "Dog"){
-                    distance = Math.abs(Math.floor(parseInt(post.answer1[current_question].percentage_radio)/10) - (Math.ceil(dog_solution)-1));
-                }
-                if (distance == 0){
-                    reward = 8;
-                } else if (distance == 1){
-                    reward = 5;
-                } else if (distance == 2){
-                    reward = 2;
-                } else {
-                    reward = 0;
-                }
-            });
-        }
-        payments_value[current_question] = reward;
-        var avg_payment_value = existing_entry.avg_payment+payments_value[current_question];
-        avg_payment_value = Math.round(avg_payment_value*1000)/1000;
-        Answers.update({worker_ID: existing_entry.worker_ID}, {$set: {payments: payments_value,
-            avg_payment: avg_payment_value}}, {upsert: true});
+        return;
     },
     payment123: function(answer_array, question_ID){
         var payment_temp = [];
