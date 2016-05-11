@@ -16,7 +16,9 @@ Template.registerHelper('show_payment_system', function(){
 Template.registerHelper('show_timer', function(){
   return Meteor.settings.public.show_timer; //show the user the time remaining
 });
-
+Template.registerHelper('slider', function () {
+  return Session.get("slider");
+});
 Template.registerHelper('initialized', function(){
   if (Session.equals('initialized', true)){
     return true;

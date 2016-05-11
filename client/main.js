@@ -47,7 +47,7 @@ Deps.autorun(function(){
     Session.set('initialized', true);
     Session.set('waiting', false);
     initialized_questions = false;
-    $('#exp_start').ScrollTo();  
+    $('#exp_start').ScrollTo();
   }
 
   if (curr_experiment && !Session.equals('current_answer', curr_experiment.current_answer)){  
