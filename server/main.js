@@ -179,7 +179,11 @@ Meteor.methods({
                     console.log("setting busy flag to " + next_question);
                     Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
                 }
-                Answers.update({experiment_id: experiment_id_value}, {$set: {current_question: next_question, current_answer: 0}}, {upsert: true, multi: true});
+                var radius_fn = function (previous_participants) {
+                    return 1/(previous_participants+1);
+                }
+                var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
+                Answers.update({experiment_id: experiment_id_value}, {$set: {current_question: next_question, current_answer: 0, "radius":radius_val}}, {upsert: true, multi: true});
                 console.log("question for experiment " + experiment_id_value + " changed to " + next_question);
             }
 
