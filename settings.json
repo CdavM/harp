@@ -1,9 +1,9 @@
 {
   "threshold_workers": 1,
   "questions": [
-    {"question_ID":0, "text":"Mechanism 0", "busy": false, "grade": "an A"},
-    {"question_ID":1, "text":"Mechanism 1", "busy": false, "grade": "an A"},
-    {"question_ID":2, "text":"Mechanism 2", "busy": false, "grade": "an A"}
+    {"question_ID":0, "text":"Mechanism 0", "busy": false, "previous_participants": 0},
+    {"question_ID":1, "text":"Mechanism 1", "busy": false, "previous_participants": 0},
+    {"question_ID":2, "text":"Mechanism 2", "busy": false, "previous_participants": 0}
   ],
   "randomize_questions": true,
   "questions_subset_size" : 1,

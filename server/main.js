@@ -160,7 +160,9 @@ Meteor.methods({
             if (curr_experiment.current_question != null){
                 //remove the busy flag.
                 console.log("removing busy flag from " + curr_experiment.current_question);
-                Questions.update({"question_ID": curr_experiment.current_question}, {$set:{"busy":false}});
+                //increase prev_participants counter
+                var prev_previous_participants = Questions.findOne({"question_ID": curr_experiment.current_question}).previous_participants;
+                Questions.update({"question_ID": curr_experiment.current_question}, {$set:{"busy":false, "previous_participants": prev_previous_participants+1}});
             }
 
             if (counters[experiment_id_value]['random_counter'].length == selection_size){
