@@ -68,6 +68,7 @@ Template.experiment.events({
 Template.experiment.onRendered(function () {
     this.$("div#sliderdemo").noUiSlider({
         start: 50,
+        connect: "lower",
         range: {
             'min': 0,
             'max': 100

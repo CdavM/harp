@@ -26,7 +26,7 @@ for (var i = 0; i < Meteor.settings.public.history_duration; i++) {
   for (var j = 0; j < Meteor.settings.public.history_fields.length; j++) {
     history_data_temp[i][Meteor.settings.public.history_fields[j]] = "-";
   }
-};
+}
 Session.set('history_data', history_data_temp);
 initialized_questions = true;
 temp_worker_id = -1;
