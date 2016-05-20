@@ -65,22 +65,6 @@ Template.experiment.events({
     }
 
 });
-Template.experiment.onRendered(function () {
-    this.$("div#sliderdemo").noUiSlider({
-        start: 50,
-        connect: "lower",
-        range: {
-            'min': 0,
-            'max': 100
-        }
-    }).on('slide', function (ev, val) {
-        // set real values on 'slide' event
-        Session.set('slider', val);
-    }).on('change', function (ev, val) {
-        // round off values on 'change' event
-        Session.set('slider', val);
-    });
-});
 Template.experiment.helpers({
     questions: function() {
         worker_ID_value = Session.get('worker_ID_value');
@@ -98,6 +82,30 @@ Template.experiment.helpers({
         }
     }
 });
+Template.answer1.onRendered(function () {
+    //initialize variables
+    var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+    var current_question = curr_experiment.current_question;
+    var slider0_current = 30;
+    var slider0_min = 10;
+    var slider0_max = 80;
+    Session.set('slider0',slider0_current);
+    this.$("div#slider0").noUiSlider({
+        start: slider0_current,
+        connect: "lower",
+        range: {
+            'min': slider0_min,
+            'max': slider0_max
+        }
+    }).on('slide', function (ev, val) {
+        // set real values on 'slide' event
+        Session.set('slider0', val);
+    }).on('change', function (ev, val) {
+        // round off values on 'change' event
+        Session.set('slider0', val);
+    });
+
+})
 Template.question.helpers({
     istable: function(text){
         if (text.substring(0,6) == "In gen"){

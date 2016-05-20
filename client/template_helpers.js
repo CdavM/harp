@@ -19,6 +19,9 @@ Template.registerHelper('show_timer', function(){
 Template.registerHelper('slider', function () {
   return Session.get("slider");
 });
+Template.registerHelper('slider0_value', function () {
+  return Session.get('slider0');
+})
 Template.registerHelper('initialized', function(){
   if (Session.equals('initialized', true)){
     return true;
