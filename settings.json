@@ -10,7 +10,8 @@
   "payment_function": "payment123",
   "public": {
     "answer_forms": [
-      {"answer_ID":0, "template": "answer1", "timer": 0}
+      {"answer_ID":0, "template": "answer1", "timer": 0},
+      {"answer_ID":0, "template": "answer2", "timer": 0}
     ],
     "show_payment": false,
     "show_timer": true,

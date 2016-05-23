@@ -22,6 +22,18 @@ Template.registerHelper('slider', function () {
 Template.registerHelper('slider0_value', function () {
   return Session.get('slider0');
 })
+Template.registerHelper('slider1_value', function () {
+    return Session.get('slider1');
+})
+Template.registerHelper('slider2_value', function () {
+    return Session.get('slider2');
+})
+Template.registerHelper('slider3_value', function () {
+    return Session.get('slider3');
+})
+Template.registerHelper('slider4_value', function () {
+    return Session.get('slider4');
+})
 Template.registerHelper('initialized', function(){
   if (Session.equals('initialized', true)){
     return true;
