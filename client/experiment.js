@@ -140,7 +140,7 @@ Template.answer1.onRendered(function () {
                 $("#" + curr_slider_bar).width((Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius) * $("#budgetbar").width());
                 curr_slider_total_width += (Math.pow((curr_slider_value - current_question[curr_slider]),2))/radius;
             } else {
-                $("#" + curr_slider_bar).width($("#budgetbar").width() - (curr_slider_total_width/radius)*$("#budgetbar").width());
+                $("#" + curr_slider_bar).width(parseInt($("#budgetbar").width() - (curr_slider_total_width/radius)*$("#budgetbar").width()));
             }
             slider_idx_counter ++;
         }
