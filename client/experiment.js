@@ -84,14 +84,14 @@ Template.experiment.helpers({
 });
 Template.answer1.onRendered(function () {
     //initialize variables
-    curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
-    radius = curr_experiment.radius;
-    current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+    var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+    var radius = curr_experiment.radius;
+    var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
     update_slider1 = function (ev, val, update_slider_flag) {
         // the vars below are global and declared once the page is rendered!
-        //var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
-        //var radius = curr_experiment.radius;
-        //var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+        var radius = curr_experiment.radius;
+        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
         if (!update_slider_flag)
             update_slider_flag = false;
         var radius_sum = 0;
@@ -100,14 +100,12 @@ Template.answer1.onRendered(function () {
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             if (isNaN(curr_slider_value)){
-                console.log("nan fired");
                 eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
                 return;
             }
             radius_sum += Math.pow((curr_slider_value - current_question[curr_slider]),2);
             slider_idx_counter ++;
         }
-        console.log("radius sum is " + radius_sum.toString());
         //now subtract the radius for the current slider from radius sum
         radius_sum -= Math.pow((Session.get(ev.target.id)-current_question[ev.target.id]),2);
         //now see if new radius sum is bigger than radius
@@ -120,23 +118,17 @@ Template.answer1.onRendered(function () {
                 val = current_question[ev.target.id] - rad_difference;
             }
             update_slider_flag = true;
-            $("div").mouseup(); //release the mouse
+            //$("div").mouseup(); //release the mouse
         }
         if (isNaN(val)){
-            console.log("nan fired");
             eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
             return;
         }
+        ev.target.value = Number(val).toFixed(2); // updates the textbox
         Session.set(ev.target.id, Number(val).toFixed(2));
         if (update_slider_flag){
             eval(ev.target.id).val(Number(val).toFixed(2));
         }
-        //update the slider here to support textboxes.
-        //console.log("radius sum is " + radius_sum.toString());
-        //console.log(ev);
-        //console.log(ev.target);
-        //console.log(ev.target.id);
-        //console.log(val);
     }
     update_slider = _.throttle(update_slider1, 100);
 
@@ -253,7 +245,7 @@ Template.answer1.onRendered(function () {
 });
 Template.answer1.events({
    'change textarea': function(event){
-       update_slider(event, event.target.value);
+       update_slider(event, event.target.value, true);
 
        //Session.set(event.target.id, (Number(event.target.value).toFixed(2)));
     }
