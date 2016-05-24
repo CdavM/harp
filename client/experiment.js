@@ -87,6 +87,40 @@ Template.answer1.onRendered(function () {
     var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
     var radius = curr_experiment.radius;
     var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+    update_slider = function (ev, val) {
+        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+        var radius = curr_experiment.radius;
+        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+
+        var radius_sum = 0;
+        var slider_idx_counter = 0;
+        while (slider_idx_counter < 5){
+            curr_slider = "slider"+slider_idx_counter.toString();
+            radius_sum += Math.pow((Session.get(curr_slider)- current_question[curr_slider]),2);
+            slider_idx_counter ++;
+        }
+        console.log("radius sum is " + radius_sum.toString());
+        //now subtract the radius for the current slider from radius sum
+        radius_sum -= Math.pow((Session.get(ev.target.id)-current_question[ev.target.id]),2);
+        //now see if new radius sum is bigger than radius
+        if (radius_sum + Math.pow((val-current_question[ev.target.id]),2) > radius){
+            //decrease the val until we can do it
+            var rad_difference = Math.sqrt(radius-radius_sum);
+            if (val > current_question[ev.target.id]){
+                val = current_question[ev.target.id] + rad_difference;
+            } else {
+                val = current_question[ev.target.id] - rad_difference;
+            }
+        }
+        Session.set(ev.target.id, Number(val).toFixed(2));
+        eval(ev.target.id).val(Number(val).toFixed(2));
+        //update the slider here to support textboxes.
+        console.log("radius sum is " + radius_sum.toString());
+        console.log(ev);
+        console.log(ev.target);
+        console.log(ev.target.id);
+        console.log(val);
+    }
     if (curr_experiment.current_question == 0) {
         var slider0_current = 0;
         if (current_question.slider0) {
@@ -106,10 +140,10 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            Session.set('slider0', val);
+            update_slider(ev, val);
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            Session.set('slider0', val);
+            update_slider(ev, val);
         });
         var slider1_current = 0;
         if (current_question.slider1) {
@@ -127,10 +161,10 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            Session.set('slider1', val);
+            update_slider(ev, val);
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            Session.set('slider1', val);
+            update_slider(ev, val);
         });
         var slider2_current = 0;
         if (current_question.slider2) {
@@ -148,10 +182,10 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            Session.set('slider2', val);
+            update_slider(ev, val);
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            Session.set('slider2', val);
+            update_slider(ev, val);
         });
         var slider3_current = 0;
         if (current_question.slider3) {
@@ -169,10 +203,10 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            Session.set('slider3', val);
+            update_slider(ev, val);
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            Session.set('slider3', val);
+            update_slider(ev, val);
         });
         var slider4_current = 0;
         if (current_question.slider4) {
@@ -190,18 +224,19 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            Session.set('slider4', val);
+            update_slider(ev, val);
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            Session.set('slider4', val);
+            update_slider(ev, val);
         });
     }
 
 });
 Template.answer1.events({
    'change textarea': function(event){
-       Session.set(event.target.id, (Number(event.target.value).toFixed(2)));
-       eval(event.target.id).val(Number(event.target.value).toFixed(2));
+       update_slider(event, event.target.value);
+
+       //Session.set(event.target.id, (Number(event.target.value).toFixed(2)));
     }
 });
 
