@@ -84,19 +84,27 @@ Template.experiment.helpers({
 });
 Template.answer1.onRendered(function () {
     //initialize variables
-    var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
-    var radius = curr_experiment.radius;
-    var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
-    update_slider = function (ev, val) {
-        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
-        var radius = curr_experiment.radius;
-        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
-
+    curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+    radius = curr_experiment.radius;
+    current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+    update_slider1 = function (ev, val, update_slider_flag) {
+        // the vars below are global and declared once the page is rendered!
+        //var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+        //var radius = curr_experiment.radius;
+        //var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+        if (!update_slider_flag)
+            update_slider_flag = false;
         var radius_sum = 0;
         var slider_idx_counter = 0;
         while (slider_idx_counter < 5){
-            curr_slider = "slider"+slider_idx_counter.toString();
-            radius_sum += Math.pow((Session.get(curr_slider)- current_question[curr_slider]),2);
+            var curr_slider = "slider"+slider_idx_counter.toString();
+            var curr_slider_value = Session.get(curr_slider);
+            if (isNaN(curr_slider_value)){
+                console.log("nan fired");
+                eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
+                return;
+            }
+            radius_sum += Math.pow((curr_slider_value - current_question[curr_slider]),2);
             slider_idx_counter ++;
         }
         console.log("radius sum is " + radius_sum.toString());
@@ -111,16 +119,26 @@ Template.answer1.onRendered(function () {
             } else {
                 val = current_question[ev.target.id] - rad_difference;
             }
+            update_slider_flag = true;
+        }
+        if (isNaN(val)){
+            console.log("nan fired");
+            eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
+            return;
         }
         Session.set(ev.target.id, Number(val).toFixed(2));
-        eval(ev.target.id).val(Number(val).toFixed(2));
+        if (update_slider_flag){
+            eval(ev.target.id).val(Number(val).toFixed(2));
+        }
         //update the slider here to support textboxes.
-        console.log("radius sum is " + radius_sum.toString());
-        console.log(ev);
-        console.log(ev.target);
-        console.log(ev.target.id);
-        console.log(val);
+        //console.log("radius sum is " + radius_sum.toString());
+        //console.log(ev);
+        //console.log(ev.target);
+        //console.log(ev.target.id);
+        //console.log(val);
     }
+    update_slider = _.throttle(update_slider1, 100);
+
     if (curr_experiment.current_question == 0) {
         var slider0_current = 0;
         if (current_question.slider0) {

@@ -1,1 +1,1 @@
-meteor --settings settings.json run
+sudo meteor --settings settings.json run
