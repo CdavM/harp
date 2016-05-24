@@ -120,6 +120,7 @@ Template.answer1.onRendered(function () {
                 val = current_question[ev.target.id] - rad_difference;
             }
             update_slider_flag = true;
+            $("div").mouseup(); //release the mouse
         }
         if (isNaN(val)){
             console.log("nan fired");
