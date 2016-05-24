@@ -125,10 +125,26 @@ Template.answer1.onRendered(function () {
             return;
         }
         ev.target.value = Number(val).toFixed(2); // updates the textbox
-        Session.set(ev.target.id, Number(val).toFixed(2));
+        Session.set(ev.target.id, Number(val));
         if (update_slider_flag){
             eval(ev.target.id).val(Number(val).toFixed(2));
         }
+        //update stacked bars
+        var slider_idx_counter = 0;
+        var curr_slider_total_width = 0;
+        while (slider_idx_counter < 5){
+            var curr_slider = "slider"+slider_idx_counter.toString();
+            var curr_slider_value = Session.get(curr_slider);
+            var curr_slider_bar = curr_slider + "bar";
+            if ((curr_slider_total_width + Math.pow((curr_slider_value - current_question[curr_slider]),2)) < radius ){
+                $("#" + curr_slider_bar).width((Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius) * $("#budgetbar").width());
+                curr_slider_total_width += (Math.pow((curr_slider_value - current_question[curr_slider]),2));
+            } else {
+                $("#" + curr_slider_bar).width($("#budgetbar").width() - curr_slider_total_width*$("#budgetbar").width());
+            }
+            slider_idx_counter ++;
+        }
+
     }
     update_slider = _.throttle(update_slider1, 100);
 
@@ -137,8 +153,8 @@ Template.answer1.onRendered(function () {
         if (current_question.slider0) {
             slider0_current = current_question.slider0;
         }
-        var slider0_min = slider0_current - radius*1.25;
-        var slider0_max = slider0_current + radius*1.25;
+        var slider0_min = slider0_current - Math.sqrt(radius)*1.25;
+        var slider0_max = slider0_current + Math.sqrt(radius)*1.25;
         Session.set('slider0', slider0_current);
 
         //noUiSlider.create(slider0, /* { options }
@@ -160,8 +176,8 @@ Template.answer1.onRendered(function () {
         if (current_question.slider1) {
             slider1_current = current_question.slider1;
         }
-        var slider1_min = slider1_current - radius*1.25;
-        var slider1_max = slider1_current + radius*1.25;
+        var slider1_min = slider1_current - Math.sqrt(radius)*1.25;
+        var slider1_max = slider1_current + Math.sqrt(radius)*1.25;
         Session.set('slider1', slider1_current);
         slider1 = this.$("div#slider1").noUiSlider({
             start: slider1_current,
@@ -181,8 +197,8 @@ Template.answer1.onRendered(function () {
         if (current_question.slider2) {
             slider2_current = current_question.slider2;
         }
-        var slider2_min = slider2_current - radius*1.25;
-        var slider2_max = slider2_current + radius*1.25;
+        var slider2_min = slider2_current - Math.sqrt(radius)*1.25;
+        var slider2_max = slider2_current + Math.sqrt(radius)*1.25;
         Session.set('slider2', slider2_current);
         slider2 = this.$("div#slider2").noUiSlider({
             start: slider2_current,
@@ -202,8 +218,8 @@ Template.answer1.onRendered(function () {
         if (current_question.slider3) {
             slider3_current = current_question.slider3;
         }
-        var slider3_min = slider3_current - radius*1.25;
-        var slider3_max = slider3_current + radius*1.25;
+        var slider3_min = slider3_current - Math.sqrt(radius)*1.25;
+        var slider3_max = slider3_current + Math.sqrt(radius)*1.25;
         Session.set('slider3', slider3_current);
         slider3 = this.$("div#slider3").noUiSlider({
             start: slider3_current,
@@ -223,8 +239,8 @@ Template.answer1.onRendered(function () {
         if (current_question.slider4) {
             slider4_current = current_question.slider4;
         }
-        var slider4_min = slider4_current - radius*1.25;
-        var slider4_max = slider4_current + radius*1.25;
+        var slider4_min = slider4_current - Math.sqrt(radius)*1.25;
+        var slider4_max = slider4_current + Math.sqrt(radius)*1.25;
         Session.set('slider4', slider4_current);
         slider4 = this.$("div#slider4").noUiSlider({
             start: slider4_current,
