@@ -136,11 +136,11 @@ Template.answer1.onRendered(function () {
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
-            if ((curr_slider_total_width + Math.pow((curr_slider_value - current_question[curr_slider]),2)) < radius ){
+            if ((curr_slider_total_width + Math.pow((curr_slider_value - current_question[curr_slider]),2)/radius) < 1 ){
                 $("#" + curr_slider_bar).width((Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius) * $("#budgetbar").width());
-                curr_slider_total_width += (Math.pow((curr_slider_value - current_question[curr_slider]),2));
+                curr_slider_total_width += (Math.pow((curr_slider_value - current_question[curr_slider]),2))/radius;
             } else {
-                $("#" + curr_slider_bar).width($("#budgetbar").width() - curr_slider_total_width*$("#budgetbar").width());
+                $("#" + curr_slider_bar).width($("#budgetbar").width() - (curr_slider_total_width/radius)*$("#budgetbar").width());
             }
             slider_idx_counter ++;
         }
