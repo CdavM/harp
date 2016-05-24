@@ -137,8 +137,8 @@ Template.answer1.onRendered(function () {
         if (current_question.slider0) {
             slider0_current = current_question.slider0;
         }
-        var slider0_min = slider0_current - radius;
-        var slider0_max = slider0_current + radius;
+        var slider0_min = slider0_current - radius*1.25;
+        var slider0_max = slider0_current + radius*1.25;
         Session.set('slider0', slider0_current);
 
         //noUiSlider.create(slider0, /* { options }
@@ -160,8 +160,8 @@ Template.answer1.onRendered(function () {
         if (current_question.slider1) {
             slider1_current = current_question.slider1;
         }
-        var slider1_min = slider1_current - radius;
-        var slider1_max = slider1_current + radius;
+        var slider1_min = slider1_current - radius*1.25;
+        var slider1_max = slider1_current + radius*1.25;
         Session.set('slider1', slider1_current);
         slider1 = this.$("div#slider1").noUiSlider({
             start: slider1_current,
@@ -181,8 +181,8 @@ Template.answer1.onRendered(function () {
         if (current_question.slider2) {
             slider2_current = current_question.slider2;
         }
-        var slider2_min = slider2_current - radius;
-        var slider2_max = slider2_current + radius;
+        var slider2_min = slider2_current - radius*1.25;
+        var slider2_max = slider2_current + radius*1.25;
         Session.set('slider2', slider2_current);
         slider2 = this.$("div#slider2").noUiSlider({
             start: slider2_current,
@@ -202,8 +202,8 @@ Template.answer1.onRendered(function () {
         if (current_question.slider3) {
             slider3_current = current_question.slider3;
         }
-        var slider3_min = slider3_current - radius;
-        var slider3_max = slider3_current + radius;
+        var slider3_min = slider3_current - radius*1.25;
+        var slider3_max = slider3_current + radius*1.25;
         Session.set('slider3', slider3_current);
         slider3 = this.$("div#slider3").noUiSlider({
             start: slider3_current,
@@ -223,8 +223,8 @@ Template.answer1.onRendered(function () {
         if (current_question.slider4) {
             slider4_current = current_question.slider4;
         }
-        var slider4_min = slider4_current - radius;
-        var slider4_max = slider4_current + radius;
+        var slider4_min = slider4_current - radius*1.25;
+        var slider4_max = slider4_current + radius*1.25;
         Session.set('slider4', slider4_current);
         slider4 = this.$("div#slider4").noUiSlider({
             start: slider4_current,
