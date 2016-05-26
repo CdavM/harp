@@ -87,6 +87,7 @@ Template.answer1.onRendered(function () {
     var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
     var radius = curr_experiment.radius;
     var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+    $("#creditsleft").text("Credits left: " + Number(radius).toFixed(3));
     update_slider1 = function (ev, val, update_slider_flag) {
         // the vars below are global and declared once the page is rendered!
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
@@ -126,6 +127,11 @@ Template.answer1.onRendered(function () {
         }
         ev.target.value = Number(val).toFixed(2); // updates the textbox
         Session.set(ev.target.id, Number(val));
+        var radius_dif = radius - radius_sum;
+        radius_dif -= Math.pow((val-current_question[ev.target.id]),2);
+        radius_dif += 0.0001;
+        radius_dif = radius_dif.toFixed(3);
+        $("#creditsleft").text("Credits left: " + radius_dif);
         if (update_slider_flag){
             eval(ev.target.id).val(Number(val).toFixed(2));
         }

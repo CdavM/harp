@@ -60,13 +60,14 @@
 <template name="answer1">
     <div class="center">
         <h3>
+            <div id="creditsleft" style="float:right;">Credits left: XXX</div>
             <div id="budgetbar" class="progress">
                 <div id="slider0bar" class="progress-bar progress-bar-primary" style="width: 0%"></div>
                 <div id="slider1bar" class="progress-bar progress-bar-success" style="width: 0%"></div>
                 <div id="slider2bar" class="progress-bar progress-bar-warning" style="width: 0%"></div>
                 <div id="slider3bar" class="progress-bar progress-bar-danger" style="width: 0%"></div>
                 <div id="slider4bar" class="progress-bar progress-bar-info" style="width: 0%"></div>
-            </div>
+            </div> 
             <br>
             <div id="slider0" style="height: 20px; width: 93%; float: left; background: rgb(51, 122, 183)"></div>
             <form name="slider0_text">
@@ -92,7 +93,7 @@
             <form name="slider4_text">
                 <textarea id="slider4" style="height:30px;width:5%;min-width: 80px;">{{slider4_value}}</textarea> <br>
             </form>
-            <div style="width: 93%"><p id="slider4min" style="display: inline; float: left;">min</p> <p id="slider4cur" style="display: inline;"> curr</p> <p id="slider4max" style="display: inline;float: right;">max</p> </div>check
+            <div style="width: 93%"><p id="slider4min" style="display: inline; float: left;">min</p> <p id="slider4cur" style="display: inline;"> curr</p> <p id="slider4max" style="display: inline;float: right;">max</p> </div>
         </h3>
         <h4>
             <br>
