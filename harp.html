@@ -57,44 +57,48 @@
     <p style="margin-bottom:100px;"></p>
 </template>
 
+<template name="mechanism0">
+    <h3>
+        <div id="creditsleft" style="float:right;">Credits left: XXX</div>
+        <div id="budgetbar" class="progress">
+            <div id="slider0bar" class="progress-bar progress-bar-primary" style="width: 0%"></div>
+            <div id="slider1bar" class="progress-bar progress-bar-success" style="width: 0%"></div>
+            <div id="slider2bar" class="progress-bar progress-bar-warning" style="width: 0%"></div>
+            <div id="slider3bar" class="progress-bar progress-bar-danger" style="width: 0%"></div>
+            <div id="slider4bar" class="progress-bar progress-bar-info" style="width: 0%"></div>
+        </div>
+        <br>
+        <div id="slider0" style="height: 20px; width: 93%; float: left; background: rgb(51, 122, 183)"></div>
+        <form name="slider0_text">
+            <textarea id="slider0" style="height:30px;width:5%;min-width: 80px;">{{slider0_value}}</textarea> <br>
+        </form>
+        <div style="width: 93%"><p id="slider0min" style="display: inline; float: left;">min</p> <p id="slider0cur" style="display: inline;"> curr</p> <p id="slider0max" style="display: inline;float: right;">max</p> </div>
+        <div id="slider1" style="height: 20px; width: 93%; float: left; background: rgb(92, 184, 92);"></div>
+        <form name="slider1_text">
+            <textarea id="slider1" style="height:30px;width:5%;min-width: 80px;">{{slider1_value}}</textarea> <br>
+        </form>
+        <div style="width: 93%"><p id="slider1min" style="display: inline; float: left;">min</p> <p id="slider1cur" style="display: inline;"> curr</p> <p id="slider1max" style="display: inline;float: right;">max</p> </div>
+        <div id="slider2" style="height: 20px; width: 93%; float: left; background: rgb(240, 173, 78);"></div>
+        <form name="slider2_text">
+            <textarea id="slider2" style="height:30px;width:5%;min-width: 80px;">{{slider2_value}}</textarea> <br>
+        </form>
+        <div style="width: 93%"><p id="slider2min" style="display: inline; float: left;">min</p> <p id="slider2cur" style="display: inline;"> curr</p> <p id="slider2max" style="display: inline;float: right;">max</p> </div>
+        <div id="slider3" style="height: 20px; width: 93%; float: left; background: rgb(217, 83, 79);"></div>
+        <form name="slider3_text">
+            <textarea id="slider3" style="height:30px;width:5%;min-width: 80px;">{{slider3_value}}</textarea> <br>
+        </form>
+        <div style="width: 93%"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
+        <div id="slider4" style="height: 20px; width: 93%; float: left; background: rgb(91, 192, 222);"></div>
+        <form name="slider4_text">
+            <textarea id="slider4" style="height:30px;width:5%;min-width: 80px;">{{slider4_value}}</textarea> <br>
+        </form>
+        <div style="width: 93%"><p id="slider4min" style="display: inline; float: left;">min</p> <p id="slider4cur" style="display: inline;"> curr</p> <p id="slider4max" style="display: inline;float: right;">max</p> </div>
+    </h3>
+</template>
+
 <template name="answer1">
     <div class="center">
-        <h3>
-            <div id="creditsleft" style="float:right;">Credits left: XXX</div>
-            <div id="budgetbar" class="progress">
-                <div id="slider0bar" class="progress-bar progress-bar-primary" style="width: 0%"></div>
-                <div id="slider1bar" class="progress-bar progress-bar-success" style="width: 0%"></div>
-                <div id="slider2bar" class="progress-bar progress-bar-warning" style="width: 0%"></div>
-                <div id="slider3bar" class="progress-bar progress-bar-danger" style="width: 0%"></div>
-                <div id="slider4bar" class="progress-bar progress-bar-info" style="width: 0%"></div>
-            </div> 
-            <br>
-            <div id="slider0" style="height: 20px; width: 93%; float: left; background: rgb(51, 122, 183)"></div>
-            <form name="slider0_text">
-                <textarea id="slider0" style="height:30px;width:5%;min-width: 80px;">{{slider0_value}}</textarea> <br>
-            </form>
-            <div style="width: 93%"><p id="slider0min" style="display: inline; float: left;">min</p> <p id="slider0cur" style="display: inline;"> curr</p> <p id="slider0max" style="display: inline;float: right;">max</p> </div>
-            <div id="slider1" style="height: 20px; width: 93%; float: left; background: rgb(92, 184, 92);"></div>
-            <form name="slider1_text">
-                <textarea id="slider1" style="height:30px;width:5%;min-width: 80px;">{{slider1_value}}</textarea> <br>
-            </form>
-            <div style="width: 93%"><p id="slider1min" style="display: inline; float: left;">min</p> <p id="slider1cur" style="display: inline;"> curr</p> <p id="slider1max" style="display: inline;float: right;">max</p> </div>
-            <div id="slider2" style="height: 20px; width: 93%; float: left; background: rgb(240, 173, 78);"></div>
-            <form name="slider2_text">
-                <textarea id="slider2" style="height:30px;width:5%;min-width: 80px;">{{slider2_value}}</textarea> <br>
-            </form>
-            <div style="width: 93%"><p id="slider2min" style="display: inline; float: left;">min</p> <p id="slider2cur" style="display: inline;"> curr</p> <p id="slider2max" style="display: inline;float: right;">max</p> </div>
-            <div id="slider3" style="height: 20px; width: 93%; float: left; background: rgb(217, 83, 79);"></div>
-            <form name="slider3_text">
-                <textarea id="slider3" style="height:30px;width:5%;min-width: 80px;">{{slider3_value}}</textarea> <br>
-            </form>
-            <div style="width: 93%"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
-            <div id="slider4" style="height: 20px; width: 93%; float: left; background: rgb(91, 192, 222);"></div>
-            <form name="slider4_text">
-                <textarea id="slider4" style="height:30px;width:5%;min-width: 80px;">{{slider4_value}}</textarea> <br>
-            </form>
-            <div style="width: 93%"><p id="slider4min" style="display: inline; float: left;">min</p> <p id="slider4cur" style="display: inline;"> curr</p> <p id="slider4max" style="display: inline;float: right;">max</p> </div>
-        </h3>
+       {{>mechanism0}}
         <h4>
             <br>
             You can adjust the sliders above up to your limit of XYZ.
