@@ -156,7 +156,9 @@ Template.answer1.onRendered(function () {
         var slider0_min = slider0_current - Math.sqrt(radius)*1.25;
         var slider0_max = slider0_current + Math.sqrt(radius)*1.25;
         Session.set('slider0', slider0_current);
-
+        $("#slider0min").text(slider0_min);
+        $("#slider0cur").text(slider0_current);
+        $("#slider0max").text(slider0_max);
         //noUiSlider.create(slider0, /* { options }
         slider0 = this.$("div#slider0").noUiSlider({
             start: slider0_current,
@@ -178,6 +180,9 @@ Template.answer1.onRendered(function () {
         }
         var slider1_min = slider1_current - Math.sqrt(radius)*1.25;
         var slider1_max = slider1_current + Math.sqrt(radius)*1.25;
+        $("#slider1min").text(slider1_min);
+        $("#slider1cur").text(slider1_current);
+        $("#slider1max").text(slider1_max);
         Session.set('slider1', slider1_current);
         slider1 = this.$("div#slider1").noUiSlider({
             start: slider1_current,
@@ -200,6 +205,9 @@ Template.answer1.onRendered(function () {
         var slider2_min = slider2_current - Math.sqrt(radius)*1.25;
         var slider2_max = slider2_current + Math.sqrt(radius)*1.25;
         Session.set('slider2', slider2_current);
+        $("#slider2min").text(slider2_min);
+        $("#slider2cur").text(slider2_current);
+        $("#slider2max").text(slider2_max);
         slider2 = this.$("div#slider2").noUiSlider({
             start: slider2_current,
             connect: "lower",
@@ -221,6 +229,9 @@ Template.answer1.onRendered(function () {
         var slider3_min = slider3_current - Math.sqrt(radius)*1.25;
         var slider3_max = slider3_current + Math.sqrt(radius)*1.25;
         Session.set('slider3', slider3_current);
+        $("#slider3min").text(slider3_min);
+        $("#slider3cur").text(slider3_current);
+        $("#slider3max").text(slider3_max);
         slider3 = this.$("div#slider3").noUiSlider({
             start: slider3_current,
             connect: "lower",
@@ -242,6 +253,9 @@ Template.answer1.onRendered(function () {
         var slider4_min = slider4_current - Math.sqrt(radius)*1.25;
         var slider4_max = slider4_current + Math.sqrt(radius)*1.25;
         Session.set('slider4', slider4_current);
+        $("#slider4min").text(slider4_min);
+        $("#slider4cur").text(slider4_current);
+        $("#slider4max").text(slider4_max);
         slider4 = this.$("div#slider4").noUiSlider({
             start: slider4_current,
             connect: "lower",
