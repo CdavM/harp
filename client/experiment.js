@@ -142,11 +142,11 @@ Template.answer1.onRendered(function () {
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
-            if ((curr_slider_total_width + Math.pow((curr_slider_value - current_question[curr_slider]),2)/radius) < 1 ){
+            if ((curr_slider_total_width + (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius) * $("#budgetbar").width()) < $("#budgetbar").width() ){
                 $("#" + curr_slider_bar).width((Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius) * $("#budgetbar").width());
-                curr_slider_total_width += (Math.pow((curr_slider_value - current_question[curr_slider]),2))/radius;
+                curr_slider_total_width += $("#"+curr_slider_bar).width();
             } else {
-                $("#" + curr_slider_bar).width(parseInt($("#budgetbar").width() - (curr_slider_total_width/radius)*$("#budgetbar").width()));
+                $("#" + curr_slider_bar).width($("#budgetbar").width() - curr_slider_total_width-3); //laplace smoothing
             }
             slider_idx_counter ++;
         }
