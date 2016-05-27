@@ -47,6 +47,13 @@ Template.registerHelper('current_answer', function(){
   return Meteor.settings.public.answer_forms[current_answer_value].template;
 });
 
+Template.registerHelper('current_mechanism', function(){
+  var current_mechanism_value = Answers.findOne({worker_ID: Session.get("worker_ID_value")}).current_question;
+  console.log("mechanism"+current_mechanism_value);
+  return "mechanism"+current_mechanism_value;
+});
+
+
 Template.registerHelper('waiting', function(){
   return Session.get('waiting');
 });
