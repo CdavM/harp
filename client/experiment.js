@@ -104,7 +104,7 @@ Template.answer1.onRendered(function () {
                 eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
                 return;
             }
-            radius_sum += Math.pow((curr_slider_value - current_question[curr_slider]),2);
+            radius_sum = radius_sum + Math.pow((curr_slider_value - current_question[curr_slider]),2);
             slider_idx_counter ++;
         }
         //now subtract the radius for the current slider from radius sum
@@ -129,7 +129,7 @@ Template.answer1.onRendered(function () {
         Session.set(ev.target.id, Number(val));
         var radius_dif = radius - radius_sum;
         radius_dif -= Math.pow((val-current_question[ev.target.id]),2);
-        radius_dif += 0.0001; //laplace smoothing
+        radius_dif = radius_dif + 0.0001; //laplace smoothing
         radius_dif = radius_dif.toFixed(3);
         $("#creditsleft").text("Credits left: " + radius_dif);
         if (update_slider_flag){
@@ -138,16 +138,13 @@ Template.answer1.onRendered(function () {
         //update stacked bars
         var slider_idx_counter = 0;
         var curr_slider_total_width = 0;
+        var slider_laplace_smoothing = true;
         while (slider_idx_counter < 5){
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
-            if ((curr_slider_total_width + (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius) * $("#budgetbar").width()) < $("#budgetbar").width() ){
-                $("#" + curr_slider_bar).width((Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius) * $("#budgetbar").width());
-                curr_slider_total_width += $("#"+curr_slider_bar).width();
-            } else {
-                $("#" + curr_slider_bar).width($("#budgetbar").width() - curr_slider_total_width-3); //laplace smoothing
-            }
+            $("#" + curr_slider_bar).width((Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius) * $("#budgetbar").width()-0.1); //laplace smoothing
+            curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
             slider_idx_counter ++;
         }
 
