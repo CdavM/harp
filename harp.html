@@ -15,7 +15,7 @@
     </header>
 
     <div class="jumbotron" style="padding:25px">
-        {{>instructions}}
+        {{instructionsMain}}
         {{#if initialized}}
         {{else}}
             <p class="center"><input type="button" value="BEGIN" name="begin_experiment" id="begin_experiment" class="btn btn-default"/></p>
@@ -49,6 +49,47 @@
     </div>
 </template>
 
+<template name="question0">
+    <header>
+        <div class="bg">
+            <div id="navigacija" class="jumbotron" style="font-size: 45px">
+                Political Decision-Making on Mechanical Turk
+            </div>
+        </div>
+    </header>
+
+    <div class="jumbotron" style="padding:25px">
+        {{>question0text}}
+                        {{#if initialized}}
+
+                    <div>
+                        {{#if show_timer}}
+                            {{#if waiting}}
+                            {{else}}
+                                <p class="center"> Time remaining: {{time_remaining}} seconds</p>
+                            {{/if}}
+                        {{/if}}
+                    </div>
+
+                    <div id="exp_start" class="well">
+                        {{#if waiting}}
+                            <div class="center"> Loading... </div>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        {{else}}
+                            {{#each questions}}
+                                {{> question}}
+                            {{/each}}
+                        {{/if}}
+                    </div>
+                {{/if}}
+    </div>
+</template>
+
+
 <template name="question">
     text is {{text}}
     <br>
@@ -68,31 +109,49 @@
             <div id="slider4bar" class="progress-bar progress-bar-info" style="width: 0%"></div>
         </div>
         <br>
-        <div id="slider0" style="height: 20px; width: 93%; float: left; background: rgb(51, 122, 183)"></div>
+        <div style="width: 25%"><p id="slider0label" style="margin: 0 auto; display: inline; float: left;">National Defense&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+        <div id="slider0" style="margin: 0 auto; height: 20px; width: 70%; float: left; background: rgb(51, 122, 183)"></div>
         <form name="slider0_text">
-            <textarea id="slider0" style="height:30px;width:5%;min-width: 80px;">{{slider0_value}}</textarea> <br>
+            <textarea id="slider0" style="height:30px;width:7%;min-width: 80px; float:right">{{slider0_value}}</textarea> <br>
         </form>
-        <div style="width: 93%"><p id="slider0min" style="display: inline; float: left;">min</p> <p id="slider0cur" style="display: inline;"> curr</p> <p id="slider0max" style="display: inline;float: right;">max</p> </div>
-        <div id="slider1" style="height: 20px; width: 93%; float: left; background: rgb(92, 184, 92);"></div>
+        <div style="width: 25%"><p id="slider0label" style="margin: 0 auto; display: inline; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+        <div style="width: 89%"><p id="slider0min" style="display: inline; margin: 0 auto; float: left;">min</p> <p id="slider0cur" style="display: inline;"> curr</p> <p id="slider0max" style="display: inline;float: right;">max</p> </div>
+
+        <br>
+        <div style="width: 25%"><p id="slider1label" style="margin: 0 auto; display: inline; float: left;">Medicare &amp; Health&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+        <div id="slider1" style="height: 20px; width: 70%; float: left; background: rgb(92, 184, 92);"></div>
         <form name="slider1_text">
-            <textarea id="slider1" style="height:30px;width:5%;min-width: 80px;">{{slider1_value}}</textarea> <br>
+            <textarea id="slider1" style="height:30px;width:7%;min-width: 80px; float:right">{{slider1_value}}</textarea> <br>
         </form>
-        <div style="width: 93%"><p id="slider1min" style="display: inline; float: left;">min</p> <p id="slider1cur" style="display: inline;"> curr</p> <p id="slider1max" style="display: inline;float: right;">max</p> </div>
-        <div id="slider2" style="height: 20px; width: 93%; float: left; background: rgb(240, 173, 78);"></div>
+        <div style="width: 25%"><p id="slider0label" style="margin: 0 auto; display: inline; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+        <div style="width: 89%"><p id="slider1min" style="display: inline; float: left;">min</p> <p id="slider1cur" style="display: inline;"> curr</p> <p id="slider1max" style="display: inline;float: right;">max</p> </div>
+        
+        <br>
+        <div style="width: 25%"><p id="slider2label" style="margin: 0 auto; display: inline; float: left;">Transportation &amp; Science&nbsp;&nbsp;&nbsp;</p></div>
+        <div id="slider2" style="height: 20px; width: 70%; float: left; background: rgb(240, 173, 78);"></div>
         <form name="slider2_text">
-            <textarea id="slider2" style="height:30px;width:5%;min-width: 80px;">{{slider2_value}}</textarea> <br>
+            <textarea id="slider2" style="height:30px;width:7%;min-width: 80px;float:right">{{slider2_value}}</textarea> <br>
         </form>
-        <div style="width: 93%"><p id="slider2min" style="display: inline; float: left;">min</p> <p id="slider2cur" style="display: inline;"> curr</p> <p id="slider2max" style="display: inline;float: right;">max</p> </div>
-        <div id="slider3" style="height: 20px; width: 93%; float: left; background: rgb(217, 83, 79);"></div>
+        <div style="width: 25%"><p id="slider0label" style="margin: 0 auto; display: inline; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+        <div style="width: 89%"><p id="slider2min" style="display: inline; float: left;">min</p> <p id="slider2cur" style="display: inline;"> curr</p> <p id="slider2max" style="display: inline;float: right;">max</p> </div>
+        
+        <br>
+        <div style="width: 25%"><p id="slider3label" style="margin: 0 auto; display: inline; float: left;">Individual Income Tax&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+        <div id="slider3" style="height: 20px; width: 70%; float: left; background: rgb(217, 83, 79);"></div>
         <form name="slider3_text">
-            <textarea id="slider3" style="height:30px;width:5%;min-width: 80px;">{{slider3_value}}</textarea> <br>
+            <textarea id="slider3" style="height:30px;width:7%;min-width: 80px;float:right">{{slider3_value}}</textarea> <br>
         </form>
-        <div style="width: 93%"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
-        <div id="slider4" style="height: 20px; width: 93%; float: left; background: rgb(91, 192, 222);"></div>
+        <div style="width: 25%"><p id="slider0label" style="margin: 0 auto; display: inline; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+        <div style="width: 89%"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
+        
+        <br>
+        <div style="width: 25%"><p id="slider4label" style="margin: 0 auto; display: inline; float: left;">Deficit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+        <div id="slider4" style="height: 20px; width: 70%; float: left; background: rgb(91, 192, 222);"></div>
         <form name="slider4_text">
-            <textarea id="slider4" style="height:30px;width:5%;min-width: 80px;">{{slider4_value}}</textarea> <br>
+            <textarea id="slider4" style="height:30px;width:7%;min-width: 80px;float:right">{{slider4_value}}</textarea> <br>
         </form>
-        <div style="width: 93%"><p id="slider4min" style="display: inline; float: left;">min</p> <p id="slider4cur" style="display: inline;"> curr</p> <p id="slider4max" style="display: inline;float: right;">max</p> </div>
+        <div style="width: 25%"><p id="slider0label" style="margin: 0 auto; display: inline; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+        <div style="width: 89%"><p id="slider4min" style="display: inline; float: left;">min</p> <p id="slider4cur" style="display: inline;"> curr</p> <p id="slider4max" style="display: inline;float: right;">max</p> </div>
     </h3>
 </template>
 
@@ -214,7 +273,7 @@
     </div>
 </template>
 
-<template name="instructions">
+<template name="instructionsMain">
 
     <h4>
         <p>
@@ -225,5 +284,21 @@
 			## INCLUDE Agreement form for IRB ### </p>
         <p>Click 'begin' once you have read and if you agree to the above consent statement. </p>
     </h4>
+
+</template>
+
+<template name="question0text">
+
+    <h4>
+        <p>
+In the next page, we will ask you to indicate your preferences regarding the federal budget. We’ll show you a budget based on what other people who have answered this survey have preferred. You’ll then be allowed to modify the budget we show you to better match your preferences. We’ll also show you how much the government is budgeted to spend in 2016 so you have a better sense of what values are typical.
+
+You won’t be allowed to arbitrarily modify the budget that others have agreed upon, however. We’ll give you some ‘movement credits.’  To increase/decrease the budget from what others have agreed, you’ll have to spend these credits. Notably, the amount of credits you spend changing a given budget item will be the square of the change you make in that budget item. 
+
+For example, let’s say that people before you have agreed that we should decrease discretionary defense spending by 15% and increase taxes by 10%, but you would prefer that discretionary defense spending be decreased by 10% and taxes increased by only 7%. To move the defense spending to your ideal point, you would have to spend 25 credits (15% - 10% = 5%, and 5^2 = 25). To also move the tax spending to your ideal point, you would have to spend an additional 9 credits (10% - 7% = 3%, 3^2 = 9), for a total of 34 credits. 
+
+Of course, you may not have enough credits to make all the changes you wish to make, and so you’ll have to prioritize the changes you care about the most. Furthermore, note that as a consequence of the squaring rule, it is cheaper to move two items 5% each, for example, than it is to move one item 10%.
+</p>
+</h4>
 
 </template>
