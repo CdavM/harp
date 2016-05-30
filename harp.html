@@ -15,7 +15,7 @@
     </header>
 
     <div class="jumbotron" style="padding:25px">
-        {{instructionsMain}}
+        {{>instructionsMain}}
         {{#if initialized}}
         {{else}}
             <p class="center"><input type="button" value="BEGIN" name="begin_experiment" id="begin_experiment" class="btn btn-default"/></p>
@@ -238,6 +238,18 @@
         <div style="width: 93%"><p id="slider4min" style="display: inline; float: left;">min</p> <p id="slider4cur" style="display: inline;"> curr</p> <p id="slider4max" style="display: inline;float: right;">max</p> </div>
         <div id="slider4weight" style="height: 20px; width: 93%; float: left; background: rgb(51, 122, 183)"></div>
     </h3>
+</template>
+
+<template name="answer0">
+    <div class="center">
+        {{>Template.dynamic template=current_question_text}}
+        <h4>
+            <br>
+            HELLO
+            <br>
+        </h4>
+        <input type="button" value="NEXT" id="answer_submission" class="btn btn-default">
+    </div>
 </template>
 
 <template name="answer1">
