@@ -245,7 +245,7 @@
         {{>Template.dynamic template=current_question_text}}
         <h4>
             <br>
-            HELLO
+            Please click 'NEXT' once you read these instructions.
             <br>
         </h4>
         <input type="button" value="NEXT" id="answer_submission" class="btn btn-default">
@@ -303,14 +303,34 @@
 
     <h4>
         <p>
-In the next page, we will ask you to indicate your preferences regarding the federal budget. We’ll show you a budget based on what other people who have answered this survey have preferred. You’ll then be allowed to modify the budget we show you to better match your preferences. We’ll also show you how much the government is budgeted to spend in 2016 so you have a better sense of what values are typical.
+            In the next page, we will ask you to indicate your preferences regarding the federal budget. We’ll show you a budget based on what other people who have answered this survey have preferred. You’ll then be allowed to modify the budget we show you to better match your preferences. We’ll also show you how much the government is budgeted to spend in 2016 so you have a better sense of what values are typical.
 
-You won’t be allowed to arbitrarily modify the budget that others have agreed upon, however. We’ll give you some ‘movement credits.’  To increase/decrease the budget from what others have agreed, you’ll have to spend these credits. Notably, the amount of credits you spend changing a given budget item will be the square of the change you make in that budget item. 
+            You won’t be allowed to arbitrarily modify the budget that others have agreed upon, however. We’ll give you some ‘movement credits.’  To increase/decrease the budget from what others have agreed, you’ll have to spend these credits. Notably, the amount of credits you spend changing a given budget item will be the square of the change you make in that budget item.
 
-For example, let’s say that people before you have agreed that we should decrease discretionary defense spending by 15% and increase taxes by 10%, but you would prefer that discretionary defense spending be decreased by 10% and taxes increased by only 7%. To move the defense spending to your ideal point, you would have to spend 25 credits (15% - 10% = 5%, and 5^2 = 25). To also move the tax spending to your ideal point, you would have to spend an additional 9 credits (10% - 7% = 3%, 3^2 = 9), for a total of 34 credits. 
+            For example, let’s say that people before you have agreed that we should decrease discretionary defense spending by 15% and increase taxes by 10%, but you would prefer that discretionary defense spending be decreased by 10% and taxes increased by only 7%. To move the defense spending to your ideal point, you would have to spend 25 credits (15% - 10% = 5%, and 5^2 = 25). To also move the tax spending to your ideal point, you would have to spend an additional 9 credits (10% - 7% = 3%, 3^2 = 9), for a total of 34 credits.
 
-Of course, you may not have enough credits to make all the changes you wish to make, and so you’ll have to prioritize the changes you care about the most. Furthermore, note that as a consequence of the squaring rule, it is cheaper to move two items 5% each, for example, than it is to move one item 10%.
-</p>
-</h4>
+            Of course, you may not have enough credits to make all the changes you wish to make, and so you’ll have to prioritize the changes you care about the most. Furthermore, note that as a consequence of the squaring rule, it is cheaper to move two items 5% each, for example, than it is to move one item 10%.
+        </p>
+    </h4>
+
+</template>
+
+<template name="question1text">
+
+    <h4>
+        <p>
+            Mechanism 1 specific instructions
+        </p>
+    </h4>
+
+</template>
+
+<template name="question2text">
+
+    <h4>
+        <p>
+            Mechanism 2 specific instructions
+        </p>
+    </h4>
 
 </template>
