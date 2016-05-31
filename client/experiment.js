@@ -147,8 +147,37 @@ Template.answer1.onRendered(function () {
             curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
             slider_idx_counter ++;
         }
+        var percent_difference = compute_averages(Number(ev.target.id.substr(ev.target.id.length-1)), val);
+        if (percent_difference < 0){
+            //red background
+            $("#"+ev.target.id+"comp").css('color','red');
+        } else {
+            //green background
+            $("#"+ev.target.id+"comp").css('color','green');
+        }
+        // set value
+        $("#"+ev.target.id+"comp").text(Number(percent_difference).toFixed(2)+"%");
 
-    }
+    };
+    var compute_averages = function(slider_ID, value){
+        console.log("slider id is "+ slider_ID);
+        console.log("val is " + value);
+        var percentage_difference = 0;
+        if (slider_ID == 0){
+            percentage_difference = value / 1;
+        } else if (slider_ID == 1){
+            percentage_difference = value / 2;
+        } else if (slider_ID == 2){
+            percentage_difference = value / 3;
+        } else if (slider_ID == 3){
+            percentage_difference = value / 4;
+            percentage_difference = percentage_difference * -1;
+        } else if (slider_ID == 4){
+            percentage_difference = value / 5;
+            percentage_difference = percentage_difference * -1;
+        }
+        return percentage_difference;
+    };
     update_slider = _.throttle(update_slider1, 100);
 
     if (curr_experiment.current_question == 0) {
