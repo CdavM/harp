@@ -160,8 +160,6 @@ Template.answer1.onRendered(function () {
 
     };
     var compute_averages = function(slider_ID, value){
-        console.log("slider id is "+ slider_ID);
-        console.log("val is " + value);
         var percentage_difference = 0;
         if (slider_ID == 0){
             percentage_difference = value / 1;
