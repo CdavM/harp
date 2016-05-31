@@ -273,6 +273,133 @@ Template.answer1.onRendered(function () {
             // round off values on 'change' event
             update_slider(ev, val);
         });
+    } else if (curr_experiment.current_question == 1){
+        //mechanism 1 specific js
+    } else if (curr_experiment.current_question == 2){
+        //mechanism 2 specific js
+        var slider0_current = 0;
+        if (current_question.slider0) {
+            slider0_current = current_question.slider0;
+        }
+        var slider0_min = slider0_current - Math.sqrt(radius)*1.25;
+        var slider0_max = slider0_current + Math.sqrt(radius)*1.25;
+        Session.set('slider0', slider0_current);
+        $("#slider0min").text(slider0_min.toFixed(2));
+        $("#slider0cur").text(slider0_current.toFixed(2));
+        $("#slider0max").text(slider0_max.toFixed(2));
+        //noUiSlider.create(slider0, /* { options }
+        slider0 = this.$("div#slider0").noUiSlider({
+            start: slider0_current,
+            connect: "lower",
+            range: {
+                'min': slider0_min,
+                'max': slider0_max
+            }
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            update_slider(ev, val);
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            update_slider(ev, val);
+        });
+        var slider1_current = 0;
+        if (current_question.slider1) {
+            slider1_current = current_question.slider1;
+        }
+        var slider1_min = slider1_current - Math.sqrt(radius)*1.25;
+        var slider1_max = slider1_current + Math.sqrt(radius)*1.25;
+        $("#slider1min").text(slider1_min.toFixed(2));
+        $("#slider1cur").text(slider1_current.toFixed(2));
+        $("#slider1max").text(slider1_max.toFixed(2));
+        Session.set('slider1', slider1_current);
+        slider1 = this.$("div#slider1").noUiSlider({
+            start: slider1_current,
+            connect: "lower",
+            range: {
+                'min': slider1_min,
+                'max': slider1_max
+            }
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            update_slider(ev, val);
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            update_slider(ev, val);
+        });
+        var slider2_current = 0;
+        if (current_question.slider2) {
+            slider2_current = current_question.slider2;
+        }
+        var slider2_min = slider2_current - Math.sqrt(radius)*1.25;
+        var slider2_max = slider2_current + Math.sqrt(radius)*1.25;
+        Session.set('slider2', slider2_current);
+        $("#slider2min").text(slider2_min.toFixed(2));
+        $("#slider2cur").text(slider2_current.toFixed(2));
+        $("#slider2max").text(slider2_max.toFixed(2));
+        slider2 = this.$("div#slider2").noUiSlider({
+            start: slider2_current,
+            connect: "lower",
+            range: {
+                'min': slider2_min,
+                'max': slider2_max
+            }
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            update_slider(ev, val);
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            update_slider(ev, val);
+        });
+        var slider3_current = 0;
+        if (current_question.slider3) {
+            slider3_current = current_question.slider3;
+        }
+        var slider3_min = slider3_current - Math.sqrt(radius)*1.25;
+        var slider3_max = slider3_current + Math.sqrt(radius)*1.25;
+        Session.set('slider3', slider3_current);
+        $("#slider3min").text(slider3_min.toFixed(2));
+        $("#slider3cur").text(slider3_current.toFixed(2));
+        $("#slider3max").text(slider3_max.toFixed(2));
+        slider3 = this.$("div#slider3").noUiSlider({
+            start: slider3_current,
+            connect: "lower",
+            range: {
+                'min': slider3_min,
+                'max': slider3_max
+            }
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            update_slider(ev, val);
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            update_slider(ev, val);
+        });
+        var slider4_current = 0;
+        if (current_question.slider4) {
+            slider4_current = current_question.slider4;
+        }
+        var slider4_min = slider4_current - Math.sqrt(radius)*1.25;
+        var slider4_max = slider4_current + Math.sqrt(radius)*1.25;
+        Session.set('slider4', slider4_current);
+        $("#slider4min").text(slider4_min.toFixed(2));
+        $("#slider4cur").text(slider4_current.toFixed(2));
+        $("#slider4max").text(slider4_max.toFixed(2));
+        slider4 = this.$("div#slider4").noUiSlider({
+            start: slider4_current,
+            connect: "lower",
+            range: {
+                'min': slider4_min,
+                'max': slider4_max
+            }
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            update_slider(ev, val);
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            update_slider(ev, val);
+        });
+        //WEIGHT SLIDERS
+
     }
 
 });
