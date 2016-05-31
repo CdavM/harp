@@ -228,7 +228,11 @@
             </form>
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider0min" style="display: inline; float: left;">min</p> <p id="slider0cur" style="display: inline;"> curr</p> <p id="slider0max" style="display: inline; float: right;">max</p> </div>
         </div>
+        <p id="slider0label" style="float:left; clear:both">National Defense Weight</p>
         <div id="slider0weight" style="height: 20px; width: 83%; float: left; background: rgb(51, 122, 183); clear: both; margin-left: 7%;"></div>
+        <form name="slider0w_text">
+            <textarea id="slider0w" style="height:30px;width:7%;min-width: 80px; float:right">{{slider0w_value}}</textarea> <br>
+        </form>
         <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="sliderwmin" style="display: inline; float: left;">min</p> <p id="sliderwcur" style="display: inline;"> curr</p> <p id="sliderwmax" style="display: inline;float: right;">max</p> </div>
 
         <br style="clear: both;">
@@ -242,7 +246,11 @@
             </form>
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider1min" style="display: inline; float: left;">min</p> <p id="slider1cur" style="display: inline;"> curr</p> <p id="slider1max" style="display: inline;float: right;">max</p> </div>
         </div>
+        <p style="float:left; clear:both">Medicare &amp; Health Weight</p>
         <div id="slider1weight" style="height: 20px; width: 83%; float: left; background: rgb(92, 184, 92); clear: both; margin-left: 7%;"></div>
+        <form name="slider1w_text">
+            <textarea id="slider1w" style="height:30px;width:7%;min-width: 80px; float:right">{{slider1w_value}}</textarea> <br>
+        </form>
         <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="sliderwmin" style="display: inline; float: left;">min</p> <p id="sliderwcur" style="display: inline;"> curr</p> <p id="sliderwmax" style="display: inline;float: right;">max</p> </div>
 
         <br style="clear: both;">
@@ -255,7 +263,11 @@
             </form>
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider2min" style="display: inline; float: left;">min</p> <p id="slider2cur" style="display: inline;"> curr</p> <p id="slider2max" style="display: inline;float: right;">max</p> </div>
         </div>
-        <div id="slider2weight" style="height: 20px; width: 83%; float: left; background:  rgb(240, 173, 78); clear: both; margin-left: 7%;"></div>
+        <p style="float:left; clear:both">Transportation &amp; Science Weight</p>
+        <div id="slider2weight" style="height: 20px; width: 83%; float: left; background: rgb(240, 173, 78); clear: both; margin-left: 7%;"></div>
+        <form name="slider2w_text">
+            <textarea id="slider2w" style="height:30px;width:7%;min-width: 80px; float:right">{{slider2w_value}}</textarea> <br>
+        </form>
         <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="sliderwmin" style="display: inline; float: left;">min</p> <p id="sliderwcur" style="display: inline;"> curr</p> <p id="sliderwmax" style="display: inline;float: right;">max</p> </div>
 
         <br style="clear: both;">
@@ -268,7 +280,11 @@
             </form>
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
         </div>
+        <p style="float:left; clear:both">Individual Income Tax</p>
         <div id="slider3weight" style="height: 20px; width: 83%; float: left; background: rgb(217, 83, 79); clear: both; margin-left: 7%;"></div>
+        <form name="slider3w_text">
+            <textarea id="slider3w" style="height:30px;width:7%;min-width: 80px; float:right">{{slider3w_value}}</textarea> <br>
+        </form>
         <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="sliderwmin" style="display: inline; float: left;">min</p> <p id="sliderwcur" style="display: inline;"> curr</p> <p id="sliderwmax" style="display: inline;float: right;">max</p> </div>
 
         <br style="clear: both">
@@ -281,10 +297,12 @@
             </form>
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider4min" style="display: inline; float: left;">min</p> <p id="slider4cur" style="display: inline;"> curr</p> <p id="slider4max" style="display: inline;float: right;">max</p> </div>
         </div>
+        <p style="float:left; clear:both">Deficit Weight</p>
         <div id="slider4weight" style="height: 20px; width: 83%; float: left; background: rgb(91, 192, 222); clear: both; margin-left: 7%;"></div>
+        <form name="slider4w_text">
+            <textarea id="slider4w" style="height:30px;width:7%;min-width: 80px; float:right">{{slider4w_value}}</textarea> <br>
+        </form>
         <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="sliderwmin" style="display: inline; float: left;">min</p> <p id="sliderwcur" style="display: inline;"> curr</p> <p id="sliderwmax" style="display: inline;float: right;">max</p> </div>
-
-
     </h3>
 </template>
 
@@ -304,7 +322,7 @@
     <div class="center">
        {{>Template.dynamic template=current_mechanism}}
         <h4>
-            <br>
+            <br style="clear: both;">
             Please explain your answer:
             <br>
         </h4>

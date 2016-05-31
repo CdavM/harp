@@ -34,6 +34,21 @@ Template.registerHelper('slider3_value', function () {
 Template.registerHelper('slider4_value', function () {
     return Session.get('slider4');
 });
+Template.registerHelper('slider0w_value', function () {
+    return Session.get('slider0weight');
+});
+Template.registerHelper('slider1w_value', function () {
+    return Session.get('slider1weight');
+});
+Template.registerHelper('slider2w_value', function () {
+    return Session.get('slider2weight');
+});
+Template.registerHelper('slider3w_value', function () {
+    return Session.get('slider3weight');
+});
+Template.registerHelper('slider4w_value', function () {
+    return Session.get('slider4weight');
+});
 Template.registerHelper('initialized', function(){
     if(Session.equals('initialized', true)){
         return true;

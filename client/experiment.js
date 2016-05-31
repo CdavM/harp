@@ -161,6 +161,22 @@ Template.answer1.onRendered(function () {
         }
 
     };
+    var update_weight_slider1 = function(ev, val, update_slider_flag){
+        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+        if (!update_slider_flag)
+            var update_slider_flag = false;
+        if (isNaN(val)){
+            eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
+            return;
+        }
+        ev.target.value = Number(val).toFixed(2); // updates the textbox
+        Session.set(ev.target.id, Number(val));
+        if (update_slider_flag){
+            eval(ev.target.id).val(Number(val).toFixed(2));
+            $("div").mouseup(); //release the mouse
+        }
+    };
     var compute_averages = function(slider_ID, value){
         var percentage_difference = 0;
         if (slider_ID == 0){
@@ -179,6 +195,7 @@ Template.answer1.onRendered(function () {
         return percentage_difference;
     };
     update_slider = _.throttle(update_slider1, 100);
+    update_weight_slider = _.throttle(update_weight_slider1, 100);
 
     if (curr_experiment.current_question == 0) {
         var slider0_current = 0;
@@ -201,10 +218,16 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         });
         var slider1_current = 0;
         if (current_question.slider1) {
@@ -225,10 +248,16 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         });
         var slider2_current = 0;
         if (current_question.slider2) {
@@ -249,10 +278,16 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         });
         var slider3_current = 0;
         if (current_question.slider3) {
@@ -273,10 +308,16 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         });
         var slider4_current = 0;
         if (current_question.slider4) {
@@ -297,10 +338,16 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         });
     } else if (curr_experiment.current_question == 1){
         //mechanism 1 specific js
@@ -326,10 +373,16 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         });
         var slider1_current = 0;
         if (current_question.slider1) {
@@ -350,10 +403,16 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         });
         var slider2_current = 0;
         if (current_question.slider2) {
@@ -374,10 +433,16 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         });
         var slider3_current = 0;
         if (current_question.slider3) {
@@ -398,10 +463,16 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         });
         var slider4_current = 0;
         if (current_question.slider4) {
@@ -422,12 +493,127 @@ Template.answer1.onRendered(function () {
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
-            update_slider(ev, val);
+            try {
+                update_slider(ev, val);
+            } catch (TypeError){
+            }
         });
         //WEIGHT SLIDERS
+        Session.set('slider0weight', 5);
+        Session.set('slider1weight', 5);
+        Session.set('slider2weight', 5);
+        Session.set('slider3weight', 5);
+        Session.set('slider4weight', 5);
+        $("p#sliderwmin").text(0);
+        $("p#sliderwcur").text(5);
+        $("p#sliderwmax").text(10);
+
+        slider0w = this.$("div#slider0weight").noUiSlider({
+            start: 5,
+            connect: "lower",
+            range: {
+                'min': 0,
+                'max': 10
+            }
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError){
+            }
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError){
+            }
+        });
+        slider1w = this.$("div#slider1weight").noUiSlider({
+            start: 5,
+            connect: "lower",
+            range: {
+                'min': 0,
+                'max': 10
+            }
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError){
+            }
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError){
+            }
+        });
+        slider2w = this.$("div#slider2weight").noUiSlider({
+            start: 5,
+            connect: "lower",
+            range: {
+                'min': 0,
+                'max': 10
+            }
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError){
+            }
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError){
+            }
+        });
+        slider3w = this.$("div#slider3weight").noUiSlider({
+            start: 5,
+            connect: "lower",
+            range: {
+                'min': 0,
+                'max': 10
+            }
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError){
+            }
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError){
+            }
+        });
+        slider4w = this.$("div#slider4weight").noUiSlider({
+            start: 5,
+            connect: "lower",
+            range: {
+                'min': 0,
+                'max': 10
+            }
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError){
+            }
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError){
+            }
+        });
 
     }
 
