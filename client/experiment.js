@@ -151,12 +151,14 @@ Template.answer1.onRendered(function () {
         if (percent_difference < 0){
             //red background
             $("#"+ev.target.id+"comp").css('color','red');
+            // set value
+            $("#"+ev.target.id+"comp").text(Number(percent_difference).toFixed(2)+"%");
         } else {
             //green background
             $("#"+ev.target.id+"comp").css('color','green');
+            // set value
+            $("#"+ev.target.id+"comp").text("+"+Number(percent_difference).toFixed(2)+"%");
         }
-        // set value
-        $("#"+ev.target.id+"comp").text(Number(percent_difference).toFixed(2)+"%");
 
     };
     var compute_averages = function(slider_ID, value){
