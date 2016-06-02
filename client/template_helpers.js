@@ -49,6 +49,34 @@ Template.registerHelper('slider3w_value', function () {
 Template.registerHelper('slider4w_value', function () {
     return Session.get('slider4weight');
 });
+Template.registerHelper('slider_names', function(slider_name_arg, color_arg) {
+    slider_object = Object();
+    slider_object.slider_id = slider_name_arg;
+    slider_object.slider_text = slider_name_arg+"_text";
+    switch (color_arg){
+        case "blue":
+            slider_object.slider_color = "rgb(51, 122, 183)";
+            break;
+        case "green":
+            slider_object.slider_color = "rgb(92, 184, 92)";
+            break;
+        case "orange":
+            slider_object.slider_color = "rgb(240, 173, 78)";
+            break;
+        case "red":
+            slider_object.slider_color = "rgb(217, 83, 79)";
+            break;
+        case "lightblue":
+            slider_object.slider_color = "rgb(91, 192, 222)";
+            break;
+    }
+    slider_object.slider_min = slider_name_arg+"min";
+    slider_object.slider_cur = slider_name_arg+"cur";
+    slider_object.slider_max = slider_name_arg+"max";
+    slider_object.slider_comp = slider_name_arg + "comp";
+
+    return slider_object;
+});
 Template.registerHelper('initialized', function(){
     if(Session.equals('initialized', true)){
         return true;

@@ -2,7 +2,7 @@
   "threshold_workers": 1,
   "questions": [
     {"question_ID":0, "text":"mechanism0", "busy": false, "previous_participants": 0, "slider0": 0, "slider1": 10, "slider2": 20, "slider3": 30, "slider4": 40},
-    {"question_ID":1, "text":"mechanism1", "busy": false, "previous_participants": 0},
+    {"question_ID":1, "text":"mechanism1", "busy": false, "previous_participants": 0, "slider0": 5, "slider1": 15, "slider2": 25, "slider3": 35, "slider4": 45},
     {"question_ID":2, "text":"mechanism2", "busy": false, "previous_participants": 0, "slider0": 50, "slider1": 60, "slider2": 70, "slider3": 80, "slider4": 90}
   ],
   "randomize_questions": true,
