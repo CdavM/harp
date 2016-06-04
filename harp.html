@@ -22,15 +22,6 @@
         {{/if}}
                 {{#if initialized}}
 
-                    <div>
-                        {{#if show_timer}}
-                            {{#if waiting}}
-                            {{else}}
-                                <p class="center"> Time remaining: {{time_remaining}} seconds</p>
-                            {{/if}}
-                        {{/if}}
-                    </div>
-
                     <div id="exp_start" class="well">
                         {{#if waiting}}
                             <div class="center"> Loading... </div>
@@ -62,14 +53,7 @@
         {{>question0text}}
                         {{#if initialized}}
 
-                    <div>
-                        {{#if show_timer}}
-                            {{#if waiting}}
-                            {{else}}
-                                <p class="center"> Time remaining: {{time_remaining}} seconds</p>
-                            {{/if}}
-                        {{/if}}
-                    </div>
+
 
                     <div id="exp_start" class="well">
                         {{#if waiting}}
@@ -109,10 +93,19 @@
             </div>
         </div>
 
+        <div>
+            {{#if show_timer}}
+                {{#if waiting}}
+                {{else}}
+                    <p class="center"> Time remaining: {{time_remaining}} seconds</p>
+                {{/if}}
+            {{/if}}
+        </div>
+
         <br>
         <p id="slider0label" style="float:left">National Defense</p>
         <div style="clear: both;">
-            <p id="slider0comp" style="float: left; width: 7%;"></p>
+            <p id="slider0comp" style="float: left; width: 7%; color: green;">+0.00%</p>
             <div id="slider0" style="height: 20px; width: 83%; float: left; background: rgb(51, 122, 183)"></div>
             <form name="slider0_text">
                 <textarea id="slider0" style="height:30px;width:7%;min-width: 80px; float:right">{{slider0_value}}</textarea> <br>
@@ -123,7 +116,7 @@
 
         <p id="slider1label" style="float:left">Medicare &amp; Health</p>
         <div style="clear: both;">
-            <p id="slider1comp" style="float: left; width: 7%;"></p>
+            <p id="slider1comp" style="float: left; width: 7%; color: green;"></p>
             <div id="slider1" style="height: 20px; width: 83%; float: left; background: rgb(92, 184, 92);"></div>
             <form name="slider1_text">
                 <textarea id="slider1" style="height:30px;width:7%;min-width: 80px; float:right">{{slider1_value}}</textarea> <br>
@@ -133,7 +126,7 @@
         <br style="clear: both;">
         <p id="slider2label" style="float:left">Transportation &amp; Science</p>
         <div style="clear: both">
-            <p id="slider2comp" style="float: left; width: 7%;"></p>
+            <p id="slider2comp" style="float: left; width: 7%; color: green;"></p>
             <div id="slider2" style="height: 20px; width: 83%; float: left; background: rgb(240, 173, 78);"></div>
             <form name="slider2_text">
                 <textarea id="slider2" style="height:30px;width:7%;min-width: 80px;float:right">{{slider2_value}}</textarea> <br>
@@ -143,7 +136,7 @@
         <br style="clear: both;">
         <p id="slider3label" style="float:left">Individual Income Tax</p>
         <div style="clear: both">
-            <p id="slider3comp" style="float: left; width: 7%;"></p>
+            <p id="slider3comp" style="float: left; width: 7%; color: green;"></p>
             <div id="slider3" style="height: 20px; width: 83%; float: left; background: rgb(217, 83, 79);"></div>
             <form name="slider3_text">
                 <textarea id="slider3" style="height:30px;width:7%;min-width: 80px;float:right">{{slider3_value}}</textarea> <br>
@@ -151,20 +144,22 @@
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
         </div>
         <br style="clear: both">
-        <p id="slider4label" style="float:left">Deficit</p>
         <div style="clear: both">
-            <p id="slider4comp" style="float: left; width: 7%;"></p>
-            <div id="slider4" style="height: 20px; width: 83%; float: left; background: rgb(91, 192, 222);"></div>
-            <form name="slider4_text">
-                <textarea id="slider4" style="height:30px;width:7%;min-width: 80px;float:right">{{slider4_value}}</textarea> <br>
-            </form>
-            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider4min" style="display: inline; float: left;">min</p> <p id="slider4cur" style="display: inline;"> curr</p> <p id="slider4max" style="display: inline;float: right;">max</p> </div>
+            <p id="mech0_deficit">Based on your choices, the deficit will be X. This is a Y percent change from 2016 estimates.</p>
         </div>
     </h3>
 </template>
 
 <template name="mechanism1">
     <h3>
+        <div>
+            {{#if show_timer}}
+                {{#if waiting}}
+                {{else}}
+                    <p class="center"> Time remaining: {{time_remaining}} seconds</p>
+                {{/if}}
+            {{/if}}
+        </div>
         <div>
             <form>
                 <label style="width: 33%; clear: both; float: left;" class="well">
@@ -221,7 +216,14 @@
                 <div id="slider4bar" class="progress-bar progress-bar-info" style="width: 0%"></div>
             </div>
         </div>
-
+        <div>
+            {{#if show_timer}}
+                {{#if waiting}}
+                {{else}}
+                    <p class="center"> Time remaining: {{time_remaining}} seconds</p>
+                {{/if}}
+            {{/if}}
+        </div>
         <br>
         <p id="slider0label" style="float:left">National Defense</p>
         <div style="clear: both;">
@@ -348,6 +350,8 @@
                 <label class="label label-default">Neutral<input type="radio" name="radio" value = "neutral" /></label>
                 <label class="label label-success">Somewhat liberal<input type="radio" name="radio" value = "somewhat liberal" /></label>
                 <label class="label label-primary">Very liberal<input type="radio" name="radio" value = "very liberal" /></label>
+                <br>
+                <label class="label label-warning">Prefer not to answer<input type="radio" name="radio" value = "prefer not to answer" /></label>
             </form>
         </h3>
         <br>

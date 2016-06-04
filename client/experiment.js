@@ -98,7 +98,7 @@ Template.answer1.onRendered(function () {
             update_slider_flag = false;
         var radius_sum = 0;
         var slider_idx_counter = 0;
-        while (slider_idx_counter < 5){
+        while (slider_idx_counter < 4){
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             if (isNaN(curr_slider_value)){
@@ -140,7 +140,7 @@ Template.answer1.onRendered(function () {
         var slider_idx_counter = 0;
         var curr_slider_total_width = 0;
         var slider_laplace_smoothing = true;
-        while (slider_idx_counter < 5){
+        while (slider_idx_counter < 4){
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
@@ -160,7 +160,13 @@ Template.answer1.onRendered(function () {
             // set value
             $("#"+ev.target.id+"comp").text("+"+Number(percent_difference).toFixed(2)+"%");
         }
-
+        var total_money_spent = 0;
+        slider_idx_counter = 0;
+        while (slider_idx_counter < 4){
+            total_money_spent += Session.get("slider"+slider_idx_counter);
+            slider_idx_counter++;
+        }
+        update_deficit();
     };
     var update_weight_slider1 = function(ev, val, update_slider_flag){
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
@@ -181,7 +187,7 @@ Template.answer1.onRendered(function () {
     var compute_averages = function(slider_ID, value){
         var percentage_difference = 0;
         if (slider_ID == 0){
-            percentage_difference = value / 1;
+            percentage_difference = value / 1; //TODO update with real values
         } else if (slider_ID == 1){
             percentage_difference = value / 2;
         } else if (slider_ID == 2){
@@ -189,11 +195,43 @@ Template.answer1.onRendered(function () {
         } else if (slider_ID == 3){
             percentage_difference = value / 4;
             percentage_difference = percentage_difference * -1;
-        } else if (slider_ID == 4){
-            percentage_difference = value / 5;
-            percentage_difference = percentage_difference * -1;
         }
         return percentage_difference;
+    };
+    var update_deficit = function(){
+        var total_money_spent = 0;
+        slider_idx_counter = 0;
+        while (slider_idx_counter < 4){
+            total_money_spent += Session.get("slider"+slider_idx_counter);
+            slider_idx_counter++;
+        }
+        var deficit_value = 1000 - total_money_spent; //TODO: update with real numbers
+        var deficit_value_percentage = deficit_value / 2000; //TODO: update with real numbers
+        if (deficit_value_percentage >= 0){
+            deficit_value_percentage = "+"+deficit_value_percentage.toFixed(2).toString();
+        } else {
+            deficit_value_percentage = deficit_value_percentage.toFixed(2).toString();
+        }
+        $("#mech0_deficit").text("Based on your choices, the deficit will be $"+ deficit_value +"B. This is a "+deficit_value_percentage+" percent change from 2016 estimates.");
+    };
+    var update_comps = function(){
+        var slider_idx = 0;
+        var percentage_difference = 0;
+        while (slider_idx < 4){
+            percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx));
+            if (percentage_difference < 0){
+                //red background
+                $("#"+"slider"+slider_idx+"comp").css('color','red');
+                // set value
+                $("#"+"slider"+slider_idx+"comp").text(Number(percentage_difference).toFixed(2)+"%");
+            } else {
+                //green background
+                $("#"+"slider"+slider_idx+"comp").css('color','green');
+                // set value
+                $("#"+"slider"+slider_idx+"comp").text("+"+Number(percentage_difference).toFixed(2)+"%");
+            }
+            slider_idx ++;
+        }
     };
     update_slider = _.throttle(update_slider1, 100);
     update_weight_slider = _.throttle(update_weight_slider1, 100);
@@ -320,36 +358,12 @@ Template.answer1.onRendered(function () {
             } catch (TypeError){
             }
         });
-        var slider4_current = 0;
-        if (current_question.slider4) {
-            slider4_current = current_question.slider4;
-        }
-        var slider4_min = slider4_current - Math.sqrt(radius)*1.25;
-        var slider4_max = slider4_current + Math.sqrt(radius)*1.25;
-        Session.set('slider4', slider4_current);
-        $("#slider4min").text(slider4_min.toFixed(2));
-        $("#slider4cur").text(slider4_current.toFixed(2));
-        $("#slider4max").text(slider4_max.toFixed(2));
-        slider4 = this.$("div#slider4").noUiSlider({
-            start: slider4_current,
-            connect: "lower",
-            range: {
-                'min': slider4_min,
-                'max': slider4_max
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_slider(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_slider(ev, val);
-            } catch (TypeError){
-            }
-        });
+        //update comps
+        update_comps();
+        //update the deficit text
+        update_deficit();
+
+
     } else if (curr_experiment.current_question == 1){
         //mechanism 1 specific js
         //initialize all 15 sliders in one loop!
@@ -379,7 +393,7 @@ Template.answer1.onRendered(function () {
                 });
                 //display min, cur and max values
                 $("#slider"+slider_idx+well_idx+"min").text((current_question["slider"+slider_idx]- Math.sqrt(radius)*1.25).toFixed(2));
-                //$("#slider"+slider_idx+well_idx+"cur").text((current_question["slider"+slider_idx]- Math.sqrt(radius)*1.25).toFixed(2));
+                $("#slider"+slider_idx+well_idx+"cur").text((current_question["slider"+slider_idx]).toFixed(2));
                 $("#slider"+slider_idx+well_idx+"max").text((current_question["slider"+slider_idx]+ Math.sqrt(radius)*1.25).toFixed(2));
                 well_idx ++;
             }

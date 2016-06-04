@@ -49,9 +49,10 @@ Template.registerHelper('slider3w_value', function () {
 Template.registerHelper('slider4w_value', function () {
     return Session.get('slider4weight');
 });
-Template.registerHelper('slider_names', function(slider_name_arg, color_arg) {
+Template.registerHelper('slider_names', function(slider_name_arg, color_arg, slider_title_arg) {
     slider_object = Object();
     slider_object.slider_id = slider_name_arg;
+    slider_object.slider_title = slider_title_arg;
     slider_object.slider_text = slider_name_arg+"_text";
     switch (color_arg){
         case "blue":
