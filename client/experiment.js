@@ -523,42 +523,11 @@ Template.answer1.onRendered(function () {
             } catch (TypeError){
             }
         });
-        var slider4_current = 0;
-        if (current_question.slider4) {
-            slider4_current = current_question.slider4;
-        }
-        var slider4_min = slider4_current - Math.sqrt(radius)*1.25;
-        var slider4_max = slider4_current + Math.sqrt(radius)*1.25;
-        Session.set('slider4', slider4_current);
-        $("#slider4min").text(slider4_min.toFixed(2));
-        $("#slider4cur").text(slider4_current.toFixed(2));
-        $("#slider4max").text(slider4_max.toFixed(2));
-        slider4 = this.$("div#slider4").noUiSlider({
-            start: slider4_current,
-            connect: "lower",
-            range: {
-                'min': slider4_min,
-                'max': slider4_max
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_slider(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_slider(ev, val);
-            } catch (TypeError){
-            }
-        });
         //WEIGHT SLIDERS
         Session.set('slider0weight', 5);
         Session.set('slider1weight', 5);
         Session.set('slider2weight', 5);
         Session.set('slider3weight', 5);
-        Session.set('slider4weight', 5);
         $("p#sliderwmin").text(0);
         $("p#sliderwcur").text(5);
         $("p#sliderwmax").text(10);
@@ -643,27 +612,6 @@ Template.answer1.onRendered(function () {
             } catch (TypeError){
             }
         });
-        slider4w = this.$("div#slider4weight").noUiSlider({
-            start: 5,
-            connect: "lower",
-            range: {
-                'min': 0,
-                'max': 10
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_weight_slider(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_weight_slider(ev, val);
-            } catch (TypeError){
-            }
-        });
-
     }
 
 });
