@@ -168,6 +168,41 @@ Template.answer1.onRendered(function () {
         }
         update_deficit();
     };
+    update_slider_mech21 = function (ev, val, update_slider_flag) {
+        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+        if (!update_slider_flag)
+            var update_slider_flag = false;
+        if (isNaN(val)){
+            eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
+            return;
+        }
+        ev.target.value = Number(val).toFixed(2); // updates the textbox
+        Session.set(ev.target.id, Number(val));
+        if (update_slider_flag){
+            eval(ev.target.id).val(Number(val).toFixed(2));
+            $("div").mouseup(); //release the mouse
+        }
+        var percent_difference = compute_averages(Number(ev.target.id.substr(ev.target.id.length-1)), val);
+        if (percent_difference < 0){
+            //red background
+            $("#"+ev.target.id+"comp").css('color','red');
+            // set value
+            $("#"+ev.target.id+"comp").text(Number(percent_difference).toFixed(2)+"%");
+        } else {
+            //green background
+            $("#"+ev.target.id+"comp").css('color','green');
+            // set value
+            $("#"+ev.target.id+"comp").text("+"+Number(percent_difference).toFixed(2)+"%");
+        }
+        var total_money_spent = 0;
+        slider_idx_counter = 0;
+        while (slider_idx_counter < 4){
+            total_money_spent += Session.get("slider"+slider_idx_counter);
+            slider_idx_counter++;
+        }
+        update_deficit();
+    };
     var update_weight_slider1 = function(ev, val, update_slider_flag){
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
         var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
@@ -235,6 +270,7 @@ Template.answer1.onRendered(function () {
     };
     update_slider = _.throttle(update_slider1, 100);
     update_weight_slider = _.throttle(update_weight_slider1, 100);
+    update_slider_mech2 = _.throttle(update_slider_mech21, 100);
 
     if (curr_experiment.current_question == 0) {
         var slider0_current = 0;
@@ -423,13 +459,13 @@ Template.answer1.onRendered(function () {
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
             try {
-                update_slider(ev, val);
+                update_slider_mech2(ev, val);
             } catch (TypeError){
             }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
             try {
-                update_slider(ev, val);
+                update_slider_mech2(ev, val);
             } catch (TypeError){
             }
         });
@@ -453,13 +489,13 @@ Template.answer1.onRendered(function () {
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
             try {
-                update_slider(ev, val);
+                update_slider_mech2(ev, val);
             } catch (TypeError){
             }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
             try {
-                update_slider(ev, val);
+                update_slider_mech2(ev, val);
             } catch (TypeError){
             }
         });
@@ -483,13 +519,13 @@ Template.answer1.onRendered(function () {
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
             try {
-                update_slider(ev, val);
+                update_slider_mech2(ev, val);
             } catch (TypeError){
             }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
             try {
-                update_slider(ev, val);
+                update_slider_mech2(ev, val);
             } catch (TypeError){
             }
         });
@@ -513,13 +549,13 @@ Template.answer1.onRendered(function () {
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
             try {
-                update_slider(ev, val);
+                update_slider_mech2(ev, val);
             } catch (TypeError){
             }
         }).on('change', function (ev, val) {
             // round off values on 'change' event
             try {
-                update_slider(ev, val);
+                update_slider_mech2(ev, val);
             } catch (TypeError){
             }
         });
@@ -612,14 +648,21 @@ Template.answer1.onRendered(function () {
             } catch (TypeError){
             }
         });
+        //update comps
+        update_comps();
+        //update the deficit text
+        update_deficit();
     }
 
 });
-Template.answer1.events({
-   'change textarea': function(event){
-       update_slider(event, event.target.value, true);
-
-       //Session.set(event.target.id, (Number(event.target.value).toFixed(2)));
+Template.mechanism0.events({
+    'change textarea': function(event){
+        update_slider(event, event.target.value, true);
+    }
+});
+Template.mechanism2.events({
+    'change textarea': function(event){
+        update_slider_mech2(event, event.target.value, true);
     }
 });
 
