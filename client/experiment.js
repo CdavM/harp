@@ -168,6 +168,13 @@ Template.answer1.onRendered(function () {
         }
         update_deficit();
     };
+    update_slider_mech11 = function(ev, val){
+        //there is no session id, dummy.
+        eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
+        $("div").mouseup(); //release the mouse
+    };
+
+
     update_slider_mech21 = function (ev, val, update_slider_flag) {
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
         var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
@@ -271,6 +278,7 @@ Template.answer1.onRendered(function () {
     update_slider = _.throttle(update_slider1, 100);
     update_weight_slider = _.throttle(update_weight_slider1, 100);
     update_slider_mech2 = _.throttle(update_slider_mech21, 100);
+    update_slider_mech1 = _.throttle(update_slider_mech11, 100);
 
     if (curr_experiment.current_question == 0) {
         var slider0_current = 0;
@@ -417,16 +425,17 @@ Template.answer1.onRendered(function () {
                 }).on('slide', function (ev, val) {
                     // set real values on 'slide' event
                     try {
-                        abort();
+                        update_slider_mech1(ev, val);
                     } catch (TypeError){
                     }
                 }).on('change', function (ev, val) {
                     // round off values on 'change' event
                     try {
-                        abort();
+                        update_slider_mech1(ev, val);
                     } catch (TypeError){
                     }
                 });
+                Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx]);
                 //display min, cur and max values
                 $("#slider"+slider_idx+well_idx+"min").text((current_question["slider"+slider_idx]- Math.sqrt(radius)*1.25).toFixed(2));
                 $("#slider"+slider_idx+well_idx+"cur").text((current_question["slider"+slider_idx]).toFixed(2));
