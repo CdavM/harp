@@ -82,6 +82,7 @@
 <template name="mechanism0">
     {{> question0text}}
     <h3>
+        <p class="center"> Current Power Allocation</p>
         <div>
             <div style="float:right;"><p id = "creditsleft"> Credits left: XXX </p></div>
             <div id="budgetbar" class="progress">
@@ -103,7 +104,11 @@
         </div>
 
         <br>
-        <p id="slider0label" style="float:left">National Defense</p>
+        <p style="clear: both;float: left;"> Change from </p> <br>
+        <p style="clear: both;float: left;"> 2016 estimate</p>
+        <p style="float: right;">Chosen value</p>
+        <hr style="clear: both">
+        <p id="slider0label" class="mech0sliderlabel">National Defense</p>
         <div style="clear: both;">
             <p id="slider0comp" style="float: left; width: 7%; color: green;">+0.00%</p>
             <div id="slider0" style="height: 20px; width: 83%; float: left; background: rgb(51, 122, 183)"></div>
@@ -114,7 +119,7 @@
         </div>
         <br style="clear: both;">
 
-        <p id="slider1label" style="float:left">Medicare &amp; Health</p>
+        <p id="slider1label" class="mech0sliderlabel">Medicare &amp; Health</p>
         <div style="clear: both;">
             <p id="slider1comp" style="float: left; width: 7%; color: green;"></p>
             <div id="slider1" style="height: 20px; width: 83%; float: left; background: rgb(92, 184, 92);"></div>
@@ -124,7 +129,7 @@
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider1min" style="display: inline; float: left;">min</p> <p id="slider1cur" style="display: inline;"> curr</p> <p id="slider1max" style="display: inline;float: right;">max</p> </div>
         </div>
         <br style="clear: both;">
-        <p id="slider2label" style="float:left">Transportation &amp; Science</p>
+        <p id="slider2label" class="mech0sliderlabel">Transportation &amp; Science</p>
         <div style="clear: both">
             <p id="slider2comp" style="float: left; width: 7%; color: green;"></p>
             <div id="slider2" style="height: 20px; width: 83%; float: left; background: rgb(240, 173, 78);"></div>
@@ -134,7 +139,7 @@
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider2min" style="display: inline; float: left;">min</p> <p id="slider2cur" style="display: inline;"> curr</p> <p id="slider2max" style="display: inline;float: right;">max</p> </div>
         </div>
         <br style="clear: both;">
-        <p id="slider3label" style="float:left">Individual Income Tax</p>
+        <p id="slider3label" class="mech0sliderlabel">Individual Income Tax</p>
         <div style="clear: both">
             <p id="slider3comp" style="float: left; width: 7%; color: green;"></p>
             <div id="slider3" style="height: 20px; width: 83%; float: left; background: rgb(217, 83, 79);"></div>
@@ -207,16 +212,6 @@
     {{> question2text}}
     <h3>
         <div>
-            <div style="float:right;"><p id = "creditsleft"> Credits left: XXX </p></div>
-            <div id="budgetbar" class="progress">
-                <div id="slider0bar" class="progress-bar progress-bar-primary" style="width: 0%"></div>
-                <div id="slider1bar" class="progress-bar progress-bar-success" style="width: 0%"></div>
-                <div id="slider2bar" class="progress-bar progress-bar-warning" style="width: 0%"></div>
-                <div id="slider3bar" class="progress-bar progress-bar-danger" style="width: 0%"></div>
-                <div id="slider4bar" class="progress-bar progress-bar-info" style="width: 0%"></div>
-            </div>
-        </div>
-        <div>
             {{#if show_timer}}
                 {{#if waiting}}
                 {{else}}
@@ -268,7 +263,9 @@
             </form>
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
         </div>
-
+        <div style="clear: both">
+            <p id="mech0_deficit">Based on your choices, the deficit will be X. This is a Y percent change from 2016 estimates.</p>
+        </div>
         <br style="clear: both; margin-bottom: 150px;">
 
         <p>How much do you care (from 0 to 10) about each of the following?</p>

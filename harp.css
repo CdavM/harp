@@ -16,6 +16,10 @@ body {
   */
     /*font-size: 14px;*/
 }
+.mech0sliderlabel {
+    float:left;
+    margin-left: 7%;
+}
 /* disable copy paste*/
 .noselect {
     /*
