@@ -437,6 +437,8 @@ Template.answer1.onRendered(function () {
                 });
                 $("#slider"+slider_idx+well_idx).val(current_question["slider"+slider_idx+well_idx]);
                 Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx+well_idx]);
+                //display set value
+                $("#slider"+slider_idx+well_idx+"_text").text("Amount chosen: " + current_question["slider"+slider_idx+well_idx].toFixed(3));
                 //display min, cur and max values
                 $("#slider"+slider_idx+well_idx+"min").text((current_question["slider"+slider_idx+"1"]- Math.sqrt(radius)*1.25).toFixed(2));
                 $("#slider"+slider_idx+well_idx+"cur").text((current_question["slider"+slider_idx+"1"]).toFixed(2));
