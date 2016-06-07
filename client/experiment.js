@@ -413,14 +413,14 @@ Template.answer1.onRendered(function () {
         //initialize all 15 sliders in one loop!
         var slider_idx = 0;
         var well_idx = 0;
-        while(slider_idx<5){
+        while(slider_idx<4){
             while(well_idx<3){
                 window["slider"+slider_idx+well_idx] = this.$("div#slider"+slider_idx+well_idx).noUiSlider({
-                    start: current_question["slider"+slider_idx],
+                    start: current_question["slider"+slider_idx+"1"],
                     connect: "lower",
                     range: {
-                        'min': current_question["slider"+slider_idx]- Math.sqrt(radius)*1.25,
-                        'max': current_question["slider"+slider_idx]+ Math.sqrt(radius)*1.25
+                        'min': current_question["slider"+slider_idx+"1"] - Math.sqrt(radius)*1.25,
+                        'max': current_question["slider"+slider_idx+"1"] + Math.sqrt(radius)*1.25
                     }
                 }).on('slide', function (ev, val) {
                     // set real values on 'slide' event
@@ -435,11 +435,12 @@ Template.answer1.onRendered(function () {
                     } catch (TypeError){
                     }
                 });
-                Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx]);
+                $("#slider"+slider_idx+well_idx).val(current_question["slider"+slider_idx+well_idx]);
+                Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx+well_idx]);
                 //display min, cur and max values
-                $("#slider"+slider_idx+well_idx+"min").text((current_question["slider"+slider_idx]- Math.sqrt(radius)*1.25).toFixed(2));
-                $("#slider"+slider_idx+well_idx+"cur").text((current_question["slider"+slider_idx]).toFixed(2));
-                $("#slider"+slider_idx+well_idx+"max").text((current_question["slider"+slider_idx]+ Math.sqrt(radius)*1.25).toFixed(2));
+                $("#slider"+slider_idx+well_idx+"min").text((current_question["slider"+slider_idx+"1"]- Math.sqrt(radius)*1.25).toFixed(2));
+                $("#slider"+slider_idx+well_idx+"cur").text((current_question["slider"+slider_idx+"1"]).toFixed(2));
+                $("#slider"+slider_idx+well_idx+"max").text((current_question["slider"+slider_idx+"1"]+ Math.sqrt(radius)*1.25).toFixed(2));
                 well_idx ++;
             }
             slider_idx++;

@@ -190,7 +190,6 @@ Meteor.methods({
                         if (!num_of_dimensions) {
                             num_of_dimensions = 4; // default choice is 4
                         }
-
                         do {
                             var dimension_counter = 0;
                             var length_of_vector = 0;
@@ -202,23 +201,33 @@ Meteor.methods({
                                 dimension_counter++;
                             }
                         } while (length_of_vector > 1);
+                        length_of_vector = Math.sqrt(length_of_vector);
                         //scale the vector to unit norm
                         dimension_counter = 0;
                         while (dimension_counter < num_of_dimensions){
-                            vector[dimension_counter] = vector[dimension_counter]/length_of_vector;
+                            vector[dimension_counter] = parseInt((vector[dimension_counter]/length_of_vector)*1000)/1000;
                             dimension_counter++;
                         }
                         return vector;
                     };
                     //generate two vectors on unit ball
-                    var sampled_vector_1 = generate_point_on_surface_ball(4);
-                    var sampled_vector_3 = generate_point_on_surface_ball(4);
-                    //debug
-                    console.log("sampled vector 1 is "+sampled_vector_1);
-                    console.log("sampled vector 3 is "+sampled_vector_3);
+                    var sampled_vector_0 = generate_point_on_surface_ball(4);
+                    var sampled_vector_2 = generate_point_on_surface_ball(4);
 
+                    var current_question = Questions.findOne({"question_ID": next_question});
+
+                    var vector_object = {};
+                    for (var slider_idx =0; slider_idx < 4; slider_idx++){
+                        vector_object["slider"+slider_idx+"1"] = current_question["slider"+slider_idx+"1"];
+                    }
+                    for (slider_idx=0; slider_idx < 4; slider_idx++){
+                        vector_object["slider"+slider_idx+"0"] = vector_object["slider"+slider_idx+"1"] +
+                            sampled_vector_0[slider_idx]*radius_val;
+                        vector_object["slider"+slider_idx+"2"] = vector_object["slider"+slider_idx+"1"] +
+                            sampled_vector_2[slider_idx]*radius_val;
+                    }
                     //assign
-
+                    Questions.update({"question_ID": next_question}, {$set:vector_object}, {upsert:true});
                 }
                 if (next_question == 2){
                     radius_val = 100000; //TODO update mech 2 limits
