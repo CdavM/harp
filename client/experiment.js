@@ -257,9 +257,8 @@ Template.answer1.onRendered(function () {
         $("#mech0_deficit").text("Based on your choices, the deficit will be $"+ deficit_value +"B. This is a "+deficit_value_percentage+" percent change from 2016 estimates.");
     };
     var update_comps = function(){
-        var slider_idx = 0;
         var percentage_difference = 0;
-        while (slider_idx < 4){
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx));
             if (percentage_difference < 0){
                 //red background
@@ -272,7 +271,6 @@ Template.answer1.onRendered(function () {
                 // set value
                 $("#"+"slider"+slider_idx+"comp").text("+"+Number(percentage_difference).toFixed(2)+"%");
             }
-            slider_idx ++;
         }
     };
     update_slider = _.throttle(update_slider1, 100);
@@ -439,6 +437,21 @@ Template.answer1.onRendered(function () {
                 Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx+well_idx]);
                 //display set value
                 $("#slider"+slider_idx+well_idx+"_text").text("Amount chosen: " + current_question["slider"+slider_idx+well_idx].toFixed(3));
+                //display comparison to 2016 estimates
+                var percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx+well_idx));
+                /*if (percentage_difference < 0){
+                    //red background
+                    $("#slider"+slider_idx+well_idx+"comp").css('color','red');
+                    // set value
+                    $("#slider"+slider_idx+well_idx+"comp").text(Number(percentage_difference).toFixed(2)+"%");
+                } else {
+                    //green background
+                    $("#slider"+slider_idx+well_idx+"comp").css('color','green');
+                    // set value
+                    $("#slider"+slider_idx+well_idx+"comp").text("+"+Number(percentage_difference).toFixed(2)+"%");
+                }
+                */
+                //$("#slider"+slider_idx+well_idx+"comp").text("+30.5%");
                 //display min, cur and max values
                 $("#slider"+slider_idx+well_idx+"min").text((current_question["slider"+slider_idx+"1"]- Math.sqrt(radius)*1.25).toFixed(2));
                 $("#slider"+slider_idx+well_idx+"cur").text((current_question["slider"+slider_idx+"1"]).toFixed(2));
