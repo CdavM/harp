@@ -168,6 +168,9 @@
         <div>
             <form>
                 <label style="width: 33%; clear: both; float: left;" class="well">
+                    <p style="clear: both;float: left;"> Change from </p> <br>
+                    <p style="clear: both;float: left;"> 2016 estimate</p>
+                    <hr style="clear: both">
                     {{>slider_template_mech1 (slider_names "slider00" "blue")}}
                     {{>slider_template_mech1 (slider_names "slider10" "green")}}
                     {{>slider_template_mech1 (slider_names "slider20" "orange")}}
@@ -176,6 +179,15 @@
                     Option 1 <input type="radio" name="radio" value = "option1" />
                 </label>
                 <label style="width: 33%; float: left;" class="well">
+                    <h4>
+                        <div class="alert alert-warning alert-dismissible" role="alert" style="width: 35%;">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <div style="float: left;">Change from</div>
+                            <br>
+                            <div style="float: left;"> 2016 estimate</div>
+                            <br>
+                        </div>
+                    </h4>
                     {{>slider_template_mech1 (slider_names "slider01" "blue")}}
                     {{>slider_template_mech1 (slider_names "slider11" "green")}}
                     {{>slider_template_mech1 (slider_names "slider21" "orange")}}
