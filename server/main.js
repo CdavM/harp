@@ -186,6 +186,7 @@ Meteor.methods({
                 if (next_question == 1){
                     //vector generating function
                     var generate_point_on_surface_ball = function(num_of_dimensions){
+                        //ball always has unit radius!
                         if (!num_of_dimensions) {
                             num_of_dimensions = 4; // default choice is 4
                         }
