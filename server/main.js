@@ -149,13 +149,13 @@ Meteor.methods({
                     next_question = Math.floor(Math.random() * (num_of_questions));
                 } while ((counters[experiment_id_value]['random_counter'].indexOf(next_question) != -1
                 && counters[experiment_id_value]['random_counter'].length < selection_size)
-                    || Questions.findOne({"question_ID": next_question}).busy == true)
+                    || Questions.findOne({"question_ID": next_question}).busy == true);
                 console.log("selected question " + next_question);
             } else {
                 next_question = curr_experiment.current_question;
                 do {
                     next_question ++;
-                } while (Questions.findOne({"question_ID": next_question}).busy == true)
+                } while (Questions.findOne({"question_ID": next_question}).busy == true);
             }
             if (curr_experiment.current_question != null){
                 //remove the busy flag.
@@ -181,8 +181,44 @@ Meteor.methods({
                 }
                 var radius_fn = function (previous_participants) {
                     return 1/(previous_participants+1); //TODO update radius function
-                }
+                };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
+                if (next_question == 1){
+                    //vector generating function
+                    var generate_point_on_surface_ball = function(num_of_dimensions){
+                        if (!num_of_dimensions) {
+                            num_of_dimensions = 4; // default choice is 4
+                        }
+
+                        do {
+                            var dimension_counter = 0;
+                            var length_of_vector = 0;
+                            var vector = [];
+                            while (dimension_counter < num_of_dimensions){
+                                //generate point by point
+                                vector[dimension_counter] = 2*Math.random() - 1;
+                                length_of_vector += Math.pow(vector[dimension_counter],2);
+                                dimension_counter++;
+                            }
+                        } while (length_of_vector > 1);
+                        //scale the vector to unit norm
+                        dimension_counter = 0;
+                        while (dimension_counter < num_of_dimensions){
+                            vector[dimension_counter] = vector[dimension_counter]/length_of_vector;
+                            dimension_counter++;
+                        }
+                        return vector;
+                    };
+                    //generate two vectors on unit ball
+                    var sampled_vector_1 = generate_point_on_surface_ball(4);
+                    var sampled_vector_3 = generate_point_on_surface_ball(4);
+                    //debug
+                    console.log("sampled vector 1 is "+sampled_vector_1);
+                    console.log("sampled vector 3 is "+sampled_vector_3);
+
+                    //assign
+
+                }
                 if (next_question == 2){
                     radius_val = 100000; //TODO update mech 2 limits
                 }
@@ -190,7 +226,7 @@ Meteor.methods({
                 console.log("question for experiment " + experiment_id_value + " changed to " + next_question);
             }
 
-        }
+        };
 
         decrease_time = function(experiment_id_value) {
             var curr_experiment = Answers.findOne({experiment_id: experiment_id_value});
@@ -201,7 +237,7 @@ Meteor.methods({
             } else {
                 Answers.update({experiment_id: experiment_id_value}, {$set: {timer: curr_time-1}}, {upsert: true, multi: true});
             }
-        }
+        };
         //always clear existing timers
         if (timers[experiment_id_value]){
             Meteor.clearInterval(timers[experiment_id_value]);
@@ -220,7 +256,7 @@ Meteor.methods({
         } else {
             //updates the question
 
-            //award the payment skupinsko
+            //award the payment to a group
 
             var current_question = curr_experiment.current_question;
             // if realtime computation
