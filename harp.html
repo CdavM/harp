@@ -80,7 +80,6 @@
 </template>
 
 <template name="mechanism0">
-    {{> question0text}}
     <h3>
         <p class="center"> Current Power Allocation</p>
         <div>
@@ -218,7 +217,6 @@
 </template>
 
 <template name="mechanism2">
-    {{> question2text}}
     <h3>
         <div>
             {{#if show_timer}}
@@ -325,7 +323,8 @@
 
 <template name="answer1">
     <div class="center">
-       {{>Template.dynamic template=current_mechanism}}
+        {{>Template.dynamic template=current_question_text}}
+        {{>Template.dynamic template=current_mechanism}}
         <h4>
             <br style="clear: both;">
             Please explain your answers:
