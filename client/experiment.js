@@ -227,17 +227,17 @@ Template.answer1.onRendered(function () {
         }
     };
     var compute_averages = function(slider_ID, value){
-        var percentage_difference = 0;
+        var ratio = 0;
         if (slider_ID == 0){
-            percentage_difference = value / 1; //TODO update with real values
+            ratio = value / 541; //TODO update with real values
         } else if (slider_ID == 1){
-            percentage_difference = value / 2;
+            ratio = value / 1004;
         } else if (slider_ID == 2){
-            percentage_difference = value / 3;
+            ratio = value / 149;
         } else if (slider_ID == 3){
-            percentage_difference = value / 4;
-            percentage_difference = percentage_difference * -1;
+            ratio = value / 1460;
         }
+        percentage_difference = 100 * (ratio - 1);
         return percentage_difference;
     };
     var update_deficit = function(){
