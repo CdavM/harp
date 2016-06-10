@@ -263,10 +263,10 @@ Template.answer1.onRendered(function () {
         }
         if (deficit_value_percentage >= 0){
             deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
-            $("#deficit_percentage"+well_idx).css('color','green');
+            $("#deficit_percentage"+well_idx).css('color','red');
         } else {
             deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
-            $("#deficit_percentage"+well_idx).css('color','red');
+            $("#deficit_percentage"+well_idx).css('color','green');
         }
         $("#deficit_value"+well_idx).text(deficit_value);
         $("#deficit_percentage"+well_idx).text(deficit_value_percentage);
