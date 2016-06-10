@@ -177,7 +177,7 @@ Meteor.methods({
                 if (next_question < 2){
                     //set the busy flag.
                     console.log("setting busy flag to " + next_question);
-                    Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
+                    //Questions.update({"question_ID": next_question}, {$set: {"busy": true}}); TODO: busy flag temporarily removed
                 }
                 var radius_fn = function (previous_participants) {
                     return 1/(previous_participants+1); //TODO update radius function

@@ -78,6 +78,18 @@ Template.registerHelper('slider_names', function(slider_name_arg, color_arg, sli
 
     return slider_object;
 });
+
+Template.registerHelper('deficit_names', function(well_idx) {
+    if (typeof(well_idx) == "undefined") {
+        well_idx = "";
+    }
+    deficit_object = Object();
+    deficit_object.deficit_text = "deficit_text"+well_idx;
+    deficit_object.deficit_value = "deficit_value"+well_idx;
+    deficit_object.deficit_percentage = "deficit_percentage"+well_idx;
+
+    return deficit_object;
+});
 Template.registerHelper('initialized', function(){
     if(Session.equals('initialized', true)){
         return true;
