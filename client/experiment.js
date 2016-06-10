@@ -240,34 +240,36 @@ Template.answer1.onRendered(function () {
         percentage_difference = 100 * (ratio - 1);
         return percentage_difference;
     };
-    var update_deficit = function(){
+    var update_deficit = function(well_idx){
+        if (typeof(well_idx) == "undefined"){
+            var well_idx = "";
+        }
         var total_money_spent = 0;
         slider_idx_counter = 0;
         while (slider_idx_counter < 4){
-            total_money_spent += Session.get("slider"+slider_idx_counter);
+            total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
             slider_idx_counter++;
         }
         var deficit_value = total_money_spent - 2604; //TODO: update with real numbers
         var deficit_value_percentage = 100 * ((deficit_value / 550) - 1); //TODO: update with real numbers
         deficit_value = parseInt(deficit_value * 100)/100;
         if (deficit_value >= 0){
-            $("#mech0_deficit_text").text("deficit");
-            $("#mech0_deficit_value").css('color','red');
+            $("#deficit_text"+well_idx).text("deficit");
+            $("#deficit_value"+well_idx).css('color','red');
         } else {
             deficit_value = deficit_value.toString().substr(1);
-            $("#mech0_deficit_text").text("surplus");
-            $("#mech0_deficit_value").css('color','green');
+            $("#deficit_text"+well_idx).text("surplus");
+            $("#deficit_value"+well_idx).css('color','green');
         }
         if (deficit_value_percentage >= 0){
             deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
-            $("#mech0_deficit_percentage").css('color','green');
-
+            $("#deficit_percentage"+well_idx).css('color','green');
         } else {
             deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
-            $("#mech0_deficit_percentage").css('color','red');
+            $("#deficit_percentage"+well_idx).css('color','red');
         }
-        $("#mech0_deficit_value").text(deficit_value);
-        $("#mech0_deficit_percentage").text(deficit_value_percentage);
+        $("#deficit_value"+well_idx).text(deficit_value);
+        $("#deficit_percentage"+well_idx).text(deficit_value_percentage);
 
     };
     var update_comps = function(){
@@ -472,6 +474,9 @@ Template.answer1.onRendered(function () {
             }
             slider_idx++;
             well_idx = 0;
+        }
+        for (well_idx = 0; well_idx < 3; well_idx++){
+            update_deficit(well_idx);
         }
     } else if (curr_experiment.current_question == 2){
         //mechanism 2 specific js

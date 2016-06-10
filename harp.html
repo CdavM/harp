@@ -148,10 +148,7 @@
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
         </div>
         <br style="clear: both">
-        <div style="clear: both">
-            <span id="mech0_deficit">Based on your choices, the</span> <span id="mech0_deficit_text">deficit</span><span> will be </span>
-            <span id="mech0_deficit_value" >X</span><span>. This is a </span><span id="mech0_deficit_percentage">Y</span><span> percent change from 2016 estimates.</span>
-        </div>
+        {{> deficit_template (deficit_names)}}
     </h3>
 </template>
 
@@ -175,6 +172,7 @@
                     {{>slider_template_mech1 (slider_names "slider10" "green")}}
                     {{>slider_template_mech1 (slider_names "slider20" "orange")}}
                     {{>slider_template_mech1 (slider_names "slider30" "red")}}
+                    {{> deficit_template (deficit_names "0")}}
                     <br>
                     Option 1 <input type="radio" name="radio" value = "option1" />
                 </label>
@@ -192,6 +190,8 @@
                     {{>slider_template_mech1 (slider_names "slider11" "green")}}
                     {{>slider_template_mech1 (slider_names "slider21" "orange")}}
                     {{>slider_template_mech1 (slider_names "slider31" "red")}}
+                    {{> deficit_template (deficit_names "1")}}
+
                     <br>
                     Option 2 <input type="radio" name="radio" value = "option2" />
                 </label>
@@ -200,12 +200,20 @@
                     {{>slider_template_mech1 (slider_names "slider12" "green")}}
                     {{>slider_template_mech1 (slider_names "slider22" "orange")}}
                     {{>slider_template_mech1 (slider_names "slider32" "red")}}
+                    {{> deficit_template (deficit_names "2")}}
                     <br>
                     Option 3 <input type="radio" name="radio" value = "option3" />
                 </label>
             </form>
         </div>
     </h3>
+</template>
+
+<template name="deficit_template">
+    <div style="clear: both">
+        <span>Based on your choices, the</span> <span id="{{this.deficit_text}}">deficit</span><span> will be </span>
+        <span id="{{this.deficit_value}}" >X</span><span>. This is a </span><span id="{{this.deficit_percentage}}">Y</span><span> percent change from 2016 estimates.</span>
+    </div>
 </template>
 
 <template name="slider_template_mech1">
@@ -271,9 +279,7 @@
             </form>
             <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
         </div>
-        <div style="clear: both">
-            <p id="mech0_deficit">Based on your choices, the deficit will be X. This is a Y percent change from 2016 estimates.</p>
-        </div>
+        {{> deficit_template (deficit_names)}}
         <br style="clear: both; margin-bottom: 150px;">
 
         <p align = "left"> On the following sliders, please indicate how much you care about each budget value being close to the values you proposed on the last page on a scale of 0 to 10. For example, if you care about all the items equally, then you could give a score of 10 each, whereas if you care more about X and not so much about Y, you could give a score of 10 to X and 2 to Y. </p>
