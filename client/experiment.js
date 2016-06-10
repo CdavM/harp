@@ -267,7 +267,7 @@ Template.answer1.onRendered(function () {
             deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
             $("#deficit_percentage"+well_idx).css('color','green');
         }
-        $("#deficit_value"+well_idx).text(deficit_value);
+        $("#deficit_value"+well_idx).text("$"+deficit_value+"B");
         $("#deficit_percentage"+well_idx).text(deficit_value_percentage);
 
     };
@@ -301,9 +301,6 @@ Template.answer1.onRendered(function () {
         var slider0_min = slider0_current - Math.sqrt(radius)*1.25;
         var slider0_max = slider0_current + Math.sqrt(radius)*1.25;
         Session.set('slider0', slider0_current);
-        $("#slider0min").text(slider0_min.toFixed(2));
-        $("#slider0cur").text(slider0_current.toFixed(2));
-        $("#slider0max").text(slider0_max.toFixed(2));
         //noUiSlider.create(slider0, /* { options }
         slider0 = this.$("div#slider0").noUiSlider({
             start: slider0_current,
@@ -331,9 +328,6 @@ Template.answer1.onRendered(function () {
         }
         var slider1_min = slider1_current - Math.sqrt(radius)*1.25;
         var slider1_max = slider1_current + Math.sqrt(radius)*1.25;
-        $("#slider1min").text(slider1_min.toFixed(2));
-        $("#slider1cur").text(slider1_current.toFixed(2));
-        $("#slider1max").text(slider1_max.toFixed(2));
         Session.set('slider1', slider1_current);
         slider1 = this.$("div#slider1").noUiSlider({
             start: slider1_current,
@@ -362,9 +356,6 @@ Template.answer1.onRendered(function () {
         var slider2_min = slider2_current - Math.sqrt(radius)*1.25;
         var slider2_max = slider2_current + Math.sqrt(radius)*1.25;
         Session.set('slider2', slider2_current);
-        $("#slider2min").text(slider2_min.toFixed(2));
-        $("#slider2cur").text(slider2_current.toFixed(2));
-        $("#slider2max").text(slider2_max.toFixed(2));
         slider2 = this.$("div#slider2").noUiSlider({
             start: slider2_current,
             connect: "lower",
@@ -392,9 +383,11 @@ Template.answer1.onRendered(function () {
         var slider3_min = slider3_current - Math.sqrt(radius)*1.25;
         var slider3_max = slider3_current + Math.sqrt(radius)*1.25;
         Session.set('slider3', slider3_current);
-        $("#slider3min").text(slider3_min.toFixed(2));
-        $("#slider3cur").text(slider3_current.toFixed(2));
-        $("#slider3max").text(slider3_max.toFixed(2));
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+            $("#slider"+slider_idx+"min").text("$"+eval("slider"+slider_idx+"_min").toFixed(2)+"B");
+            $("#slider"+slider_idx+"cur").text("$"+eval("slider"+slider_idx+"_current").toFixed(2)+"B");
+            $("#slider"+slider_idx+"max").text("$"+eval("slider"+slider_idx+"_max").toFixed(2)+"B");
+        }
         slider3 = this.$("div#slider3").noUiSlider({
             start: slider3_current,
             connect: "lower",
@@ -451,7 +444,7 @@ Template.answer1.onRendered(function () {
                 $("#slider"+slider_idx+well_idx).val(current_question["slider"+slider_idx+well_idx]);
                 Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx+well_idx]);
                 //display set value
-                $("#slider"+slider_idx+well_idx+"_text").text(current_question["slider"+slider_idx+well_idx].toFixed(3));
+                $("#slider"+slider_idx+well_idx+"_text").text("$"+current_question["slider"+slider_idx+well_idx].toFixed(3)+"B");
                 //display comparison to 2016 estimates
                 var percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx+well_idx));
                 if (percentage_difference < 0){
@@ -466,9 +459,9 @@ Template.answer1.onRendered(function () {
                     $("#slider"+slider_idx+well_idx+"comp").text("+"+Number(percentage_difference).toFixed(2)+"%");
                 }
                 //display min, cur and max values
-                $("#slider"+slider_idx+well_idx+"min").text((current_question["slider"+slider_idx+"1"]- Math.sqrt(radius)*1.25).toFixed(2));
-                $("#slider"+slider_idx+well_idx+"cur").text((current_question["slider"+slider_idx+"1"]).toFixed(2));
-                $("#slider"+slider_idx+well_idx+"max").text((current_question["slider"+slider_idx+"1"]+ Math.sqrt(radius)*1.25).toFixed(2));
+                $("#slider"+slider_idx+well_idx+"min").text("$"+(current_question["slider"+slider_idx+"1"]- Math.sqrt(radius)*1.25).toFixed(2)+"B");
+                $("#slider"+slider_idx+well_idx+"cur").text("$"+(current_question["slider"+slider_idx+"1"]).toFixed(2)+"B");
+                $("#slider"+slider_idx+well_idx+"max").text("$"+(current_question["slider"+slider_idx+"1"]+ Math.sqrt(radius)*1.25).toFixed(2)+"B");
                 well_idx ++;
             }
             slider_idx++;
@@ -483,19 +476,31 @@ Template.answer1.onRendered(function () {
         if (current_question.slider0) {
             slider0_current = current_question.slider0;
         }
-        var slider0_min = slider0_current - Math.sqrt(radius)*1.25;
-        var slider0_max = slider0_current + Math.sqrt(radius)*1.25;
+        var slider1_current = 0;
+        if (current_question.slider1) {
+            slider1_current = current_question.slider1;
+        }
+        var slider2_current = 0;
+        if (current_question.slider2) {
+            slider2_current = current_question.slider2;
+        }
+        var slider3_current = 0;
+        if (current_question.slider3) {
+            slider3_current = current_question.slider3;
+        }
+        var slider_vals = {};
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+            slider_vals["slider" + slider_idx + "_min"] = 0;
+            slider_vals["slider" + slider_idx + "_max"] = 4 * eval("slider" + slider_idx + "_current");
+        }
         Session.set('slider0', slider0_current);
-        $("#slider0min").text(slider0_min.toFixed(2));
-        $("#slider0cur").text(slider0_current.toFixed(2));
-        $("#slider0max").text(slider0_max.toFixed(2));
         //noUiSlider.create(slider0, /* { options }
         slider0 = this.$("div#slider0").noUiSlider({
             start: slider0_current,
             connect: "lower",
             range: {
-                'min': slider0_min,
-                'max': slider0_max
+                'min': slider_vals["slider0_min"],
+                'max': slider_vals["slider0_max"]
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
@@ -510,22 +515,13 @@ Template.answer1.onRendered(function () {
             } catch (TypeError){
             }
         });
-        var slider1_current = 0;
-        if (current_question.slider1) {
-            slider1_current = current_question.slider1;
-        }
-        var slider1_min = slider1_current - Math.sqrt(radius)*1.25;
-        var slider1_max = slider1_current + Math.sqrt(radius)*1.25;
-        $("#slider1min").text(slider1_min.toFixed(2));
-        $("#slider1cur").text(slider1_current.toFixed(2));
-        $("#slider1max").text(slider1_max.toFixed(2));
         Session.set('slider1', slider1_current);
         slider1 = this.$("div#slider1").noUiSlider({
             start: slider1_current,
             connect: "lower",
             range: {
-                'min': slider1_min,
-                'max': slider1_max
+                'min': slider_vals["slider1_min"],
+                'max': slider_vals["slider1_max"]
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
@@ -540,22 +536,13 @@ Template.answer1.onRendered(function () {
             } catch (TypeError){
             }
         });
-        var slider2_current = 0;
-        if (current_question.slider2) {
-            slider2_current = current_question.slider2;
-        }
-        var slider2_min = slider2_current - Math.sqrt(radius)*1.25;
-        var slider2_max = slider2_current + Math.sqrt(radius)*1.25;
         Session.set('slider2', slider2_current);
-        $("#slider2min").text(slider2_min.toFixed(2));
-        $("#slider2cur").text(slider2_current.toFixed(2));
-        $("#slider2max").text(slider2_max.toFixed(2));
         slider2 = this.$("div#slider2").noUiSlider({
             start: slider2_current,
             connect: "lower",
             range: {
-                'min': slider2_min,
-                'max': slider2_max
+                'min': slider_vals["slider2_min"],
+                'max': slider_vals["slider2_max"]
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
@@ -570,22 +557,18 @@ Template.answer1.onRendered(function () {
             } catch (TypeError){
             }
         });
-        var slider3_current = 0;
-        if (current_question.slider3) {
-            slider3_current = current_question.slider3;
-        }
-        var slider3_min = slider3_current - Math.sqrt(radius)*1.25;
-        var slider3_max = slider3_current + Math.sqrt(radius)*1.25;
         Session.set('slider3', slider3_current);
-        $("#slider3min").text(slider3_min.toFixed(2));
-        $("#slider3cur").text(slider3_current.toFixed(2));
-        $("#slider3max").text(slider3_max.toFixed(2));
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+            $("#slider"+slider_idx+"min").text("$"+slider_vals["slider"+slider_idx+"_min"].toFixed(2)+"B");
+            $("#slider"+slider_idx+"cur").text("$"+eval("slider"+slider_idx+"_current").toFixed(2)+"B");
+            $("#slider"+slider_idx+"max").text("$"+slider_vals["slider"+slider_idx+"_max"].toFixed(2)+"B");
+        }
         slider3 = this.$("div#slider3").noUiSlider({
             start: slider3_current,
             connect: "lower",
             range: {
-                'min': slider3_min,
-                'max': slider3_max
+                'min': slider_vals["slider3_min"],
+                'max': slider_vals["slider3_max"]
             }
         }).on('slide', function (ev, val) {
             // set real values on 'slide' event
