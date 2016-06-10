@@ -247,14 +247,28 @@ Template.answer1.onRendered(function () {
             total_money_spent += Session.get("slider"+slider_idx_counter);
             slider_idx_counter++;
         }
-        var deficit_value = 1000 - total_money_spent; //TODO: update with real numbers
-        var deficit_value_percentage = deficit_value / 2000; //TODO: update with real numbers
-        if (deficit_value_percentage >= 0){
-            deficit_value_percentage = "+"+deficit_value_percentage.toFixed(2).toString();
+        var deficit_value = total_money_spent - 2604; //TODO: update with real numbers
+        var deficit_value_percentage = 100 * ((deficit_value / 550) - 1); //TODO: update with real numbers
+        deficit_value = parseInt(deficit_value * 100)/100;
+        if (deficit_value >= 0){
+            $("#mech0_deficit_text").text("deficit");
+            $("#mech0_deficit_value").css('color','red');
         } else {
-            deficit_value_percentage = deficit_value_percentage.toFixed(2).toString();
+            deficit_value = deficit_value.toString().substr(1);
+            $("#mech0_deficit_text").text("surplus");
+            $("#mech0_deficit_value").css('color','green');
         }
-        $("#mech0_deficit").text("Based on your choices, the deficit will be $"+ deficit_value +"B. This is a "+deficit_value_percentage+" percent change from 2016 estimates.");
+        if (deficit_value_percentage >= 0){
+            deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
+            $("#mech0_deficit_percentage").css('color','green');
+
+        } else {
+            deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
+            $("#mech0_deficit_percentage").css('color','red');
+        }
+        $("#mech0_deficit_value").text(deficit_value);
+        $("#mech0_deficit_percentage").text(deficit_value_percentage);
+
     };
     var update_comps = function(){
         var percentage_difference = 0;
