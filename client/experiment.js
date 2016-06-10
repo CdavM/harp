@@ -88,7 +88,7 @@ Template.answer1.onRendered(function () {
     var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
     var radius = curr_experiment.radius;
     var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
-    $("#creditsleft").text("Credits left: " + Number(radius).toFixed(3));
+    $("#creditsleft").text("Credits left: " + parseInt(Number(radius)*1000)/1000);
     update_slider1 = function (ev, val, update_slider_flag) {
         // the vars below are global and declared once the page is rendered!
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
@@ -102,7 +102,7 @@ Template.answer1.onRendered(function () {
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             if (isNaN(curr_slider_value)){
-                eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
+                eval(ev.target.id).val((parseInt(Number(Session.get(ev.target.id))*100)/100).toFixed(2));
                 return;
             }
             radius_sum = radius_sum + Math.pow((curr_slider_value - current_question[curr_slider]),2);
@@ -123,18 +123,18 @@ Template.answer1.onRendered(function () {
             $("div").mouseup(); //release the mouse
         }
         if (isNaN(val)){
-            eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
+            eval(ev.target.id).val((parseInt(Number(Session.get(ev.target.id))*100)/100).toFixed(2));
             return;
         }
-        ev.target.value = Number(val).toFixed(2); // updates the textbox
+        ev.target.value = (parseInt(Number(val)*100)/100).toFixed(2); // updates the textbox
         Session.set(ev.target.id, Number(val));
         var radius_dif = radius - radius_sum;
         radius_dif -= Math.pow((val-current_question[ev.target.id]),2);
         radius_dif = radius_dif + 0.0001; //laplace smoothing
-        radius_dif = radius_dif.toFixed(3);
+        radius_dif = (parseInt(Number(radius_dif)*1000)/1000).toFixed(3);
         $("#creditsleft").text("Credits left: " + radius_dif);
         if (update_slider_flag){
-            eval(ev.target.id).val(Number(val).toFixed(2));
+            eval(ev.target.id).val((parseInt(Number(val)*100)/100).toFixed(2));
         }
         //update stacked bars
         var slider_idx_counter = 0;
@@ -153,12 +153,12 @@ Template.answer1.onRendered(function () {
             //red background
             $("#"+ev.target.id+"comp").css('color','red');
             // set value
-            $("#"+ev.target.id+"comp").text(Number(percent_difference).toFixed(2)+"%");
+            $("#"+ev.target.id+"comp").text(round(percent_difference, 2)+"%");
         } else {
             //green background
             $("#"+ev.target.id+"comp").css('color','green');
             // set value
-            $("#"+ev.target.id+"comp").text("+"+Number(percent_difference).toFixed(2)+"%");
+            $("#"+ev.target.id+"comp").text("+"+round(percent_difference, 2)+"%");
         }
         var total_money_spent = 0;
         slider_idx_counter = 0;
@@ -169,7 +169,6 @@ Template.answer1.onRendered(function () {
         update_deficit();
     };
     update_slider_mech11 = function(ev, val){
-        //there is no session id, dummy.
         eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
         $("div").mouseup(); //release the mouse
     };
@@ -195,12 +194,12 @@ Template.answer1.onRendered(function () {
             //red background
             $("#"+ev.target.id+"comp").css('color','red');
             // set value
-            $("#"+ev.target.id+"comp").text(Number(percent_difference).toFixed(2)+"%");
+            $("#"+ev.target.id+"comp").text(round(percent_difference, 2)+"%");
         } else {
             //green background
             $("#"+ev.target.id+"comp").css('color','green');
             // set value
-            $("#"+ev.target.id+"comp").text("+"+Number(percent_difference).toFixed(2)+"%");
+            $("#"+ev.target.id+"comp").text("+"+round(percent_difference, 2)+"%");
         }
         var total_money_spent = 0;
         slider_idx_counter = 0;
@@ -452,7 +451,7 @@ Template.answer1.onRendered(function () {
                 $("#slider"+slider_idx+well_idx).val(current_question["slider"+slider_idx+well_idx]);
                 Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx+well_idx]);
                 //display set value
-                $("#slider"+slider_idx+well_idx+"_text").text("Amount chosen: " + current_question["slider"+slider_idx+well_idx].toFixed(3));
+                $("#slider"+slider_idx+well_idx+"_text").text(current_question["slider"+slider_idx+well_idx].toFixed(3));
                 //display comparison to 2016 estimates
                 var percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx+well_idx));
                 if (percentage_difference < 0){

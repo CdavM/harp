@@ -81,7 +81,7 @@
 
 <template name="mechanism0">
     <h3>
-        <p class="center"> Current Power Allocation</p>
+        <p class="center"> Current Credit Allocation</p>
         <div>
             <div style="float:right;"><p id = "creditsleft"> Credits left: XXX </p></div>
             <div id="budgetbar" class="progress">
@@ -153,7 +153,7 @@
 </template>
 
 <template name="mechanism1">
-    <h3>
+
         <div>
             {{#if show_timer}}
                 {{#if waiting}}
@@ -165,48 +165,44 @@
         <div>
             <form>
                 <label style="width: 33%; clear: both; float: left;" class="well">
-                    <p style="clear: both;float: left;"> Change from </p> <br>
-                    <p style="clear: both;float: left;"> 2016 estimate</p>
-                    <hr style="clear: both">
+                    {{> slider_head_mech1}}
                     {{>slider_template_mech1 (slider_names "slider00" "blue")}}
                     {{>slider_template_mech1 (slider_names "slider10" "green")}}
                     {{>slider_template_mech1 (slider_names "slider20" "orange")}}
                     {{>slider_template_mech1 (slider_names "slider30" "red")}}
-                    {{> deficit_template (deficit_names "0")}}
-                    <br>
-                    Option 1 <input type="radio" name="radio" value = "option1" />
+                    <h3>
+                        {{> deficit_template (deficit_names "0")}}
+                        <br>
+                        Option 1 <input type="radio" name="radio" value = "option1" />
+                    </h3>
                 </label>
                 <label style="width: 33%; float: left;" class="well">
-                    <h4>
-                        <div class="alert alert-warning alert-dismissible" role="alert" style="width: 35%;">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <div style="float: left;">Change from</div>
-                            <br>
-                            <div style="float: left;"> 2016 estimate</div>
-                            <br>
-                        </div>
-                    </h4>
+                    {{> slider_head_mech1}}
                     {{>slider_template_mech1 (slider_names "slider01" "blue")}}
                     {{>slider_template_mech1 (slider_names "slider11" "green")}}
                     {{>slider_template_mech1 (slider_names "slider21" "orange")}}
                     {{>slider_template_mech1 (slider_names "slider31" "red")}}
-                    {{> deficit_template (deficit_names "1")}}
-
-                    <br>
-                    Option 2 <input type="radio" name="radio" value = "option2" />
+                    <h3>
+                        {{> deficit_template (deficit_names "1")}}
+                        <br>
+                        Option 2 <input type="radio" name="radio" value = "option2" />
+                    </h3>
                 </label>
                 <label style="width: 33%; float: left;" class="well">
+                    {{> slider_head_mech1}}
                     {{>slider_template_mech1 (slider_names "slider02" "blue")}}
                     {{>slider_template_mech1 (slider_names "slider12" "green")}}
                     {{>slider_template_mech1 (slider_names "slider22" "orange")}}
                     {{>slider_template_mech1 (slider_names "slider32" "red")}}
-                    {{> deficit_template (deficit_names "2")}}
-                    <br>
-                    Option 3 <input type="radio" name="radio" value = "option3" />
+                    <h3>
+                        {{> deficit_template (deficit_names "2")}}
+                        <br>
+                        Option 3 <input type="radio" name="radio" value = "option3" />
+                    </h3>
                 </label>
             </form>
         </div>
-    </h3>
+
 </template>
 
 <template name="deficit_template">
@@ -216,11 +212,18 @@
     </div>
 </template>
 
+<template name="slider_head_mech1">
+    <h4 style="clear: both;float: left;"> Change from </h4> <br>
+    <h4 style="clear: both;float: left;"> 2016 estimate</h4> <h4 style="float: right">Amount Chosen</h4>
+    <hr style="clear: both">
+</template>
+
 <template name="slider_template_mech1">
     <p id="{{this.slider_comp}}" style="clear: both; float: left; width: 17%;"></p>
-    <div id="{{this.slider_id}}" style="height: 20px; width: 82%; float: left; background: {{this.slider_color}}"></div>
-    <div style="width: 82%; float: left; margin-left: 17%; clear: both;"><p id="{{this.slider_min}}" style="display: inline; float: left;">min</p> <p id="{{this.slider_cur}}" style="display: inline;"> curr</p> <p id="{{this.slider_max}}" style="display: inline;float: right;">max</p> </div>
-    <div style="width: 82%; float: left; margin-left: 17%; clear: both;"><p id="{{this.slider_text}}" style="display:inline; height:30px;width:5%; min-width: 80px;"></p></div>
+    <div id="{{this.slider_id}}" style="height: 20px; width: 62%; float: left; background: {{this.slider_color}}"></div>
+    <div style="width: 20%; float: right;"><p id="{{this.slider_text}}" style="display:inline; height:30px;min-width: 80px;"></p></div>
+
+    <div style="width: 62%; float: left; margin-left: 17%; clear: both;"><p id="{{this.slider_min}}" style="display: inline; float: left;">min</p> <p id="{{this.slider_cur}}" style="display: inline;"> curr</p> <p id="{{this.slider_max}}" style="display: inline;float: right;">max</p> </div>
     <br style="clear: both;">
     <br>
 </template>
