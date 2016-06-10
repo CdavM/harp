@@ -277,7 +277,7 @@
         </div>
         <br style="clear: both; margin-bottom: 150px;">
 
-        <p>How much do you care (from 0 to 10) about each of the following?</p>
+        <p align = "left"> On the following sliders, please indicate how much you care about each budget value being close to the values you proposed on the last page on a scale of 0 to 10. For example, if you care about all the items equally, then you could give a score of 10 each, whereas if you care more about X and not so much about Y, you could give a score of 10 to X and 2 to Y. </p>
 
         <p id="slider0label" style="float:left; clear:both">National Defense</p>
         <div id="slider0weight" style="height: 20px; width: 83%; float: left; background: rgb(51, 122, 183); clear: both; margin-left: 7%;"></div>
@@ -344,13 +344,14 @@
             <p> How do you identify?</p>
 
             <form name = "political_stance_report">
-                <label class="label label-primary">Very conservative<input type="radio" name="radio" value = "very conservative" /></label>
-                <label class="label label-success">Somewhat conservative<input type="radio" name="radio" value = "somewhat conservative" /></label>
-                <label class="label label-default">Neutral<input type="radio" name="radio" value = "neutral" /></label>
-                <label class="label label-success">Somewhat liberal<input type="radio" name="radio" value = "somewhat liberal" /></label>
-                <label class="label label-primary">Very liberal<input type="radio" name="radio" value = "very liberal" /></label>
+                <label class="label label-primary">Very conservative&nbsp;&nbsp;<input type="radio" name="radio" value = "very conservative" /></label>
+                <label class="label label-success">Somewhat conservative&nbsp;&nbsp;<input type="radio" name="radio" value = "somewhat conservative" /></label>
+                <label class="label label-default">Neutral&nbsp;&nbsp;<input type="radio" name="radio" value = "neutral" /></label>
+                <label class="label label-success">Somewhat liberal&nbsp;&nbsp;<input type="radio" name="radio" value = "somewhat liberal" /></label>
+                <label class="label label-primary">Very liberal&nbsp;&nbsp;<input type="radio" name="radio" value = "very liberal" /></label>
                 <br style="margin-bottom: 20px;">
-                <label class="label label-warning">Prefer not to answer<input type="radio" name="radio" value = "prefer not to answer" /></label>
+                <br>
+                <label class="label label-warning">Prefer not to answer&nbsp;&nbsp;<input type="radio" name="radio" value = "prefer not to answer" /></label>
             </form>
         </h3>
         <br>
@@ -361,11 +362,11 @@
 <template name="instructionsMain">
 
     <h4>
-        <p>
+        <p align = "left">
             Welcome to our survey and thank you for participating. We are studying political decision making and have several questions regarding the US federal budget.
- 
+ 			<br><br>
 			We will ask you questions about how you would like the US federal government to allocate money across a few of its major budget items. We'll present the budget items and their values from 2016 and ask you how you would like to change that budget.
-
+<br><br>
 			## INCLUDE Agreement form for IRB ### </p>
         <p>Click 'begin' once you have read and if you agree to the above consent statement. </p>
     </h4>
@@ -374,30 +375,53 @@
 
 <template name="question0text">
     <h4>
-        <p>
-            In the next page, we will ask you to indicate your preferences regarding the federal budget. We’ll show you a budget based on what other people who have answered this survey have preferred. You’ll then be allowed to modify the budget we show you to better match your preferences. We’ll also show you how much the government is budgeted to spend in 2016 so you have a better sense of what values are typical.
-
-            You won’t be allowed to arbitrarily modify the budget that others have agreed upon, however. We’ll give you some ‘movement credits.’  To increase/decrease the budget from what others have agreed, you’ll have to spend these credits. Notably, the amount of credits you spend changing a given budget item will be the square of the change you make in that budget item.
-
-            For example, let’s say that people before you have agreed that we should decrease discretionary defense spending by 15% and increase taxes by 10%, but you would prefer that discretionary defense spending be decreased by 10% and taxes increased by only 7%. To move the defense spending to your ideal point, you would have to spend 25 credits (15% - 10% = 5%, and 5^2 = 25). To also move the tax spending to your ideal point, you would have to spend an additional 9 credits (10% - 7% = 3%, 3^2 = 9), for a total of 34 credits.
-
-            Of course, you may not have enough credits to make all the changes you wish to make, and so you’ll have to prioritize the changes you care about the most. Furthermore, note that as a consequence of the squaring rule, it is cheaper to move two items 5% each, for example, than it is to move one item 10%.
+        <p align = "left">
+			In the next page, we will ask you to indicate your preferences regarding the federal budget. We’ll show you a budget based on what other people who have answered this survey have preferred. You’ll then be allowed to modify the budget we show you to better match your preferences. We’ll also show you how much the government is budgeted to spend in 2016 for your reference.
+			<br><br>
+			You won’t be allowed to arbitrarily modify the budget that others have agreed upon, however. We’ll give you a fixed quota of ‘movement credits.’  To increase/decrease the budget from what others have agreed, you’ll have to spend these credits. Notably, the amount of credits you spend changing a given budget item will be proportional to the square of the change you make in that budget item. (Note that the square of a number a is a times a or a multiplied by a.)
+			<br><br>
+			For example, let’s say that people before you have agreed that we should decrease discretionary defense spending by 15% and increase taxes by 10%, but you would prefer that discretionary defense spending be decreased by 10% and taxes increased by only 7%. To move the defense spending to your ideal point, you would have to spend 25 credits (15% - 10% = 5%, and 5<sup>2</sup> = 25). To also move the tax spending to your ideal point, you would have to spend an additional 9 credits (10% - 7% = 3%, 3<sup>2</sup> = 9), for a total of 34 credits. 
+			<br><br>
+			Of course, you may not have enough credits to make all the changes you wish to make, and so you’ll have to prioritize the changes you care about the most. Furthermore, note that as a consequence of the squaring rule, it is cheaper to move two items 5% each, for example, than it is to move one item 10%.
+			<br><br>
+			Note several caveats: <br>
+			<ol align = "left">
+			  <li>Regarding the personal income tax, assume that the tax rates are scaled proportionally to increase/decrease receipts as you indicate. The tax rates would be scaled up progressively (i.e. higher incomes bear a larger tax burden than lower incomes). </li>
+			  <li>The deficit term is updated automatically as you move the other sliders to indicate how the changes you propose will affect the yearly federal deficit.
+			</li>
+			</ol>
         </p>
     </h4>
 </template>
 
 <template name="question1text">
     <h4>
-        <p>
-            Mechanism 1 specific instructions
+        <p align = "left">
+In the next page, we will ask you to indicate your preferences regarding the federal budget. We’ll first show you the current year’s federal budget. Then, we’ll show you three potential ways we could change the budget. Please read the proposed budget changes and select the one that you like the most.
+			<br><br>
+			Note several caveats: <br>
+			<ol align = "left">
+			  <li>Regarding the personal income tax, assume that the tax rates are scaled proportionally to increase/decrease receipts as you indicate. The tax rates would be scaled up progressively (i.e. higher incomes bear a larger tax burden than lower incomes). </li>
+			  <li>The deficit term is updated automatically as you move the other sliders to indicate how the changes you propose will affect the yearly federal deficit.
+			</li>
+			</ol>
         </p>
     </h4>
 </template>
 
 <template name="question2text">
     <h4>
-        <p>
-            Mechanism 2 specific instructions
+        <p align = "left">
+			In the next page, we will ask you to indicate your preferences regarding the federal budget. For each of the given budget items, please move the sliders to indicate your ideal value for  that budget item. 
+			<br><br>
+			We’ll also show you how much the government is budgeted to spend in 2016 for each budget item for your reference.
+			<br><br>
+			Note several caveats: <br>
+			<ol align = "left">
+			  <li>Regarding the personal income tax, assume that the tax rates are scaled proportionally to increase/decrease receipts as you indicate. The tax rates would be scaled up progressively (i.e. higher incomes bear a larger tax burden than lower incomes). </li>
+			  <li>The deficit term is updated automatically as you move the other sliders to indicate how the changes you propose will affect the yearly federal deficit.
+			</li>
+			</ol>
         </p>
     </h4>
 </template>
