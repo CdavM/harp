@@ -79,6 +79,37 @@ Template.registerHelper('slider_names', function(slider_name_arg, color_arg, sli
     return slider_object;
 });
 
+Template.registerHelper('mech2_slider_names', function (slider_name_arg, title_arg, color_arg) {
+    var slider_object = Object();
+    slider_object.label = slider_name_arg+"label";
+    slider_object.comp = slider_name_arg+"comp";
+    slider_object.name = slider_name_arg;
+    slider_object.title = title_arg;
+    slider_object.text = slider_name_arg+"_text";
+    slider_object.value = Session.get(slider_name_arg);
+    slider_object.min = slider_name_arg+"min";
+    slider_object.cur = slider_name_arg+"cur";
+    slider_object.max = slider_name_arg+"max";
+    switch (color_arg){
+        case "blue":
+            slider_object.color = "rgb(51, 122, 183)";
+            break;
+        case "green":
+            slider_object.color = "rgb(92, 184, 92)";
+            break;
+        case "orange":
+            slider_object.color = "rgb(240, 173, 78)";
+            break;
+        case "red":
+            slider_object.color = "rgb(217, 83, 79)";
+            break;
+        case "lightblue":
+            slider_object.color = "rgb(91, 192, 222)";
+            break;
+    }
+    return slider_object;
+});
+
 Template.registerHelper('deficit_names', function(well_idx) {
     if (typeof(well_idx) == "undefined") {
         well_idx = "";
