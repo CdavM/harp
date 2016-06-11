@@ -180,7 +180,7 @@ Meteor.methods({
                     //Questions.update({"question_ID": next_question}, {$set: {"busy": true}}); TODO: busy flag temporarily removed
                 }
                 var radius_fn = function (previous_participants) {
-                    return 1/(previous_participants+1); //TODO update radius function
+                    return 100/(previous_participants+1); //TODO update radius function
                 };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
                 if (next_question == 1){
