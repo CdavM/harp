@@ -459,9 +459,11 @@ Template.answer1.onRendered(function () {
                     $("#slider"+slider_idx+well_idx+"comp").text("+"+Number(percentage_difference).toFixed(2)+"%");
                 }
                 //display min, cur and max values
+                /*
                 $("#slider"+slider_idx+well_idx+"min").text("$"+(current_question["slider"+slider_idx+"1"]- Math.sqrt(radius)*1.25).toFixed(2)+"B");
                 $("#slider"+slider_idx+well_idx+"cur").text("$"+(current_question["slider"+slider_idx+"1"]).toFixed(2)+"B");
                 $("#slider"+slider_idx+well_idx+"max").text("$"+(current_question["slider"+slider_idx+"1"]+ Math.sqrt(radius)*1.25).toFixed(2)+"B");
+                */
                 well_idx ++;
             }
             slider_idx++;

@@ -207,7 +207,7 @@
 
 <template name="deficit_template">
     <div style="clear: both">
-        <span>Based on these choices, the</span> <span id="{{this.deficit_text}}">deficit</span><span> will be </span>
+        <span>The</span> <span id="{{this.deficit_text}}">deficit</span><span> will be </span>
         <span id="{{this.deficit_value}}" >X</span><span>. This is a </span><span id="{{this.deficit_percentage}}">Y</span><span>% change from 2016 estimates.</span>
     </div>
 </template>
@@ -223,7 +223,6 @@
     <div id="{{this.slider_id}}" style="height: 20px; width: 62%; float: left; background: {{this.slider_color}}"></div>
     <div style="width: 20%; float: right;"><p id="{{this.slider_text}}" style="display:inline; height:30px;min-width: 80px;"></p></div>
 
-    <div style="width: 62%; float: left; margin-left: 17%; clear: both;"><p id="{{this.slider_min}}" style="display: inline; float: left;">min</p> <p id="{{this.slider_cur}}" style="display: inline;"> curr</p> <p id="{{this.slider_max}}" style="display: inline;float: right;">max</p> </div>
     <br style="clear: both;">
     <br>
 </template>
@@ -246,7 +245,7 @@
             <form name="slider0_text">
                 <textarea id="slider0" style="height:30px;width:7%;min-width: 80px; float:right">${{slider0_value}}B</textarea> <br>
             </form>
-            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider0min" style="display: inline; float: left;">min</p> <p id="slider0cur" style="display: inline;"> curr</p> <p id="slider0max" style="display: inline; float: right;">max</p> </div>
+            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider0min" style="display: inline; float: left;">min</p> <p id="slider0cur" style="display: inline; margin-left: 17%; float:left"> curr</p> <p id="slider0max" style="display: inline; float: right;">max</p> </div>
         </div>
 
         <br style="clear: both;">
@@ -258,7 +257,7 @@
             <form name="slider1_text">
                 <textarea id="slider1" style="height:30px;width:7%;min-width: 80px; float:right">${{slider1_value}}B</textarea> <br>
             </form>
-            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider1min" style="display: inline; float: left;">min</p> <p id="slider1cur" style="display: inline;"> curr</p> <p id="slider1max" style="display: inline;float: right;">max</p> </div>
+            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider1min" style="display: inline; float: left;">min</p> <p id="slider1cur"  style="display: inline; margin-left: 17%; float:left"> curr</p> <p id="slider1max" style="display: inline;float: right;">max</p> </div>
         </div>
 
         <br style="clear: both;">
@@ -269,7 +268,7 @@
             <form name="slider2_text">
                 <textarea id="slider2" style="height:30px;width:7%;min-width: 80px;float:right">${{slider2_value}}B</textarea> <br>
             </form>
-            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider2min" style="display: inline; float: left;">min</p> <p id="slider2cur" style="display: inline;"> curr</p> <p id="slider2max" style="display: inline;float: right;">max</p> </div>
+            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider2min" style="display: inline; float: left;">min</p> <p id="slider2cur" style="display: inline; margin-left: 17%; float:left"> curr</p> <p id="slider2max" style="display: inline;float: right;">max</p> </div>
         </div>
 
         <br style="clear: both;">
@@ -280,7 +279,7 @@
             <form name="slider3_text">
                 <textarea id="slider3" style="height:30px;width:7%;min-width: 80px;float:right">${{slider3_value}}B</textarea> <br>
             </form>
-            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
+            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline; margin-left: 17%; float:left"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
         </div>
         {{> deficit_template (deficit_names)}}
         <br style="clear: both; margin-bottom: 150px;">
