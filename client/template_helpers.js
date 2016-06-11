@@ -75,7 +75,6 @@ Template.registerHelper('slider_names', function(slider_name_arg, color_arg, sli
     slider_object.slider_cur = slider_name_arg+"cur";
     slider_object.slider_max = slider_name_arg+"max";
     slider_object.slider_comp = slider_name_arg + "comp";
-
     return slider_object;
 });
 
