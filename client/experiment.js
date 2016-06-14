@@ -444,7 +444,7 @@ Template.answer1.onRendered(function () {
                 $("#slider"+slider_idx+well_idx).val(current_question["slider"+slider_idx+well_idx]);
                 Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx+well_idx]);
                 //display set value
-                $("#slider"+slider_idx+well_idx+"_text").text("$"+current_question["slider"+slider_idx+well_idx].toFixed(3)+"B");
+                $("#slider"+slider_idx+well_idx+"_text").text("$"+current_question["slider"+slider_idx+well_idx].toFixed(2)+"B");
                 //display comparison to 2016 estimates
                 var percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx+well_idx));
                 if (percentage_difference < 0){
