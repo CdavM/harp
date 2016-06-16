@@ -107,46 +107,10 @@
         <p style="clear: both;float: left;"> 2016 estimate</p>
         <p style="float: right;">Chosen value</p>
         <hr style="clear: both">
-        <p id="slider0label" class="mech0sliderlabel">National Defense</p>
-        <div style="clear: both;">
-            <p id="slider0comp" style="float: left; width: 7%; color: green;">+0.00%</p>
-            <div id="slider0" style="height: 20px; width: 83%; float: left; background: rgb(51, 122, 183)"></div>
-            <form name="slider0_text">
-                <textarea id="slider0" style="height:30px;width:7%;min-width: 80px; float:right">${{slider0_value}}B</textarea> <br>
-            </form>
-            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider0min" style="display: inline; float: left;">min</p> <p id="slider0cur" style="display: inline;"> curr</p> <p id="slider0max" style="display: inline; float: right;">max</p> </div>
-        </div>
-        <br style="clear: both;">
-
-        <p id="slider1label" class="mech0sliderlabel">Medicare &amp; Health</p>
-        <div style="clear: both;">
-            <p id="slider1comp" style="float: left; width: 7%; color: green;"></p>
-            <div id="slider1" style="height: 20px; width: 83%; float: left; background: rgb(92, 184, 92);"></div>
-            <form name="slider1_text">
-                <textarea id="slider1" style="height:30px;width:7%;min-width: 80px; float:right">${{slider1_value}}B</textarea> <br>
-            </form>
-            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider1min" style="display: inline; float: left;">min</p> <p id="slider1cur" style="display: inline;"> curr</p> <p id="slider1max" style="display: inline;float: right;">max</p> </div>
-        </div>
-        <br style="clear: both;">
-        <p id="slider2label" class="mech0sliderlabel">Transportation &amp; Science</p>
-        <div style="clear: both">
-            <p id="slider2comp" style="float: left; width: 7%; color: green;"></p>
-            <div id="slider2" style="height: 20px; width: 83%; float: left; background: rgb(240, 173, 78);"></div>
-            <form name="slider2_text">
-                <textarea id="slider2" style="height:30px;width:7%;min-width: 80px;float:right">${{slider2_value}}B</textarea> <br>
-            </form>
-            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider2min" style="display: inline; float: left;">min</p> <p id="slider2cur" style="display: inline;"> curr</p> <p id="slider2max" style="display: inline;float: right;">max</p> </div>
-        </div>
-        <br style="clear: both;">
-        <p id="slider3label" class="mech0sliderlabel">Individual Income Tax</p>
-        <div style="clear: both">
-            <p id="slider3comp" style="float: left; width: 7%; color: green;"></p>
-            <div id="slider3" style="height: 20px; width: 83%; float: left; background: rgb(217, 83, 79);"></div>
-            <form name="slider3_text">
-                <textarea id="slider3" style="height:30px;width:7%;min-width: 80px;float:right">${{slider3_value}}B</textarea> <br>
-            </form>
-            <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="slider3min" style="display: inline; float: left;">min</p> <p id="slider3cur" style="display: inline;"> curr</p> <p id="slider3max" style="display: inline;float: right;">max</p> </div>
-        </div>
+        {{> mech0_slider (mech2_slider_names "slider0" "National Defense" "blue")}}
+        {{> mech0_slider (mech2_slider_names "slider1" "Medicare & Health" "green")}}
+        {{> mech0_slider (mech2_slider_names "slider2" "Transportation & Science" "orange")}}
+        {{> mech0_slider (mech2_slider_names "slider3" "Individual Income Tax" "red")}}
         <br style="clear: both">
         {{> deficit_template (deficit_names)}}
     </h3>
@@ -240,6 +204,19 @@
             $<textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea>B<br>
         </form>
         <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="{{this.min}}" style="display: inline; float: left;">min</p> <p id="{{this.cur}}" style="display: inline; margin-left: 17%; float:left"> curr</p> <p id="{{this.max}}" style="display: inline; float: right;">max</p> </div>
+    </div>
+    <br style="clear: both;">
+</template>
+
+<template name="mech0_slider">
+    <p id="{{this.label}}" style="float:left; margin-left: 7%;">{{this.title}}</p>
+    <div style="clear: both;">
+        <p id="{{this.comp}}" style="float: left; width: 7%;"></p>
+        <div id="{{this.name}}" style="height: 20px; width: 83%; float: left; background: {{this.color}}"></div>
+        <form name="{{this.text}}">
+            $<textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea>B<br>
+        </form>
+        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="{{this.min}}" style="display: inline; float: left;">min</p> <p id="{{this.cur}}" style="display: inline;"> curr</p> <p id="{{this.max}}" style="display: inline; float: right;">max</p> </div>
     </div>
     <br style="clear: both;">
 </template>
