@@ -244,12 +244,11 @@ Template.answer1.onRendered(function () {
             var well_idx = "";
         }
         var total_money_spent = 0;
-        slider_idx_counter = 0;
-        while (slider_idx_counter < 4){
+        for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
             total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
-            slider_idx_counter++;
         }
-        var deficit_value = total_money_spent - 2604; //TODO: update with real numbers
+        total_money_spent -= Session.get("slider"+3+well_idx); // decreases by amt of income tax collected
+        var deficit_value = total_money_spent + 316; //TODO: update with real numbers
         var deficit_value_percentage = 100 * ((deficit_value / 550) - 1); //TODO: update with real numbers
         deficit_value = parseInt(deficit_value * 100)/100;
         if (deficit_value >= 0){
@@ -443,7 +442,7 @@ Template.answer1.onRendered(function () {
                 });
                 $("#slider"+slider_idx+well_idx).val(current_question["slider"+slider_idx+well_idx]);
                 Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx+well_idx]);
-                //display set value
+                //display chosen value
                 $("#slider"+slider_idx+well_idx+"_text").text("$"+current_question["slider"+slider_idx+well_idx].toFixed(2)+"B");
                 //display comparison to 2016 estimates
                 var percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx+well_idx));
