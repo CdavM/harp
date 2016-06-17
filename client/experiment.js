@@ -144,7 +144,9 @@ Template.answer1.onRendered(function () {
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
-            $("#" + curr_slider_bar).width((Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius) * $("#budgetbar").width()-0.1); //laplace smoothing
+            var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius);
+            $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.1); //laplace smoothing
+            $("#" + curr_slider_bar).text((parseInt(slider_width_fraction*1000)/10).toFixed(1));
             curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
             slider_idx_counter ++;
         }
