@@ -88,7 +88,7 @@ Template.answer1.onRendered(function () {
     var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
     var radius = curr_experiment.radius;
     var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
-    $("#creditsleft").text("Credits left: " + parseInt(Number(radius)*1000)/1000);
+    //$("#creditsleft").text("Credits left: " + round(radius,1)); disabled since we always start with 100 credits.
     update_slider1 = function (ev, val, update_slider_flag) {
         // the vars below are global and declared once the page is rendered!
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
@@ -131,8 +131,8 @@ Template.answer1.onRendered(function () {
         var radius_dif = radius - radius_sum;
         radius_dif -= Math.pow((val-current_question[ev.target.id]),2);
         radius_dif = radius_dif + 0.0001; //laplace smoothing
-        radius_dif = (parseInt(Number(radius_dif)*1000)/1000).toFixed(3);
-        $("#creditsleft").text("Credits left: " + radius_dif);
+        //radius_dif = (parseInt(Number(radius_dif)*1000)/1000).toFixed(3);
+        $("#creditsleft").text("Credits left: " + round(100*radius_dif/radius,1));
         if (update_slider_flag){
             eval(ev.target.id).val((parseInt(Number(val)*100)/100).toFixed(2));
         }
