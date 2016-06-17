@@ -266,7 +266,7 @@ Template.answer1.onRendered(function () {
             $("#deficit_percentage"+well_idx).css('color','red');
             $("#deficit_percentage"+well_idx).text(deficit_value_percentage+"% increase");
         } else {
-            deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
+            deficit_value_percentage = -(parseInt(deficit_value_percentage*100)/100).toString();
             $("#deficit_percentage"+well_idx).css('color','green');
             $("#deficit_percentage"+well_idx).text(deficit_value_percentage+"% decrease");
         }
