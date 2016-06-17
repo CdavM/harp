@@ -411,7 +411,8 @@ Template.answer1.onRendered(function () {
         update_comps();
         //update the deficit text
         update_deficit();
-
+        //initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
 
     } else if (curr_experiment.current_question == 1){
         //mechanism 1 specific js
@@ -677,6 +678,8 @@ Template.answer1.onRendered(function () {
         update_comps();
         //update the deficit text
         update_deficit();
+        //initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
     }
 
 });
