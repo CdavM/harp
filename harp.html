@@ -125,9 +125,9 @@
                 {{/if}}
             {{/if}}
         </div>
-        <div>
-            <form>
-                <label style="width: 33%; clear: both; float: left;" class="well">
+        <div style="height:700px;">
+            <form name="option" style="height:100%;">
+                <label style="width: 33%; height:100%; clear: both; float: left;" class="well">
                     {{> slider_head_mech1}}
                     {{>slider_template_mech1 (slider_names "slider00" "blue" "National Defense")}}
                     {{>slider_template_mech1 (slider_names "slider10" "green" "Medicare & Health")}}
@@ -138,9 +138,9 @@
                         <br>
                         Option 1
                     </h3>
-                    <input type="radio" name="radio" value = "option1" />
+                    <input type="radio" name="radio" value = "0" />
                 </label>
-                <label style="width: 33%; float: left;" class="well">
+                <label style="width: 33%; height:100%; float: left;" class="well">
                     {{> slider_head_mech1}}
                     {{>slider_template_mech1 (slider_names "slider01" "blue" "National Defense")}}
                     {{>slider_template_mech1 (slider_names "slider11" "green" "Medicare & Health")}}
@@ -151,9 +151,9 @@
                         <br>
                         Option 2
                     </h3>
-                    <input type="radio" name="radio" value = "option2" />
+                    <input type="radio" name="radio" value = "1" />
                 </label>
-                <label style="width: 33%; float: left;" class="well">
+                <label style="width: 33%; height:100%; float: left;" class="well">
                     {{> slider_head_mech1}}
                     {{>slider_template_mech1 (slider_names "slider02" "blue" "National Defense")}}
                     {{>slider_template_mech1 (slider_names "slider12" "green" "Medicare & Health")}}
@@ -164,7 +164,7 @@
                         <br>
                         Option 3
                     </h3>
-                    <input type="radio" name="radio" value = "option3" />
+                    <input type="radio" name="radio" value = "2" />
                 </label>
             </form>
         </div>
@@ -214,7 +214,7 @@
     <div style="clear: both;">
         <p id="{{this.comp}}" style="float: left; width: 7%;"></p>
         <div id="{{this.name}}" style="height: 20px; width: 83%; float: left; background: {{this.color}}"></div>
-        <form name="{{this.text}}">
+        <form name="{{this.name}}">
             $<textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea>B<br>
         </form>
         <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="{{this.min}}" style="display: inline; float: left;">min</p> <p id="{{this.cur}}" style="display: inline;"> curr</p> <p id="{{this.max}}" style="display: inline; float: right;">max</p> </div>
