@@ -105,6 +105,21 @@ Meteor.methods({
             answers_value[current_question] = {};
         }
         answers_value[current_question][current_answer] = post.answer;
+
+        var fields_to_be_updated = {};
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
+            if (post.answer['slider' + slider_idx]){
+                fields_to_be_updated['slider'+slider_idx] = Number(post.answer['slider' + slider_idx][0]);
+            }
+            if (post.answer['option']){
+                var option_selected = post.answer['option'][0]
+                var question_entry = Questions.findOne({"question_ID": current_question});
+                fields_to_be_updated['slider'+slider_idx+'1'] = question_entry['slider'+slider_idx+option_selected];
+            }
+        }
+        if (Object.keys(fields_to_be_updated).length) {
+            Questions.update({"question_ID": current_question}, {$set: fields_to_be_updated}, {multi: true});
+        }
         //Add entry to Answers
         Answers.update({worker_ID: post.worker_ID}, {$set: {answer1: answers_value}}, {upsert: true});
         //update question when we get ALL the answers

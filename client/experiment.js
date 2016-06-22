@@ -299,7 +299,7 @@ Template.answer1.onRendered(function () {
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             var slider_current = 0;
             if (current_question['slider'+slider_idx]){
-                slider_current = current_question['slider'+slider_idx];
+                slider_current = Number(current_question['slider'+slider_idx]);
                 var slider_min = slider_current - Math.sqrt(radius)*1.25;
                 var slider_max = slider_current + Math.sqrt(radius)*1.25;
                 Session.set('slider'+slider_idx, slider_current);
