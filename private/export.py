@@ -3,7 +3,7 @@
 import subprocess
 print("Connecting to the server database...")
 try:
-	text = subprocess.check_output("meteor mongo --url purple.meteor.com", shell=True)
+	text = subprocess.check_output("meteor mongo --url http://52.53.186.8/", shell=True)
 	print("Successfully connected.")
 except:
 	print("Connection failed.")
