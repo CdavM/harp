@@ -1,5 +1,4 @@
 #!/bin/sh
-
 pem_file="turkexperiments.pem"
 timestamp=$(date +"%Y%m%d%H%M%S")
 filename="export-$timestamp"".csv"

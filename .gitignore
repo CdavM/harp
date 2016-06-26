@@ -1,7 +1,8 @@
-.meteor/storage
-.meteor-spk
-.idea
+*.meteor/storage
+*.meteor-spk
+*.idea
 export*
 !export.py
 !exportfields.txt
-.pem
+*.pem
+*.csv
