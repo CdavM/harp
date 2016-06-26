@@ -245,9 +245,9 @@ Meteor.methods({
                     }
                     for (slider_idx=0; slider_idx < 4; slider_idx++){
                         vector_object["slider"+slider_idx+"0"] = vector_object["slider"+slider_idx+"1"] +
-                            sampled_vector_0[slider_idx]*Math.sqrt(radius_val);
+                            sampled_vector_0[slider_idx]*(radius_val);
                         vector_object["slider"+slider_idx+"2"] = vector_object["slider"+slider_idx+"1"] +
-                            sampled_vector_2[slider_idx]*Math.sqrt(radius_val);
+                            sampled_vector_2[slider_idx]*(radius_val);
                     }
                     //assign
                     Questions.update({"question_ID": next_question}, {$set:vector_object}, {upsert:true});
