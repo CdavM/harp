@@ -175,10 +175,12 @@ Meteor.methods({
             if (curr_experiment.current_question != null){
                 //remove the busy flag.
                 console.log("removing busy flag from " + curr_experiment.current_question);
-                //increase prev_participants counter
-                var prev_previous_participants = Questions.findOne({"question_ID": curr_experiment.current_question}).previous_participants;
-                Questions.update({"question_ID": curr_experiment.current_question}, {$set:{"busy":false, "previous_participants": prev_previous_participants+1}});
+                //find number of previous participants
             }
+            // look at the number of participants who were assigned here previously.
+            // this number does NOT include the participant just being assigned.
+            var number_of_previous_participants = Answers.find({"current_question": next_question}).count();
+            Questions.update({"question_ID": next_question}, {$set:{"busy":false, "previous_participants": number_of_previous_participants}});
 
             if (counters[experiment_id_value]['random_counter'].length == selection_size){
                 Meteor.clearInterval(intervals[experiment_id_value]);
