@@ -30,10 +30,10 @@ def experiment_2(data): #ideal points and weights elicitation
 
 def experiment_0(data): #constrained movement
 	answer = {}
-	answer['slider0_loc'] = float(data['slider0_text'][0])
-	answer['slider1_loc'] = float(data['slider1_text'][0])
-	answer['slider2_loc'] = float(data['slider2_text'][0])
-	answer['slider3_loc'] = float(data['slider3_text'][0])
+	answer['slider0_loc'] = float(data['slider0'][0])
+	answer['slider1_loc'] = float(data['slider1'][0])
+	answer['slider2_loc'] = float(data['slider2'][0])
+	answer['slider3_loc'] = float(data['slider3'][0])
 	answer['explanation'] = data['text_explanation']
 
 	return answer
@@ -53,10 +53,10 @@ switcher = {
 def clean_data(dirty):
 	clean = []
 	for row in dirty:
-		if len(row['experiment_id'])==0 or len(row['answer1']) == 0:
+		if len(row['experiment_id'])==0 or (len(row['answer1.0.1']) == 0 and len(row['answer1.1.1']) == 0 and len(row['answer1.2.1']) == 0):
 			continue
 		d = {}
-		copy_over = ['worker_ID', 'asg_ID', 'payments']
+		copy_over = ['worker_ID', 'asg_ID']
 		for ide in copy_over:
 			d[ide] = row[ide]
 		d['experiment_id'] = int(row['experiment_id'])
@@ -64,18 +64,25 @@ def clean_data(dirty):
 		d['begin_time'] = int(row['begin_time'])
 		d['initial_time'] = int(row['initial_time'])
 
-		answerdict = ast.literal_eval(row['answer1'])[str(d['question_num'])]
-		d['timestamp'] = answerdict['0']['time']
-		if '1' not in answerdict:
-			continue
-		d['question_data'] = switcher[d['question_num']](answerdict['1'])
+		answerdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.1'])
 
+		d['time_page0'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.0'])['time']
+		d['time_page1'] = answerdict['time']
+		d['time_page2'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.2'])['time']
+
+		#print d['experiment_id'], d['question_num'], answerdict
+		d['question_data'] = switcher[d['question_num']](answerdict)
+
+		print d
 		clean.append(d)
 	return clean
 
 def main():
-	data = clean_data(load_data('export-20160623074343_edited.csv'))
-	print data
+	#data = clean_data(load_data('export-20160623074343_edited.csv'))
+	# data = clean_data(load_data('export-20160625101532_edited.csv'))
+	data = clean_data(load_data('export-20160627170659_edited.csv'))
+
+	print len(data)
 
 if __name__ == "__main__":
 	main()
