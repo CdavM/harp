@@ -6,3 +6,4 @@ export*
 !exportfields.txt
 *.pem
 *.csv
+*.png
