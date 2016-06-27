@@ -110,9 +110,9 @@ Template.answer1.onRendered(function () {
         //now subtract the radius for the current slider from radius sum
         radius_sum -= Math.pow((Session.get(ev.target.id)-current_question[ev.target.id]),2);
         //now see if new radius sum is bigger than radius
-        if (radius_sum + Math.pow((val-current_question[ev.target.id]),2) > radius){
+        if (radius_sum + Math.pow((val-current_question[ev.target.id]),2) > Math.pow(radius,2)){
             //decrease the val until we can do it
-            var rad_difference = Math.sqrt(radius-radius_sum);
+            var rad_difference = Math.sqrt(Math.pow(radius,2)-radius_sum);
             if (val > current_question[ev.target.id]){
                 val = current_question[ev.target.id] + rad_difference;
             } else {
@@ -122,16 +122,20 @@ Template.answer1.onRendered(function () {
             $("div").mouseup(); //release the mouse
         }
         if (isNaN(val)){
-            sliders[ev.target.id].val((parseInt(Number(Session.get(ev.target.id))*100)/100).toFixed(2));
+            sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
             return;
         }
-        ev.target.value = (parseInt(Number(val)*100)/100).toFixed(2); // updates the textbox
+        ev.target.value = round(val, 2); // updates the textbox
         Session.set(ev.target.id, Number(val));
-        var radius_dif = radius - radius_sum;
+        var radius_dif = Math.pow(radius,2) - radius_sum;
         radius_dif -= Math.pow((val-current_question[ev.target.id]),2);
+        radius_dif = Math.sqrt(radius_dif);
         radius_dif = radius_dif + 0.0001; //laplace smoothing
-        //radius_dif = (parseInt(Number(radius_dif)*1000)/1000).toFixed(3);
-        $("#creditsleft").text("Credits left: " + round(100*radius_dif/radius,1));
+        var credits_percentage = 100*radius_dif/radius;
+        if (isNaN(credits_percentage)){
+            credits_percentage = 0;
+        }
+        $("#creditsleft").text("Credits left: " + round(credits_percentage, 1));
         if (update_slider_flag){
             sliders[ev.target.id].val((parseInt(Number(val)*100)/100).toFixed(2));
         }
@@ -143,9 +147,9 @@ Template.answer1.onRendered(function () {
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
-            var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / radius);
+            var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
             $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.1); //laplace smoothing
-            $("#" + curr_slider_bar).text((parseInt(slider_width_fraction*1000)/10).toFixed(1));
+            $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));
             curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
             slider_idx_counter ++;
         }
@@ -300,8 +304,8 @@ Template.answer1.onRendered(function () {
             var slider_current = 0;
             if (current_question['slider'+slider_idx]){
                 slider_current = Number(current_question['slider'+slider_idx]);
-                var slider_min = slider_current - Math.sqrt(radius)*1.25;
-                var slider_max = slider_current + Math.sqrt(radius)*1.25;
+                var slider_min = slider_current - (radius)*1.25;
+                var slider_max = slider_current + (radius)*1.25;
                 Session.set('slider'+slider_idx, slider_current);
                 sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
                     start: slider_current,
@@ -346,8 +350,8 @@ Template.answer1.onRendered(function () {
                     start: current_question["slider"+slider_idx+"1"],
                     connect: "lower",
                     range: {
-                        'min': current_question["slider"+slider_idx+"1"] - Math.sqrt(radius)*1.25,
-                        'max': current_question["slider"+slider_idx+"1"] + Math.sqrt(radius)*1.25
+                        'min': current_question["slider"+slider_idx+"1"] - radius*1.25,
+                        'max': current_question["slider"+slider_idx+"1"] + radius*1.25
                     }
                 }).on('slide', function (ev, val) {
                     // set real values on 'slide' event

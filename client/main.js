@@ -39,10 +39,6 @@ $(document).on("keypress", 'form', function (e) {
     }
 });
 
-round = function (number, num_decimals) {
-    return (parseInt(Number(number)*Math.pow(10,num_decimals))/Math.pow(10,num_decimals)).toFixed(num_decimals);
-};
-
 //reactively starts the experiment
 Deps.autorun(function(){
     var curr_experiment = Answers.findOne({worker_ID: Session.get('worker_ID_value')}, {fields: {begin_experiment:1, timer:1, current_answer: 1}});

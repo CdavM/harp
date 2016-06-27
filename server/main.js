@@ -175,10 +175,12 @@ Meteor.methods({
             if (curr_experiment.current_question != null){
                 //remove the busy flag.
                 console.log("removing busy flag from " + curr_experiment.current_question);
-                //increase prev_participants counter
-                var prev_previous_participants = Questions.findOne({"question_ID": curr_experiment.current_question}).previous_participants;
-                Questions.update({"question_ID": curr_experiment.current_question}, {$set:{"busy":false, "previous_participants": prev_previous_participants+1}});
+                //find number of previous participants
             }
+            // look at the number of participants who were assigned here previously.
+            // this number does NOT include the participant just being assigned.
+            var number_of_previous_participants = Answers.find({"current_question": next_question}).count();
+            Questions.update({"question_ID": next_question}, {$set:{"busy":false, "previous_participants": number_of_previous_participants}});
 
             if (counters[experiment_id_value]['random_counter'].length == selection_size){
                 Meteor.clearInterval(intervals[experiment_id_value]);
@@ -195,10 +197,18 @@ Meteor.methods({
                     //Questions.update({"question_ID": next_question}, {$set: {"busy": true}}); TODO: busy flag temporarily removed
                 }
                 var radius_fn = function (previous_participants) {
-                    return 100/(previous_participants+1); //TODO update radius function
+                    return round(100/(previous_participants+1), 1); //TODO update radius function
                 };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
-                if (next_question == 1){
+                if (next_question == 0){
+                    var current_question = Questions.findOne({"question_ID": next_question});
+                    current_slider_values = {};
+                    for (var slider_idx = 0; slider_idx < 4; slider_idx++){
+                        current_slider_values['initial_slider'+slider_idx] = current_question['slider'+slider_idx];
+                    }
+                    Answers.update({experiment_id: experiment_id_value}, {$set: current_slider_values}, {upsert: true, multi: true});
+
+                } else if (next_question == 1){
                     //vector generating function
                     var generate_point_on_surface_ball = function(num_of_dimensions){
                         //ball always has unit radius!
@@ -220,7 +230,7 @@ Meteor.methods({
                         //scale the vector to unit norm
                         dimension_counter = 0;
                         while (dimension_counter < num_of_dimensions){
-                            vector[dimension_counter] = parseInt((vector[dimension_counter]/length_of_vector)*1000)/1000;
+                            vector[dimension_counter] = round(vector[dimension_counter]/length_of_vector,3);
                             dimension_counter++;
                         }
                         return vector;
@@ -237,15 +247,13 @@ Meteor.methods({
                     }
                     for (slider_idx=0; slider_idx < 4; slider_idx++){
                         vector_object["slider"+slider_idx+"0"] = vector_object["slider"+slider_idx+"1"] +
-                            sampled_vector_0[slider_idx]*Math.sqrt(radius_val);
+                            sampled_vector_0[slider_idx]*(radius_val);
                         vector_object["slider"+slider_idx+"2"] = vector_object["slider"+slider_idx+"1"] +
-                            sampled_vector_2[slider_idx]*Math.sqrt(radius_val);
+                            sampled_vector_2[slider_idx]*(radius_val);
                     }
                     //assign
                     Questions.update({"question_ID": next_question}, {$set:vector_object}, {upsert:true});
-                }
-                if (next_question == 2){
-                    radius_val = 100000; //TODO update mech 2 limits
+                    Answers.update({experiment_id: experiment_id_value}, {$set: vector_object}, {upsert: true, multi: true});
                 }
                 Answers.update({experiment_id: experiment_id_value}, {$set: {current_question: next_question, current_answer: 0, "radius":radius_val}}, {upsert: true, multi: true});
                 console.log("question for experiment " + experiment_id_value + " changed to " + next_question);
