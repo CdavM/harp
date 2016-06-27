@@ -21,6 +21,7 @@ def load_data(filename):
     return None
 
 slider_order = ['Defense', 'Health', 'Transportation', 'Tax']
+mechanism_names = ['Constrained Movement', 'Comparisons', 'Full Elicitation']
 
 def load_data_experiment2(data): #ideal points and weights elicitation
     answer = {}
@@ -63,11 +64,29 @@ switcher_load_data = {
     2: load_data_experiment2,
 }
 
+def plot_sliders_over_time(data, title):
+    n = range(1, len(data) + 1)
+
+    for slider in range(0, len(slider_order)):
+        vals = [d['question_data']['slider' + str(slider) + '_loc'] for d in data]
+        plt.plot(n, vals, label = slider_order[slider])
+    plt.legend(loc='upper left', fontsize = 18)
+
+    plt.tick_params(axis='both', which='major', labelsize=18)
+    
+    # Add the axis labels
+    plt.title(title, fontsize = 18)
+    plt.ylabel('$ (Billions)', fontsize = 18)
+    plt.xlabel('Iteration', fontsize = 18)
+    plt.show()
+
 def analyze_data_experiment0(data): # constrained movement
+    plot_sliders_over_time(data, 'Constrained Movement Mechanism')
     return None
 
 
 def analyze_data_experiment1(data): # comparisons
+	#plot_sliders_over_time(data)
     return None
 
 
@@ -125,7 +144,6 @@ def analyze_data(organized_data):
         print switcher_analyze_data[key](organized_data[key])
     calculate_time_spent(organized_data)
 
-mechanismnames = ['Constrained Movement', 'Comparisons', 'Full Elicitation']
 def calculate_time_spent(organized_data):
     #For each mechanism, calculate average time spent on each page and plot it in a chuncked bar graph
     pagenames = ['Introduction', 'Mechanism', 'Feedback']
@@ -133,7 +151,7 @@ def calculate_time_spent(organized_data):
     dpoints = []#np.empty((len(organized_data.keys())* len(pagenames), 3), dtype = )
     for key in organized_data:
     	for page in range(0, len(pagenames)):
-    		dpoints.append([mechanismnames[key], pagenames[page], np.mean([d['time_page' + str(page)] for d in organized_data[key]])])
+    		dpoints.append([mechanism_names[key], pagenames[page], np.mean([d['time_page' + str(page)] for d in organized_data[key]])])
     barplot(np.array(dpoints), 'test', 'Time (Seconds)', 'Page')
 
 
@@ -184,17 +202,17 @@ def barplot(dpoints, label, ylabel, xlabel):
     # Set the x-axis tick labels to be equal to the categories
     ax.set_xticks(indeces)
     ax.set_xticklabels(categories)
-    ax.tick_params(axis='both', which='major', labelsize=20)
+    ax.tick_params(axis='both', which='major', labelsize=18)
 
     plt.setp(plt.xticks()[1])#, rotation=90)
     
     # Add the axis labels
-    ax.set_ylabel(ylabel, fontsize = 20)
-    ax.set_xlabel(xlabel, fontsize = 20)
+    ax.set_ylabel(ylabel, fontsize = 18)
+    #ax.set_xlabel(xlabel, fontsize = 18)
     
     # Add a legend
     handles, labels = ax.get_legend_handles_labels()
-    ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize = 20)
+    ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize = 18)
         
     plt.savefig(label + '.png')
     plt.show()
@@ -204,8 +222,8 @@ def main():
 
     #data = clean_data(load_data('export-20160623074343_edited.csv'))
     # data = clean_data(load_data('export-20160625101532_edited.csv'))
+
     data, organized_data = clean_data(load_data('export-20160627170659_edited.csv'))
-    # barplot(dpoints, 'label')
     if DEBUG_LEVEL > 0:
         print len(data)
         for key in organized_data:
