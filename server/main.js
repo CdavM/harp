@@ -181,7 +181,7 @@ Meteor.methods({
             // this number does NOT include the participant just being assigned.
             var number_of_previous_participants = Answers.find({"current_question": next_question}).count();
             Questions.update({"question_ID": next_question}, {$set:{"busy":false, "previous_participants": number_of_previous_participants}});
-
+            Answers.update({"experiment_id": experiment_id_value}, {$set:{"num_of_previous_participants": number_of_previous_participants}}, {upsert: true, multi: true});
             if (counters[experiment_id_value]['random_counter'].length == selection_size){
                 Meteor.clearInterval(intervals[experiment_id_value]);
                 intervals[experiment_id_value]=0;
