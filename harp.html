@@ -242,7 +242,7 @@
         {{> deficit_template (deficit_names)}}
         <br style="clear: both; margin-bottom: 150px;">
 
-        <p align = "left"> On the following sliders, please indicate how much you care about each budget value being close to the values you proposed on the last page on a scale of 0 to 10. For example, if you care about all the items equally, then you could give a score of 10 each, whereas if you care more about X and not so much about Y, you could give a score of 10 to X and 2 to Y. </p>
+        <p align = "left"> On the following sliders, please indicate how much you care about each budget value being close to the values you proposed on the last page on a scale of 0 to 10. That is, if your total influence on the budget was limited, which budget items would you choose to influence? For example, if you care about all the items equally, then you could give a score of 10 each, whereas if you care more about defense spending and not so much about health-care spending, you could give a score of 10 to defense and 2 to health-care spending. </p>
 
         <p id="slider0label" style="float:left; clear:both">National Defense</p>
         <div id="slider0weight" style="height: 20px; width: 83%; float: left; background: rgb(51, 122, 183); clear: both; margin-left: 7%;"></div>
@@ -329,7 +329,7 @@
 
     <h4>
         <p align = "left">
-            Welcome to our survey and thank you for participating. We are studying political decision making and have several questions regarding the US federal budget.
+            Welcome to our survey and thank you for participating. We are testing out various mechanisms that would allow people to vote on a government budget and would like your feedback on how these mechanisms work. 
  			<br><br>
 			We will ask you questions about how you would like the US federal government to allocate money across a few of its major budget items. We'll present the budget items and their values from 2016 and ask you how you would like to change that budget.
 <br><br>
@@ -342,21 +342,23 @@
 <template name="question0text">
     <h4>
         <p align = "left">
-			In the next page, indicate your preferences regarding the federal budget. You'll see a budget based on what other people who have answered this survey have preferred. You’ll be allowed to modify the budget we show you to better match your preferences. We’ll also show you how much the government is budgeted to spend in 2016 for your reference.
+			In the next page, indicate your preferences regarding the federal budget. You'll see a budget based on what other people who have answered this survey have preferred. You’ll be allowed to modify the budget we show you to better match your preferences. We’ll also show you the change from how much the goverment is budgeted to spend in 2016 on the left-hand side for your reference.
 			<br><br>
 			You won’t be allowed to arbitrarily modify the budget that others have agreed upon, however. We’ll give you a fixed quota of ‘movement credits.’  To increase/decrease the budget from what others have agreed, you’ll have to spend these credits. Notably, the amount of credits you spend changing a given budget item will be proportional to the square of the change you make in that budget item. (Note that the square of the number <b>a</b> is <b>a</b> times <b>a</b> or <b>a</b> multiplied by <b>a</b>.)
 			<br><br>
 			For example, let’s say that people before you have agreed that we should decrease defense spending by 15B and increase taxes by 10B, but you would prefer that defense spending be decreased by 10B and taxes increased by only 7B. To move the defense spending to your ideal point, you would have to spend 25 credits (15B - 10B = 5B, and 5<sup>2</sup> = 25). To also move the tax spending to your ideal point, you would have to spend an additional 9 credits (10B - 7B = 3B, 3<sup>2</sup> = 9), for a total of 34 credits. 
 			<br><br>
 			Of course, you may not have enough credits to make all the changes you wish to make, and so you’ll have to prioritize the changes you care about the most. Furthermore, note that as a consequence of the squaring rule, it is cheaper to move two items 5B each, for example, than it is to move one item 10B.
+            <br><br> You may think that you can make only a very small difference in the budget. However, when many people's opinions are aggregated, a large change can be made!
 	        </p>
+            <br><br> Note that the spending figures are in Billions of dollars.
     </h4>
 </template>
 
 <template name="question1text">
     <h4>
         <p align = "left">
-In the next page, indicate your preferences regarding the federal budget. You'll see three proposed federal budgets along with information on how they relate to the estimated 2016 federal budget. Select the budget you like the most.
+In the next page, indicate your preferences regarding the federal budget. You'll see three proposed federal budgets. Select the budget you like the most. On the left hand side, you'll see the change of your proposed budget from the 2016 budget. <br><br> You may think that the budgets are very similar, but if you and others keep moving it in the direction you prefer, a large change can be made! <br><br> Note that the spending figures are in Billions of dollars.
         </p>
     </h4>
 </template>
@@ -364,7 +366,7 @@ In the next page, indicate your preferences regarding the federal budget. You'll
 <template name="question2text">
     <h4>
         <p align = "left">
-			In the next page, indicate your preferences regarding the federal budget. For each of the given budget items, please move the sliders to indicate your ideal value for  that budget item. 
+			In the next page, indicate your preferences regarding the federal budget. For each of the given budget items, please move the sliders to indicate your ideal value for that budget item. On the left hand side, you'll see the change of your proposed budget from the 2016 budget, and the sliders' initial values are at the 2016 budget. <br><br> Note that the spending figures are in Billions of dollars.
         </p>
     </h4>
 </template>
