@@ -125,7 +125,7 @@
                 {{/if}}
             {{/if}}
         </div>
-        <div style="height:700px;">
+        <div style="height:700px; width: 1200px; margin: auto">
             <form name="option" style="height:100%;">
                 <label style="width: 33%; height:100%; clear: both; float: left;" class="well">
                     {{> slider_head_mech1}}
@@ -180,18 +180,19 @@
 
 <template name="slider_head_mech1">
     <h4 style="clear: both;float: left;"> Change from </h4> <br>
-    <h4 style="clear: both;float: left;"> 2016 estimate</h4> <h4 style="float: right">Amount Chosen</h4>
+    <h4 style="clear: both;float: left;"> 2016 estimate</h4>
     <hr style="clear: both">
 </template>
 
 <template name="slider_template_mech1">
-    <p style="float:left; margin-left: 17%;">{{this.slider_title}}</p>
+    <p style="clear: both; float:left; margin-left: 80px;">{{this.slider_title}}</p>
     <div style="clear: both;">
-        <p id="{{this.slider_comp}}" style="clear: both; float: left; width: 17%;"></p>
-        <div id="{{this.slider_id}}" style="height: 20px; width: 62%; float: left; background: {{this.slider_color}}"></div>
-        <div style="width: 20%; float: right;"><p id="{{this.slider_text}}" style="display:inline; height:30px;min-width: 80px;"></p></div>
+        <p id="{{this.slider_comp}}" style="clear: both; float: left; width: 80px;"></p>
+        <div class="progress" style="width: 270px; float: left; margin-left: 5px;">
+            <div id="{{this.slider_id}}" class="progress-bar" role="progressbar" style="width: 60%; background: {{this.slider_color}};">
+            </div>
+        </div>
     </div>
-    <br style="clear: both;">
 </template>
 
 <template name="mech2_slider">

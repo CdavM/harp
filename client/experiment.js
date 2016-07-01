@@ -346,30 +346,13 @@ Template.answer1.onRendered(function () {
         var well_idx = 0;
         while(slider_idx<4){
             while(well_idx<3){
-                window["slider"+slider_idx+well_idx] = this.$("div#slider"+slider_idx+well_idx).noUiSlider({
-                    start: current_question["slider"+slider_idx+"1"],
-                    connect: "lower",
-                    range: {
-                        'min': current_question["slider"+slider_idx+"1"] - radius*1.25,
-                        'max': current_question["slider"+slider_idx+"1"] + radius*1.25
-                    }
-                }).on('slide', function (ev, val) {
-                    // set real values on 'slide' event
-                    try {
-                        update_slider_mech1(ev, val);
-                    } catch (TypeError){
-                    }
-                }).on('change', function (ev, val) {
-                    // round off values on 'change' event
-                    try {
-                        update_slider_mech1(ev, val);
-                    } catch (TypeError){
-                    }
-                });
-                $("#slider"+slider_idx+well_idx).val(current_question["slider"+slider_idx+well_idx]);
-                Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx+well_idx]);
+                var total_width = $(".progress").width();
+                var value_difference = (current_question["slider"+slider_idx+well_idx]-current_question["slider"+slider_idx+"1"]);
+                var relative_difference = value_difference/radius;
+                var current_width = relative_difference * 0.3 + 0.5;
+                $("#slider"+slider_idx+well_idx).width(current_width*total_width);
                 //display chosen value
-                $("#slider"+slider_idx+well_idx+"_text").text("$"+current_question["slider"+slider_idx+well_idx].toFixed(2)+"B");
+                $("#slider"+slider_idx+well_idx).text("$"+current_question["slider"+slider_idx+well_idx]+"B");
                 //display comparison to 2016 estimates
                 var percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx+well_idx));
                 if (percentage_difference < 0){
@@ -383,12 +366,6 @@ Template.answer1.onRendered(function () {
                     // set value
                     $("#slider"+slider_idx+well_idx+"comp").text("+"+Number(percentage_difference).toFixed(2)+"%");
                 }
-                //display min, cur and max values
-                /*
-                $("#slider"+slider_idx+well_idx+"min").text("$"+(current_question["slider"+slider_idx+"1"]- Math.sqrt(radius)*1.25).toFixed(2)+"B");
-                $("#slider"+slider_idx+well_idx+"cur").text("$"+(current_question["slider"+slider_idx+"1"]).toFixed(2)+"B");
-                $("#slider"+slider_idx+well_idx+"max").text("$"+(current_question["slider"+slider_idx+"1"]+ Math.sqrt(radius)*1.25).toFixed(2)+"B");
-                */
                 well_idx ++;
             }
             slider_idx++;
