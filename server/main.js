@@ -202,11 +202,22 @@ Meteor.methods({
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
                 if (next_question == 0 || next_question == 3){
                     var current_question = Questions.findOne({"question_ID": next_question});
-                    current_slider_values = {};
+                    var db_storage = {};
+                    var total_money_spent = 0;
                     for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-                        current_slider_values['initial_slider'+slider_idx] = current_question['slider'+slider_idx];
+                        db_storage['initial_slider'+slider_idx] = current_question['slider'+slider_idx];
+                        if (slider_idx != 3) {
+                            // add everything but taxes
+                            total_money_spent += current_question['slider' + slider_idx];
+                        } else {
+                            // subtract the taxes
+                            total_money_spent -= current_question['slider'+slider_idx];
+                        }
                     }
-                    Answers.update({experiment_id: experiment_id_value}, {$set: current_slider_values}, {upsert: true, multi: true});
+                    //compute the deficit
+                    db_storage['initial_deficit'] = total_money_spent + 316;
+                    //store everything
+                    Answers.update({experiment_id: experiment_id_value}, {$set: db_storage}, {upsert: true, multi: true});
 
                 } else if (next_question == 1){
                     //vector generating function
