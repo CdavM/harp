@@ -173,6 +173,90 @@ Template.answer1.onRendered(function () {
         }
         update_deficit();
     };
+    update_slider_mech31 = function (ev, val, update_slider_flag) {
+        // the vars below are global and declared once the page is rendered!
+        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+        var radius = curr_experiment.radius;
+        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+        if (!update_slider_flag)
+            update_slider_flag = false;
+        var radius_sum = 0;
+        var slider_idx_counter = 0;
+        while (slider_idx_counter < 4){
+            var curr_slider = "slider"+slider_idx_counter.toString();
+            var curr_slider_value = Session.get(curr_slider);
+            if (isNaN(curr_slider_value)){
+                sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
+                return;
+            }
+            radius_sum = radius_sum + Math.abs(curr_slider_value - current_question[curr_slider]);
+            slider_idx_counter ++;
+        }
+        //now subtract the radius for the current slider from radius sum
+        radius_sum -= Math.abs(Session.get(ev.target.id)-current_question[ev.target.id]);
+        //now see if new radius sum is bigger than radius
+        if (radius_sum + Math.abs(val-current_question[ev.target.id]) > radius) {
+            //decrease the val until we can do it
+            var rad_difference = Math.abs(radius-radius_sum);
+            if (val > current_question[ev.target.id]){
+                val = current_question[ev.target.id] + rad_difference;
+            } else {
+                val = current_question[ev.target.id] - rad_difference;
+            }
+            update_slider_flag = true;
+            $("div").mouseup(); //release the mouse
+        }
+        if (isNaN(val)){
+            sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
+            return;
+        }
+        ev.target.value = round(val, 2); // updates the textbox
+        Session.set(ev.target.id, Number(val));
+        var radius_dif = Math.abs(radius - radius_sum);
+        radius_dif -= Math.abs(val-current_question[ev.target.id]);
+        radius_dif = radius_dif + 0.0001; //laplace smoothing
+        var credits_percentage = 100*radius_dif/radius;
+        if (isNaN(credits_percentage)){
+            credits_percentage = 0;
+        }
+        $("#creditsleft").text("Credits left: " + round(credits_percentage, 1));
+        if (update_slider_flag){
+            sliders[ev.target.id].val((parseInt(Number(val)*100)/100).toFixed(2));
+        }
+        //update stacked bars
+        var slider_idx_counter = 0;
+        var curr_slider_total_width = 0;
+        var slider_laplace_smoothing = true;
+        while (slider_idx_counter < 4){
+            var curr_slider = "slider"+slider_idx_counter.toString();
+            var curr_slider_value = Session.get(curr_slider);
+            var curr_slider_bar = curr_slider + "bar";
+            var slider_width_fraction = Math.abs(curr_slider_value - current_question[curr_slider]) / Math.abs(radius);
+            $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.1); //laplace smoothing
+            $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));
+            curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
+            slider_idx_counter ++;
+        }
+        var percent_difference = compute_averages(Number(ev.target.id.substr(ev.target.id.length-1)), val);
+        if (percent_difference < 0){
+            //red background
+            $("#"+ev.target.id+"comp").css('color','red');
+            // set value
+            $("#"+ev.target.id+"comp").text(round(percent_difference, 2)+"%");
+        } else {
+            //green background
+            $("#"+ev.target.id+"comp").css('color','green');
+            // set value
+            $("#"+ev.target.id+"comp").text("+"+round(percent_difference, 2)+"%");
+        }
+        var total_money_spent = 0;
+        slider_idx_counter = 0;
+        while (slider_idx_counter < 4){
+            total_money_spent += Session.get("slider"+slider_idx_counter);
+            slider_idx_counter++;
+        }
+        update_deficit();
+    };
     update_slider_mech11 = function(ev, val){
         eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
         $("div").mouseup(); //release the mouse
@@ -295,6 +379,7 @@ Template.answer1.onRendered(function () {
     };
     update_slider = _.throttle(update_slider1, 100);
     update_weight_slider = _.throttle(update_weight_slider1, 100);
+    update_slider_mech3 = _.throttle(update_slider_mech31, 100);
     update_slider_mech2 = _.throttle(update_slider_mech21, 100);
     update_slider_mech1 = _.throttle(update_slider_mech11, 100);
 
@@ -324,6 +409,47 @@ Template.answer1.onRendered(function () {
                     // round off values on 'change' event
                     try {
                         update_slider(ev, val);
+                    } catch (TypeError){
+                    }
+                });
+                $("#slider"+slider_idx+"min").text("$"+round(slider_min,2)+"B");
+                $("#slider"+slider_idx+"cur").text("$"+round(slider_current,2)+"B");
+                $("#slider"+slider_idx+"max").text("$"+round(slider_max,2)+"B");
+            }
+        }
+        //update comparisons
+        update_comps();
+        //update the deficit text
+        update_deficit();
+        //initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+
+    }else if (curr_experiment.current_question == 3) {
+        sliders = {};
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
+            var slider_current = 0;
+            if (current_question['slider'+slider_idx]){
+                slider_current = Number(current_question['slider'+slider_idx]);
+                var slider_min = slider_current - (radius)*1.25;
+                var slider_max = slider_current + (radius)*1.25;
+                Session.set('slider'+slider_idx, slider_current);
+                sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
+                    start: slider_current,
+                    connect: "lower",
+                    range: {
+                        'min': slider_min,
+                        'max': slider_max
+                    }
+                }).on('slide', function (ev, val) {
+                    // set real values on 'slide' event
+                    try {
+                        update_slider_mech3(ev, val);
+                    } catch (TypeError){
+                    }
+                }).on('change', function (ev, val) {
+                    // round off values on 'change' event
+                    try {
+                        update_slider_mech3(ev, val);
                     } catch (TypeError){
                     }
                 });
