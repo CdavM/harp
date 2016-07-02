@@ -304,13 +304,13 @@ Template.answer1.onRendered(function () {
         if (!update_slider_flag)
             var update_slider_flag = false;
         if (isNaN(val)){
-            eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
+            weight_sliders[ev.target.id].val(Number(Session.get(ev.target.id)).toFixed(2));
             return;
         }
-        ev.target.value = Number(val).toFixed(2); // updates the textbox
+        ev.target.value = round(val, 2); // updates the textbox
         Session.set(ev.target.id, Number(val));
         if (update_slider_flag){
-            eval(ev.target.id).val(Number(val).toFixed(2));
+            weight_sliders[ev.target.id].val(Number(val).toFixed(2));
             $("div").mouseup(); //release the mouse
         }
     };
@@ -617,94 +617,34 @@ Template.answer1.onRendered(function () {
             }
         });
         //WEIGHT SLIDERS
-        Session.set('slider0weight', 5);
-        Session.set('slider1weight', 5);
-        Session.set('slider2weight', 5);
-        Session.set('slider3weight', 5);
-        $("p#sliderwmin").text(0);
-        $("p#sliderwcur").text(5);
-        $("p#sliderwmax").text(10);
 
-        slider0w = this.$("div#slider0weight").noUiSlider({
-            start: 5,
-            connect: "lower",
-            range: {
-                'min': 0,
-                'max': 10
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_weight_slider(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_weight_slider(ev, val);
-            } catch (TypeError){
-            }
-        });
-        slider1w = this.$("div#slider1weight").noUiSlider({
-            start: 5,
-            connect: "lower",
-            range: {
-                'min': 0,
-                'max': 10
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_weight_slider(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_weight_slider(ev, val);
-            } catch (TypeError){
-            }
-        });
-        slider2w = this.$("div#slider2weight").noUiSlider({
-            start: 5,
-            connect: "lower",
-            range: {
-                'min': 0,
-                'max': 10
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_weight_slider(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_weight_slider(ev, val);
-            } catch (TypeError){
-            }
-        });
-        slider3w = this.$("div#slider3weight").noUiSlider({
-            start: 5,
-            connect: "lower",
-            range: {
-                'min': 0,
-                'max': 10
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_weight_slider(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_weight_slider(ev, val);
-            } catch (TypeError){
-            }
-        });
+        weight_sliders = {};
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+            Session.set('slider'+slider_idx+"weight", 5);
+            weight_sliders['slider' + slider_idx] = this.$("div#slider" + slider_idx + "weight").noUiSlider({
+                start: 5,
+                connect: "lower",
+                range: {
+                    'min': 0,
+                    'max': 10
+                }
+            }).on('slide', function (ev, val) {
+                // set real values on 'slide' event
+                try {
+                    update_weight_slider(ev, val);
+                } catch (TypeError) {
+                }
+            }).on('change', function (ev, val) {
+                // round off values on 'change' event
+                try {
+                    update_weight_slider(ev, val);
+                } catch (TypeError) {
+                }
+            });
+            $("p#slider"+slider_idx+"weightmin").text(0);
+            $("p#slider"+slider_idx+"weightcur").text(5);
+            $("p#slider"+slider_idx+"weightmax").text(10);
+        }
         //update comps
         update_comps();
         //update the deficit text

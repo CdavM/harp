@@ -258,6 +258,19 @@
     <br style="clear: both;">
 </template>
 
+<template name="mech2_weight_slider">
+    <p id="{{this.label}}" style="float:left; margin-left: 7%;">{{this.title}}</p>
+    <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="float:left; margin-left: 10px;"></span>
+    <div style="clear: both;">
+        <div id="{{this.name}}" style="height: 20px; width: 83%; margin-left: 7%; float: left; background: {{this.color}}"></div>
+        <form name="{{this.text}}">
+            <textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea><br>
+        </form>
+        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="{{this.min}}" style="display: inline; float: left;">min</p> <p id="{{this.cur}}" style="display: inline;"> curr</p> <p id="{{this.max}}" style="display: inline; float: right;">max</p> </div>
+    </div>
+    <br style="clear: both;">
+</template>
+
 <template name="mech3_slider">
      <p id="{{this.label}}" style="float:left; margin-left: 7%;">{{this.title}}</p>
     <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="float:left; margin-left: 10px;"></span>
@@ -292,34 +305,10 @@
 
         <p align = "left"> On the following sliders, please indicate how much you care about each budget value being close to the values you proposed on the last page on a scale of 0 to 10. That is, if your total influence on the budget was limited, which budget items would you choose to influence? For example, if you care about all the items equally, then you could give a score of 10 each, whereas if you care more about defense spending and not so much about health-care spending, you could give a score of 10 to defense and 2 to health-care spending. </p>
 
-        <p id="slider0label" style="float:left; clear:both">National Defense</p>
-        <div id="slider0weight" style="height: 20px; width: 83%; float: left; background: rgb(51, 122, 183); clear: both; margin-left: 7%;"></div>
-        <form name="slider0w_text">
-            <textarea id="slider0w" style="height:30px;width:7%;min-width: 80px; float:right">{{slider0w_value}}</textarea> <br>
-        </form>
-        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="sliderwmin" style="display: inline; float: left;">min</p> <p id="sliderwcur" style="display: inline;"> curr</p> <p id="sliderwmax" style="display: inline;float: right;">max</p> </div>
-
-        <p style="float:left; clear:both">Medicare &amp; Health</p>
-        <div id="slider1weight" style="height: 20px; width: 83%; float: left; background: rgb(92, 184, 92); clear: both; margin-left: 7%;"></div>
-        <form name="slider1w_text">
-            <textarea id="slider1w" style="height:30px;width:7%;min-width: 80px; float:right">{{slider1w_value}}</textarea> <br>
-        </form>
-        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="sliderwmin" style="display: inline; float: left;">min</p> <p id="sliderwcur" style="display: inline;"> curr</p> <p id="sliderwmax" style="display: inline;float: right;">max</p> </div>
-
-        <p style="float:left; clear:both">Transportation &amp; Science</p>
-        <div id="slider2weight" style="height: 20px; width: 83%; float: left; background: rgb(240, 173, 78); clear: both; margin-left: 7%;"></div>
-        <form name="slider2w_text">
-            <textarea id="slider2w" style="height:30px;width:7%;min-width: 80px; float:right">{{slider2w_value}}</textarea> <br>
-        </form>
-        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="sliderwmin" style="display: inline; float: left;">min</p> <p id="sliderwcur" style="display: inline;"> curr</p> <p id="sliderwmax" style="display: inline;float: right;">max</p> </div>
-
-
-        <p style="float:left; clear:both">Individual Income Tax</p>
-        <div id="slider3weight" style="height: 20px; width: 83%; float: left; background: rgb(217, 83, 79); clear: both; margin-left: 7%;"></div>
-        <form name="slider3w_text">
-            <textarea id="slider3w" style="height:30px;width:7%;min-width: 80px; float:right">{{slider3w_value}}</textarea> <br>
-        </form>
-        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="sliderwmin" style="display: inline; float: left;">min</p> <p id="sliderwcur" style="display: inline;"> curr</p> <p id="sliderwmax" style="display: inline;float: right;">max</p> </div>
+        {{> mech2_weight_slider (slider_names "slider0weight" "blue" "National Defense")}}
+        {{> mech2_weight_slider (slider_names "slider1weight" "green" "Medicare & Health")}}
+        {{> mech2_weight_slider (slider_names "slider2weight" "orange" "Transportation & Science")}}
+        {{> mech2_weight_slider (slider_names "slider3weight" "red" "Individual Income Tax")}}
 
     </h3>
 </template>
