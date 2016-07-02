@@ -107,18 +107,37 @@ Meteor.methods({
         answers_value[current_question][current_answer] = post.answer;
 
         var fields_to_be_updated = {};
+        var total_money_spent = 0;
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             if (post.answer['slider' + slider_idx]){
                 fields_to_be_updated['slider'+slider_idx] = Number(post.answer['slider' + slider_idx][0]);
+                if (slider_idx == 3) {
+                    total_money_spent -= Number(post.answer['slider' + slider_idx][0]);
+                } else {
+                    total_money_spent += Number(post.answer['slider' + slider_idx][0]);
+                }
+                console.log("total money spent is " + total_money_spent);
             }
             if (post.answer['option']){
-                var option_selected = post.answer['option'][0]
+                // only for the comparison mechanism.
+                var option_selected = post.answer['option'][0];
                 var question_entry = Questions.findOne({"question_ID": current_question});
                 fields_to_be_updated['slider'+slider_idx+'1'] = question_entry['slider'+slider_idx+option_selected];
+                if (slider_idx == 3) {
+                    // subtract taxes
+                    total_money_spent -= question_entry['slider'+slider_idx+option_selected];
+                } else {
+                    // add everything else.
+                    total_money_spent += question_entry['slider'+slider_idx+option_selected];
+                }
             }
         }
-        if (Object.keys(fields_to_be_updated).length) {
+        if (Object.keys(fields_to_be_updated).length && current_question && current_question != 2) {
             Questions.update({"question_ID": current_question}, {$set: fields_to_be_updated}, {multi: true});
+        }
+        // add the deficit term
+        if (current_question != 2 && current_answer == 1) {
+            answers_value[current_question][current_answer]['deficit'] = total_money_spent + 316;
         }
         //Add entry to Answers
         Answers.update({worker_ID: post.worker_ID}, {$set: {answer1: answers_value}}, {upsert: true});
