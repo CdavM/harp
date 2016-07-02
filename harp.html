@@ -316,6 +316,14 @@
 
 <template name="answer0">
     <div class="center">
+
+        {{#if show_timer}}
+            {{#if waiting}}
+            {{else}}
+                <p class="center"> Time remaining: {{time_remaining}} seconds</p>
+            {{/if}}
+        {{/if}}
+
         {{>Template.dynamic template=current_question_text}}
         <h4>
             <br>
