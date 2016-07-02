@@ -116,7 +116,6 @@ Meteor.methods({
                 } else {
                     total_money_spent += Number(post.answer['slider' + slider_idx][0]);
                 }
-                console.log("total money spent is " + total_money_spent);
             }
             if (post.answer['option']){
                 // only for the comparison mechanism.
@@ -192,8 +191,7 @@ Meteor.methods({
                 } while (Questions.findOne({"question_ID": next_question}).busy == true);
             }
             if (curr_experiment.current_question != null){
-                //remove the busy flag.
-                console.log("removing busy flag from " + curr_experiment.current_question);
+
                 //find number of previous participants
             }
             // look at the number of participants who were assigned here previously.
@@ -209,11 +207,11 @@ Meteor.methods({
             } else {
                 //store result
                 counters[experiment_id_value]['random_counter'][counters[experiment_id_value]['random_counter'].length]= next_question;
-                // only questions 0 and 1 can be busy!
-                if (next_question < 2){
+                // only questions 0, 1 and 3 can be busy!
+                if (next_question != 2){
                     //set the busy flag.
                     console.log("setting busy flag to " + next_question);
-                    //Questions.update({"question_ID": next_question}, {$set: {"busy": true}}); TODO: busy flag temporarily removed
+                    Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
                 }
                 var radius_fn = function (previous_participants) {
                     return round(100/(previous_participants+1), 1); //TODO update radius function
@@ -316,6 +314,12 @@ Meteor.methods({
             var next_answer_form = curr_answer_form + 1;
             Answers.update({experiment_id: experiment_id_value}, {$set: {current_answer: next_answer_form}}, {upsert:true, multi: true});
             counters[experiment_id_value][curr_experiment.current_question] = 0;
+            //potentially removes the busy flag
+            if (curr_answer_form == 1){
+                //remove the busy flag.
+                console.log("removing busy flag from " + curr_experiment.current_question);
+                Questions.update({"question_ID": curr_experiment.current_question}, {$set:{"busy":false}});
+            }
         } else {
             //updates the question
 
