@@ -478,9 +478,10 @@ Template.answer1.onRendered(function () {
                 var current_width = relative_difference * 0.3 + 0.5;
                 $("#slider"+slider_idx+well_idx).width(current_width*total_width);
                 //display chosen value
-                $("#slider"+slider_idx+well_idx).text("$"+current_question["slider"+slider_idx+well_idx]+"B");
+                $("#slider"+slider_idx+well_idx).text("$"+round(current_question["slider"+slider_idx+well_idx],2)+"B");
                 //display comparison to 2016 estimates
-                var percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx+well_idx));
+                Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx+well_idx]);
+                var percentage_difference = compute_averages(slider_idx, current_question["slider"+slider_idx+well_idx]);
                 if (percentage_difference < 0){
                     //red background
                     $("#slider"+slider_idx+well_idx+"comp").css('color','red');
