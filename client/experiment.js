@@ -360,12 +360,12 @@ Template.answer1.onRendered(function () {
                     //red background
                     $("#slider"+slider_idx+well_idx+"comp").css('color','red');
                     // set value
-                    $("#slider"+slider_idx+well_idx+"comp").text(Number(percentage_difference).toFixed(2)+"%");
+                    $("#slider"+slider_idx+well_idx+"comp").text(round(percentage_difference, 2)+"%");
                 } else {
                     //green background
                     $("#slider"+slider_idx+well_idx+"comp").css('color','green');
                     // set value
-                    $("#slider"+slider_idx+well_idx+"comp").text("+"+Number(percentage_difference).toFixed(2)+"%");
+                    $("#slider"+slider_idx+well_idx+"comp").text("+"+round(percentage_difference, 2)+"%");
                 }
                 well_idx ++;
             }
@@ -375,6 +375,8 @@ Template.answer1.onRendered(function () {
         for (well_idx = 0; well_idx < 3; well_idx++){
             update_deficit(well_idx);
         }
+        $('[data-toggle="tooltip"]').tooltip();
+
     } else if (curr_experiment.current_question == 2){
         //mechanism 2 specific js
         var slider0_current = 0;
