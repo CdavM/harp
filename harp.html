@@ -81,7 +81,7 @@
 
 <template name="mechanism0">
     <h3>
-        <p class="center"> Current Credit Allocation</p>
+        <p class="center">Current Credit Allocation</p>
         <div>
             <div style="float:right;"><p id = "creditsleft">Credits left: 100</p></div>
             <div id="budgetbar" class="progress">
@@ -114,7 +114,41 @@
         {{> deficit_template (deficit_names)}}
     </h3>
 </template>
+<template name="mechanism3">
+    <h3>
+        <p class="center">Current Credit Allocation</p>
+        <div>
+            <div style="float:right;"><p id = "creditsleft">Credits left: 100</p></div>
+            <div id="budgetbar" class="progress">
+                <div id="slider0bar" class="progress-bar progress-bar-primary" style="width: 0%; color: rgb(245,245,245);"></div>
+                <div id="slider1bar" class="progress-bar progress-bar-success" style="width: 0%; color: rgb(245,245,245);"></div>
+                <div id="slider2bar" class="progress-bar progress-bar-warning" style="width: 0%; color: rgb(245,245,245);"></div>
+                <div id="slider3bar" class="progress-bar progress-bar-danger" style="width: 0%; color: rgb(245,245,245);"></div>
+            </div>
+        </div>
 
+        <div>
+            {{#if show_timer}}
+                {{#if waiting}}
+                {{else}}
+                    <p class="center"> Time remaining: {{time_remaining}} seconds</p>
+                {{/if}}
+            {{/if}}
+        </div>
+
+        <br>
+        <p style="clear: both;float: left;"> Change from </p> <br>
+        <p style="clear: both;float: left;"> 2016 estimate</p>
+        <p style="float: right;">Chosen value</p>
+        <hr style="clear: both">
+        {{> mech0_slider (mech2_slider_names "slider0" "National Defense" "blue")}}
+        {{> mech0_slider (mech2_slider_names "slider1" "Medicare & Health" "green")}}
+        {{> mech0_slider (mech2_slider_names "slider2" "Transportation & Science" "orange")}}
+        {{> mech0_slider (mech2_slider_names "slider3" "Individual Income Tax" "red")}}
+        <br style="clear: both">
+        {{> deficit_template (deficit_names)}}
+    </h3>
+</template>
 <template name="mechanism1">
 
         <div>
@@ -222,7 +256,19 @@
     </div>
     <br style="clear: both;">
 </template>
-
+<template name="mech3_slider">
+     <p id="{{this.label}}" style="float:left; margin-left: 7%;">{{this.title}}</p>
+    <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="float:left; margin-left: 10px;"></span>
+    <div style="clear: both;">
+        <p id="{{this.comp}}" style="float: left; width: 7%;"></p>
+        <div id="{{this.name}}" style="height: 20px; width: 83%; float: left; background: {{this.color}}"></div>
+        <form name="{{this.name}}">
+            $<textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea>B<br>
+        </form>
+        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="{{this.min}}" style="display: inline; float: left;">min</p> <p id="{{this.cur}}" style="display: inline;"> curr</p> <p id="{{this.max}}" style="display: inline; float: right;">max</p> </div>
+    </div>
+    <br style="clear: both;">
+</template>
 <template name="mechanism2">
     <h3>
         <div>
@@ -277,6 +323,17 @@
 </template>
 
 <template name="answer0">
+    <div class="center">
+        {{>Template.dynamic template=current_question_text}}
+        <h4>
+            <br>
+            Please click 'NEXT' once you read these instructions.
+            <br>
+        </h4>
+        <input type="button" value="NEXT" id="answer_submission" class="btn btn-default">
+    </div>
+</template>
+<template name="answer3">
     <div class="center">
         {{>Template.dynamic template=current_question_text}}
         <h4>
@@ -350,11 +407,23 @@
 			<br><br>
 			Of course, you may not have enough credits to make all the changes you wish to make, and so you’ll have to prioritize the changes you care about the most. Furthermore, note that as a consequence of the squaring rule, it is cheaper to move two items 5B each, for example, than it is to move one item 10B.
             <br><br> You may think that you can make only a very small difference in the budget. However, when many people's opinions are aggregated, a large change can be made!
-	        </p>
             <br><br> Note that the spending figures are in Billions of dollars.
+            </p>
+
     </h4>
 </template>
-
+<template name="question3text">
+    <h4>
+        <p align = "left">
+			In the next page, indicate your preferences regarding the federal budget. You'll see a budget based on what other people who have answered this survey have preferred. You’ll be allowed to modify the budget we show you to better match your preferences. We’ll also show you the change from how much the goverment is budgeted to spend in 2016 on the left-hand side for your reference.
+			<br><br>
+			You won’t be allowed to arbitrarily modify the budget that others have agreed upon, however. We’ll give you a fixed quota of ‘movement credits.’  To increase/decrease the budget from what others have agreed, you’ll have to spend these credits. 
+			<br><br>
+			Of course, you may not have enough credits to make all the changes you wish to make, and so you’ll have to prioritize the changes you care about the most. You may think that you can make only a very small difference in the budget. However, when many people's opinions are aggregated, a large change can be made!
+            <br><br> Note that the spending figures are in Billions of dollars.
+            </p>
+    </h4>
+</template>
 <template name="question1text">
     <h4>
         <p align = "left">
