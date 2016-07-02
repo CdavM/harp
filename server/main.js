@@ -208,7 +208,7 @@ Meteor.methods({
                         db_storage['initial_slider'+slider_idx] = current_question['slider'+slider_idx];
                         if (slider_idx != 3) {
                             // add everything but taxes
-                            total_money_spent += current_question['slider' + slider_idx];
+                            total_money_spent += current_question['slider'+slider_idx];
                         } else {
                             // subtract the taxes
                             total_money_spent -= current_question['slider'+slider_idx];
