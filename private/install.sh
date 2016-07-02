@@ -45,14 +45,14 @@ echo "Checking for mongodb-org-tools"
 if type mongoexport > /dev/null; then
   echo "mongodb-org-tools found"
 else
-  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
-  echo "deb http://repo.mongodb.org/apt/debian "$(lsb_release -sc)"/mongodb-org/3.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+  echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
   sudo apt-get update
   sudo apt-get install -y mongodb-org
 
 echo "Copying files"
 git clone https://github.com/CdavM/harp/ .
-echo "Installation done. Please run the command 'meteor --settings settings.json run' to start"
+echo "Installation done. Please run the command 'sudo meteor --settings settings.json run --port 80' to start"
 echo "Would you like us to run the command for you? (y/n)"
 read runcommand
 if (runcommand == 'y'); then
