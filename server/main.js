@@ -200,15 +200,7 @@ Meteor.methods({
                     return round(100/(previous_participants+1), 1); //TODO update radius function
                 };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
-                if (next_question == 0){
-                    var current_question = Questions.findOne({"question_ID": next_question});
-                    current_slider_values = {};
-                    for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-                        current_slider_values['initial_slider'+slider_idx] = current_question['slider'+slider_idx];
-                    }
-                    Answers.update({experiment_id: experiment_id_value}, {$set: current_slider_values}, {upsert: true, multi: true});
-
-                } else if (next_question == 3){
+                if (next_question == 0 || next_question == 3){
                     var current_question = Questions.findOne({"question_ID": next_question});
                     current_slider_values = {};
                     for (var slider_idx = 0; slider_idx < 4; slider_idx++){
