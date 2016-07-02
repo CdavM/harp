@@ -189,15 +189,15 @@ Template.answer1.onRendered(function () {
                 sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
                 return;
             }
-            radius_sum = radius_sum + abs(curr_slider_value - current_question[curr_slider]);
+            radius_sum = radius_sum + Math.abs(curr_slider_value - current_question[curr_slider]);
             slider_idx_counter ++;
         }
         //now subtract the radius for the current slider from radius sum
-        radius_sum -= abs(Session.get(ev.target.id)-current_question[ev.target.id]);
+        radius_sum -= Math.abs(Session.get(ev.target.id)-current_question[ev.target.id]);
         //now see if new radius sum is bigger than radius
-        if (radius_sum + abs(val-current_question[ev.target.id]) > radius) {
+        if (radius_sum + Math.abs(val-current_question[ev.target.id]) > radius) {
             //decrease the val until we can do it
-            var rad_difference = abs(radius-radius_sum);
+            var rad_difference = Math.abs(radius-radius_sum);
             if (val > current_question[ev.target.id]){
                 val = current_question[ev.target.id] + rad_difference;
             } else {
@@ -212,8 +212,8 @@ Template.answer1.onRendered(function () {
         }
         ev.target.value = round(val, 2); // updates the textbox
         Session.set(ev.target.id, Number(val));
-        var radius_dif = abs(radius - radius_sum);
-        radius_dif -= abs(val-current_question[ev.target.id]);
+        var radius_dif = Math.abs(radius - radius_sum);
+        radius_dif -= Math.abs(val-current_question[ev.target.id]);
         radius_dif = radius_dif + 0.0001; //laplace smoothing
         var credits_percentage = 100*radius_dif/radius;
         if (isNaN(credits_percentage)){
@@ -231,7 +231,7 @@ Template.answer1.onRendered(function () {
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
-            var slider_width_fraction = abs(curr_slider_value - current_question[curr_slider]) / abs(radius);
+            var slider_width_fraction = Math.abs(curr_slider_value - current_question[curr_slider]) / Math.abs(radius);
             $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.1); //laplace smoothing
             $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));
             curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();

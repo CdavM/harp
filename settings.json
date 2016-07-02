@@ -6,15 +6,14 @@
     {"question_ID":2, "text":"mechanism2", "busy": false, "previous_participants": 0, "slider0": 541, "slider1": 1004, "slider2": 149, "slider3": 1460},
     {"question_ID":3, "text":"mechanism3", "busy": false, "previous_participants": 0, "slider0": 541, "slider1": 1004, "slider2": 149, "slider3": 1460}
   ],
-  " ": true,
+  "randomize_questions": true,
   "questions_subset_size" : 1,
   "payment_function": "payment123",
   "public": {
     "answer_forms": [
       {"answer_ID":0, "template": "answer0", "timer": 0},
       {"answer_ID":1, "template": "answer1", "timer": 0},
-      {"answer_ID":2, "template": "answer2", "timer": 0},
-      {"answer_ID":3, "template": "answer3", "timer": 0}
+      {"answer_ID":2, "template": "answer2", "timer": 0}
     ],
     "show_payment": false,
     "show_timer": true,
