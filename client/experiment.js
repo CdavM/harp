@@ -619,7 +619,7 @@ Template.answer1.onRendered(function () {
         //WEIGHT SLIDERS
 
         weight_sliders = {};
-        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+        for (var slider_idx = 0; slider_idx < 5; slider_idx++) {
             Session.set('slider'+slider_idx+"weight", 5);
             weight_sliders['slider' + slider_idx] = this.$("div#slider" + slider_idx + "weight").noUiSlider({
                 start: 5,

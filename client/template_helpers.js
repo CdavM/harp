@@ -91,6 +91,8 @@ Template.registerHelper('slider_names', function(slider_name_arg, color_arg, sli
         case "Individual Income Tax":
             slider_object.tooltip = "The amount the federal government collects through individual income taxes. Assume that everyone’s taxes (including yours!) change proportionally to the amount you have increased or decreased. This amount is estimated to be $1,460 Billion ($1.46 Trillion) in 2016.";
             break;
+        case "Deficit":
+            slider_object.tooltip = "The excess of all government expenditures over revenues."
     }
     return slider_object;
 });
