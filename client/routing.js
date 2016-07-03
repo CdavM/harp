@@ -3,8 +3,11 @@ if (Session.equals('worker_ID_value', -1) || ! Session.get('worker_ID_value')){
   //if no worker_ID found redirect back to starting page
   //worker_ID randomly generated for easier debugging
   Router.go('/WID='+makeid()+'&ASG='+makeid());
-  //Router.go('/end');
-  } else {
+  //Router.go('/end'); Uncomment this when not debugging anymore
+  } else if Session.get('worker_ID_value').length != 14 {
+    Router.go('/end')
+  }
+  else {
     this.render('experiment');
   }
 });
