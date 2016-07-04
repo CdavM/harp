@@ -131,7 +131,7 @@ Meteor.methods({
                 }
             }
         }
-        if (Object.keys(fields_to_be_updated).length && current_question && current_question != 2) {
+        if (Object.keys(fields_to_be_updated).length && typeof(current_question) == "number" && current_question != 2) {
             Questions.update({"question_ID": current_question}, {$set: fields_to_be_updated}, {multi: true});
         }
         // add the deficit term
@@ -196,7 +196,9 @@ Meteor.methods({
             }
             // look at the number of participants who were assigned here previously.
             // this number does NOT include the participant just being assigned.
-            var number_of_previous_participants = Answers.find({"current_question": next_question}).count();
+            var answer_field_query = {};
+            answer_field_query["answer1." + next_question+".1"] = {"$exists": true};
+            var number_of_previous_participants = Answers.find(answer_field_query).count();
             Questions.update({"question_ID": next_question}, {$set:{"busy":false, "previous_participants": number_of_previous_participants}});
             Answers.update({"experiment_id": experiment_id_value}, {$set:{"num_of_previous_participants": number_of_previous_participants}}, {upsert: true, multi: true});
             if (counters[experiment_id_value]['random_counter'].length == selection_size){
@@ -214,7 +216,7 @@ Meteor.methods({
                     Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
                 }
                 var radius_fn = function (previous_participants) {
-                    return round(100/(previous_participants+1), 1); //TODO update radius function
+                    return 100/(previous_participants+1); //TODO update radius function
                 };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
                 if (next_question == 0 || next_question == 3){
