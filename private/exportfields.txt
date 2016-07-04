@@ -8,6 +8,12 @@ experiment_finished
 begin_experiment
 num_of_previous_participants
 current_answer
+initial_slider0
+initial_slider1
+initial_slider2
+initial_slider3
+initial_deficit
+timer
 radius
 answer1.0.0
 answer1.0.1
@@ -21,3 +27,5 @@ answer1.2.2
 answer1.3.0
 answer1.3.1
 answer1.3.2
+answer1.question_order
+answer1.payments
