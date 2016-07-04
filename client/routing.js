@@ -4,7 +4,7 @@ if (Session.equals('worker_ID_value', -1) || ! Session.get('worker_ID_value')){
   //worker_ID randomly generated for easier debugging
   Router.go('/WID='+makeid()+'&ASG='+makeid());
   //Router.go('/end'); Uncomment this when not debugging anymore
-  } else if Session.get('worker_ID_value').length != 14 {
+  } else if (Session.get('worker_ID_value').length != 14 && Session.get('worker_ID_value').length != 13) {
     Router.go('/end')
   }
   else {
