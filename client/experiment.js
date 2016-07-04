@@ -330,7 +330,7 @@ Template.answer1.onRendered(function () {
     };
     var update_deficit = function(well_idx){
         if (typeof(well_idx) == "undefined"){
-            var well_idx = "";
+            well_idx = "";
         }
         var total_money_spent = 0;
         for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
@@ -424,7 +424,7 @@ Template.answer1.onRendered(function () {
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
 
-    }else if (curr_experiment.current_question == 3) {
+    } else if (curr_experiment.current_question == 3) {
         sliders = {};
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             var slider_current = 0;
@@ -476,7 +476,7 @@ Template.answer1.onRendered(function () {
                 var value_difference = (current_question["slider"+slider_idx+well_idx]-current_question["slider"+slider_idx+"1"]);
                 var relative_difference = value_difference/radius;
                 var current_width = relative_difference * 0.3 + 0.5;
-                $("#slider"+slider_idx+well_idx).width(current_width*total_width);
+                $("#slider"+slider_idx+well_idx).width(Math.max(54, current_width*total_width));
                 //display chosen value
                 $("#slider"+slider_idx+well_idx).text("$"+round(current_question["slider"+slider_idx+well_idx],2)+"B");
                 //display comparison to 2016 estimates
@@ -497,6 +497,41 @@ Template.answer1.onRendered(function () {
             }
             slider_idx++;
             well_idx = 0;
+        }
+        var compute_deficit = function (well_idx) {
+            if (typeof(well_idx) == "undefined"){
+                well_idx = "";
+            }
+            var total_money_spent = 0;
+            for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
+                total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
+            }
+            total_money_spent -= Session.get("slider"+3+well_idx); // decreases by amt of income tax collected
+            var deficit_value = total_money_spent + 316; //TODO: update with real numbers
+            return deficit_value;
+        };
+        //initialize the deficit sliders
+        var initial_deficit = compute_deficit(1);
+        for (var well_idx = 0; well_idx < 3; well_idx++){
+            var current_deficit = compute_deficit(well_idx);
+            var deficit_difference = current_deficit - initial_deficit;
+            var deficit_scaled_difference = deficit_difference / (2*radius);
+            var total_width = $(".progress").width();
+            var current_width = deficit_scaled_difference * 0.5 + 0.5;
+            $("#slider"+4+well_idx).width(Math.max(54, current_width*total_width));
+            $("#slider"+4+well_idx).text("$"+round(current_deficit, 2) +"B");
+            var deficit_percentage_change = (current_deficit - 550) / 5.5;
+            if (deficit_percentage_change < 0){
+                //red background
+                $("#slider"+4+well_idx+"comp").css('color','red');
+                // set value
+                $("#slider"+4+well_idx+"comp").text(round(deficit_percentage_change, 2)+"%");
+            } else {
+                //green background
+                $("#slider"+4+well_idx+"comp").css('color','green');
+                // set value
+                $("#slider"+4+well_idx+"comp").text("+"+round(deficit_percentage_change, 2)+"%");
+            }
         }
         for (well_idx = 0; well_idx < 3; well_idx++){
             update_deficit(well_idx);
