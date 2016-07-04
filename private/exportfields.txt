@@ -29,3 +29,15 @@ answer1.3.1
 answer1.3.2
 answer1.question_order
 answer1.payments
+slider00
+slider10
+slider20
+slider30
+slider01
+slider11
+slider21
+slider31
+slider02
+slider12
+slider22
+slider32
