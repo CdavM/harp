@@ -131,7 +131,7 @@ Meteor.methods({
                 }
             }
         }
-        if (Object.keys(fields_to_be_updated).length && current_question && current_question != 2) {
+        if (Object.keys(fields_to_be_updated).length && typeof(current_question) == "number" && current_question != 2) {
             Questions.update({"question_ID": current_question}, {$set: fields_to_be_updated}, {multi: true});
         }
         // add the deficit term
@@ -199,7 +199,6 @@ Meteor.methods({
             var answer_field_query = {};
             answer_field_query["answer1." + next_question+".1"] = {"$exists": true};
             var number_of_previous_participants = Answers.find(answer_field_query).count();
-            console.log("number of prev parts" + number_of_previous_participants);
             Questions.update({"question_ID": next_question}, {$set:{"busy":false, "previous_participants": number_of_previous_participants}});
             Answers.update({"experiment_id": experiment_id_value}, {$set:{"num_of_previous_participants": number_of_previous_participants}}, {upsert: true, multi: true});
             if (counters[experiment_id_value]['random_counter'].length == selection_size){
