@@ -476,7 +476,7 @@ Template.answer1.onRendered(function () {
                 var value_difference = (current_question["slider"+slider_idx+well_idx]-current_question["slider"+slider_idx+"1"]);
                 var relative_difference = value_difference/radius;
                 var current_width = relative_difference * 0.3 + 0.5;
-                $("#slider"+slider_idx+well_idx).width(Math.max(54, current_width*total_width));
+                $("#slider"+slider_idx+well_idx).width(Math.max(58, current_width*total_width));
                 //display chosen value
                 $("#slider"+slider_idx+well_idx).text("$"+round(current_question["slider"+slider_idx+well_idx],2)+"B");
                 //display comparison to 2016 estimates
@@ -518,17 +518,17 @@ Template.answer1.onRendered(function () {
             var deficit_scaled_difference = deficit_difference / (2*radius);
             var total_width = $(".progress").width();
             var current_width = deficit_scaled_difference * 0.5 + 0.5;
-            $("#slider"+4+well_idx).width(Math.max(54, current_width*total_width));
+            $("#slider"+4+well_idx).width(Math.max(58, current_width*total_width));
             $("#slider"+4+well_idx).text("$"+round(current_deficit, 2) +"B");
             var deficit_percentage_change = (current_deficit - 550) / 5.5;
             if (deficit_percentage_change < 0){
                 //red background
-                $("#slider"+4+well_idx+"comp").css('color','red');
+                $("#slider"+4+well_idx+"comp").css('color','green');
                 // set value
                 $("#slider"+4+well_idx+"comp").text(round(deficit_percentage_change, 2)+"%");
             } else {
                 //green background
-                $("#slider"+4+well_idx+"comp").css('color','green');
+                $("#slider"+4+well_idx+"comp").css('color','red');
                 // set value
                 $("#slider"+4+well_idx+"comp").text("+"+round(deficit_percentage_change, 2)+"%");
             }
