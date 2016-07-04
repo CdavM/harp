@@ -219,15 +219,15 @@
 </template>
 
 <template name="slider_head_mech1">
-    {{>mech1_slider_title "National Defense"}}
-    {{>mech1_slider_title "Medicare & Health"}}
-    {{>mech1_slider_title "Science & Transportation"}}
-    {{>mech1_slider_title "Individual Income Tax"}}
-    {{>mech1_slider_title "Deficit"}}
+    {{>mech1_slider_title (slider_names "" "" "National Defense")}}
+    {{>mech1_slider_title (slider_names "" "" "Medicare & Health")}}
+    {{>mech1_slider_title (slider_names "" "" "Transportation & Science")}}
+    {{>mech1_slider_title (slider_names "" "" "Individual Income Tax")}}
+    {{>mech1_slider_title (slider_names "" ""  "Deficit")}}
 </template>
 
 <template name="mech1_slider_title">
-    <b style="float: left; width: 230px;">{{this}}</b>
+    <b style="float: left; width: 230px;">{{this.title}}<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="margin-left: 10px;"></span> </b>
 </template>
 
 <template name="slider_template_mech1">

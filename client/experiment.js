@@ -484,12 +484,12 @@ Template.answer1.onRendered(function () {
                 var percentage_difference = compute_averages(slider_idx, current_question["slider"+slider_idx+well_idx]);
                 if (percentage_difference < 0){
                     //red background
-                    $("#slider"+slider_idx+well_idx+"comp").css('color','red');
+                    $("#slider"+slider_idx+well_idx+"comp").css('color','green');
                     // set value
                     $("#slider"+slider_idx+well_idx+"comp").text(round(percentage_difference, 2)+"%");
                 } else {
                     //green background
-                    $("#slider"+slider_idx+well_idx+"comp").css('color','green');
+                    $("#slider"+slider_idx+well_idx+"comp").css('color','red');
                     // set value
                     $("#slider"+slider_idx+well_idx+"comp").text("+"+round(percentage_difference, 2)+"%");
                 }
