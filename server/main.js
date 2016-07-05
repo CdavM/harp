@@ -96,7 +96,6 @@ Meteor.methods({
         var answers_value = {};
         var experiment_id_value = existing_entry.experiment_id;
         post.answer['time'] = new Date().getTime();
-        console.log(post);
         if (existing_entry.answer1){
             //worker has submitted some answers, retrieve them
             answers_value = existing_entry.answer1;
@@ -118,6 +117,13 @@ Meteor.methods({
                     total_money_spent -= Number(post.answer['slider' + slider_idx][0]);
                 } else {
                     total_money_spent += Number(post.answer['slider' + slider_idx][0]);
+                }
+                var slider_difference = Number(post.answer['slider' + slider_idx][0]) - existing_entry['initial_slider'+slider_idx];
+                var slider_relative_diff = slider_difference / existing_entry['radius'];
+                if (current_question == 0) {
+                    answers_value['slider' + slider_idx + "_credits"] = Math.pow(slider_relative_diff, 2);
+                } else if (current_question == 3) {
+                    answers_value['slider' + slider_idx + "_credits"] = Math.abs(slider_relative_diff);
                 }
             }
             if (post.answer['option']){
