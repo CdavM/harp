@@ -167,30 +167,30 @@
             <label class="well" style="float: left; height: 80px;">
                 <b style="height: 20px; float: left; margin-top: 10px;"> Option 1 </b>
                 <input type="radio" name="radio" value = "0" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>slider_template_mech1 (slider_names "slider00" "blue" "National Defense")}}
-                {{>slider_template_mech1 (slider_names "slider10" "green" "Medicare & Health")}}
-                {{>slider_template_mech1 (slider_names "slider20" "orange" "Science & Transportation")}}
-                {{>slider_template_mech1 (slider_names "slider30" "red" "Individual Income Tax")}}
-                {{>slider_template_mech1 (slider_names "slider40" "lightblue" "Deficit")}}
+                {{>mech1_slider (slider_names "slider00" "blue" "National Defense")}}
+                {{>mech1_slider (slider_names "slider10" "green" "Medicare & Health")}}
+                {{>mech1_slider (slider_names "slider20" "orange" "Science & Transportation")}}
+                {{>mech1_slider (slider_names "slider30" "red" "Individual Income Tax")}}
+                {{>mech1_slider (slider_names "slider40" "lightblue" "Deficit")}}
 
             </label>
             <label class="well" style="float: left; height: 80px;">
                 <b style="height: 20px; float: left; margin-top: 10px;"> Option 2 </b>
                 <input type="radio" name="radio" value = "1" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>slider_template_mech1 (slider_names "slider01" "blue" "National Defense")}}
-                {{>slider_template_mech1 (slider_names "slider11" "green" "Medicare & Health")}}
-                {{>slider_template_mech1 (slider_names "slider21" "orange" "Science & Transportation")}}
-                {{>slider_template_mech1 (slider_names "slider31" "red" "Individual Income Tax")}}
-                {{>slider_template_mech1 (slider_names "slider41" "lightblue" "Deficit")}}
+                {{>mech1_slider (slider_names "slider01" "blue" "National Defense")}}
+                {{>mech1_slider (slider_names "slider11" "green" "Medicare & Health")}}
+                {{>mech1_slider (slider_names "slider21" "orange" "Science & Transportation")}}
+                {{>mech1_slider (slider_names "slider31" "red" "Individual Income Tax")}}
+                {{>mech1_slider (slider_names "slider41" "lightblue" "Deficit")}}
             </label>
             <label class="well" style="float: left; height: 80px;">
                 <b style="height: 20px; float: left; margin-top: 10px;"> Option 3 </b>
                 <input type="radio" name="radio" value = "2" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>slider_template_mech1 (slider_names "slider02" "blue" "National Defense")}}
-                {{>slider_template_mech1 (slider_names "slider12" "green" "Medicare & Health")}}
-                {{>slider_template_mech1 (slider_names "slider22" "orange" "Science & Transportation")}}
-                {{>slider_template_mech1 (slider_names "slider32" "red" "Individual Income Tax")}}
-                {{>slider_template_mech1 (slider_names "slider42" "lightblue" "Deficit")}}
+                {{>mech1_slider (slider_names "slider02" "blue" "National Defense")}}
+                {{>mech1_slider (slider_names "slider12" "green" "Medicare & Health")}}
+                {{>mech1_slider (slider_names "slider22" "orange" "Science & Transportation")}}
+                {{>mech1_slider (slider_names "slider32" "red" "Individual Income Tax")}}
+                {{>mech1_slider (slider_names "slider42" "lightblue" "Deficit")}}
             </label>
         </form>
     </div>
@@ -208,7 +208,7 @@
     <p id="{{this.label}}" style="float:left; margin-left: 7%;">{{this.title}}</p>
     <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="float:left; margin-left: 10px;"></span>
     <div style="clear: both;">
-        <p id="{{this.comp}}" style="float: left; width: 7%;"></p>
+        <p id="{{this.comp}}" data-toggle="tooltip" data-placement="top" title="Change from 2016 estimates." aria-hidden="true" style="float: left; width: 7%;"></p>
         <div id="{{this.name}}" style="height: 20px; width: 83%; float: left; background: {{this.color}}"></div>
         <form name="{{this.name}}">
             $<textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea>B<br>
@@ -230,7 +230,7 @@
     <b style="float: left; width: 230px;">{{this.title}}<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="margin-left: 10px;"></span> </b>
 </template>
 
-<template name="slider_template_mech1">
+<template name="mech1_slider">
     <div class="well well-sm" style="float: left; height: 40px;">
             <span id="{{this.comp}}" data-toggle="tooltip" data-placement="top" title="Change from 2016 estimates." aria-hidden="true" style="float: left; width: 55px; height: 40px;"></span>
             <div class="progress" style="width: 150px; float: left; margin-left: 5px;">
@@ -244,7 +244,7 @@
     <p id="{{this.label}}" style="float:left; margin-left: 7%;">{{this.title}}</p>
     <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="float:left; margin-left: 10px;"></span>
     <div style="clear: both;">
-        <p id="{{this.comp}}" style="float: left; width: 7%;"></p>
+        <p id="{{this.comp}}" data-toggle="tooltip" data-placement="top" title="Change from 2016 estimates." aria-hidden="true" style="float: left; width: 7%;"></p>
         <div id="{{this.name}}" style="height: 20px; width: 83%; float: left; background: {{this.color}}"></div>
         <form name="{{this.text}}">
             $<textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea>B<br>
@@ -271,7 +271,7 @@
     <p id="{{this.label}}" style="float:left; margin-left: 7%;">{{this.title}}</p>
     <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="float:left; margin-left: 10px;"></span>
     <div style="clear: both;">
-        <p id="{{this.comp}}" style="float: left; width: 7%;"></p>
+        <p id="{{this.comp}}" data-toggle="tooltip" data-placement="top" title="Change from 2016 estimates." aria-hidden="true" style="float: left; width: 7%;"></p>
         <div id="{{this.name}}" style="height: 20px; width: 83%; float: left; background: {{this.color}}"></div>
         <form name="{{this.name}}">
             $<textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea>B<br>
