@@ -127,32 +127,31 @@ Template.answer1.onRendered(function () {
         }
         ev.target.value = round(val, 2); // updates the textbox
         Session.set(ev.target.id, Number(val));
-        var radius_dif = Math.pow(radius,2) - radius_sum;
-        radius_dif -= Math.pow((val-current_question[ev.target.id]),2);
-        radius_dif = Math.sqrt(radius_dif);
-        radius_dif = radius_dif + 0.0001; //laplace smoothing
-        var credits_percentage = 100*radius_dif/radius;
-        if (isNaN(credits_percentage)){
-            credits_percentage = 0;
-        }
-        $("#creditsleft").text("Credits left: " + round(credits_percentage, 1));
         if (update_slider_flag){
             sliders[ev.target.id].val((parseInt(Number(val)*100)/100).toFixed(2));
         }
         //update stacked bars
         var slider_idx_counter = 0;
         var curr_slider_total_width = 0;
+        var credit_percentage_spent = 0;
         var slider_laplace_smoothing = true;
         while (slider_idx_counter < 4){
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
             var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
+            credit_percentage_spent += slider_width_fraction;
             $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.3); //laplace smoothing
             $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));
             curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
             slider_idx_counter ++;
         }
+        var credits_left_fraction = 100*(1-credit_percentage_spent);
+        if (credits_left_fraction < 0.15){
+            credits_left_fraction = 0;
+        }
+        $("#creditsleft").text("Credits left: " + round(credits_left_fraction, 1));
+
         var percent_difference = compute_averages(Number(ev.target.id.substr(ev.target.id.length-1)), val);
         if (percent_difference < 0){
             //red background
@@ -304,13 +303,13 @@ Template.answer1.onRendered(function () {
         if (!update_slider_flag)
             var update_slider_flag = false;
         if (isNaN(val)){
-            weight_sliders[ev.target.id].val(Number(Session.get(ev.target.id)).toFixed(2));
+            weight_sliders[ev.target.id].val(Number(Session.get(ev.target.id)).toFixed(3));
             return;
         }
         ev.target.value = round(val, 2); // updates the textbox
-        Session.set(ev.target.id, Number(val));
+        Session.set(ev.target.id, val);
         if (update_slider_flag){
-            weight_sliders[ev.target.id].val(Number(val).toFixed(2));
+            weight_sliders[ev.target.id].val(round(val, 2));
             $("div").mouseup(); //release the mouse
         }
     };
