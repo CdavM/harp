@@ -48,7 +48,7 @@ Template.experiment.events({
             return;
         }
         worker_ID_value = Session.get('worker_ID_value');
-        answer_value['time'] = new Date().getTime() - initial_time_val;
+        //answer_value['time'] = new Date().getTime() - initial_time_val;
         Session.set("answered", true);
         Session.set("waiting", true);
         Meteor.call('newPost', {answer: answer_value, worker_ID: worker_ID_value}, function(error, result){

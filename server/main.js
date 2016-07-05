@@ -57,7 +57,8 @@ Meteor.methods({
             if (Answers.findOne({worker_ID: post.worker_ID})){
                 return;
             }
-            Answers.insert({worker_ID: post.worker_ID, asg_ID: post.asg_ID, initial_time: post.initial_time});
+            var initial_time_val = new Date().getTime();
+            Answers.insert({worker_ID: post.worker_ID, asg_ID: post.asg_ID, initial_time: initial_time_val});
             return;
         } else {
             var experiment_id_value = experiment_id_counter;
@@ -90,11 +91,12 @@ Meteor.methods({
 
     newPost: function(post) {
         //format time to UTC human readable format
-        post.initial_time = new Date(post.initial_time).toLocaleString();
+        //post.initial_time = new Date(post.initial_time).toLocaleString();
         var existing_entry = Answers.findOne({worker_ID: post.worker_ID});
         var answers_value = {};
         var experiment_id_value = existing_entry.experiment_id;
-
+        post.answer['time'] = new Date().getTime();
+        console.log(post);
         if (existing_entry.answer1){
             //worker has submitted some answers, retrieve them
             answers_value = existing_entry.answer1;
