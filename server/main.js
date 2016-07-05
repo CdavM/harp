@@ -17,12 +17,12 @@ if (Answers.findOne({begin_experiment: true})){
     experiment_id_counter = existing_experiment_counter[0].experiment_id + 1;
 }
 
+/*
 Meteor.startup(function(){
     //check and potentially update question database
     update_questions:{
         for(post in Meteor.settings.questions){
             if(!Questions.findOne(Meteor.settings.questions[post]) || Questions.find().count() != Meteor.settings.questions.length){
-                console.log(Questions.findOne(Meteor.settings.questions[post]));
                 console.log("Updating questionbank database");
                 Questions.remove({});
                 for(post in Meteor.settings.questions){
@@ -48,6 +48,7 @@ Meteor.startup(function(){
     }
 
 });
+*/
 
 Meteor.methods({
     initialPost: function(post, status){
@@ -56,7 +57,8 @@ Meteor.methods({
             if (Answers.findOne({worker_ID: post.worker_ID})){
                 return;
             }
-            Answers.insert({worker_ID: post.worker_ID, asg_ID: post.asg_ID, initial_time: post.initial_time});
+            var initial_time_val = new Date().getTime();
+            Answers.insert({worker_ID: post.worker_ID, asg_ID: post.asg_ID, initial_time: initial_time_val});
             return;
         } else {
             var experiment_id_value = experiment_id_counter;
@@ -89,11 +91,12 @@ Meteor.methods({
 
     newPost: function(post) {
         //format time to UTC human readable format
-        post.initial_time = new Date(post.initial_time).toLocaleString();
+        //post.initial_time = new Date(post.initial_time).toLocaleString();
         var existing_entry = Answers.findOne({worker_ID: post.worker_ID});
         var answers_value = {};
         var experiment_id_value = existing_entry.experiment_id;
-
+        post.answer['time'] = new Date().getTime();
+        console.log(post);
         if (existing_entry.answer1){
             //worker has submitted some answers, retrieve them
             answers_value = existing_entry.answer1;
@@ -280,6 +283,22 @@ Meteor.methods({
                             sampled_vector_0[slider_idx]*(radius_val);
                         vector_object["slider"+slider_idx+"2"] = vector_object["slider"+slider_idx+"1"] +
                             sampled_vector_2[slider_idx]*(radius_val);
+                    }
+                    var compute_deficit = function (well_idx) {
+                        if (typeof(well_idx) == "undefined"){
+                            well_idx = "";
+                        }
+                        var total_money_spent = 0;
+                        for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
+                            total_money_spent += vector_object["slider"+slider_idx_counter+well_idx];
+                        }
+                        total_money_spent -= vector_object["slider"+slider_idx_counter+well_idx]; // decreases by amt of income tax collected
+                        var deficit_value = total_money_spent + 316; //TODO: update with real numbers
+                        return deficit_value;
+                    };
+
+                    for (well_idx=0; well_idx < 3; well_idx++) {
+                        vector_object['slider'+4+well_idx] = compute_deficit(well_idx);
                     }
                     //assign
                     Questions.update({"question_ID": next_question}, {$set:vector_object}, {upsert:true});

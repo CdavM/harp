@@ -48,7 +48,7 @@ Template.experiment.events({
             return;
         }
         worker_ID_value = Session.get('worker_ID_value');
-        answer_value['time'] = new Date().getTime() - initial_time_val;
+        //answer_value['time'] = new Date().getTime() - initial_time_val;
         Session.set("answered", true);
         Session.set("waiting", true);
         Meteor.call('newPost', {answer: answer_value, worker_ID: worker_ID_value}, function(error, result){
@@ -148,7 +148,7 @@ Template.answer1.onRendered(function () {
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
             var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
-            $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.1); //laplace smoothing
+            $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.3); //laplace smoothing
             $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));
             curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
             slider_idx_counter ++;
@@ -498,22 +498,10 @@ Template.answer1.onRendered(function () {
             slider_idx++;
             well_idx = 0;
         }
-        var compute_deficit = function (well_idx) {
-            if (typeof(well_idx) == "undefined"){
-                well_idx = "";
-            }
-            var total_money_spent = 0;
-            for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
-                total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
-            }
-            total_money_spent -= Session.get("slider"+3+well_idx); // decreases by amt of income tax collected
-            var deficit_value = total_money_spent + 316; //TODO: update with real numbers
-            return deficit_value;
-        };
         //initialize the deficit sliders
-        var initial_deficit = compute_deficit(1);
+        var initial_deficit = current_question['slider41'];
         for (var well_idx = 0; well_idx < 3; well_idx++){
-            var current_deficit = compute_deficit(well_idx);
+            var current_deficit = current_question['slider'+4+well_idx];
             var deficit_difference = current_deficit - initial_deficit;
             var deficit_scaled_difference = deficit_difference / (2*radius);
             var total_width = $(".progress").width();
