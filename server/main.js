@@ -17,12 +17,12 @@ if (Answers.findOne({begin_experiment: true})){
     experiment_id_counter = existing_experiment_counter[0].experiment_id + 1;
 }
 
+/*
 Meteor.startup(function(){
     //check and potentially update question database
     update_questions:{
         for(post in Meteor.settings.questions){
             if(!Questions.findOne(Meteor.settings.questions[post]) || Questions.find().count() != Meteor.settings.questions.length){
-                console.log(Questions.findOne(Meteor.settings.questions[post]));
                 console.log("Updating questionbank database");
                 Questions.remove({});
                 for(post in Meteor.settings.questions){
@@ -48,6 +48,7 @@ Meteor.startup(function(){
     }
 
 });
+*/
 
 Meteor.methods({
     initialPost: function(post, status){
