@@ -200,7 +200,7 @@
 <template name="deficit_template">
     <div style="clear: both">
         <span>The</span> <span id="{{this.deficit_text}}">deficit</span><span> will be </span>
-        <span id="{{this.deficit_value}}" >X</span><span>. This is a </span><span id="{{this.deficit_percentage}}">Y</span><span> from 2016 estimates.</span>
+        <span id="{{this.deficit_value}}" >X</span><span>. This is a </span><span id="{{this.deficit_percentage}}">Y</span><span> from the estimated 2016 budget deficit.</span>
     </div>
 </template>
 
@@ -383,14 +383,13 @@
 <template name="question0text">
     <h4>
         <p align = "left">
-            In the next page, indicate your preferences regarding the federal budget. You'll see a budget based on what other people who have answered this survey have preferred. You’ll be allowed to modify the budget we show you to better match your preferences. We’ll also show you the change from how much the goverment is budgeted to spend in 2016 on the left-hand side for your reference.
+            In the next page, indicate your preferences regarding the US Federal Budget. You'll see a budget based on what other people who have answered this survey have preferred. You’ll be allowed to modify the budget we show you to better match your preferences. We’ll also show you the change from how much the goverment is budgeted to spend in 2016 on the left-hand side for your reference.
             <br><br>
-            You won’t be allowed to arbitrarily modify the budget that others have agreed upon, however. We’ll give you a fixed quota of ‘movement credits.’  To increase/decrease the budget from what others have agreed, you’ll have to spend these credits. Notably, the amount of credits you spend changing a given budget item will be proportional to the square of the change you make in that budget item. (Note that the square of the number <b>a</b> is <b>a</b> times <b>a</b> or <b>a</b> multiplied by <b>a</b>.)
+            You won’t be allowed to arbitrarily modify the budget that others have agreed upon, however. We’ll give you a fixed quota of ‘movement credits.’  To increase/decrease the budget from what others have agreed, you’ll have to spend these credits. Notably, the amount of credits you spend changing a given budget item will be proportional to the square of the change you make in that budget item. (Note that the square of the number <b>a</b> is <b>a</b><sup>2</sup> or <b>a</b> multiplied by <b>a</b>.)
             <br><br>
-            For example, let’s say that people before you have agreed that we should decrease defense spending by 15B and increase taxes by 10B, but you would prefer that defense spending be decreased by 10B and taxes increased by only 7B. To move the defense spending to your ideal point, you would have to spend 25 credits (15B - 10B = 5B, and 5<sup>2</sup> = 25). To also move the tax spending to your ideal point, you would have to spend an additional 9 credits (10B - 7B = 3B, 3<sup>2</sup> = 9), for a total of 34 credits.
+            For example, let’s say that people before you have agreed that we should decrease defense spending by $15B, but you would prefer that defense spending be decreased by $10B. To move the defense spending to your ideal point, you would have to spend 25*<b>C</b> credits, where <b>C</b> is some predetermined constant (15 - 10 = 5, and 5<sup>2</sup> = 25). To also move tax spending $3B, you would have to spend an additional 9 credits (3<sup>2</sup> = 9), for a total of 34 credits. Note that as a consequence of the squaring rule, it is cheaper to move two items $5B each, for example, than it is to move one item $10B.
             <br><br>
-            Of course, you may not have enough credits to make all the changes you wish to make, and so you’ll have to prioritize the changes you care about the most. Furthermore, note that as a consequence of the squaring rule, it is cheaper to move two items 5B each, for example, than it is to move one item 10B.
-            <br><br> You may think that you can make only a very small difference in the budget. However, when many people's opinions are aggregated, a large change can be made!
+            Of course, you may not have enough credits to make all the changes you wish to make, and so you’ll have to prioritize the changes you care about the most. You may think that you can make only a very small difference in the budget. However, when many people's opinions are aggregated, a large change can be made!
             <br><br> Note that the spending figures are in Billions of dollars.
         </p>
 
@@ -399,7 +398,7 @@
 <template name="question3text">
     <h4>
         <p align = "left">
-            In the next page, indicate your preferences regarding the federal budget. You'll see a budget based on what other people who have answered this survey have preferred. You’ll be allowed to modify the budget we show you to better match your preferences. We’ll also show you the change from how much the goverment is budgeted to spend in 2016 on the left-hand side for your reference.
+            In the next page, indicate your preferences regarding the US Federal Budget. You'll see a budget based on what other people who have answered this survey have preferred. You’ll be allowed to modify the budget we show you to better match your preferences. We’ll also show you the change from how much the goverment is budgeted to spend in 2016 on the left-hand side for your reference.
             <br><br>
             You won’t be allowed to arbitrarily modify the budget that others have agreed upon, however. We’ll give you a fixed quota of ‘movement credits.’  To increase/decrease the budget from what others have agreed, you’ll have to spend these credits.
             <br><br>
@@ -411,7 +410,7 @@
 <template name="question1text">
     <h4>
         <p align = "left">
-            In the next page, indicate your preferences regarding the federal budget. You'll see three proposed federal budgets. Select the budget you like the most. On the left hand side, you'll see the change of your proposed budget from the 2016 budget. <br><br> You may think that the budgets are very similar, but if you and others keep moving it in the direction you prefer, a large change can be made! <br><br> Note that the spending figures are in Billions of dollars.
+            In the next page, indicate your preferences regarding the US Federal Budget. You'll see three proposed federal budgets. Select the budget you like the most. On the left hand side, you'll see the change of your proposed budget from the 2016 budget. <br><br> You may think that the budgets are very similar, but if you and others keep moving it in the direction you prefer, a large change can be made! <br><br> Note that the spending figures are in Billions of dollars.
         </p>
     </h4>
 </template>
@@ -419,7 +418,7 @@
 <template name="question2text">
     <h4>
         <p align = "left">
-            In the next page, indicate your preferences regarding the federal budget. For each of the given budget items, please move the sliders to indicate your ideal value for that budget item. On the left hand side, you'll see the change of your proposed budget from the 2016 budget, and the sliders' initial values are at the 2016 budget. <br><br> Note that the spending figures are in Billions of dollars.
+            In the next page, indicate your preferences regarding the US Federal Budget. For each of the given budget items, please move the sliders to indicate your ideal value for that budget item. On the left hand side, you'll see the change of your proposed budget from the 2016 budget, and the sliders' initial values are at the 2016 budget. <br><br> Note that the spending figures are in Billions of dollars.
         </p>
     </h4>
 </template>
