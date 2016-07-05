@@ -220,7 +220,7 @@
 </template>
 
 <template name="mech1_slider_title">
-    <b style="float: left; width: 230px;">{{this.title}}<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="margin-left: 10px;"></span> </b>
+    <b style="float: left; width: 210px;">{{this.title}}<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="margin-left: 10px;"></span> </b>
 </template>
 
 <template name="mech1_slider">
@@ -282,12 +282,12 @@
                 {{/if}}
             {{/if}}
         </div>
+        {{> deficit_template (deficit_names)}}
         {{> mech2_slider (slider_names "slider0" "blue" "National Defense")}}
         {{> mech2_slider (slider_names "slider1" "green" "Medicare & Health")}}
         {{> mech2_slider (slider_names "slider2" "orange" "Transportation & Science")}}
         {{> mech2_slider (slider_names "slider3" "red" "Individual Income Tax")}}
 
-        {{> deficit_template (deficit_names)}}
         <br style="clear: both; margin-bottom: 150px;">
 
         <p align = "left"> On the following sliders, please indicate how much you care about each budget value being close to the values you proposed on the last page on a scale of 0 to 10. That is, if your total influence on the budget was limited, which budget items would you choose to influence? For example, if you care about all the items equally, then you could give a score of 10 each, whereas if you care more about defense spending and not so much about health-care spending, you could give a score of 10 to defense and 2 to health-care spending. </p>
