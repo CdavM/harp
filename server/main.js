@@ -120,7 +120,11 @@ Meteor.methods({
                 }
                 var slider_difference = Number(post.answer['slider' + slider_idx][0]) - existing_entry['initial_slider'+slider_idx];
                 var slider_relative_diff = slider_difference / existing_entry['radius'];
-                answers_value['slider'+slider_idx+"_credits"] = Math.pow(slider_relative_diff, 2);
+                if (current_question == 0) {
+                    answers_value['slider' + slider_idx + "_credits"] = Math.pow(slider_relative_diff, 2);
+                } else if (current_question == 3) {
+                    answers_value['slider' + slider_idx + "_credits"] = Math.abs(slider_relative_diff);
+                }
             }
             if (post.answer['option']){
                 // only for the comparison mechanism.
