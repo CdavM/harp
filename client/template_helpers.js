@@ -89,10 +89,10 @@ Template.registerHelper('slider_names', function(slider_name_arg, color_arg, sli
             slider_object.tooltip = "The amount spent on transportation infrastructure, NASA, the Environmental Protection Agency, and related government programs. This amount is estimated to be $149 Billion in 2016.";
             break;
         case "Individual Income Tax":
-            slider_object.tooltip = "The amount the federal government collects through individual income taxes. Assume that everyone’s taxes (including yours!) change proportionally to the amount you have increased or decreased. This amount is estimated to be $1,460 Billion ($1.46 Trillion) in 2016.";
+            slider_object.tooltip = "The amount the Federal Government collects through individual income taxes. Assume that everyone’s taxes (including yours!) change proportionally to the amount you have increased or decreased. This amount is estimated to be $1,460 Billion ($1.46 Trillion) in 2016.";
             break;
         case "Deficit":
-            slider_object.tooltip = "The excess of all government expenditures over revenues."
+            slider_object.tooltip = "The amount by which spending exceeds revenues. A negative value indicates a budget surplus. This value assumes spending on all other items is held constant."
     }
     return slider_object;
 });
