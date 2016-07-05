@@ -398,6 +398,10 @@ Template.answer1.onRendered(function () {
                         'min': slider_min,
                         'max': slider_max
                     }
+                }).noUiSlider_pips({
+                    mode: 'positions',
+                    values: [0,25,50,75,100],
+                    density: 4
                 }).on('slide', function (ev, val) {
                     // set real values on 'slide' event
                     try {
@@ -439,6 +443,10 @@ Template.answer1.onRendered(function () {
                         'min': slider_min,
                         'max': slider_max
                     }
+                }).noUiSlider_pips({
+                    mode: 'positions',
+                    values: [0,25,50,75,100],
+                    density: 4
                 }).on('slide', function (ev, val) {
                     // set real values on 'slide' event
                     try {
