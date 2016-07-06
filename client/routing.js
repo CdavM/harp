@@ -2,9 +2,9 @@ Router.route('/', function(){
 if (Session.equals('worker_ID_value', -1) || ! Session.get('worker_ID_value')){
   //if no worker_ID found redirect back to starting page
   //worker_ID randomly generated for easier debugging
-  Router.go('/WID='+makeid()+'&ASG='+makeid());
+  Router.go('/workerId='+makeid()+'&assignmentId='+makeid());
   //Router.go('/end'); Uncomment this when not debugging anymore
-  } else if (Session.get('worker_ID_value').length != 14 && Session.get('worker_ID_value').length != 13) {
+  } else if (Session.get('worker_ID_value').length != 14) {
     Router.go('/end')
   }
   else {
@@ -23,7 +23,7 @@ function makeid()
     return text;
 }
 
-Router.route('/WID=:wid&ASG=:asg', function(){
+Router.route('/workerId=:wid&assignmentId=:asg', function(){
   var wid = this.params.wid;
   var asg_val = this.params.asg;
   var curr_experiment = Answers.findOne({worker_ID: wid});

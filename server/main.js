@@ -299,7 +299,7 @@ Meteor.methods({
                             total_money_spent += vector_object["slider"+slider_idx_counter+well_idx];
                         }
                         total_money_spent -= vector_object["slider"+slider_idx_counter+well_idx]; // decreases by amt of income tax collected
-                        var deficit_value = total_money_spent + 316; //TODO: update with real numbers
+                        var deficit_value = total_money_spent + 316; 
                         return deficit_value;
                     };
 
