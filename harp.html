@@ -15,9 +15,9 @@
     </header>
 
     <div class="jumbotron" style="padding:25px">
-        {{>instructionsMain}}
         {{#if initialized}}
         {{else}}
+            {{>instructionsMain}}
             <p class="center"><input type="button" value="BEGIN" name="begin_experiment" id="begin_experiment" class="btn btn-default"/></p>
         {{/if}}
         {{#if initialized}}
@@ -80,53 +80,39 @@
 </template>
 
 <template name="mechanism0">
-    <h3>
+    <h4>
+        <div>
+        {{#if show_timer}}
+            {{#if waiting}}
+            {{else}}
+                <p class="center"> Time remaining: {{time_remaining}} seconds</p>
+            {{/if}}
+        {{/if}}
+        </div>
         <p class="center">Current Credit Allocation</p>
         <div>
-            <div style="float:right;"><p id = "creditsleft">Credits left: 100</p></div>
             <div id="budgetbar" class="progress">
                 <div id="slider0bar" class="progress-bar progress-bar-primary" style="width: 0%; color: rgb(245,245,245);"></div>
                 <div id="slider1bar" class="progress-bar progress-bar-success" style="width: 0%; color: rgb(245,245,245);"></div>
                 <div id="slider2bar" class="progress-bar progress-bar-warning" style="width: 0%; color: rgb(245,245,245);"></div>
                 <div id="slider3bar" class="progress-bar progress-bar-danger" style="width: 0%; color: rgb(245,245,245);"></div>
             </div>
+            <div style="margin: auto;"><b id = "creditsleft">Credits left: 100</b></div>
+
         </div>
 
-        <div>
-            {{#if show_timer}}
-                {{#if waiting}}
-                {{else}}
-                    <p class="center"> Time remaining: {{time_remaining}} seconds</p>
-                {{/if}}
-            {{/if}}
-        </div>
-
-        <br>
-        <p style="clear: both;float: left;"> Change from </p> <br>
-        <p style="clear: both;float: left;"> 2016 estimate</p>
-        <p style="float: right;">Chosen value</p>
+        <p style="clear: both;float: left;font-size: 17px;"> Change from 2016 estimates</p>
+        <p style="float: right;font-size: 17px;">Chosen value</p>
         <hr style="clear: both">
+        {{> deficit_template (deficit_names)}}
         {{> mech0_slider (slider_names "slider0" "blue" "National Defense")}}
         {{> mech0_slider (slider_names "slider1" "green" "Medicare & Health")}}
         {{> mech0_slider (slider_names "slider2" "orange" "Transportation & Science")}}
         {{> mech0_slider (slider_names "slider3" "red" "Individual Income Tax")}}
-        <br style="clear: both">
-        {{> deficit_template (deficit_names)}}
-    </h3>
+    </h4>
 </template>
 <template name="mechanism3">
-    <h3>
-        <p class="center">Current Credit Allocation</p>
-        <div>
-            <div style="float:right;"><p id = "creditsleft">Credits left: 100</p></div>
-            <div id="budgetbar" class="progress">
-                <div id="slider0bar" class="progress-bar progress-bar-primary" style="width: 0%; color: rgb(245,245,245);"></div>
-                <div id="slider1bar" class="progress-bar progress-bar-success" style="width: 0%; color: rgb(245,245,245);"></div>
-                <div id="slider2bar" class="progress-bar progress-bar-warning" style="width: 0%; color: rgb(245,245,245);"></div>
-                <div id="slider3bar" class="progress-bar progress-bar-danger" style="width: 0%; color: rgb(245,245,245);"></div>
-            </div>
-        </div>
-
+    <h4>
         <div>
             {{#if show_timer}}
                 {{#if waiting}}
@@ -135,19 +121,27 @@
                 {{/if}}
             {{/if}}
         </div>
+        <p class="center" style="font-size: 17px;">Current Credit Allocation</p>
+        <div>
+            <div id="budgetbar" class="progress">
+                <div id="slider0bar" class="progress-bar progress-bar-primary" style="width: 0%; color: rgb(245,245,245);"></div>
+                <div id="slider1bar" class="progress-bar progress-bar-success" style="width: 0%; color: rgb(245,245,245);"></div>
+                <div id="slider2bar" class="progress-bar progress-bar-warning" style="width: 0%; color: rgb(245,245,245);"></div>
+                <div id="slider3bar" class="progress-bar progress-bar-danger" style="width: 0%; color: rgb(245,245,245);"></div>
+            </div>
+            <div style="margin: auto;"><b id = "creditsleft">Credits left: 100</b></div>
 
-        <br>
-        <p style="clear: both;float: left;"> Change from </p> <br>
-        <p style="clear: both;float: left;"> 2016 estimate</p>
-        <p style="float: right;">Chosen value</p>
+        </div>
+
+        <p style="clear: both;float: left;font-size: 17px;"> Change from 2016 estimates</p>
+        <p style="float: right;font-size: 17px;">Chosen value</p>
         <hr style="clear: both">
+        {{> deficit_template (deficit_names)}}
         {{> mech0_slider (slider_names "slider0" "blue" "National Defense")}}
         {{> mech0_slider (slider_names "slider1" "green" "Medicare & Health")}}
         {{> mech0_slider (slider_names "slider2" "orange" "Transportation & Science")}}
         {{> mech0_slider (slider_names "slider3" "red" "Individual Income Tax")}}
-        <br style="clear: both">
-        {{> deficit_template (deficit_names)}}
-    </h3>
+    </h4>
 </template>
 <template name="mechanism1">
 
@@ -164,7 +158,7 @@
             <p style="float: left; width: 95px;margin-left: 0px;"></p>
             <div style="float: left;"></div>
             {{> slider_head_mech1}}
-            <label class="well" style="float: left; height: 80px;">
+            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
                 <b style="height: 20px; float: left; margin-top: 10px;"> Option 1 </b>
                 <input type="radio" name="radio" value = "0" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
                 {{>mech1_slider (slider_names "slider00" "blue" "National Defense")}}
@@ -174,7 +168,7 @@
                 {{>mech1_slider (slider_names "slider40" "lightblue" "Deficit")}}
 
             </label>
-            <label class="well" style="float: left; height: 80px;">
+            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
                 <b style="height: 20px; float: left; margin-top: 10px;"> Option 2 </b>
                 <input type="radio" name="radio" value = "1" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
                 {{>mech1_slider (slider_names "slider01" "blue" "National Defense")}}
@@ -183,7 +177,7 @@
                 {{>mech1_slider (slider_names "slider31" "red" "Individual Income Tax")}}
                 {{>mech1_slider (slider_names "slider41" "lightblue" "Deficit")}}
             </label>
-            <label class="well" style="float: left; height: 80px;">
+            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
                 <b style="height: 20px; float: left; margin-top: 10px;"> Option 3 </b>
                 <input type="radio" name="radio" value = "2" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
                 {{>mech1_slider (slider_names "slider02" "blue" "National Defense")}}
@@ -199,21 +193,22 @@
 
 <template name="deficit_template">
     <div style="clear: both">
+        <h4>
         <span>The</span> <span id="{{this.deficit_text}}">deficit</span><span> will be </span>
-        <span id="{{this.deficit_value}}" >X</span><span> assuming all other budget items are held constant. This is a </span><span id="{{this.deficit_percentage}}">Y</span><span> from the estimated 2016 budget deficit.</span>
+        <span id="{{this.deficit_value}}" >X</span><span>. This is a </span><span id="{{this.deficit_percentage}}">Y</span><span> from the 2016 budget.</span>
+        </h4>
     </div>
 </template>
 
 <template name="mech0_slider">
-    <p id="{{this.label}}" style="float:left; margin-left: 7%;">{{this.title}}</p>
+    <p id="{{this.label}}" style="float:left; margin-left: 9%; font-size: 19px;">{{this.title}}</p>
     <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="float:left; margin-left: 10px;"></span>
     <div style="clear: both;">
-        <p id="{{this.comp}}" data-toggle="tooltip" data-placement="top" title="Change from 2016 estimates." aria-hidden="true" style="float: left; width: 7%;"></p>
+        <p id="{{this.comp}}" data-toggle="tooltip" data-placement="top" title="Change from 2016 estimates." aria-hidden="true" style="float: left; width: 7%; font-size: 17px;"></p>
         <div id="{{this.name}}" style="height: 20px; width: 83%; float: left; background: {{this.color}}"></div>
         <form name="{{this.name}}">
             $<textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea>B<br>
         </form>
-        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="{{this.min}}" style="display: inline; float: left;">min</p> <p id="{{this.cur}}" style="display: inline;"> curr</p> <p id="{{this.max}}" style="display: inline; float: right;">max</p> </div>
     </div>
     <br style="clear: both;">
 </template>
@@ -227,13 +222,13 @@
 </template>
 
 <template name="mech1_slider_title">
-    <b style="float: left; width: 230px;">{{this.title}}<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="margin-left: 10px;"></span> </b>
+    <b style="float: left; width: 210px;">{{this.title}}<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="margin-left: 10px;"></span> </b>
 </template>
 
 <template name="mech1_slider">
     <div class="well well-sm" style="float: left; height: 40px;">
             <span id="{{this.comp}}" data-toggle="tooltip" data-placement="top" title="Change from 2016 estimates." aria-hidden="true" style="float: left; width: 55px; height: 40px;"></span>
-            <div class="progress" style="width: 150px; float: left; margin-left: 5px;">
+            <div class="progress" style="width: 130px; float: left; margin-left: 5px;">
                 <div id="{{this.id}}" class="progress-bar" role="progressbar" style="color: black; width: 60%; background: {{this.color}};">
                 </div>
             </div>
@@ -249,7 +244,6 @@
         <form name="{{this.text}}">
             $<input type="text" name="{{this.value}}" value="{{this.value}}B" style="height:30px;width:7%;min-width: 80px"><br>
         </form>
-        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="{{this.min}}" style="display: inline; float: left;">min</p> <p id="{{this.cur}}" style="display: inline; margin-left: 17%; float:left"> curr</p> <p id="{{this.max}}" style="display: inline; float: right;">max</p> </div>
     </div>
     <br style="clear: both;">
 </template>
@@ -268,15 +262,14 @@
 </template>
 
 <template name="mech3_slider">
-    <p id="{{this.label}}" style="float:left; margin-left: 7%;">{{this.title}}</p>
+    <p id="{{this.label}}" style="float:left; margin-left: 9%; font-size: 19px;">{{this.title}}</p>
     <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="float:left; margin-left: 10px;"></span>
     <div style="clear: both;">
-        <p id="{{this.comp}}" data-toggle="tooltip" data-placement="top" title="Change from 2016 estimates." aria-hidden="true" style="float: left; width: 7%;"></p>
+        <p id="{{this.comp}}" data-toggle="tooltip" data-placement="top" title="Change from 2016 estimates." aria-hidden="true" style="float: left; width: 7%; font-size: 17px;"></p>
         <div id="{{this.name}}" style="height: 20px; width: 83%; float: left; background: {{this.color}}"></div>
         <form name="{{this.name}}">
             $<textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea>B<br>
         </form>
-        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="{{this.min}}" style="display: inline; float: left;">min</p> <p id="{{this.cur}}" style="display: inline;"> curr</p> <p id="{{this.max}}" style="display: inline; float: right;">max</p> </div>
     </div>
     <br style="clear: both;">
 </template>
@@ -290,13 +283,12 @@
                 {{/if}}
             {{/if}}
         </div>
-        <br>
+        {{> deficit_template (deficit_names)}}
         {{> mech2_slider (slider_names "slider0" "blue" "National Defense")}}
         {{> mech2_slider (slider_names "slider1" "green" "Medicare & Health")}}
         {{> mech2_slider (slider_names "slider2" "orange" "Transportation & Science")}}
         {{> mech2_slider (slider_names "slider3" "red" "Individual Income Tax")}}
 
-        {{> deficit_template (deficit_names)}}
         <br style="clear: both; margin-bottom: 150px;">
 
         <p align = "left"> On the following sliders, please indicate how much you care about each budget value being close to the values you proposed on the last page on a scale of 0 to 10. That is, if your total influence on the budget was limited, which budget items would you choose to influence? For example, if you care about all the items equally, then you could give a score of 10 each, whereas if you care more about defense spending and not so much about health-care spending, you could give a score of 10 to defense and 2 to health-care spending. </p>
