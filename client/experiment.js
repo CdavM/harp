@@ -128,7 +128,7 @@ Template.answer1.onRendered(function () {
         ev.target.value = round(val, 2); // updates the textbox
         Session.set(ev.target.id, Number(val));
         if (update_slider_flag){
-            sliders[ev.target.id].val((parseInt(Number(val)*100)/100).toFixed(2));
+            sliders[ev.target.id].val(round(val, 2));
         }
         //update stacked bars
         var slider_idx_counter = 0;
@@ -220,7 +220,7 @@ Template.answer1.onRendered(function () {
         }
         $("#creditsleft").text("Credits left: " + round(credits_percentage, 1));
         if (update_slider_flag){
-            sliders[ev.target.id].val((parseInt(Number(val)*100)/100).toFixed(2));
+            sliders[ev.target.id].val(round(val, 2));
         }
         //update stacked bars
         var slider_idx_counter = 0;
@@ -256,11 +256,6 @@ Template.answer1.onRendered(function () {
         }
         update_deficit();
     };
-    update_slider_mech11 = function(ev, val){
-        eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
-        $("div").mouseup(); //release the mouse
-    };
-
 
     update_slider_mech21 = function (ev, val, update_slider_flag) {
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
@@ -380,7 +375,6 @@ Template.answer1.onRendered(function () {
     update_weight_slider = _.throttle(update_weight_slider1, 100);
     update_slider_mech3 = _.throttle(update_slider_mech31, 100);
     update_slider_mech2 = _.throttle(update_slider_mech21, 100);
-    update_slider_mech1 = _.throttle(update_slider_mech11, 100);
 
     if (curr_experiment.current_question == 0) {
         sliders = {};
@@ -460,9 +454,6 @@ Template.answer1.onRendered(function () {
                     } catch (TypeError){
                     }
                 });
-                $("#slider"+slider_idx+"min").text("$"+round(slider_min,2)+"B");
-                $("#slider"+slider_idx+"cur").text("$"+round(slider_current,2)+"B");
-                $("#slider"+slider_idx+"max").text("$"+round(slider_max,2)+"B");
             }
         }
         //update comparisons
@@ -607,7 +598,6 @@ Template.answer1.onRendered(function () {
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
     }
-
 });
 Template.mechanism0.events({
     'change textarea': function(event){
@@ -619,25 +609,8 @@ Template.mechanism2.events({
         update_slider_mech2(event, event.target.value, true);
     }
 });
-
-Template.question.helpers({
-    istable: function(text){
-        if (text.substring(0,6) == "In gen"){
-            return true;
-        } else {
-            return false;
-        }
-    },
-    isgradea: function(grade){
-        if (grade == "an A"){
-            return true;
-        } else {
-            return false;
-        }
-    },
-    ismechrf: function(text){
-        if (text.substring(10,11) == "5")
-            return true;
-        return false;
+Template.mechanism3.events({
+    'change textarea': function(event){
+        update_slider_mech3(event, event.target.value, true);
     }
 });
