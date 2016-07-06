@@ -268,13 +268,13 @@ Template.answer1.onRendered(function () {
         if (!update_slider_flag)
             var update_slider_flag = false;
         if (isNaN(val)){
-            eval(ev.target.id).val(Number(Session.get(ev.target.id)).toFixed(2));
+            sliders[ev.target.id].val(Number(Session.get(ev.target.id)).toFixed(2));
             return;
         }
         ev.target.value = Number(val).toFixed(2); // updates the textbox
         Session.set(ev.target.id, Number(val));
         if (update_slider_flag){
-            eval(ev.target.id).val(Number(val).toFixed(2));
+            sliders[ev.target.id].val(Number(val).toFixed(2));
             $("div").mouseup(); //release the mouse
         }
         var percent_difference = compute_averages(Number(ev.target.id.substr(ev.target.id.length-1)), val);
@@ -535,119 +535,43 @@ Template.answer1.onRendered(function () {
 
     } else if (curr_experiment.current_question == 2){
         //mechanism 2 specific js
-        var slider0_current = 0;
-        if (current_question.slider0) {
-            slider0_current = current_question.slider0;
-        }
-        var slider1_current = 0;
-        if (current_question.slider1) {
-            slider1_current = current_question.slider1;
-        }
-        var slider2_current = 0;
-        if (current_question.slider2) {
-            slider2_current = current_question.slider2;
-        }
-        var slider3_current = 0;
-        if (current_question.slider3) {
-            slider3_current = current_question.slider3;
-        }
-        var slider_vals = {};
-        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
-            slider_vals["slider" + slider_idx + "_min"] = 0;
-            slider_vals["slider" + slider_idx + "_max"] = 4 * eval("slider" + slider_idx + "_current");
-        }
-        Session.set('slider0', slider0_current);
-        //noUiSlider.create(slider0, /* { options }
-        slider0 = this.$("div#slider0").noUiSlider({
-            start: slider0_current,
-            connect: "lower",
-            range: {
-                'min': slider_vals["slider0_min"],
-                'max': slider_vals["slider0_max"]
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_slider_mech2(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_slider_mech2(ev, val);
-            } catch (TypeError){
-            }
-        });
-        Session.set('slider1', slider1_current);
-        slider1 = this.$("div#slider1").noUiSlider({
-            start: slider1_current,
-            connect: "lower",
-            range: {
-                'min': slider_vals["slider1_min"],
-                'max': slider_vals["slider1_max"]
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_slider_mech2(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_slider_mech2(ev, val);
-            } catch (TypeError){
-            }
-        });
-        Session.set('slider2', slider2_current);
-        slider2 = this.$("div#slider2").noUiSlider({
-            start: slider2_current,
-            connect: "lower",
-            range: {
-                'min': slider_vals["slider2_min"],
-                'max': slider_vals["slider2_max"]
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_slider_mech2(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_slider_mech2(ev, val);
-            } catch (TypeError){
-            }
-        });
-        Session.set('slider3', slider3_current);
-        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
-            $("#slider"+slider_idx+"min").text("$"+slider_vals["slider"+slider_idx+"_min"].toFixed(2)+"B");
-            $("#slider"+slider_idx+"cur").text("$"+eval("slider"+slider_idx+"_current").toFixed(2)+"B");
-            $("#slider"+slider_idx+"max").text("$"+slider_vals["slider"+slider_idx+"_max"].toFixed(2)+"B");
-        }
-        slider3 = this.$("div#slider3").noUiSlider({
-            start: slider3_current,
-            connect: "lower",
-            range: {
-                'min': slider_vals["slider3_min"],
-                'max': slider_vals["slider3_max"]
-            }
-        }).on('slide', function (ev, val) {
-            // set real values on 'slide' event
-            try {
-                update_slider_mech2(ev, val);
-            } catch (TypeError){
-            }
-        }).on('change', function (ev, val) {
-            // round off values on 'change' event
-            try {
-                update_slider_mech2(ev, val);
-            } catch (TypeError){
-            }
-        });
-        //WEIGHT SLIDERS
 
+        sliders = {};
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
+            var slider_current = 0;
+            if (current_question['slider'+slider_idx]){
+                slider_current = Number(current_question['slider'+slider_idx]);
+                var slider_min = 0;
+                var slider_max = 2*slider_current;
+                Session.set('slider'+slider_idx, slider_current);
+                sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
+                    start: slider_current,
+                    connect: "lower",
+                    range: {
+                        'min': slider_min,
+                        'max': slider_max
+                    }
+                }).noUiSlider_pips({
+                    mode: 'positions',
+                    values: [0,25,50,75,100],
+                    density: 4
+                }).on('slide', function (ev, val) {
+                    // set real values on 'slide' event
+                    try {
+                        update_slider_mech2(ev, val);
+                    } catch (TypeError){
+                    }
+                }).on('change', function (ev, val) {
+                    // round off values on 'change' event
+                    try {
+                        update_slider_mech2(ev, val);
+                    } catch (TypeError){
+                    }
+                });
+            }
+        }
+
+        //WEIGHT SLIDERS
         weight_sliders = {};
         for (var slider_idx = 0; slider_idx < 5; slider_idx++) {
             Session.set('slider'+slider_idx+"weight", 5);
@@ -658,6 +582,10 @@ Template.answer1.onRendered(function () {
                     'min': 0,
                     'max': 10
                 }
+            }).noUiSlider_pips({
+                mode: 'positions',
+                values: [0,25,50,75,100],
+                density: 4
             }).on('slide', function (ev, val) {
                 // set real values on 'slide' event
                 try {
@@ -671,9 +599,6 @@ Template.answer1.onRendered(function () {
                 } catch (TypeError) {
                 }
             });
-            $("p#slider"+slider_idx+"weightmin").text(0);
-            $("p#slider"+slider_idx+"weightcur").text(5);
-            $("p#slider"+slider_idx+"weightmax").text(10);
         }
         //update comps
         update_comps();

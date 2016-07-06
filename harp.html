@@ -193,8 +193,10 @@
 
 <template name="deficit_template">
     <div style="clear: both">
+        <h4>
         <span>The</span> <span id="{{this.deficit_text}}">deficit</span><span> will be </span>
-        <span id="{{this.deficit_value}}" >X</span><span> assuming all other budget items are held constant. This is a </span><span id="{{this.deficit_percentage}}">Y</span><span> from the estimated 2016 budget deficit.</span>
+        <span id="{{this.deficit_value}}" >X</span><span>. This is a </span><span id="{{this.deficit_percentage}}">Y</span><span> from the 2016 budget.</span>
+        </h4>
     </div>
 </template>
 
@@ -242,7 +244,6 @@
         <form name="{{this.text}}">
             $<textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea>B<br>
         </form>
-        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="{{this.min}}" style="display: inline; float: left;">min</p> <p id="{{this.cur}}" style="display: inline; margin-left: 17%; float:left"> curr</p> <p id="{{this.max}}" style="display: inline; float: right;">max</p> </div>
     </div>
     <br style="clear: both;">
 </template>
@@ -255,7 +256,6 @@
         <form name="{{this.text}}">
             <textarea id="{{this.name}}" style="height:30px;width:7%;min-width: 80px">{{this.value}}</textarea><br>
         </form>
-        <div style="width: 83%; float: left; margin-left: 7%; clear: both;"><p id="{{this.min}}" style="display: inline; float: left;">min</p> <p id="{{this.cur}}" style="display: inline;"> curr</p> <p id="{{this.max}}" style="display: inline; float: right;">max</p> </div>
     </div>
     <br style="clear: both;">
 </template>
