@@ -313,7 +313,7 @@ Meteor.methods({
                     Questions.update({"question_ID": next_question}, {$set:vector_object}, {upsert:true});
                     Answers.update({experiment_id: experiment_id_value}, {$set: vector_object}, {upsert: true, multi: true});
                 }
-                Answers.update({experiment_id: experiment_id_value}, {$set: {current_question: next_question, current_answer: 0, "radius":radius_val}}, {upsert: true, multi: true});
+                Answers.update({experiment_id: experiment_id_value}, {$set: {current_question: next_question, current_answer: 0, "radius":radius_val, latest_time: new Date().getTime()}}, {upsert: true, multi: true});
                 console.log("question for experiment " + experiment_id_value + " changed to " + next_question);
             }
 
