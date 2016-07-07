@@ -1,13 +1,40 @@
+$.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return decodeURI(results[1]) || 0;
+    }
+}
+
 Router.route('/', function(){
-if (Session.equals('worker_ID_value', -1) || ! Session.get('worker_ID_value')){
-  //if no worker_ID found redirect back to starting page
-  //worker_ID randomly generated for easier debugging
-  //Router.go('/workerId='+makeid()+'&assignmentId='+makeid() + '&hitId='+makeid());
-  Router.go('/end');// Uncomment this when not debugging anymore
+
+  var wid = $.urlParam('workerId')
+  var asg_val = $.urlParam('assignmentId')
+  var hit_val = $.urlParam('hitId')
+
+  if (wid == null || wid.length < 10){
+      Router.go('/end');// Uncomment this when not debugging anymore
+  }
+
+  var curr_experiment = Answers.findOne({worker_ID: wid});
+  Session.set('worker_ID_value', wid);
+  console.log(curr_experiment);
+  console.log(wid);
+  console.log(hit_val)
+  if ((curr_experiment && curr_experiment.experiment_finished))
+  {
+    //Meteor.setTimeout(function(){Session.set('experiment_finished', false);}, 150);
+    Router.go('/end');  //send them to end, entry participated already.
   } else {
+    initial_time_val = new Date().getTime();
+    Meteor.call('initialPost', {worker_ID: wid, initial_time: initial_time_val, asg_ID: asg_val, hit_ID: hit_val}, 'startup');
     this.render('experiment');
   }
 });
+
+
 
 function makeid()
 {
@@ -20,7 +47,7 @@ function makeid()
     return text;
 }
 
-Router.route('/?hitId=:hit&workerId=:wid&assignmentId=:asg', function(){
+Router.route('/hitId=:hit&workerId=:wid&assignmentId=:asg', function(){
   // if (Session.get('worker_ID_value').length != 14) {
   //   Router.go('/end')
   // }
