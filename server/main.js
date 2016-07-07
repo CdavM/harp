@@ -58,7 +58,7 @@ Meteor.methods({
                 return;
             }
             var initial_time_val = new Date().getTime();
-            Answers.insert({worker_ID: post.worker_ID, asg_ID: post.asg_ID, initial_time: initial_time_val});
+            Answers.insert({worker_ID: post.worker_ID, asg_ID: post.asg_ID, hit_ID: post.hit_ID, initial_time: initial_time_val});
             return;
         } else {
             var experiment_id_value = experiment_id_counter;

@@ -23,9 +23,10 @@ function makeid()
     return text;
 }
 
-Router.route('/workerId=:wid&assignmentId=:asg', function(){
+Router.route('/workerId=:wid&assignmentId=:asg&hitId:=hit', function(){
   var wid = this.params.wid;
   var asg_val = this.params.asg;
+  var hit_val = this.params.hit;
   var curr_experiment = Answers.findOne({worker_ID: wid});
   Session.set('worker_ID_value', wid);
   if (curr_experiment && curr_experiment.experiment_finished){
@@ -33,7 +34,7 @@ Router.route('/workerId=:wid&assignmentId=:asg', function(){
     Router.go('/end');  //send them to end, entry participated already.
   } else {
     initial_time_val = new Date().getTime();
-    Meteor.call('initialPost', {worker_ID: wid, initial_time: initial_time_val, asg_ID: asg_val}, 'startup');
+    Meteor.call('initialPost', {worker_ID: wid, initial_time: initial_time_val, asg_ID: asg_val, hit_ID: hit_val}, 'startup');
     this.render('experiment');
   }
 });
