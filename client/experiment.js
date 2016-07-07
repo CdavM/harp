@@ -596,6 +596,7 @@ Template.answer1.onRendered(function () {
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
     }
+    $('#scroll_here').ScrollTo();
 });
 Template.mechanism0.events({
     'change textarea': function(event){

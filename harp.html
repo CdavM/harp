@@ -271,7 +271,7 @@
 </template>
 
 <template name="mech2_weight_slider">
-    <p id="{{this.label}}" style="float:left; margin-left: 7%;">{{this.title}}</p>
+    <p id="{{this.label}}" style="float:left; margin-left: 9%;">{{this.title}}</p>
     <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{this.tooltip}}" aria-hidden="true" style="float:left; margin-left: 10px;"></span>
     <div style="clear: both;">
         <div id="{{this.name}}" style="height: 20px; width: 83%; margin-left: 7%; float: left; background: {{this.color}}"></div>
@@ -310,7 +310,7 @@
         {{> mech2_slider (slider_names "slider2" "orange" "Transportation & Science")}}
         {{> mech2_slider (slider_names "slider3" "red" "Individual Income Tax")}}
 
-        <br style="clear: both; margin-bottom: 150px;">
+        <br style="clear: both;">
 
         <p align = "left"> On the following sliders, please indicate how much you care about each budget value being close to the values you proposed on the last page on a scale of 0 to 10 (“Don’t Care” to “Care Very Much”). </p>
 
@@ -324,7 +324,7 @@
 </template>
 
 <template name="answer0">
-    <div class="center">
+    <div id="scroll_here" class="center">
 
         {{#if show_timer}}
             {{#if waiting}}
@@ -345,7 +345,9 @@
 <template name="answer1">
     <div class="center">
         {{>Template.dynamic template=current_question_text}}
-        {{>Template.dynamic template=current_mechanism}}
+        <div id="scroll_here">
+            {{>Template.dynamic template=current_mechanism}}
+        </div>
         <h4>
             <br style="clear: both;">
             Please explain your answers:
@@ -359,7 +361,7 @@
 </template>
 
 <template name="answer2">
-    <div class="center">
+    <div id="scroll_here" class="center">
         <h3>
             <p> How do you identify?</p>
 
