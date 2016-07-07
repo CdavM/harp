@@ -17,8 +17,12 @@ if (Answers.findOne({begin_experiment: true})){
     experiment_id_counter = existing_experiment_counter[0].experiment_id + 1;
 }
 
-/*
+
 Meteor.startup(function(){
+    clear_busy_flags:{
+        Questions.update({},{$set:{'busy': false}}, {multi: true});
+    }
+    /*
     //check and potentially update question database
     update_questions:{
         for(post in Meteor.settings.questions){
@@ -46,9 +50,8 @@ Meteor.startup(function(){
             }
         }
     }
-
+    */
 });
-*/
 
 Meteor.methods({
     initialPost: function(post, status){
@@ -58,13 +61,13 @@ Meteor.methods({
                 return;
             }
             var initial_time_val = new Date().getTime();
-            Answers.insert({worker_ID: post.worker_ID, asg_ID: post.asg_ID, initial_time: initial_time_val});
+            Answers.insert({worker_ID: post.worker_ID, asg_ID: post.asg_ID, initial_time: initial_time_val, latest_time: initial_time_val});
             return;
         } else {
             var experiment_id_value = experiment_id_counter;
             var begin_time_val = new Date().getTime();
             Answers.update({worker_ID: post.worker_ID}, {$set: {begin_time: begin_time_val, experiment_id: experiment_id_value,
-                avg_payment:0, experiment_finished:false}});
+                avg_payment:0, experiment_finished:false, latest_time: begin_time_val}});
         }
 
         if (counters[experiment_id_value]){
@@ -91,11 +94,10 @@ Meteor.methods({
 
     newPost: function(post) {
         //format time to UTC human readable format
-        //post.initial_time = new Date(post.initial_time).toLocaleString();
+        post.initial_time = new Date(post.initial_time).toLocaleString();
         var existing_entry = Answers.findOne({worker_ID: post.worker_ID});
         var answers_value = {};
         var experiment_id_value = existing_entry.experiment_id;
-        post.answer['time'] = new Date().getTime();
         if (existing_entry.answer1){
             //worker has submitted some answers, retrieve them
             answers_value = existing_entry.answer1;
@@ -106,6 +108,7 @@ Meteor.methods({
         if (!answers_value[current_question]){
             answers_value[current_question] = {};
         }
+        post.answer['time'] = new Date().getTime() - existing_entry.latest_time;
         answers_value[current_question][current_answer] = post.answer;
 
         var fields_to_be_updated = {};
@@ -339,7 +342,7 @@ Meteor.methods({
         var curr_answer_form = curr_experiment.current_answer;
         if (curr_answer_form < Meteor.settings.public.answer_forms.length - 1){
             var next_answer_form = curr_answer_form + 1;
-            Answers.update({experiment_id: experiment_id_value}, {$set: {current_answer: next_answer_form}}, {upsert:true, multi: true});
+            Answers.update({experiment_id: experiment_id_value}, {$set: {current_answer: next_answer_form, latest_time: new Date().getTime()}}, {upsert:true, multi: true});
             counters[experiment_id_value][curr_experiment.current_question] = 0;
             //potentially removes the busy flag
             if (curr_answer_form == 1){

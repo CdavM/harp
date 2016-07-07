@@ -3,11 +3,10 @@ Template.experiment.events({
         worker_ID_value = Session.get("worker_ID_value");
         Session.set('initialized', true);
         Session.set('waiting', true);
-        Meteor.call('initialPost', {worker_ID: worker_ID_value, initial_time: initial_time_val}, 'begin', function(error, result){
+        Meteor.call('initialPost', {worker_ID: worker_ID_value}, 'begin', function(error, result){
             if (error){
                 console.log("error "+error);
             } else {
-                initial_time_val = new Date().getTime();
             }
         });
 
@@ -48,7 +47,6 @@ Template.experiment.events({
             return;
         }
         worker_ID_value = Session.get('worker_ID_value');
-        //answer_value['time'] = new Date().getTime() - initial_time_val;
         Session.set("answered", true);
         Session.set("waiting", true);
         Meteor.call('newPost', {answer: answer_value, worker_ID: worker_ID_value}, function(error, result){
