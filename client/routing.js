@@ -20,7 +20,7 @@ function makeid()
     return text;
 }
 
-Router.route('/workerId=:wid&assignmentId=:asg&hitId=:hit', function(){
+Router.route('/hitId=:hit&workerId=:wid&assignmentId=:asg', function(){
   // if (Session.get('worker_ID_value').length != 14) {
   //   Router.go('/end')
   // }
