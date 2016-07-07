@@ -1,6 +1,6 @@
 import csv
 import ast
-#import seaborn as sns
+import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -8,92 +8,10 @@ import operator as o
 from operator import itemgetter
 
 import numpy as np
-
+from data_helpers import *
 
 
 DEBUG_LEVEL = 0
-
-def load_data(filename):
-    with open(filename, mode='rb') as file:
-        reader = csv.DictReader(file)
-        return list(reader)
-    print "unable to open file"
-    return None
-
-slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
-mechanism_names = ['l2 Constrained Movement', 'Comparisons', 'Full Elicitation', 'l1 Constrained Movement']
-
-def load_data_experiment2(answerdata, restofdata): #ideal points and weights elicitation
-    answer = {}
-    answer['slider0_loc'] = float(answerdata['slider0_text'][0])
-    answer['slider0_weight'] = float(answerdata['slider0weight_text'][0])
-
-    answer['slider1_loc'] = float(answerdata['slider1_text'][0])
-    answer['slider1_weight'] = float(answerdata['slider1weight_text'][0])
-    
-    answer['slider2_loc'] = float(answerdata['slider2_text'][0])
-    answer['slider2_weight'] = float(answerdata['slider2weight_text'][0])
-
-    answer['slider3_loc'] = float(answerdata['slider3_text'][0])
-    answer['slider3_weight'] = float(answerdata['slider3weight_text'][0])
-
-    answer['explanation'] = answerdata['text_explanation']
-
-    return answer
-
-def load_data_experiment0(answerdata, restofdata): #constrained movement
-    answer = {}
-    answer['slider0_loc'] = float(answerdata['slider0'][0])
-    answer['slider1_loc'] = float(answerdata['slider1'][0])
-    answer['slider2_loc'] = float(answerdata['slider2'][0])
-    answer['slider3_loc'] = float(answerdata['slider3'][0])
-    answer['slider4_loc'] = float(answerdata['deficit'])
-    answer['explanation'] = answerdata['text_explanation']
-    
-    answer['previous_slider_values'] = [float(restofdata['initial_slider0']), float(restofdata['initial_slider1']), float(restofdata['initial_slider2']), float(restofdata['initial_slider3']), float(restofdata['initial_deficit'])]
-    return answer
-
-def load_data_experiment3(answerdata, restofdata): #constrained movement
-    answer = {}
-    answer['slider0_loc'] = float(answerdata['slider0'][0])
-    answer['slider1_loc'] = float(answerdata['slider1'][0])
-    answer['slider2_loc'] = float(answerdata['slider2'][0])
-    answer['slider3_loc'] = float(answerdata['slider3'][0])
-    answer['slider4_loc'] = float(answerdata['deficit'])
-    answer['explanation'] = answerdata['text_explanation']
-    
-    answer['previous_slider_values'] = [float(restofdata['initial_slider0']), float(restofdata['initial_slider1']), float(restofdata['initial_slider2']), float(restofdata['initial_slider3']), float(restofdata['initial_deficit'])]
-    return answer
-
-def load_data_experiment1(answerdata, restofdata): #comparisons
-    answer = {}
-    answer['explanation'] = answerdata['text_explanation']
-    answer['selection'] = int(answerdata["option"][0])
-
-    answer['option0'] = [float(restofdata['slider00']), float(restofdata['slider10']), float(restofdata['slider20']), float(restofdata['slider30']), float(restofdata['slider40'])]
-    answer['option1'] = [float(restofdata['slider01']), float(restofdata['slider11']), float(restofdata['slider21']), float(restofdata['slider31']), float(restofdata['slider41'])]
-    answer['option2'] = [float(restofdata['slider02']), float(restofdata['slider12']), float(restofdata['slider22']), float(restofdata['slider32']), float(restofdata['slider42'])]
-
-    real_answer = answer['option' + str(answer['selection'])]
-    for loc in xrange(5):
-        answer['slider' + str(loc)+'_loc'] = real_answer[loc]
-    
-    answer['previous_slider_values'] = answer['option1']
-    #TODO include radius values and so forth
-    return answer
-
-def load_feedback(feedbackdata, restofdata):
-    answer = {}
-    answer['political_stance'] = feedbackdata['political_stance_report']
-    answer['feedback'] = feedbackdata['feedback']
-    return answer
-
-switcher_load_data = {
-    0: load_data_experiment0,
-    1: load_data_experiment1,
-    2: load_data_experiment2,
-    3: load_data_experiment3
-}
 
 def plot_sliders_over_time(data, title):
     n = range(1, len(data) + 1)
@@ -112,7 +30,12 @@ def plot_sliders_over_time(data, title):
     plt.show()
 
 def analyze_data_experiment0(data): # constrained movement
-    plot_sliders_over_time(data, 'Constrained Movement Mechanism')
+    plot_sliders_over_time(data, 'l2 Constrained Movement Mechanism')
+    creditsused = [] #histogram of credits used
+    for exp in data:
+    	creditsused.append(calc_credits_used(exp))
+    plt.hist(creditsused, bins = 10, range =[0, 1])
+    plt.show()
     return None
 
 
@@ -125,8 +48,12 @@ def analyze_data_experiment2(data): # ideal points and elicitation
     return None
 
 def analyze_data_experiment3(data): # constrained movement
-    plot_sliders_over_time(data, 'Constrained Movement Mechanism')
-    return None
+    plot_sliders_over_time(data, 'l1 Constrained Movement Mechanism')
+    creditsused = []
+    for exp in data:
+    	creditsused.append(calc_credits_used(exp))
+    plt.hist(creditsused, bins = 10, range =[0, 1])
+    plt.show()
 
 switcher_analyze_data = {
     0: analyze_data_experiment0,
@@ -135,68 +62,86 @@ switcher_analyze_data = {
     3: analyze_data_experiment3
 }
 
+def calc_credits_used(experiment):
+	return experiment['question_data']['slider0_creditsused'] + experiment['question_data']['slider1_creditsused'] + experiment['question_data']['slider2_creditsused'] + experiment['question_data']['slider3_creditsused']
 
-def clean_data(dirty):
-    clean = []
-    organized_data = {}
-    organized_data[0] = []
-    organized_data[1] = []
-    organized_data[2] = []
-    organized_data[3] = []
-
-    for row in dirty:
-        if len(row['experiment_id'])==0 or (len(row['answer1.0.1']) == 0 and len(row['answer1.1.1']) == 0 and len(row['answer1.2.1']) == 0 and len(row['answer1.3.1']) == 0):
-            continue
-        d = {}
-        copy_over = ['worker_ID', 'asg_ID']
-        for ide in copy_over:
-            d[ide] = row[ide]
-        d['experiment_id'] = int(row['experiment_id'])
-        d['question_num'] = int(row['current_question'])
-        d['begin_time'] = float(row['begin_time'])
-        d['initial_time'] = float(row['initial_time'])
-        d['radius'] = float(row['radius'])
-        d['time_left_on_page'] = int(row['timer'])
-        d['last_page'] = int(row['current_answer'])
-        d['participant_number'] = int(row['num_of_previous_participants']) + 1
-        d['finished'] = row['experiment_finished']
-
-
-        answerdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.1'])
-        feedbackdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.2'])
-
-        d['time_page0'] = (d['begin_time'] - d['initial_time'])/1000.0
-        d['time_page1'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.0'])['time']/1000.0 #in seconds
-        d['time_page2'] = answerdict['time']/1000.0
-        #print row['answer1.1.1']
-        #print row['answer1.1.2']
-        #print "row erroring: ", row['answer1.' + str(d['question_num']) + '.2']
-        if len(row['answer1.' + str(d['question_num']) + '.2']) > 0: #otherwise they didn't submit last page
-            d['time_page3'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.2'])['time']/1000.0
-        else:
-            d['time_page3'] = 300
-
-        #print d['experiment_id'], d['question_num'], answerdict, row
-        d['question_data'] = switcher_load_data[d['question_num']](answerdict, row)
-        d['feedback_data'] = load_feedback(feedbackdict, row)
-
-        clean.append(d)
-        organized_data[d['question_num']].append(d)
-
-    for key in organized_data:
-        organized_data[key] = sorted(organized_data[key], key=itemgetter('experiment_id'))
-    return clean, organized_data
-
-def analyze_data(organized_data):
+def analyze_data(organized_data, LABEL):
     # for comparisons & constrained movement, plot the locations for each slider (with labels) and deficit over time
     # for raw elicitation, calculate the minimizer (optimal point)
     # also calculate average time for each mechanism
 
     for key in organized_data:
         print switcher_analyze_data[key](organized_data[key])
-    calculate_time_spent(organized_data)
+    #calculate_time_spent(organized_data, LABEL)
+    analyze_movement_and_weights(organized_data, LABEL)
+slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
 
-def calculate_time_spent(organized_data):
+
+def analyze_movement_and_weights(organized_data, LABEL):
+	averages_byitem = {0: np.zeros(4), 1:np.zeros(4), 2:np.zeros(4), 3:np.zeros(4)}
+	averages_bymostmovement = {0: np.zeros(4), 1:np.zeros(4), 2:np.zeros(4), 3:np.zeros(4)}
+	averages_creditpercentage = {0:np.zeros(4), 3:np.zeros(4)}
+	averages_creditpercentage_bymost = {0:np.zeros(4), 3:np.zeros(4)}
+	num_key_positive = np.zeros(4)
+	for key in organized_data:
+		for experiment in organized_data[key]:
+			percentages = get_movement_percentages(experiment)
+			if percentages is None:
+				print "Did not move at all", experiment['experiment_id']
+				continue
+			num_key_positive[key] += 1
+			#print key, percentages
+			averages_byitem[key] += percentages
+			averages_bymostmovement[key] += sorted(percentages, reverse = True)
+			if key == 0 or key == 3:
+				credit_percentages = get_credit_percentage(experiment)
+				averages_creditpercentage[key] += credit_percentages
+				averages_creditpercentage_bymost[key] += sorted(credit_percentages, reverse=True)
+		averages_byitem[key] /= num_key_positive[key]
+		averages_bymostmovement[key] /= num_key_positive[key]
+		if key == 0 or key == 3:
+			averages_creditpercentage[key] /= num_key_positive[key]
+			averages_creditpercentage_bymost[key] /= num_key_positive[key]
+
+
+	dpoints_byitem = []
+	dpoints_bymost = []
+	dpoints_credits = []
+	dpoints_credits_bymost = []
+
+	for key in averages_byitem.keys():
+		for idx in xrange(4):
+			dpoints_byitem.append([mechanism_names[key], slider_order[idx], averages_byitem[key][idx]])
+			dpoints_bymost.append([mechanism_names[key], str(idx), averages_bymostmovement[key][idx]])
+			if key == 0 or key == 3:
+				dpoints_credits.append([mechanism_names[key], slider_order[idx], averages_creditpercentage[key][idx]])
+				dpoints_credits_bymost.append([mechanism_names[key], str(idx), averages_creditpercentage_bymost[key][idx]])
+
+	barplot(np.array(dpoints_byitem), LABEL, 'Percent of movement', 'Item', slider_order[0:4], mechanism_names)
+	barplot(np.array(dpoints_bymost), LABEL, 'Percent of movement', 'Order by movement', [str(x) for x in xrange(4)], mechanism_names)
+	barplot(np.array(dpoints_credits), LABEL, 'Percent of credits used', 'Item', slider_order[0:4], [mechanism_names[0], mechanism_names[3]])
+	barplot(np.array(dpoints_credits_bymost), LABEL, 'Percent of credits used', 'Order by movement', [str(x) for x in xrange(4)], [mechanism_names[0], mechanism_names[3]])
+
+
+def get_credit_percentage(experiment):
+	movement = [experiment['question_data']['slider0_creditsused'] , experiment['question_data']['slider1_creditsused'] , experiment['question_data']['slider2_creditsused'] , experiment['question_data']['slider3_creditsused']]
+	if sum(movement) < .0001: #did not move
+		return None
+	return movement/np.sum(movement)
+
+
+def get_movement_percentages(single_experiment_data):
+	if single_experiment_data['question_num'] == 2:
+		movement = [single_experiment_data['question_data']['slider0_weight'], single_experiment_data['question_data']['slider1_weight'], single_experiment_data['question_data']['slider2_weight'], single_experiment_data['question_data']['slider3_weight']]
+	else:
+		new_vals = [single_experiment_data['question_data']['slider0_loc'], single_experiment_data['question_data']['slider1_loc'], single_experiment_data['question_data']['slider2_loc'], single_experiment_data['question_data']['slider3_loc']]
+		previous_vals = single_experiment_data['question_data']['previous_slider_values'][0:4]
+		movement = np.abs(np.subtract(new_vals, previous_vals))
+	if sum(movement) < .0001: #did not move
+		return None
+	return movement/np.sum(movement)
+
+def calculate_time_spent(organized_data, LABEL):
     #For each mechanism, calculate average time spent on each page and plot it in a chuncked bar graph
     pagenames = ['Welcome Page', 'Instructions', 'Mechanism', 'Feedback']
 
@@ -206,70 +151,7 @@ def calculate_time_spent(organized_data):
             #print organized_data[key]
             print [d['time_page' + str(page)] for d in organized_data[key]]
             dpoints.append([mechanism_names[key], pagenames[page], np.mean([d['time_page' + str(page)] for d in organized_data[key]])])
-    barplot(np.array(dpoints), 'test', 'Time (Seconds)', 'Page', pagenames)
-
-
-
-def barplot(dpoints, label, ylabel, xlabel, categories_order):
-    '''
-    copied from http://emptypipes.org/2013/11/09/matplotlib-multicategory-barchart/ on 6/27/2016
-        modified to take in the matrix already rather than calculating mean values
-    Create a barchart for data across different categories with
-    multiple conditions for each category.
-    
-    @param ax: The plotting axes from matplotlib.
-    @param dpoints: The data set as an (n, 3) numpy array
-    '''
-
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-
-    # Aggregate the conditions and the categories according to their
-    # mean values
-    conditions = [(c, np.mean(dpoints[dpoints[:,0] == c][:,2].astype(float))) 
-                  for c in np.unique(dpoints[:,0])]
-    categories = [(c, np.mean(dpoints[dpoints[:,1] == c][:,2].astype(float))) 
-                  for c in np.unique(dpoints[:,1])]
-        
-    # sort the conditions, categories and data so that the bars in
-    # the plot will be ordered by category and condition
-    conditions = [c[0] for c in sorted(conditions, key=o.itemgetter(1))]
-    categories = [c[0] for c in sorted(categories, key=o.itemgetter(1))]
-    categories = categories_order
-    
-    dpoints = np.array(sorted(dpoints, key=lambda x: categories.index(x[1])))
-
-    # the space between each set of bars
-    space = 0.3
-    n = len(conditions)
-    width = (1 - space) / (len(conditions))
-    
-    # Create a set of bars at each position
-    for i,cond in enumerate(conditions):
-        indeces = range(1, len(categories)+1)
-        vals = dpoints[dpoints[:,0] == cond][:,2].astype(np.float)
-        pos = [j - (1 - space) / 2. + i * width for j in indeces]
-        ax.bar(pos, vals, width=width, label=cond, 
-               color=cm.Accent(float(i) / n)
-               )
-    
-    # Set the x-axis tick labels to be equal to the categories
-    ax.set_xticks(indeces)
-    ax.set_xticklabels(categories)
-    ax.tick_params(axis='both', which='major', labelsize=18)
-
-    plt.setp(plt.xticks()[1])#, rotation=90)
-    
-    # Add the axis labels
-    ax.set_ylabel(ylabel, fontsize = 18)
-    #ax.set_xlabel(xlabel, fontsize = 18)
-    
-    # Add a legend
-    handles, labels = ax.get_legend_handles_labels()
-    ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize = 18)
-        
-    plt.savefig(label + '.png')
-    plt.show()
+    barplot(np.array(dpoints), LABEL, 'Time (Seconds)', 'Page', pagenames, mechanism_names)
 
 def organize_payment(organized_data):
     for key in organized_data:
@@ -293,13 +175,13 @@ def main():
     # data = clean_data(load_data('export-20160625101532_edited.csv'))
 
     #data, organized_data = clean_data(load_data('export-20160627170659_edited.csv'))
-    data, organized_data = clean_data(load_data('export-20160707161249_PILOTFINAL.csv'))
-
+    data, organized_data = clean_data(load_data('export-20160707161738_PILOTFINAL_fixed.csv'))
+    LABEL = 'Pilot'
     if DEBUG_LEVEL > 0:
         print len(data)
         for key in organized_data:
             print key, [d['experiment_id'] for d in organized_data[key]]
-    analyze_data(organized_data)
+    analyze_data(organized_data, LABEL)
 
     #organize_payment(organized_data)
 
@@ -307,3 +189,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
