@@ -2,8 +2,8 @@ Router.route('/', function(){
 if (Session.equals('worker_ID_value', -1) || ! Session.get('worker_ID_value')){
   //if no worker_ID found redirect back to starting page
   //worker_ID randomly generated for easier debugging
-  Router.go('/workerId='+makeid()+'&assignmentId='+makeid() + '&hitId='+makeid());
-  //Router.go('/end'); Uncomment this when not debugging anymore
+  //Router.go('/workerId='+makeid()+'&assignmentId='+makeid() + '&hitId='+makeid());
+  Router.go('/end');// Uncomment this when not debugging anymore
   } else {
     this.render('experiment');
   }
