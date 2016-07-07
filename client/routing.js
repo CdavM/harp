@@ -29,7 +29,7 @@ Router.route('/workerId=:wid&assignmentId=:asg&hitId=:hit', function(){
   var hit_val = this.params.hit;
   var curr_experiment = Answers.findOne({worker_ID: wid});
   Session.set('worker_ID_value', wid);
-  if ((curr_experiment && curr_experiment.experiment_finished) || wid.length != 14){
+  if ((curr_experiment && curr_experiment.experiment_finished) || (wid.length >=12 && wid.length <=14)){
     //Meteor.setTimeout(function(){Session.set('experiment_finished', false);}, 150);
     Router.go('/end');  //send them to end, entry participated already.
   } else {
