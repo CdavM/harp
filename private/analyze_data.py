@@ -21,7 +21,7 @@ def load_data(filename):
     return None
 
 slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
-mechanism_names = ['Constrained Movement', 'Comparisons', 'Full Elicitation']
+mechanism_names = ['l2 Constrained Movement', 'Comparisons', 'Full Elicitation', 'l1 Constrained Movement']
 
 def load_data_experiment2(answerdata, restofdata): #ideal points and weights elicitation
     answer = {}
@@ -53,6 +53,18 @@ def load_data_experiment0(answerdata, restofdata): #constrained movement
     answer['previous_slider_values'] = [float(restofdata['initial_slider0']), float(restofdata['initial_slider1']), float(restofdata['initial_slider2']), float(restofdata['initial_slider3']), float(restofdata['initial_deficit'])]
     return answer
 
+def load_data_experiment3(answerdata, restofdata): #constrained movement
+    answer = {}
+    answer['slider0_loc'] = float(answerdata['slider0'][0])
+    answer['slider1_loc'] = float(answerdata['slider1'][0])
+    answer['slider2_loc'] = float(answerdata['slider2'][0])
+    answer['slider3_loc'] = float(answerdata['slider3'][0])
+    answer['slider4_loc'] = float(answerdata['deficit'])
+    answer['explanation'] = answerdata['text_explanation']
+    
+    answer['previous_slider_values'] = [float(restofdata['initial_slider0']), float(restofdata['initial_slider1']), float(restofdata['initial_slider2']), float(restofdata['initial_slider3']), float(restofdata['initial_deficit'])]
+    return answer
+
 def load_data_experiment1(answerdata, restofdata): #comparisons
     answer = {}
     answer['explanation'] = answerdata['text_explanation']
@@ -70,10 +82,17 @@ def load_data_experiment1(answerdata, restofdata): #comparisons
     #TODO include radius values and so forth
     return answer
 
+def load_feedback(feedbackdata, restofdata):
+    answer = {}
+    answer['political_stance'] = feedbackdata['political_stance_report']
+    answer['feedback'] = feedbackdata['feedback']
+    return answer
+
 switcher_load_data = {
     0: load_data_experiment0,
     1: load_data_experiment1,
     2: load_data_experiment2,
+    3: load_data_experiment3
 }
 
 def plot_sliders_over_time(data, title):
@@ -105,10 +124,15 @@ def analyze_data_experiment1(data): # comparisons
 def analyze_data_experiment2(data): # ideal points and elicitation
     return None
 
+def analyze_data_experiment3(data): # constrained movement
+    plot_sliders_over_time(data, 'Constrained Movement Mechanism')
+    return None
+
 switcher_analyze_data = {
     0: analyze_data_experiment0,
     1: analyze_data_experiment1,
     2: analyze_data_experiment2,
+    3: analyze_data_experiment3
 }
 
 
@@ -118,9 +142,10 @@ def clean_data(dirty):
     organized_data[0] = []
     organized_data[1] = []
     organized_data[2] = []
+    organized_data[3] = []
 
     for row in dirty:
-        if len(row['experiment_id'])==0 or (len(row['answer1.0.1']) == 0 and len(row['answer1.1.1']) == 0 and len(row['answer1.2.1']) == 0):
+        if len(row['experiment_id'])==0 or (len(row['answer1.0.1']) == 0 and len(row['answer1.1.1']) == 0 and len(row['answer1.2.1']) == 0 and len(row['answer1.3.1']) == 0):
             continue
         d = {}
         copy_over = ['worker_ID', 'asg_ID']
@@ -138,6 +163,7 @@ def clean_data(dirty):
 
 
         answerdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.1'])
+        feedbackdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.2'])
 
         d['time_page0'] = (d['begin_time'] - d['initial_time'])/1000.0
         d['time_page1'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.0'])['time']/1000.0 #in seconds
@@ -148,10 +174,11 @@ def clean_data(dirty):
         if len(row['answer1.' + str(d['question_num']) + '.2']) > 0: #otherwise they didn't submit last page
             d['time_page3'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.2'])['time']/1000.0
         else:
-            d['time_page3'] = 0
+            d['time_page3'] = 300
 
         #print d['experiment_id'], d['question_num'], answerdict, row
         d['question_data'] = switcher_load_data[d['question_num']](answerdict, row)
+        d['feedback_data'] = load_feedback(feedbackdict, row)
 
         clean.append(d)
         organized_data[d['question_num']].append(d)
@@ -179,11 +206,11 @@ def calculate_time_spent(organized_data):
             #print organized_data[key]
             print [d['time_page' + str(page)] for d in organized_data[key]]
             dpoints.append([mechanism_names[key], pagenames[page], np.mean([d['time_page' + str(page)] for d in organized_data[key]])])
-    barplot(np.array(dpoints), 'test', 'Time (Seconds)', 'Page')
+    barplot(np.array(dpoints), 'test', 'Time (Seconds)', 'Page', pagenames)
 
 
 
-def barplot(dpoints, label, ylabel, xlabel):
+def barplot(dpoints, label, ylabel, xlabel, categories_order):
     '''
     copied from http://emptypipes.org/2013/11/09/matplotlib-multicategory-barchart/ on 6/27/2016
         modified to take in the matrix already rather than calculating mean values
@@ -208,7 +235,7 @@ def barplot(dpoints, label, ylabel, xlabel):
     # the plot will be ordered by category and condition
     conditions = [c[0] for c in sorted(conditions, key=o.itemgetter(1))]
     categories = [c[0] for c in sorted(categories, key=o.itemgetter(1))]
-
+    categories = categories_order
     
     dpoints = np.array(sorted(dpoints, key=lambda x: categories.index(x[1])))
 
@@ -244,20 +271,39 @@ def barplot(dpoints, label, ylabel, xlabel):
     plt.savefig(label + '.png')
     plt.show()
 
+def organize_payment(organized_data):
+    for key in organized_data:
+        print "MECHANISM: " + mechanism_names[key]
+        for d in organized_data[key]:
+            print d['worker_ID'], d['time_page0'], d['time_page1'], d['time_page2'], d['time_page3'], d['question_data']['explanation'], "\n"
 
+def print_different_things(organized_data):
+    for key in organized_data:
+        print "MECHANISM: " + mechanism_names[key]
+        for d in organized_data[key]:
+            print d['question_data']['explanation'][0], "\n"
+
+    for key in organized_data:
+        print "MECHANISM: " + mechanism_names[key]
+        for d in organized_data[key]:
+            print d['feedback_data']['feedback'][0], "\n"
 def main():
 
     #data = clean_data(load_data('export-20160623074343_edited.csv'))
     # data = clean_data(load_data('export-20160625101532_edited.csv'))
 
     #data, organized_data = clean_data(load_data('export-20160627170659_edited.csv'))
-    data, organized_data = clean_data(load_data('export-20160707025817.csv'))
+    data, organized_data = clean_data(load_data('export-20160707053039_PILOT2.csv'))
 
     if DEBUG_LEVEL > 0:
         print len(data)
         for key in organized_data:
             print key, [d['experiment_id'] for d in organized_data[key]]
     analyze_data(organized_data)
+
+    #organize_payment(organized_data)
+
+    #print_different_things(organized_data  )
 
 if __name__ == "__main__":
     main()

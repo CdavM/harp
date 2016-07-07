@@ -20,9 +20,6 @@ Router.route('/', function(){
 
   var curr_experiment = Answers.findOne({worker_ID: wid});
   Session.set('worker_ID_value', wid);
-  console.log(curr_experiment);
-  console.log(wid);
-  console.log(hit_val)
   if ((curr_experiment && curr_experiment.experiment_finished))
   {
     //Meteor.setTimeout(function(){Session.set('experiment_finished', false);}, 150);
