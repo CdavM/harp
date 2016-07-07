@@ -29,8 +29,9 @@ Router.route('/?hitId=:hit&workerId=:wid&assignmentId=:asg', function(){
   var hit_val = this.params.hit;
   var curr_experiment = Answers.findOne({worker_ID: wid});
   Session.set('worker_ID_value', wid);
-  Console.log(curr_experiment);
-  Console.log(wid);
+  console.log(curr_experiment);
+  console.log(wid);
+  console.log(hit_val)
   if ((curr_experiment && curr_experiment.experiment_finished) || (wid.length <6 ))
   {
     //Meteor.setTimeout(function(){Session.set('experiment_finished', false);}, 150);
