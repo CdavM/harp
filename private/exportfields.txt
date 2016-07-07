@@ -42,3 +42,7 @@ slider12
 slider22
 slider32
 slider42
+answer1slider0_credits
+answer1slider1_credits
+answer1slider2_credits
+answer1slider3_credits
