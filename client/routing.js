@@ -4,10 +4,7 @@ if (Session.equals('worker_ID_value', -1) || ! Session.get('worker_ID_value')){
   //worker_ID randomly generated for easier debugging
   Router.go('/workerId='+makeid()+'&assignmentId='+makeid() + '&hitId='+makeid());
   //Router.go('/end'); Uncomment this when not debugging anymore
-  } else if (Session.get('worker_ID_value').length != 14) {
-    Router.go('/end')
-  }
-  else {
+  } else {
     this.render('experiment');
   }
 });
@@ -24,6 +21,9 @@ function makeid()
 }
 
 Router.route('/workerId=:wid&assignmentId=:asg&hitId=:hit', function(){
+  if (Session.get('worker_ID_value').length != 14) {
+    Router.go('/end')
+  }
   var wid = this.params.wid;
   var asg_val = this.params.asg;
   var hit_val = this.params.hit;
