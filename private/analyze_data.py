@@ -128,8 +128,8 @@ def clean_data(dirty):
             d[ide] = row[ide]
         d['experiment_id'] = int(row['experiment_id'])
         d['question_num'] = int(row['current_question'])
-        d['begin_time'] = int(row['begin_time'])
-        d['initial_time'] = int(row['initial_time'])
+        d['begin_time'] = float(row['begin_time'])
+        d['initial_time'] = float(row['initial_time'])
         d['radius'] = float(row['radius'])
         d['time_left_on_page'] = int(row['timer'])
         d['last_page'] = int(row['current_answer'])
@@ -139,7 +139,7 @@ def clean_data(dirty):
 
         answerdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.1'])
 
-        d['time_page0'] = d['begin_time'] - d['initial_time']
+        d['time_page0'] = (d['begin_time'] - d['initial_time'])/1000.0
         d['time_page1'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.0'])['time']/1000.0 #in seconds
         d['time_page2'] = answerdict['time']/1000.0
         #print row['answer1.1.1']
@@ -251,7 +251,7 @@ def main():
     # data = clean_data(load_data('export-20160625101532_edited.csv'))
 
     #data, organized_data = clean_data(load_data('export-20160627170659_edited.csv'))
-    data, organized_data = clean_data(load_data('export-20160704224311.csv'))
+    data, organized_data = clean_data(load_data('export-20160707025817.csv'))
 
     if DEBUG_LEVEL > 0:
         print len(data)
