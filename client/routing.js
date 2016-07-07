@@ -20,7 +20,7 @@ function makeid()
     return text;
 }
 
-Router.route('/hitId=:hit&workerId=:wid&assignmentId=:asg', function(){
+Router.route('/?hitId=:hit&workerId=:wid&assignmentId=:asg', function(){
   // if (Session.get('worker_ID_value').length != 14) {
   //   Router.go('/end')
   // }
@@ -29,7 +29,7 @@ Router.route('/hitId=:hit&workerId=:wid&assignmentId=:asg', function(){
   var hit_val = this.params.hit;
   var curr_experiment = Answers.findOne({worker_ID: wid});
   Session.set('worker_ID_value', wid);
-  if ((curr_experiment && curr_experiment.experiment_finished) || (wid.length <5 ))
+  if ((curr_experiment && curr_experiment.experiment_finished) || (wid.length <6 ))
   {
     //Meteor.setTimeout(function(){Session.set('experiment_finished', false);}, 150);
     Router.go('/end');  //send them to end, entry participated already.
