@@ -293,7 +293,7 @@ def main():
     # data = clean_data(load_data('export-20160625101532_edited.csv'))
 
     #data, organized_data = clean_data(load_data('export-20160627170659_edited.csv'))
-    data, organized_data = clean_data(load_data('export-20160707053039_PILOT2.csv'))
+    data, organized_data = clean_data(load_data('export-20160707161249_PILOTFINAL.csv'))
 
     if DEBUG_LEVEL > 0:
         print len(data)
