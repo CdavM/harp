@@ -23,7 +23,7 @@ function makeid()
     return text;
 }
 
-Router.route('/workerId=:wid&assignmentId=:asg&hitId:=hit', function(){
+Router.route('/workerId=:wid&assignmentId=:asg&hitId=:hit', function(){
   var wid = this.params.wid;
   var asg_val = this.params.asg;
   var hit_val = this.params.hit;
