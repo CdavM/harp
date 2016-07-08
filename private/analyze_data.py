@@ -33,7 +33,7 @@ def analyze_data_experiment0(data): # constrained movement
     plot_sliders_over_time(data, 'l2 Constrained Movement Mechanism')
     creditsused = [] #histogram of credits used
     for exp in data:
-    	creditsused.append(calc_credits_used(exp))
+        creditsused.append(calc_credits_used(exp))
     plt.hist(creditsused, bins = 10, range =[0, 1])
     plt.show()
     return None
@@ -51,7 +51,7 @@ def analyze_data_experiment3(data): # constrained movement
     plot_sliders_over_time(data, 'l1 Constrained Movement Mechanism')
     creditsused = []
     for exp in data:
-    	creditsused.append(calc_credits_used(exp))
+        creditsused.append(calc_credits_used(exp))
     plt.hist(creditsused, bins = 10, range =[0, 1])
     plt.show()
 
@@ -63,83 +63,83 @@ switcher_analyze_data = {
 }
 
 def calc_credits_used(experiment):
-	return experiment['question_data']['slider0_creditsused'] + experiment['question_data']['slider1_creditsused'] + experiment['question_data']['slider2_creditsused'] + experiment['question_data']['slider3_creditsused']
+    return experiment['question_data']['slider0_creditsused'] + experiment['question_data']['slider1_creditsused'] + experiment['question_data']['slider2_creditsused'] + experiment['question_data']['slider3_creditsused']
 
 def analyze_data(organized_data, LABEL):
     # for comparisons & constrained movement, plot the locations for each slider (with labels) and deficit over time
     # for raw elicitation, calculate the minimizer (optimal point)
     # also calculate average time for each mechanism
+    calculate_time_spent(organized_data, LABEL)
 
     for key in organized_data:
         print switcher_analyze_data[key](organized_data[key])
-    #calculate_time_spent(organized_data, LABEL)
     analyze_movement_and_weights(organized_data, LABEL)
 slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
 
 
 def analyze_movement_and_weights(organized_data, LABEL):
-	averages_byitem = {0: np.zeros(4), 1:np.zeros(4), 2:np.zeros(4), 3:np.zeros(4)}
-	averages_bymostmovement = {0: np.zeros(4), 1:np.zeros(4), 2:np.zeros(4), 3:np.zeros(4)}
-	averages_creditpercentage = {0:np.zeros(4), 3:np.zeros(4)}
-	averages_creditpercentage_bymost = {0:np.zeros(4), 3:np.zeros(4)}
-	num_key_positive = np.zeros(4)
-	for key in organized_data:
-		for experiment in organized_data[key]:
-			percentages = get_movement_percentages(experiment)
-			if percentages is None:
-				print "Did not move at all", experiment['experiment_id']
-				continue
-			num_key_positive[key] += 1
-			#print key, percentages
-			averages_byitem[key] += percentages
-			averages_bymostmovement[key] += sorted(percentages, reverse = True)
-			if key == 0 or key == 3:
-				credit_percentages = get_credit_percentage(experiment)
-				averages_creditpercentage[key] += credit_percentages
-				averages_creditpercentage_bymost[key] += sorted(credit_percentages, reverse=True)
-		averages_byitem[key] /= num_key_positive[key]
-		averages_bymostmovement[key] /= num_key_positive[key]
-		if key == 0 or key == 3:
-			averages_creditpercentage[key] /= num_key_positive[key]
-			averages_creditpercentage_bymost[key] /= num_key_positive[key]
+    averages_byitem = {0: np.zeros(4), 1:np.zeros(4), 2:np.zeros(4), 3:np.zeros(4)}
+    averages_bymostmovement = {0: np.zeros(4), 1:np.zeros(4), 2:np.zeros(4), 3:np.zeros(4)}
+    averages_creditpercentage = {0:np.zeros(4), 3:np.zeros(4)}
+    averages_creditpercentage_bymost = {0:np.zeros(4), 3:np.zeros(4)}
+    num_key_positive = np.zeros(4)
+    for key in organized_data:
+        for experiment in organized_data[key]:
+            percentages = get_movement_percentages(experiment)
+            if percentages is None:
+                print "Did not move at all", experiment['experiment_id']
+                continue
+            num_key_positive[key] += 1
+            #print key, percentages
+            averages_byitem[key] += percentages
+            averages_bymostmovement[key] += sorted(percentages, reverse = True)
+            if key == 0 or key == 3:
+                credit_percentages = get_credit_percentage(experiment)
+                averages_creditpercentage[key] += credit_percentages
+                averages_creditpercentage_bymost[key] += sorted(credit_percentages, reverse=True)
+        averages_byitem[key] /= num_key_positive[key]
+        averages_bymostmovement[key] /= num_key_positive[key]
+        if key == 0 or key == 3:
+            averages_creditpercentage[key] /= num_key_positive[key]
+            averages_creditpercentage_bymost[key] /= num_key_positive[key]
 
 
-	dpoints_byitem = []
-	dpoints_bymost = []
-	dpoints_credits = []
-	dpoints_credits_bymost = []
+    dpoints_byitem = []
+    dpoints_bymost = []
+    dpoints_credits = []
+    dpoints_credits_bymost = []
 
-	for key in averages_byitem.keys():
-		for idx in xrange(4):
-			dpoints_byitem.append([mechanism_names[key], slider_order[idx], averages_byitem[key][idx]])
-			dpoints_bymost.append([mechanism_names[key], str(idx), averages_bymostmovement[key][idx]])
-			if key == 0 or key == 3:
-				dpoints_credits.append([mechanism_names[key], slider_order[idx], averages_creditpercentage[key][idx]])
-				dpoints_credits_bymost.append([mechanism_names[key], str(idx), averages_creditpercentage_bymost[key][idx]])
+    for key in averages_byitem.keys():
+        for idx in xrange(4):
+            dpoints_byitem.append([mechanism_names[key], slider_order[idx], averages_byitem[key][idx]])
+            dpoints_bymost.append([mechanism_names[key], str(idx), averages_bymostmovement[key][idx]])
+            if key == 0 or key == 3:
+                dpoints_credits.append([mechanism_names[key], slider_order[idx], averages_creditpercentage[key][idx]])
+                dpoints_credits_bymost.append([mechanism_names[key], str(idx), averages_creditpercentage_bymost[key][idx]])
 
-	barplot(np.array(dpoints_byitem), LABEL, 'Percent of movement', 'Item', slider_order[0:4], mechanism_names)
-	barplot(np.array(dpoints_bymost), LABEL, 'Percent of movement', 'Order by movement', [str(x) for x in xrange(4)], mechanism_names)
-	barplot(np.array(dpoints_credits), LABEL, 'Percent of credits used', 'Item', slider_order[0:4], [mechanism_names[0], mechanism_names[3]])
-	barplot(np.array(dpoints_credits_bymost), LABEL, 'Percent of credits used', 'Order by movement', [str(x) for x in xrange(4)], [mechanism_names[0], mechanism_names[3]])
+    barplot(np.array(dpoints_byitem), LABEL, 'Percent of movement', 'Item', slider_order[0:4], mechanism_names)
+    barplot(np.array(dpoints_bymost), LABEL, 'Percent of movement', 'Order by movement', [str(x) for x in xrange(4)], mechanism_names)
+    barplot(np.array(dpoints_credits), LABEL, 'Percent of credits used', 'Item', slider_order[0:4], [mechanism_names[0], mechanism_names[3]])
+    barplot(np.array(dpoints_credits_bymost), LABEL, 'Percent of credits used', 'Order by movement', [str(x) for x in xrange(4)], [mechanism_names[0], mechanism_names[3]])
 
 
 def get_credit_percentage(experiment):
-	movement = [experiment['question_data']['slider0_creditsused'] , experiment['question_data']['slider1_creditsused'] , experiment['question_data']['slider2_creditsused'] , experiment['question_data']['slider3_creditsused']]
-	if sum(movement) < .0001: #did not move
-		return None
-	return movement/np.sum(movement)
+    movement = [experiment['question_data']['slider0_creditsused'] , experiment['question_data']['slider1_creditsused'] , experiment['question_data']['slider2_creditsused'] , experiment['question_data']['slider3_creditsused']]
+    if sum(movement) < .0001: #did not move
+        return None
+    return movement/np.sum(movement)
 
 
 def get_movement_percentages(single_experiment_data):
-	if single_experiment_data['question_num'] == 2:
-		movement = [single_experiment_data['question_data']['slider0_weight'], single_experiment_data['question_data']['slider1_weight'], single_experiment_data['question_data']['slider2_weight'], single_experiment_data['question_data']['slider3_weight']]
-	else:
-		new_vals = [single_experiment_data['question_data']['slider0_loc'], single_experiment_data['question_data']['slider1_loc'], single_experiment_data['question_data']['slider2_loc'], single_experiment_data['question_data']['slider3_loc']]
-		previous_vals = single_experiment_data['question_data']['previous_slider_values'][0:4]
-		movement = np.abs(np.subtract(new_vals, previous_vals))
-	if sum(movement) < .0001: #did not move
-		return None
-	return movement/np.sum(movement)
+    if single_experiment_data['question_num'] == 2:
+        movement = [single_experiment_data['question_data']['slider0_weight'], single_experiment_data['question_data']['slider1_weight'], single_experiment_data['question_data']['slider2_weight'], single_experiment_data['question_data']['slider3_weight']]
+    else:
+        new_vals = [single_experiment_data['question_data']['slider0_loc'], single_experiment_data['question_data']['slider1_loc'], single_experiment_data['question_data']['slider2_loc'], single_experiment_data['question_data']['slider3_loc']]
+        previous_vals = single_experiment_data['question_data']['previous_slider_values'][0:4]
+        movement = np.abs(np.subtract(new_vals, previous_vals))
+    if sum(movement) < .0001: #did not move
+        return None
+    return movement/np.sum(movement)
 
 def calculate_time_spent(organized_data, LABEL):
     #For each mechanism, calculate average time spent on each page and plot it in a chuncked bar graph
@@ -154,21 +154,25 @@ def calculate_time_spent(organized_data, LABEL):
     barplot(np.array(dpoints), LABEL, 'Time (Seconds)', 'Page', pagenames, mechanism_names)
 
 def organize_payment(organized_data):
-    for key in organized_data:
-        print "MECHANISM: " + mechanism_names[key]
-        for d in organized_data[key]:
-            print d['worker_ID'], d['time_page0'], d['time_page1'], d['time_page2'], d['time_page3'], d['question_data']['explanation'], "\n"
+    with open ('bonusinfo.csv', 'wb') as file:
+        writer = csv.writer(file)
+        for key in organized_data:
+            for d in organized_data[key]:
+                writer.writerow([d['worker_ID'],  d['question_data']['explanation'], d['feedback_data']['feedback'],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page3']])
+# def print_different_things(organized_data):
+#     for key in organized_data:
+#         print "MECHANISM: " + mechanism_names[key]
+# 		for d in organized_data[key]:
+# 			print d['question_data']['explanation'][0], "\n"
+# 			print d['question_data']['slider0_weight'], d['question_data']['slider1_weight'], d['question_data']['slider2_weight'], d['question_data']['slider3_weight']
+# 			print d['question_data']['slider0_loc'], d['question_data']['slider1_loc'], d['question_data']['slider2_loc'], d['question_data']['slider3_loc']
+# 			print "\n\n"
 
-def print_different_things(organized_data):
-    for key in organized_data:
-        print "MECHANISM: " + mechanism_names[key]
-        for d in organized_data[key]:
-            print d['question_data']['explanation'][0], "\n"
 
-    for key in organized_data:
-        print "MECHANISM: " + mechanism_names[key]
-        for d in organized_data[key]:
-            print d['feedback_data']['feedback'][0], "\n"
+    # for key in organized_data:
+    #     print "MECHANISM: " + mechanism_names[key]
+    #     for d in organized_data[key]:
+    #         print d['feedback_data']['feedback'][0], "\n"
 def main():
 
     #data = clean_data(load_data('export-20160623074343_edited.csv'))
@@ -181,9 +185,9 @@ def main():
         print len(data)
         for key in organized_data:
             print key, [d['experiment_id'] for d in organized_data[key]]
-    analyze_data(organized_data, LABEL)
+    #analyze_data(organized_data, LABEL)
 
-    #organize_payment(organized_data)
+    organize_payment(organized_data)
 
     #print_different_things(organized_data  )
 

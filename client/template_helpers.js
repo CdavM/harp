@@ -86,13 +86,13 @@ Template.registerHelper('slider_names', function(slider_name_arg, color_arg, sli
             slider_object.tooltip = "The amount spent on Medicare, Medicaid, the Children’s Health Insurance Program (CHIP), and Affordable Care Act (ACA) marketplace subsidies, along with related governmental health programs. This amount was estimated to be $1,004 Billion ($1.004 Trillion) in 2016.";
             break;
         case "Transportation & Science":
-            slider_object.tooltip = "The amount spent on transportation infrastructure, NASA, the Environmental Protection Agency, and related government programs. This amount is estimated to be $149 Billion in 2016.";
+            slider_object.tooltip = "The amount spent on transportation infrastructure, NASA, the Environmental Protection Agency, Department of Energy, the National Science Foundation, and related government programs. This amount is estimated to be $149 Billion in 2016.";
             break;
         case "Individual Income Tax":
-            slider_object.tooltip = "The amount the Federal Government collects through individual income taxes. Assume that everyone’s taxes (including yours!) change proportionally to the amount you have increased or decreased. This amount is estimated to be $1,460 Billion ($1.46 Trillion) in 2016.";
+            slider_object.tooltip = "The amount the Federal Government collects through individual income taxes. Assume that everyone’s taxes (including yours!) change proportionally to the amount you have increased or decreased. This amount is estimated to be $1,460 Billion ($1.46 Trillion) in 2016. Estimtes of income tax receipts are inexact, but assume that tax policy will be adjusted to try to achieve the increase or decrease specified.";
             break;
         case "Deficit":
-            slider_object.tooltip = "The amount by which spending exceeds revenues. A negative value indicates a budget surplus. This value assumes spending on all other items is held constant."
+            slider_object.tooltip = "The amount by which spending exceeds revenues. A negative value indicates a budget surplus. This value assumes spending on all other items is held constant. Like the income tax, this value is a rough estimate in any given year. However, you can assume for this survey that the estimes are approximately correct."
     }
     return slider_object;
 });
