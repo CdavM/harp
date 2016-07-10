@@ -12,7 +12,7 @@ Template.registerHelper('time_remaining', function(){
         var time_left = Session.get("time_remaining");
         var mins_left = parseInt(time_left / 60);
         var secs_left = time_left % 60;
-        time_message = "Time remaining: " + mins_left + " minutes and " + secs_left + " seconds";
+        time_message = "Time remaining on this page: " + mins_left + " minutes and " + secs_left + " seconds";
         return time_message;
     }
     return;

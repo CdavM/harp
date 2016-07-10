@@ -241,7 +241,7 @@ Meteor.methods({
                 Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
                 
                 var radius_fn = function (previous_participants) {
-                    return 100/(previous_participants+1); //TODO update radius function
+                    return 250/(previous_participants+1);
                 };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
                 if (next_question == 0 || next_question == 3){
