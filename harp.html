@@ -106,14 +106,7 @@
 
 <template name="mechanism0">
     <h4>
-        <div>
-        {{#if show_timer}}
-            {{#if waiting}}
-            {{else}}
-                <p class="center"> Time remaining: {{time_remaining}} seconds</p>
-            {{/if}}
-        {{/if}}
-        </div>
+        {{> timer}}
         <p class="center">Current Credit Allocation</p>
         <div>
             <div id="budgetbar" class="progress">
@@ -137,14 +130,7 @@
 </template>
 <template name="mechanism3">
     <h4>
-        <div>
-            {{#if show_timer}}
-                {{#if waiting}}
-                {{else}}
-                    <p class="center"> Time remaining: {{time_remaining}} seconds</p>
-                {{/if}}
-            {{/if}}
-        </div>
+        {{> timer}}
         <p class="center" style="font-size: 17px;">Current Credit Allocation</p>
         <div>
             <div id="budgetbar" class="progress">
@@ -166,15 +152,7 @@
     </h4>
 </template>
 <template name="mechanism1">
-
-    <div>
-        {{#if show_timer}}
-        {{#if waiting}}
-            {{else}}
-        <p class="center"> Time remaining: {{time_remaining}} seconds</p>
-            {{/if}}
-        {{/if}}
-    </div>
+    {{> timer}}
     <div style="width: 1300px; margin: auto">
         <form name="option">
             <p style="float: left; width: 95px;margin-left: 0px;"></p>
@@ -296,14 +274,7 @@
 </template>
 <template name="mechanism2">
     <h3>
-        <div>
-            {{#if show_timer}}
-                {{#if waiting}}
-                {{else}}
-                    <p class="center"> Time remaining: {{time_remaining}} seconds</p>
-                {{/if}}
-            {{/if}}
-        </div>
+        {{> timer}}
         {{> deficit_template (deficit_names)}}
         {{> mech2_slider (slider_names "slider0" "blue" "National Defense")}}
         {{> mech2_slider (slider_names "slider1" "green" "Medicare & Health")}}
@@ -323,16 +294,18 @@
     </h3>
 </template>
 
+<template name="timer">
+    <div>
+        {{#if waiting}}
+        {{else}}
+            <p class="center">{{time_remaining}}</p>
+        {{/if}}
+    </div>
+</template>
+
 <template name="answer0">
     <div id="scroll_here" class="center">
-
-        {{#if show_timer}}
-            {{#if waiting}}
-            {{else}}
-                <p class="center"> Time remaining: {{time_remaining}} seconds</p>
-            {{/if}}
-        {{/if}}
-
+        {{> timer}}
         {{>Template.dynamic template=current_question_text}}
         <h4>
             <br>
