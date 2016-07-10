@@ -190,21 +190,35 @@ Meteor.methods({
             var next_question = -1;
             if(Meteor.settings.randomize_questions){
                 //generate random question
-                do{
-                    next_question = Math.floor(Math.random() * (num_of_questions));
-                } while ((counters[experiment_id_value]['random_counter'].indexOf(next_question) != -1
-                && counters[experiment_id_value]['random_counter'].length < selection_size)
-                    || Questions.findOne({"question_ID": next_question}).busy == true);
+                var question_sampler = function(){
+                    var question_selected = -1;
+                    // if all mechanisms are busy
+                    if (Questions.find({"busy": true}).count() == 4) {
+                        question_selected = 2;
+                    } else {
+                        do {
+                            var rnd_sample = Math.random();
+                            if (rnd_sample < 0.27)
+                                question_selected = 0;
+                            else if (rnd_sample < (0.27 * 2))
+                                question_selected = 1;
+                            else if (rnd_sample < (0.27 * 3))
+                                question_selected = 3;
+                            else
+                                question_selected = 2;
+                        } while ((counters[experiment_id_value]['random_counter'].indexOf(question_selected) != -1
+                        && counters[experiment_id_value]['random_counter'].length < selection_size)
+                        || Questions.findOne({"question_ID": question_selected}).busy == true);
+                    }
+                    return question_selected;
+                };
+                next_question = question_sampler();
                 console.log("selected question " + next_question);
             } else {
                 next_question = curr_experiment.current_question;
                 do {
                     next_question ++;
                 } while (Questions.findOne({"question_ID": next_question}).busy == true);
-            }
-            if (curr_experiment.current_question != null){
-
-                //find number of previous participants
             }
             // look at the number of participants who were assigned here previously.
             // this number does NOT include the participant just being assigned.
@@ -221,12 +235,11 @@ Meteor.methods({
             } else {
                 //store result
                 counters[experiment_id_value]['random_counter'][counters[experiment_id_value]['random_counter'].length]= next_question;
-                // only questions 0, 1 and 3 can be busy!
-                if (next_question != 2){
-                    //set the busy flag.
-                    console.log("setting busy flag to " + next_question);
-                    Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
-                }
+
+                // Set the busy flag
+                console.log("setting busy flag to " + next_question);
+                Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
+                
                 var radius_fn = function (previous_participants) {
                     return 100/(previous_participants+1); //TODO update radius function
                 };

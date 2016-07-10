@@ -6,15 +6,22 @@ Template.registerHelper('worker_id_value',function(){
     }
 });
 
-Template.registerHelper('time_remaining', function(){return Session.get("time_remaining");});
+Template.registerHelper('time_remaining', function(){
+    var time_message = "";
+    if (Meteor.settings.public.show_timer){
+        var time_left = Session.get("time_remaining");
+        var mins_left = parseInt(time_left / 60);
+        var secs_left = time_left % 60;
+        time_message = "Time remaining: " + mins_left + " minutes and " + secs_left + " seconds";
+        return time_message;
+    }
+    return;
+});
 Template.registerHelper('current_payment', function(){return Session.get('current_payment');});
 Template.registerHelper('experiment_finished', function(){return Session.get('experiment_finished');});
 
 Template.registerHelper('show_payment_system', function(){
     return Meteor.settings.public.show_payment; //show the user their current payment
-});
-Template.registerHelper('show_timer', function(){
-    return Meteor.settings.public.show_timer; //show the user the time remaining
 });
 Template.registerHelper('slider', function () {
     return Session.get("slider");
