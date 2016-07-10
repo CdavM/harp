@@ -53,7 +53,7 @@ LIMIT = 10000
 def main():
 	time_of_last_turker = {0: -100, 1: -100, 2: -100, 3:-100}
 	num_turkers = {0: 0, 1: 0, 2: 0, 3:0}
-	turkers = get_turkers(LIMIT, 12, 3);
+	turkers = get_turkers(LIMIT, 10, 3);
 
 	pregeneratedlist = generate_random_list(LIMIT, 3)
 	for turker in turkers:
