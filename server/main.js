@@ -115,7 +115,7 @@ Meteor.methods({
         var total_money_spent = 0;
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             if (post.answer['slider' + slider_idx]){
-                fields_to_be_updated['slider'+slider_idx] = Number(post.answer['slider' + slider_idx][0]);
+                fields_to_be_updated['slider'+slider_idx] = Math.max(.01, Number(post.answer['slider' + slider_idx][0]));
                 if (slider_idx == 3) {
                     total_money_spent -= Number(post.answer['slider' + slider_idx][0]);
                 } else {
