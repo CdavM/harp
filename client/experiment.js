@@ -379,8 +379,8 @@ Template.answer1.onRendered(function () {
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             var slider_current = 0;
             if (current_question['slider'+slider_idx]){
-                slider_current = Number(current_question['slider'+slider_idx]);
-                var slider_min = Math.max(0.0001, slider_current - (radius)*1.25);
+                slider_current = Math.max(0.01, Number(current_question['slider'+slider_idx]));
+                var slider_min = Math.max(0.01, slider_current - (radius)*1.25);
                 var slider_max = slider_current + (radius)*1.25;
                 Session.set('slider'+slider_idx, slider_current);
                 sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
@@ -424,8 +424,8 @@ Template.answer1.onRendered(function () {
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             var slider_current = 0;
             if (current_question['slider'+slider_idx]){
-                slider_current = Number(current_question['slider'+slider_idx]);
-                var slider_min = Math.max(0.0001, slider_current - (radius)*1.25);
+                slider_current = Math.max(0.01,Number(current_question['slider'+slider_idx]));
+                var slider_min = Math.max(0.01, slider_current - (radius)*1.25);
                 var slider_max = slider_current + (radius)*1.25;
                 Session.set('slider'+slider_idx, slider_current);
                 sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
