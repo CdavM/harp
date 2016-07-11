@@ -241,7 +241,7 @@ Meteor.methods({
                 Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
                 
                 var radius_fn = function (previous_participants) {
-                    return 250/(previous_participants+1);
+                    return 250.0/(previous_participants+1);
                 };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
                 if (next_question == 0 || next_question == 3){
@@ -301,10 +301,10 @@ Meteor.methods({
                         vector_object["slider"+slider_idx+"1"] = current_question["slider"+slider_idx+"1"];
                     }
                     for (slider_idx=0; slider_idx < 4; slider_idx++){
-                        vector_object["slider"+slider_idx+"0"] = vector_object["slider"+slider_idx+"1"] +
-                            sampled_vector_0[slider_idx]*(radius_val);
-                        vector_object["slider"+slider_idx+"2"] = vector_object["slider"+slider_idx+"1"] +
-                            sampled_vector_2[slider_idx]*(radius_val);
+                        vector_object["slider"+slider_idx+"0"] = Math.max(0, vector_object["slider"+slider_idx+"1"] +
+                            sampled_vector_0[slider_idx]*(radius_val));
+                        vector_object["slider"+slider_idx+"2"] = Math.max(0, vector_object["slider"+slider_idx+"1"] +
+                            sampled_vector_2[slider_idx]*(radius_val));
                     }
                     var compute_deficit = function (well_idx) {
                         if (typeof(well_idx) == "undefined"){
