@@ -2,6 +2,13 @@
 import math
 import random
 import numpy as np
+
+LIMIT = 10000
+TIME_IN_MECHANISM = 6
+PROBABILITIES = [.27, .27, .19, .27]
+WINDOW_LEN = 12
+TURKERS_PER_WINDOW = 3
+
 def get_turkers (num_turkers, window_length, max_turkers_per_window):
 	turkers = []
 	num_windows = int(math.ceil(num_turkers/max_turkers_per_window))
@@ -17,10 +24,10 @@ def assign_mechanism(mechanism, num_turkers, time_of_last_turker, time):
 	num_turkers[mechanism] = num_turkers[mechanism] + 1
 	time_of_last_turker[mechanism] = time
 
-def check_busy(mechanism, time, time_of_last_turker, busy_time = 9):
+def check_busy(mechanism, time, time_of_last_turker, busy_time = TIME_IN_MECHANISM):
 	return (time_of_last_turker[mechanism] + busy_time > time)
 
-def assignment_david_option2(time_of_last_turker, time, probabilities = [.27, .27, .19, .27]):
+def assignment_david_option2(time_of_last_turker, time, probabilities = PROBABILITIES):
 	all_busy = True;
 	for mech in range(0, 4):
 		all_busy = all_busy and check_busy(mech, time, time_of_last_turker)
@@ -49,16 +56,15 @@ def generate_random_list(LIMIT, mechs_per_list):
 		lst = np.append(lst, np.random.choice(range(0, 4), size=mechs_per_list, replace=False))
 	return lst
 
-LIMIT = 10000
 def main():
 	time_of_last_turker = {0: -100, 1: -100, 2: -100, 3:-100}
 	num_turkers = {0: 0, 1: 0, 2: 0, 3:0}
-	turkers = get_turkers(LIMIT, 10, 3);
+	turkers = get_turkers(LIMIT, WINDOW_LEN, TURKERS_PER_WINDOW);
 
-	pregeneratedlist = generate_random_list(LIMIT, 3)
+	#pregeneratedlist = generate_random_list(LIMIT, 3)
 	for turker in turkers:
-		#assign = assignment_david_option2(time_of_last_turker, turker)
-		assign, pregeneratedlist = assignment_pregeneratedlist(time_of_last_turker, turker, pregeneratedlist)
+		assign = assignment_david_option2(time_of_last_turker, turker)
+		#assign, pregeneratedlist = assignment_pregeneratedlist(time_of_last_turker, turker, pregeneratedlist)
 		assign_mechanism(assign, num_turkers, time_of_last_turker, turker)
 	for mech in range(0, 4):
 		print mech, num_turkers[mech]/float(LIMIT)

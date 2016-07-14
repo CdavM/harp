@@ -35,6 +35,9 @@ def load_data_experiment2(answerdata, restofdata): #ideal points and weights eli
     answer['slider3_loc'] = float(answerdata['slider3_text'][0])
     answer['slider3_weight'] = float(answerdata['slider3weight_text'][0])
 
+    answer['slider4_loc'] = answer['slider0_loc'] + answer['slider1_loc'] + answer['slider2_loc'] - answer['slider3_loc'] + 316
+    answer['slider4_weight'] = float(answerdata['slider4weight_text'][0])
+
     answer['explanation'] = answerdata['text_explanation']
 
     return answer
@@ -96,8 +99,8 @@ def load_data_experiment1(answerdata, restofdata): #comparisons
 
 def load_feedback(feedbackdata, restofdata):
     answer = {}
-    answer['political_stance'] = feedbackdata['political_stance_report']
-    answer['feedback'] = feedbackdata['feedback']
+    answer['political_stance'] = feedbackdata.get('political_stance_report', None)
+    answer['feedback'] = feedbackdata.get('feedback', '')
     return answer
 
 switcher_load_data = {
@@ -131,25 +134,31 @@ def clean_data(dirty):
         d['last_page'] = int(row['current_answer'])
         d['participant_number'] = int(row['num_of_previous_participants']) + 1
         d['finished'] = row['experiment_finished']
-
+        #print d['question_num'], d['experiment_id']
 
         answerdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.1'])
-        feedbackdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.2'])
-
+        if len(answerdict.get('text_explanation', '')) == 0:
+        	continue
         d['time_page0'] = (d['begin_time'] - d['initial_time'])/1000.0
-        d['time_page1'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.0'])['time']/1000.0 #in seconds
+        if len(row['answer1.' + str(d['question_num']) + '.0']) > 0:
+        	d['time_page1'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.0'])['time']/1000.0 #in seconds
+        else:
+        	d['time_page1'] = 300
         d['time_page2'] = answerdict['time']/1000.0
         #print row['answer1.1.1']
         #print row['answer1.1.2']
         #print "row erroring: ", row['answer1.' + str(d['question_num']) + '.2']
         if len(row['answer1.' + str(d['question_num']) + '.2']) > 0: #otherwise they didn't submit last page
-            d['time_page3'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.2'])['time']/1000.0
+            feedbackdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.2'])
+            d['time_page3'] = feedbackdict['time']/1000.0
         else:
-            d['time_page3'] = 300
+        	feedbackdict={}
+        	d['time_page3'] = 300
+        d['feedback_data'] = load_feedback(feedbackdict, row)
+
 
         #print d['experiment_id'], d['question_num'], answerdict, row
         d['question_data'] = switcher_load_data[d['question_num']](answerdict, row)
-        d['feedback_data'] = load_feedback(feedbackdict, row)
 
         clean.append(d)
         organized_data[d['question_num']].append(d)
