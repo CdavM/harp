@@ -291,36 +291,49 @@ Meteor.methods({
                         return vector;
                     };
                     //generate two vectors on unit ball
-                    var sampled_vector_0 = generate_point_on_surface_ball(4);
-                    var sampled_vector_2 = generate_point_on_surface_ball(4);
+                    var sampled_vector_00 = generate_point_on_surface_ball(4);
+                    var sampled_vector_02 = generate_point_on_surface_ball(4);
+                    var sampled_vector_10 = generate_point_on_surface_ball(4);
+                    var sampled_vector_12 = generate_point_on_surface_ball(4);
 
                     var current_question = Questions.findOne({"question_ID": next_question});
 
                     var vector_object = {};
                     for (var slider_idx =0; slider_idx < 4; slider_idx++){
-                        vector_object["slider"+slider_idx+"1"] = current_question["slider"+slider_idx+"1"];
+                        vector_object["set0slider"+slider_idx+"1"] = current_question["set0slider"+slider_idx+"1"];
                     }
                     for (slider_idx=0; slider_idx < 4; slider_idx++){
-                        vector_object["slider"+slider_idx+"0"] = Math.max(0, vector_object["slider"+slider_idx+"1"] +
+                        vector_object["set0slider"+slider_idx+"0"] = Math.max(0, vector_object["set0slider"+slider_idx+"1"] +
                             sampled_vector_0[slider_idx]*(radius_val));
-                        vector_object["slider"+slider_idx+"2"] = Math.max(0, vector_object["slider"+slider_idx+"1"] +
+                        vector_object["set0slider"+slider_idx+"2"] = Math.max(0, vector_object["set0slider"+slider_idx+"1"] +
                             sampled_vector_2[slider_idx]*(radius_val));
                     }
-                    var compute_deficit = function (well_idx) {
+                    for (var slider_idx =0; slider_idx < 4; slider_idx++){
+                        vector_object["set1slider"+slider_idx+"1"] = current_question["set1slider"+slider_idx+"1"];
+                    }
+                    for (slider_idx=0; slider_idx < 4; slider_idx++){
+                        vector_object["set1slider"+slider_idx+"0"] = Math.max(0, vector_object["set1slider"+slider_idx+"1"] +
+                            sampled_vector_0[slider_idx]*(radius_val));
+                        vector_object["set1slider"+slider_idx+"2"] = Math.max(0, vector_object["set1slider"+slider_idx+"1"] +
+                            sampled_vector_2[slider_idx]*(radius_val));
+                    }
+
+                    var compute_deficit = function (well_idx, setnum) {
                         if (typeof(well_idx) == "undefined"){
                             well_idx = "";
                         }
                         var total_money_spent = 0;
                         for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
-                            total_money_spent += vector_object["slider"+slider_idx_counter+well_idx];
+                            total_money_spent += vector_object["set" + setnum +"slider"+slider_idx_counter+well_idx];
                         }
-                        total_money_spent -= vector_object["slider"+slider_idx_counter+well_idx]; // decreases by amt of income tax collected
+                        total_money_spent -= vector_object["set" + setnum +"slider"+slider_idx_counter+well_idx]; // decreases by amt of income tax collected
                         var deficit_value = total_money_spent + 316; 
                         return deficit_value;
                     };
 
                     for (well_idx=0; well_idx < 3; well_idx++) {
-                        vector_object['slider'+4+well_idx] = compute_deficit(well_idx);
+                        vector_object['set0slider'+4+well_idx] = compute_deficit(well_idx, 0);
+                        vector_object['set1slider'+4+well_idx] = compute_deficit(well_idx, 1);
                     }
                     //assign
                     Questions.update({"question_ID": next_question}, {$set:vector_object}, {upsert:true});

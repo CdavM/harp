@@ -154,37 +154,75 @@
 <template name="mechanism1">
     {{> timer}}
     <div style="width: 1300px; margin: auto">
-        <form name="option">
+        Set 1
+        <form name="optionset0">
             <p style="float: left; width: 95px;margin-left: 0px;"></p>
             <div style="float: left;"></div>
             {{> slider_head_mech1}}
             <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
                 <b style="height: 20px; float: left; margin-top: 10px;"> Option 1 </b>
                 <input type="radio" name="radio" value = "0" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>mech1_slider (slider_names "slider00" "blue" "National Defense")}}
-                {{>mech1_slider (slider_names "slider10" "green" "Medicare & Health")}}
-                {{>mech1_slider (slider_names "slider20" "orange" "Science & Transportation")}}
-                {{>mech1_slider (slider_names "slider30" "red" "Individual Income Tax")}}
-                {{>mech1_slider (slider_names "slider40" "lightblue" "Deficit")}}
+                {{>mech1_slider (slider_names "set0slider00" "blue" "National Defense")}}
+                {{>mech1_slider (slider_names "set0slider10" "green" "Medicare & Health")}}
+                {{>mech1_slider (slider_names "set0slider20" "orange" "Science & Transportation")}}
+                {{>mech1_slider (slider_names "set0slider30" "red" "Individual Income Tax")}}
+                {{>mech1_slider (slider_names "set0slider40" "lightblue" "Deficit")}}
 
             </label>
             <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
                 <b style="height: 20px; float: left; margin-top: 10px;"> Option 2 </b>
                 <input type="radio" name="radio" value = "1" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>mech1_slider (slider_names "slider01" "blue" "National Defense")}}
-                {{>mech1_slider (slider_names "slider11" "green" "Medicare & Health")}}
-                {{>mech1_slider (slider_names "slider21" "orange" "Science & Transportation")}}
-                {{>mech1_slider (slider_names "slider31" "red" "Individual Income Tax")}}
-                {{>mech1_slider (slider_names "slider41" "lightblue" "Deficit")}}
+                {{>mech1_slider (slider_names "set0slider01" "blue" "National Defense")}}
+                {{>mech1_slider (slider_names "set0slider11" "green" "Medicare & Health")}}
+                {{>mech1_slider (slider_names "set0slider21" "orange" "Science & Transportation")}}
+                {{>mech1_slider (slider_names "set0slider31" "red" "Individual Income Tax")}}
+                {{>mech1_slider (slider_names "set0slider41" "lightblue" "Deficit")}}
             </label>
             <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
                 <b style="height: 20px; float: left; margin-top: 10px;"> Option 3 </b>
                 <input type="radio" name="radio" value = "2" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>mech1_slider (slider_names "slider02" "blue" "National Defense")}}
-                {{>mech1_slider (slider_names "slider12" "green" "Medicare & Health")}}
-                {{>mech1_slider (slider_names "slider22" "orange" "Science & Transportation")}}
-                {{>mech1_slider (slider_names "slider32" "red" "Individual Income Tax")}}
-                {{>mech1_slider (slider_names "slider42" "lightblue" "Deficit")}}
+                {{>mech1_slider (slider_names "set0slider02" "blue" "National Defense")}}
+                {{>mech1_slider (slider_names "set0slider12" "green" "Medicare & Health")}}
+                {{>mech1_slider (slider_names "set0slider22" "orange" "Science & Transportation")}}
+                {{>mech1_slider (slider_names "set0slider32" "red" "Individual Income Tax")}}
+                {{>mech1_slider (slider_names "set0slider42" "lightblue" "Deficit")}}
+            </label>
+        </form>
+    </div>
+
+    <div style="width: 1300px; margin: auto">
+        Set 2
+        <form name="optionset1">
+            <p style="float: left; width: 95px;margin-left: 0px;"></p>
+            <div style="float: left;"></div>
+            {{> slider_head_mech1}}
+            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
+                <b style="height: 20px; float: left; margin-top: 10px;"> Option 1 </b>
+                <input type="radio" name="radio" value = "0" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
+                {{>mech1_slider (slider_names "set1slider00" "blue" "National Defense")}}
+                {{>mech1_slider (slider_names "set1slider10" "green" "Medicare & Health")}}
+                {{>mech1_slider (slider_names "set1slider20" "orange" "Science & Transportation")}}
+                {{>mech1_slider (slider_names "set1slider30" "red" "Individual Income Tax")}}
+                {{>mech1_slider (slider_names "set1slider40" "lightblue" "Deficit")}}
+
+            </label>
+            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
+                <b style="height: 20px; float: left; margin-top: 10px;"> Option 2 </b>
+                <input type="radio" name="radio" value = "1" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
+                {{>mech1_slider (slider_names "set1slider01" "blue" "National Defense")}}
+                {{>mech1_slider (slider_names "set1slider11" "green" "Medicare & Health")}}
+                {{>mech1_slider (slider_names "set1slider21" "orange" "Science & Transportation")}}
+                {{>mech1_slider (slider_names "set1slider31" "red" "Individual Income Tax")}}
+                {{>mech1_slider (slider_names "set1slider41" "lightblue" "Deficit")}}
+            </label>
+            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
+                <b style="height: 20px; float: left; margin-top: 10px;"> Option 3 </b>
+                <input type="radio" name="radio" value = "2" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
+                {{>mech1_slider (slider_names "set1slider02" "blue" "National Defense")}}
+                {{>mech1_slider (slider_names "set1slider12" "green" "Medicare & Health")}}
+                {{>mech1_slider (slider_names "set1slider22" "orange" "Science & Transportation")}}
+                {{>mech1_slider (slider_names "set1slider32" "red" "Individual Income Tax")}}
+                {{>mech1_slider (slider_names "set1slider42" "lightblue" "Deficit")}}
             </label>
         </form>
     </div>
@@ -403,10 +441,10 @@ Of course, you may not have enough credits to make all the changes you wish to m
 <template name="question1text">
     <h4>
         <p align = "left">
-Below, please indicate your preferences regarding the US Federal Budget. Three proposed Federal Budgets are shown on the page. Select the budget you like the most. On the left-hand side of each bar we show you the percent change from how much the government is budgeted to spend in 2016. The options are based on what people before you have answered -- and so keep in mind the changes from the 2016 budget that they have already made when choosing your favorite option. <br><br> <b> To successfully complete the experiment, you must advance before time is up. </b> You have 5 minutes to read these instructions and another 10 minutes to answer the questions (you will be able to see these instructions on the next page as well). 
+Below, please indicate your preferences regarding the US Federal Budget. Two sets of three proposed Federal Budgets each are shown on the page. For each set, select the budget you like the most. On the left-hand side of each bar we show you the percent change from how much the government is budgeted to spend in 2016. The options are based on what people before you have answered -- and so keep in mind the changes from the 2016 budget that they have already made when choosing your favorite option. <br><br> <b> To successfully complete the experiment, you must advance before time is up. </b> You have 5 minutes to read these instructions and another 10 minutes to answer the questions (you will be able to see these instructions on the next page as well). 
         </p>
         <p><a href="#iqiuwy" id="1_arrows" class="arrows" onclick="expand_collapse('1');">&#9660;</a><span style="font-size:105%;">Detailed instructions (Click to expand)</span>
-<div id="1" style="display:none;"><p align = "left">On the left of each bar, we indicate the percent change of that budget item from the 2016 budget. Inside the bar we show you the figure for that budget item in that option. <br><br> You may think that the budgets are very similar, but if you and others keep moving it in the direction you prefer, a large change can be made! <br><br> Note that the figures are in Billions of dollars. </p></div> </p>
+<div id="1" style="display:none;"><p align = "left">On the left of each bar, we indicate the percent change of that budget item from the 2016 budget. Inside the bar we show you the value for that budget item in that option. <br><br> You may think that the budgets are very similar, but if you and others keep moving it in the direction you prefer, a large change can be made! <br><br> Note that the figures are in Billions of dollars. </p></div> </p>
     </h4>
 </template>
 
