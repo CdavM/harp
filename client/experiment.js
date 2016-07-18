@@ -501,6 +501,7 @@ Template.answer1.onRendered(function () {
             set_num ++;
         }
         //initialize the deficit sliders
+        set_num = 0
         while (set_num < 2){
             var initial_deficit = current_question['set' + set_num + 'slider41'];
             for (var well_idx = 0; well_idx < 3; well_idx++){
@@ -528,6 +529,7 @@ Template.answer1.onRendered(function () {
                 update_deficit(well_idx);
             }
             $('[data-toggle="tooltip"]').tooltip();
+            set_num ++;
         }
 
     } else if (curr_experiment.current_question == 2){
