@@ -304,18 +304,18 @@ Meteor.methods({
                     }
                     for (slider_idx=0; slider_idx < 4; slider_idx++){
                         vector_object["set0slider"+slider_idx+"0"] = Math.max(0, vector_object["set0slider"+slider_idx+"1"] +
-                            sampled_vector_0[slider_idx]*(radius_val));
+                            sampled_vector_00[slider_idx]*(radius_val));
                         vector_object["set0slider"+slider_idx+"2"] = Math.max(0, vector_object["set0slider"+slider_idx+"1"] +
-                            sampled_vector_2[slider_idx]*(radius_val));
+                            sampled_vector_02[slider_idx]*(radius_val));
                     }
                     for (var slider_idx =0; slider_idx < 4; slider_idx++){
                         vector_object["set1slider"+slider_idx+"1"] = current_question["set1slider"+slider_idx+"1"];
                     }
                     for (slider_idx=0; slider_idx < 4; slider_idx++){
                         vector_object["set1slider"+slider_idx+"0"] = Math.max(0, vector_object["set1slider"+slider_idx+"1"] +
-                            sampled_vector_0[slider_idx]*(radius_val));
+                            sampled_vector_10[slider_idx]*(radius_val));
                         vector_object["set1slider"+slider_idx+"2"] = Math.max(0, vector_object["set1slider"+slider_idx+"1"] +
-                            sampled_vector_2[slider_idx]*(radius_val));
+                            sampled_vector_12[slider_idx]*(radius_val));
                     }
 
                     var compute_deficit = function (well_idx, setnum) {
