@@ -466,61 +466,69 @@ Template.answer1.onRendered(function () {
         //initialize all 15 sliders in one loop!
         var slider_idx = 0;
         var well_idx = 0;
-        while(slider_idx<4){
-            while(well_idx<3){
-                var total_width = $(".progress").width();
-                var value_difference = (current_question["slider"+slider_idx+well_idx]-current_question["slider"+slider_idx+"1"]);
-                var relative_difference = value_difference/radius;
-                var current_width = relative_difference * 0.3 + 0.5;
-                $("#slider"+slider_idx+well_idx).width(Math.max(58, current_width*total_width));
-                //display chosen value
-                $("#slider"+slider_idx+well_idx).text("$"+round(current_question["slider"+slider_idx+well_idx],2)+"B");
-                //display comparison to 2016 estimates
-                Session.set('slider'+slider_idx+well_idx, current_question["slider"+slider_idx+well_idx]);
-                var percentage_difference = compute_averages(slider_idx, current_question["slider"+slider_idx+well_idx]);
-                if (percentage_difference < 0){
-                    //red background
-                    $("#slider"+slider_idx+well_idx+"comp").css('color','red');
-                    // set value
-                    $("#slider"+slider_idx+well_idx+"comp").text(round(percentage_difference, 2)+"%");
-                } else {
-                    //green background
-                    $("#slider"+slider_idx+well_idx+"comp").css('color','green');
-                    // set value
-                    $("#slider"+slider_idx+well_idx+"comp").text("+"+round(percentage_difference, 2)+"%");
+        var set_num = 0;
+        while (set_num < 2){
+            while(slider_idx<4){
+                while(well_idx<3){
+                    var total_width = $(".progress").width();
+                    var value_difference = (current_question["set" + set_num + "slider"+slider_idx+well_idx]-current_question["set" + set_num + "slider"+slider_idx+"1"]);
+                    var relative_difference = value_difference/radius;
+                    var current_width = relative_difference * 0.3 + 0.5;
+                    $("#set" + set_num + "slider"+slider_idx+well_idx).width(Math.max(58, current_width*total_width));
+                    //display chosen value
+                    $("#set" + set_num + "slider"+slider_idx+well_idx).text("$"+round(current_question["set" + set_num + "slider"+slider_idx+well_idx],2)+"B");
+                    //display comparison to 2016 estimates
+                    Session.set("set" + set_num + 'slider'+slider_idx+well_idx, current_question["set" + set_num + "slider"+slider_idx+well_idx]);
+                    var percentage_difference = compute_averages(slider_idx, current_question["set" + set_num + "slider"+slider_idx+well_idx]);
+                    if (percentage_difference < 0){
+                        //red background
+                        $("#set" + set_num + "slider"+slider_idx+well_idx+"comp").css('color','red');
+                        // set value
+                        $("#set" + set_num + "slider"+slider_idx+well_idx+"comp").text(round(percentage_difference, 2)+"%");
+                    } else {
+                        //green background
+                        $("#set" + set_num + "slider"+slider_idx+well_idx+"comp").css('color','green');
+                        // set value
+                        $("#set" + set_num + "slider"+slider_idx+well_idx+"comp").text("+"+round(percentage_difference, 2)+"%");
+                    }
+                    well_idx ++;
                 }
-                well_idx ++;
+                slider_idx++;
+                well_idx = 0;
             }
-            slider_idx++;
+            slider_idx = 0;
             well_idx = 0;
+            set_num ++;
         }
         //initialize the deficit sliders
-        var initial_deficit = current_question['slider41'];
-        for (var well_idx = 0; well_idx < 3; well_idx++){
-            var current_deficit = current_question['slider'+4+well_idx];
-            var deficit_difference = current_deficit - initial_deficit;
-            var deficit_scaled_difference = deficit_difference / (2*radius);
-            var total_width = $(".progress").width();
-            var current_width = deficit_scaled_difference * 0.5 + 0.5;
-            $("#slider"+4+well_idx).width(Math.max(58, current_width*total_width));
-            $("#slider"+4+well_idx).text("$"+round(current_deficit, 2) +"B");
-            var deficit_percentage_change = (current_deficit - 550) / 5.5;
-            if (deficit_percentage_change < 0){
-                //red background
-                $("#slider"+4+well_idx+"comp").css('color','green');
-                // set value
-                $("#slider"+4+well_idx+"comp").text(round(deficit_percentage_change, 2)+"%");
-            } else {
-                //green background
-                $("#slider"+4+well_idx+"comp").css('color','red');
-                // set value
-                $("#slider"+4+well_idx+"comp").text("+"+round(deficit_percentage_change, 2)+"%");
+        while (set_num < 2){
+            var initial_deficit = current_question['set' + set_num + 'slider41'];
+            for (var well_idx = 0; well_idx < 3; well_idx++){
+                var current_deficit = current_question['set' + set_num + 'slider'+4+well_idx];
+                var deficit_difference = current_deficit - initial_deficit;
+                var deficit_scaled_difference = deficit_difference / (2*radius);
+                var total_width = $(".progress").width();
+                var current_width = deficit_scaled_difference * 0.5 + 0.5;
+                $("#set" + set_num + "slider"+4+well_idx).width(Math.max(58, current_width*total_width));
+                $("#set" + set_num + "slider"+4+well_idx).text("$"+round(current_deficit, 2) +"B");
+                var deficit_percentage_change = (current_deficit - 550) / 5.5;
+                if (deficit_percentage_change < 0){
+                    //red background
+                    $("#set" + set_num + "slider"+4+well_idx+"comp").css('color','green');
+                    // set value
+                    $("#set" + set_num + "slider"+4+well_idx+"comp").text(round(deficit_percentage_change, 2)+"%");
+                } else {
+                    //green background
+                    $("#set" + set_num + "slider"+4+well_idx+"comp").css('color','red');
+                    // set value
+                    $("#set" + set_num + "slider"+4+well_idx+"comp").text("+"+round(deficit_percentage_change, 2)+"%");
+                }
             }
+            for (well_idx = 0; well_idx < 3; well_idx++){ //Not sure if needed for the comparison mechanism.
+                update_deficit(well_idx);
+            }
+            $('[data-toggle="tooltip"]').tooltip();
         }
-        for (well_idx = 0; well_idx < 3; well_idx++){
-            update_deficit(well_idx);
-        }
-        $('[data-toggle="tooltip"]').tooltip();
 
     } else if (curr_experiment.current_question == 2){
         //mechanism 2 specific js

@@ -1,4 +1,4 @@
-db.questions.update({question_ID: 0}, {$set: {"text":"mechanism0", "busy": false, "previous_participants": 0, "slider0": 600, "slider1": 950, "slider2": 140, "slider3": 1500}})
-db.questions.update({question_ID: 1}, {$set: {"text":"mechanism1", "busy": false, "previous_participants": 0, "set0slider01": 600, "set0slider11": 950, "set0slider21": 140, "set0slider31": 1500, "set1slider01": 400, "set1slider11": 1200, "set1slider21": 110, "set1slider31": 1400}})
-db.questions.update({question_ID: 2}, {$set: {"text":"mechanism2", "busy": false, "previous_participants": 0, "slider0": 541, "slider1": 1004, "slider2": 149, "slider3": 1460}})
-db.questions.update({question_ID: 3}, {$set: {"text":"mechanism3", "busy": false, "previous_participants": 0, "slider0": 600, "slider1": 950, "slider2": 140, "slider3": 1500}})
+db.questions.update({question_ID: 0}, {$set: {"text":"mechanism0", "busy": false, "previous_participants": 0, "slider0": 600, "slider1": 950, "slider2": 140, "slider3": 1500}}, {upsert: true})
+db.questions.update({question_ID: 1}, {$set: {"text":"mechanism1", "busy": false, "previous_participants": 0, "set0slider01": 600, "set0slider11": 950, "set0slider21": 140, "set0slider31": 1500, "set1slider01": 400, "set1slider11": 1200, "set1slider21": 110, "set1slider31": 1400}}, {upsert: true})
+db.questions.update({question_ID: 2}, {$set: {"text":"mechanism2", "busy": false, "previous_participants": 0, "slider0": 541, "slider1": 1004, "slider2": 149, "slider3": 1460}}, {upsert: true})
+db.questions.update({question_ID: 3}, {$set: {"text":"mechanism3", "busy": false, "previous_participants": 0, "slider0": 600, "slider1": 950, "slider2": 140, "slider3": 1500}}, {upsert: true})

@@ -113,6 +113,9 @@ Meteor.methods({
 
         var fields_to_be_updated = {};
         var total_money_spent = 0;
+        var total_money_spent_set0 = 0;
+        var total_money_spent_set1 = 0;
+
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             if (post.answer['slider' + slider_idx]){
                 fields_to_be_updated['slider'+slider_idx] = Math.max(.01, Number(post.answer['slider' + slider_idx][0]));
@@ -133,13 +136,19 @@ Meteor.methods({
                 // only for the comparison mechanism.
                 var option_selected = post.answer['option'][0];
                 var question_entry = Questions.findOne({"question_ID": current_question});
-                fields_to_be_updated['slider'+slider_idx+'1'] = question_entry['slider'+slider_idx+option_selected];
+                fields_to_be_updated['set0slider'+slider_idx+'1'] = question_entry['set0slider'+slider_idx+option_selected];
+                fields_to_be_updated['set1slider'+slider_idx+'1'] = question_entry['set1slider'+slider_idx+option_selected];
+
                 if (slider_idx == 3) {
                     // subtract taxes
-                    total_money_spent -= question_entry['slider'+slider_idx+option_selected];
+                    total_money_spent_set0 -= question_entry['set0slider'+slider_idx+option_selected];
+                    total_money_spent_set1 -= question_entry['set1slider'+slider_idx+option_selected];
+
                 } else {
                     // add everything else.
-                    total_money_spent += question_entry['slider'+slider_idx+option_selected];
+                    total_money_spent_set0 += question_entry['set0slider'+slider_idx+option_selected];
+                    total_money_spent_set1 += question_entry['set1slider'+slider_idx+option_selected];
+
                 }
             }
         }
@@ -148,7 +157,14 @@ Meteor.methods({
         }
         // add the deficit term
         if (current_question != 2 && current_answer == 1) {
-            answers_value[current_question][current_answer]['deficit'] = total_money_spent + 316;
+            if(post.answer['option']){
+                answers_value[current_question][current_answer]['deficitset0'] = total_money_spent_set0 + 316;
+                answers_value[current_question][current_answer]['deficitset1'] = total_money_spent_set1 + 316;
+
+            }
+            else{
+                answers_value[current_question][current_answer]['deficit'] = total_money_spent + 316;
+            }
         }
         //Add entry to Answers
         Answers.update({worker_ID: post.worker_ID}, {$set: {answer1: answers_value}}, {upsert: true});
