@@ -12,7 +12,7 @@
   "public": {
     "answer_forms": [
       {"answer_ID":0, "template": "answer0", "timer": 300},
-      {"answer_ID":1, "template": "answer1", "timer": 300},
+      {"answer_ID":1, "template": "answer1", "timer": 600},
       {"answer_ID":2, "template": "answer2", "timer": 0}
     ],
     "show_payment": false,
