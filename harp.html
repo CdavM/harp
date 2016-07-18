@@ -153,80 +153,83 @@
 </template>
 <template name="mechanism1">
     {{> timer}}
-        <p align = "center"><b>Set 1</b> </p>
-    <div style="width: 1300px; margin: auto">
-        <form name="optionset0">
-            <p style="float: left; width: 95px;margin-left: 0px;"></p>
-            <div style="float: left;"></div>
-            {{> slider_head_mech1}}
-            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
-                <b style="height: 20px; float: left; margin-top: 10px;"> Option 1 </b>
-                <input type="radio" name="radio" value = "0" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>mech1_slider (slider_names "set0slider00" "blue" "National Defense")}}
-                {{>mech1_slider (slider_names "set0slider10" "green" "Medicare & Health")}}
-                {{>mech1_slider (slider_names "set0slider20" "orange" "Science & Transportation")}}
-                {{>mech1_slider (slider_names "set0slider30" "red" "Individual Income Tax")}}
-                {{>mech1_slider (slider_names "set0slider40" "lightblue" "Deficit")}}
+    <div style="width: 1212px; margin: auto">
+        <div id="set0" class="well" style="border: 3px solid rgb(81,81,81); height: 400px;">
+            <p class="center"> <b>Set 1</b> </p>
+            <form name="optionset0">
+                <p style="float: left; width: 95px;margin-left: 0px;"></p>
+                <div style="float: left;"></div>
+                {{> slider_head_mech1}}
+                <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
+                    <b style="height: 20px; float: left; margin-top: 10px;"> Option 1 </b>
+                    <input type="radio" name="radio" value = "0" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
+                    {{>mech1_slider (slider_names "set0slider00" "blue" "National Defense")}}
+                    {{>mech1_slider (slider_names "set0slider10" "green" "Medicare & Health")}}
+                    {{>mech1_slider (slider_names "set0slider20" "orange" "Science & Transportation")}}
+                    {{>mech1_slider (slider_names "set0slider30" "red" "Individual Income Tax")}}
+                    {{>mech1_slider (slider_names "set0slider40" "lightblue" "Deficit")}}
 
-            </label>
-            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
-                <b style="height: 20px; float: left; margin-top: 10px;"> Option 2 </b>
-                <input type="radio" name="radio" value = "1" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>mech1_slider (slider_names "set0slider01" "blue" "National Defense")}}
-                {{>mech1_slider (slider_names "set0slider11" "green" "Medicare & Health")}}
-                {{>mech1_slider (slider_names "set0slider21" "orange" "Science & Transportation")}}
-                {{>mech1_slider (slider_names "set0slider31" "red" "Individual Income Tax")}}
-                {{>mech1_slider (slider_names "set0slider41" "lightblue" "Deficit")}}
-            </label>
-            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
-                <b style="height: 20px; float: left; margin-top: 10px;"> Option 3 </b>
-                <input type="radio" name="radio" value = "2" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>mech1_slider (slider_names "set0slider02" "blue" "National Defense")}}
-                {{>mech1_slider (slider_names "set0slider12" "green" "Medicare & Health")}}
-                {{>mech1_slider (slider_names "set0slider22" "orange" "Science & Transportation")}}
-                {{>mech1_slider (slider_names "set0slider32" "red" "Individual Income Tax")}}
-                {{>mech1_slider (slider_names "set0slider42" "lightblue" "Deficit")}}
-            </label>
-        </form>
+                </label>
+                <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
+                    <b style="height: 20px; float: left; margin-top: 10px;"> Option 2 </b>
+                    <input type="radio" name="radio" value = "1" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
+                    {{>mech1_slider (slider_names "set0slider01" "blue" "National Defense")}}
+                    {{>mech1_slider (slider_names "set0slider11" "green" "Medicare & Health")}}
+                    {{>mech1_slider (slider_names "set0slider21" "orange" "Science & Transportation")}}
+                    {{>mech1_slider (slider_names "set0slider31" "red" "Individual Income Tax")}}
+                    {{>mech1_slider (slider_names "set0slider41" "lightblue" "Deficit")}}
+                </label>
+                <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
+                    <b style="height: 20px; float: left; margin-top: 10px;"> Option 3 </b>
+                    <input type="radio" name="radio" value = "2" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
+                    {{>mech1_slider (slider_names "set0slider02" "blue" "National Defense")}}
+                    {{>mech1_slider (slider_names "set0slider12" "green" "Medicare & Health")}}
+                    {{>mech1_slider (slider_names "set0slider22" "orange" "Science & Transportation")}}
+                    {{>mech1_slider (slider_names "set0slider32" "red" "Individual Income Tax")}}
+                    {{>mech1_slider (slider_names "set0slider42" "lightblue" "Deficit")}}
+                </label>
+            </form>
+        </div>
     </div>
 
-        <br style="clear: both;">
-        <p align = "center"><br> <b>Set 2</b> </p>
-     <br>
-    <div style="width: 1300px; margin: auto">
-        <form name="optionset1">
-            <p style="float: left; width: 95px;margin-left: 0px;"></p>
-            <div style="float: left;"></div>
-            {{> slider_head_mech1}}
-            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
-                <b style="height: 20px; float: left; margin-top: 10px;"> Option 1 </b>
-                <input type="radio" name="radio" value = "0" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>mech1_slider (slider_names "set1slider00" "blue" "National Defense")}}
-                {{>mech1_slider (slider_names "set1slider10" "green" "Medicare & Health")}}
-                {{>mech1_slider (slider_names "set1slider20" "orange" "Science & Transportation")}}
-                {{>mech1_slider (slider_names "set1slider30" "red" "Individual Income Tax")}}
-                {{>mech1_slider (slider_names "set1slider40" "lightblue" "Deficit")}}
+    <br style="clear: both;">
+    <div style="width: 1212px; margin: auto">
+        <div id="set1" class="well" style="border: 3px solid rgb(81,81,81); height: 400px;">
+            <p class="center"> <b>Set 2</b> </p>
+            <form name="optionset1">
+                <p style="float: left; width: 95px;margin-left: 0px;"></p>
+                <div style="float: left;"></div>
+                {{> slider_head_mech1}}
+                <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
+                    <b style="height: 20px; float: left; margin-top: 10px;"> Option 1 </b>
+                    <input type="radio" name="radio" value = "0" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
+                    {{>mech1_slider (slider_names "set1slider00" "blue" "National Defense")}}
+                    {{>mech1_slider (slider_names "set1slider10" "green" "Medicare & Health")}}
+                    {{>mech1_slider (slider_names "set1slider20" "orange" "Science & Transportation")}}
+                    {{>mech1_slider (slider_names "set1slider30" "red" "Individual Income Tax")}}
+                    {{>mech1_slider (slider_names "set1slider40" "lightblue" "Deficit")}}
 
-            </label>
-            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
-                <b style="height: 20px; float: left; margin-top: 10px;"> Option 2 </b>
-                <input type="radio" name="radio" value = "1" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>mech1_slider (slider_names "set1slider01" "blue" "National Defense")}}
-                {{>mech1_slider (slider_names "set1slider11" "green" "Medicare & Health")}}
-                {{>mech1_slider (slider_names "set1slider21" "orange" "Science & Transportation")}}
-                {{>mech1_slider (slider_names "set1slider31" "red" "Individual Income Tax")}}
-                {{>mech1_slider (slider_names "set1slider41" "lightblue" "Deficit")}}
-            </label>
-            <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
-                <b style="height: 20px; float: left; margin-top: 10px;"> Option 3 </b>
-                <input type="radio" name="radio" value = "2" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
-                {{>mech1_slider (slider_names "set1slider02" "blue" "National Defense")}}
-                {{>mech1_slider (slider_names "set1slider12" "green" "Medicare & Health")}}
-                {{>mech1_slider (slider_names "set1slider22" "orange" "Science & Transportation")}}
-                {{>mech1_slider (slider_names "set1slider32" "red" "Individual Income Tax")}}
-                {{>mech1_slider (slider_names "set1slider42" "lightblue" "Deficit")}}
-            </label>
-        </form>
+                </label>
+                <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
+                    <b style="height: 20px; float: left; margin-top: 10px;"> Option 2 </b>
+                    <input type="radio" name="radio" value = "1" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
+                    {{>mech1_slider (slider_names "set1slider01" "blue" "National Defense")}}
+                    {{>mech1_slider (slider_names "set1slider11" "green" "Medicare & Health")}}
+                    {{>mech1_slider (slider_names "set1slider21" "orange" "Science & Transportation")}}
+                    {{>mech1_slider (slider_names "set1slider31" "red" "Individual Income Tax")}}
+                    {{>mech1_slider (slider_names "set1slider41" "lightblue" "Deficit")}}
+                </label>
+                <label class="well" style="float: left; height: 80px; border: 2px solid rgb(130,130,130);">
+                    <b style="height: 20px; float: left; margin-top: 10px;"> Option 3 </b>
+                    <input type="radio" name="radio" value = "2" style="height: 20px; float: left; margin-top: 10px; margin-left: 3px; margin-right: 3px;" />
+                    {{>mech1_slider (slider_names "set1slider02" "blue" "National Defense")}}
+                    {{>mech1_slider (slider_names "set1slider12" "green" "Medicare & Health")}}
+                    {{>mech1_slider (slider_names "set1slider22" "orange" "Science & Transportation")}}
+                    {{>mech1_slider (slider_names "set1slider32" "red" "Individual Income Tax")}}
+                    {{>mech1_slider (slider_names "set1slider42" "lightblue" "Deficit")}}
+                </label>
+            </form>
+        </div>
     </div>
 
 </template>
