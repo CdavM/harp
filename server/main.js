@@ -169,6 +169,9 @@ Meteor.methods({
         //Add entry to Answers
         Answers.update({worker_ID: post.worker_ID}, {$set: {answer1: answers_value}}, {upsert: true});
         //update question when we get ALL the answers
+        if (!counters[experiment_id_value]) {
+            counters[experiment_id_value] = {};
+        }
         if (counters[experiment_id_value][current_question]){
             counters[experiment_id_value][current_question]++;
         } else {
