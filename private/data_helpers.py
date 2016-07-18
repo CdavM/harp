@@ -81,19 +81,21 @@ def load_data_experiment3(answerdata, restofdata): #l1 constrained movement
 def load_data_experiment1(answerdata, restofdata): #comparisons
     answer = {}
     answer['explanation'] = answerdata['text_explanation']
-    answer['selection'] = int(answerdata["option"][0])
+    for set_num in range(2):
+        answer['set' + str(set_num) + 'selection'] = int(answerdata["optionset" + str(set_num)][0])
 
-    answer['option0'] = [float(restofdata['slider00']), float(restofdata['slider10']), float(restofdata['slider20']), float(restofdata['slider30']), float(restofdata['slider40'])]
-    answer['option1'] = [float(restofdata['slider01']), float(restofdata['slider11']), float(restofdata['slider21']), float(restofdata['slider31']), float(restofdata['slider41'])]
-    answer['option2'] = [float(restofdata['slider02']), float(restofdata['slider12']), float(restofdata['slider22']), float(restofdata['slider32']), float(restofdata['slider42'])]
+        answer['set' + str(set_num) + 'option0'] = [float(restofdata['set' + str(set_num) + 'slider00']), float(restofdata['set' + str(set_num) + 'slider10']), float(restofdata['set' + str(set_num) + 'slider20']), float(restofdata['set' + str(set_num) + 'slider30']), float(restofdata['set' + str(set_num) + 'slider40'])]
+        answer['set' + str(set_num) + 'option1'] = [float(restofdata['set' + str(set_num) + 'slider01']), float(restofdata['set' + str(set_num) + 'slider11']), float(restofdata['set' + str(set_num) + 'slider21']), float(restofdata['set' + str(set_num) + 'slider31']), float(restofdata['set' + str(set_num) + 'slider41'])]
+        answer['set' + str(set_num) + 'option2'] = [float(restofdata['set' + str(set_num) + 'slider02']), float(restofdata['set' + str(set_num) + 'slider12']), float(restofdata['set' + str(set_num) + 'slider22']), float(restofdata['set' + str(set_num) + 'slider32']), float(restofdata['set' + str(set_num) + 'slider42'])]
 
-    real_answer = answer['option' + str(answer['selection'])]
-    for loc in xrange(5):
-        answer['slider' + str(loc)+'_loc'] = real_answer[loc]
-    
-    answer['previous_slider_values'] = answer['option1']
+        real_answer = {}
+        real_answer[set_num] = answer['set' + str(set_num) + 'option' + str(answer['set' + str(set_num) + 'selection'])]
+        for loc in xrange(5):
+            answer['set' + str(set_num) + 'slider' + str(loc)+'_loc'] = real_answer[set_num][loc]
+        
+        answer['set' + str(set_num) + 'previous_slider_values'] = answer['set' + str(set_num) + 'option1']
 
-
+    print answer
     #TODO include radius values and so forth
     return answer
 

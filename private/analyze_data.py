@@ -12,6 +12,7 @@ from data_helpers import *
 import cvxpy
 
 initial_values = [600, 950, 140, 1500, 506]
+initial_values_mech1 = {0: [600, 950, 140, 1500, 506], 1: [541, 1004, 149, 1460, 550]}
 
 DEBUG_LEVEL = 0
 slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
@@ -85,7 +86,7 @@ def plot_allmechansisms_together(organized_data):
     rawaverages_mech2, weightedaverages_l2_mech2, weightedaverages_l1_mech2, euclideanprefs_mech2 = calculate_full_elicitation_average(organized_data[2])
     maxn = -1
     for slider in xrange(0, len(slider_order)):
-        for mechanism in [0, 1, 3]:#xrange(0, 4):
+        for mechanism in [0, 3]:#xrange(0, 4):
             n = range(0, len(organized_data[mechanism]) + 1)
             maxn = max(maxn, len(n))
             vals = [d['question_data']['slider' + str(slider) + '_loc'] for d in organized_data[mechanism]]
@@ -93,8 +94,16 @@ def plot_allmechansisms_together(organized_data):
             l = axarr[slider].plot(n, vals, label = mechanism_names[mechanism])
             if slider == 0:
                 lines.append(l[0])
-            #if mechanism == 0:
-           #lines.append(l[0])
+
+        #mechanism 1, comparisons
+        for set_num in range(2):
+            n = range(0, len(organized_data[1]) + 1)
+            maxn = max(maxn, len(n))
+            vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[1]]
+            vals.insert(0, initial_values_mech1[set_num][slider]) #prepend initial values
+            l = axarr[slider].plot(n, vals, label = mechanism_names[1] + ", Set " + str(set_num))
+            if slider == 0:
+                lines.append(l[0])
 
         #mechanism 2, fullelicitation:
         n = range(maxn)
@@ -121,7 +130,7 @@ def plot_allmechansisms_together(organized_data):
         axarr[slider].tick_params(axis='both', which='major', labelsize=18)
 
     axarr[len(slider_order)-1].set_xlabel('Iteration', fontsize = 18)
-    f.legend(lines, [mechanism_names[0], mechanism_names[1], mechanism_names[3],mechanism_names[2], 'Full Elicitation -- Euclidean'], loc='Upper Center', borderaxespad=0., ncol = 3, fontsize = 18)
+    f.legend(lines, [mechanism_names[0], mechanism_names[3], "Comparisons, Set 0", "Comparisons, Set 1", mechanism_names[2], 'Full Elicitation -- Euclidean'], loc='Upper Center', borderaxespad=0., ncol = 3, fontsize = 18)
     print lines
     #f.legend(loc='upper left', fontsize = 18)
     #plt.legend()
@@ -327,7 +336,7 @@ def main():
 
 
     #data, organized_data = 445.70 clean_data(load_data('export-20160707161738_PILOTFINAL_fixed.csv'))
-    data, organized_data = clean_data(load_data('export-20160713195656.csv'))
+    data, organized_data = clean_data(load_data('export-20160718062648.csv'))
 
     LABEL = 'Actual'
     print len(data)
