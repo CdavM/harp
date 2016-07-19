@@ -396,7 +396,7 @@ Template.answer1.onRendered(function () {
                 slider_current = Math.max(0.01,Number(current_question['slider'+slider_idx]));
                 var slider_2016_val = current_question['slider_2016_'+slider_idx];
                 var slider_min = Math.max(0.01, slider_2016_val - max_slider_dev - (radius)*1.25);
-                var slider_max = slider_current + slider_2016_val + max_slider_dev + (radius)*1.25;
+                var slider_max = slider_2016_val + max_slider_dev + (radius)*1.25;
                 Session.set('slider'+slider_idx, slider_current);
                 sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
                     start: slider_current,
@@ -443,7 +443,7 @@ Template.answer1.onRendered(function () {
                 slider_current = Math.max(0.01,Number(current_question['slider'+slider_idx]));
                 var slider_2016_val = current_question['slider_2016_'+slider_idx];
                 var slider_min = Math.max(0.01, slider_2016_val - max_slider_dev - (radius)*1.25);
-                var slider_max = slider_current + slider_2016_val + max_slider_dev + (radius)*1.25;
+                var slider_max = slider_2016_val + max_slider_dev + (radius)*1.25;
                 Session.set('slider'+slider_idx, slider_current);
                 sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
                     start: slider_current,
