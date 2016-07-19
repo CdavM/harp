@@ -1,20 +1,61 @@
 /*mongo commands are:
-meteor mongo btsturk.meteor.com
-load("private/mongo_populate_questions.js")
-*/
-//Populate local arrays
-
-Cities = ["Los Angeles", "Portland", "Seattle", "Honolulu", "Birmingham"];
-States = ["California", "Oregon", "Washington", "Hawaii", "Alabama"];
+ meteor mongo btsturk.meteor.com
+ load("private/mongo_populate_questions.js")
+ */
 
 //remove old questions
-db.questions.remove();
+db.questions.remove({});
 
-//populate with new questions
-for (i=0 ; i < Cities.length ; i++){
-	db.questions.insert({ text: Cities[i]+" is the capital of "+ States[i] , question_ID: i });
-}
-//remove old solutions
-db.solutions.remove();
-//populate with new solutions
-db.solutions.insert({answer1:[0,0,0,1,0]});
+//add questions
+db.questions.insert({
+    "question_ID": 0,
+    "text": "mechanism0",
+    "busy": false,
+    "previous_participants": 0,
+    "slider0": 600,
+    "slider1": 950,
+    "slider2": 140,
+    "slider3": 1500,
+    "slider_2016_0": 600,
+    "slider_2016_1": 950,
+    "slider_2016_2": 140,
+    "slider_2016_3": 1500
+});
+db.questions.insert({
+    "question_ID": 1,
+    "text": "mechanism1",
+    "busy": false,
+    "previous_participants": 0,
+    "set0slider01": 600,
+    "set0slider11": 950,
+    "set0slider21": 140,
+    "set0slider31": 1500,
+    "set1slider01": 541,
+    "set1slider11": 1004,
+    "set1slider21": 149,
+    "set1slider31": 1460
+});
+db.questions.insert({
+    "question_ID": 2,
+    "text": "mechanism2",
+    "busy": false,
+    "previous_participants": 0,
+    "slider0": 541,
+    "slider1": 1004,
+    "slider2": 149,
+    "slider3": 1460
+});
+db.questions.insert({
+    "question_ID": 3,
+    "text": "mechanism3",
+    "busy": false,
+    "previous_participants": 0,
+    "slider0": 600,
+    "slider1": 950,
+    "slider2": 140,
+    "slider3": 1500,
+    "slider_2016_0": 600,
+    "slider_2016_1": 950,
+    "slider_2016_2": 140,
+    "slider_2016_3": 1500
+});
