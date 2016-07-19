@@ -407,8 +407,11 @@ Template.answer1.onRendered(function () {
                     }
                 }).noUiSlider_pips({
                     mode: 'positions',
-                    values: [0,25,50,75,100],
-                    density: 4
+                    values: [0, 50, 100]
+                }).noUiSlider_pips({
+                    mode: 'values',
+                    values: [slider_current],
+                    density: 9999
                 }).on('slide', function (ev, val) {
                     // set real values on 'slide' event
                     try {
@@ -454,8 +457,11 @@ Template.answer1.onRendered(function () {
                     }
                 }).noUiSlider_pips({
                     mode: 'positions',
-                    values: [0,25,50,75,100],
-                    density: 4
+                    values: [0, 50, 100]
+                }).noUiSlider_pips({
+                    mode: 'values',
+                    values: [slider_current],
+                    density: 9999
                 }).on('slide', function (ev, val) {
                     // set real values on 'slide' event
                     try {
