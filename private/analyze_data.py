@@ -336,7 +336,7 @@ def main():
 
 
     #data, organized_data = 445.70 clean_data(load_data('export-20160707161738_PILOTFINAL_fixed.csv'))
-    data, organized_data = clean_data(load_data('export-20160718062648.csv'))
+    data, organized_data = clean_data(load_data('export-20160719053607.csv'))
 
     LABEL = 'Actual'
     print len(data)
@@ -350,9 +350,9 @@ def main():
 
     #analyze_data(organized_data, LABEL)
 
-    #organize_payment(organized_data)
+    organize_payment(organized_data)
 
-    #print_different_things(organized_data  )
+    print_different_things(organized_data  )
 
 if __name__ == "__main__":
     main()
