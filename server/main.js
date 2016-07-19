@@ -132,22 +132,24 @@ Meteor.methods({
                     answers_value['slider' + slider_idx + "_credits"] = Math.abs(slider_relative_diff);
                 }
             }
-            if (post.answer['option']){
+            if (post.answer['optionset0']){
                 // only for the comparison mechanism.
-                var option_selected = post.answer['option'][0];
+                var option_selected_set0 = post.answer['optionset0'][0];
+                var option_selected_set1 = post.answer['optionset0'][0];
+
                 var question_entry = Questions.findOne({"question_ID": current_question});
-                fields_to_be_updated['set0slider'+slider_idx+'1'] = question_entry['set0slider'+slider_idx+option_selected];
-                fields_to_be_updated['set1slider'+slider_idx+'1'] = question_entry['set1slider'+slider_idx+option_selected];
+                fields_to_be_updated['set0slider'+slider_idx+'1'] = question_entry['set0slider'+slider_idx+option_selected_set0];
+                fields_to_be_updated['set1slider'+slider_idx+'1'] = question_entry['set1slider'+slider_idx+option_selected_set1];
 
                 if (slider_idx == 3) {
                     // subtract taxes
-                    total_money_spent_set0 -= question_entry['set0slider'+slider_idx+option_selected];
-                    total_money_spent_set1 -= question_entry['set1slider'+slider_idx+option_selected];
+                    total_money_spent_set0 -= question_entry['set0slider'+slider_idx+option_selected_set0];
+                    total_money_spent_set1 -= question_entry['set1slider'+slider_idx+option_selected_set1];
 
                 } else {
                     // add everything else.
-                    total_money_spent_set0 += question_entry['set0slider'+slider_idx+option_selected];
-                    total_money_spent_set1 += question_entry['set1slider'+slider_idx+option_selected];
+                    total_money_spent_set0 += question_entry['set0slider'+slider_idx+option_selected_set0];
+                    total_money_spent_set1 += question_entry['set1slider'+slider_idx+option_selected_set1];
 
                 }
             }
@@ -157,7 +159,7 @@ Meteor.methods({
         }
         // add the deficit term
         if (current_question != 2 && current_answer == 1) {
-            if(post.answer['option']){
+            if(post.answer['optionset0']){ //only for comparisons mechanism
                 answers_value[current_question][current_answer]['deficitset0'] = total_money_spent_set0 + 316;
                 answers_value[current_question][current_answer]['deficitset1'] = total_money_spent_set1 + 316;
 
