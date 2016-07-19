@@ -16,10 +16,10 @@ db.questions.insert({
     "slider1": 950,
     "slider2": 140,
     "slider3": 1500,
-    "slider_2016_0": 600,
-    "slider_2016_1": 950,
-    "slider_2016_2": 140,
-    "slider_2016_3": 1500
+    "slider_2016_0": 541,
+    "slider_2016_1": 1004,
+    "slider_2016_2": 149,
+    "slider_2016_3": 1460
 });
 db.questions.insert({
     "question_ID": 1,
@@ -30,10 +30,10 @@ db.questions.insert({
     "set0slider11": 950,
     "set0slider21": 140,
     "set0slider31": 1500,
-    "set1slider01": 541,
-    "set1slider11": 1004,
-    "set1slider21": 149,
-    "set1slider31": 1460
+    "set1slider01": 500,
+    "set1slider11": 1054,
+    "set1slider21": 155,
+    "set1slider31": 1420
 });
 db.questions.insert({
     "question_ID": 2,
@@ -54,8 +54,8 @@ db.questions.insert({
     "slider1": 950,
     "slider2": 140,
     "slider3": 1500,
-    "slider_2016_0": 600,
-    "slider_2016_1": 950,
-    "slider_2016_2": 140,
-    "slider_2016_3": 1500
+    "slider_2016_0": 541,
+    "slider_2016_1": 1004,
+    "slider_2016_2": 149,
+    "slider_2016_3": 1460
 });
