@@ -374,14 +374,29 @@ Template.answer1.onRendered(function () {
     update_slider_mech3 = _.throttle(update_slider_mech31, 100);
     update_slider_mech2 = _.throttle(update_slider_mech21, 100);
 
+
+    var find_max_deviation = function(){
+        var current_max = 0;
+        console.log(current_question);
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
+            var current_dev = Math.abs(current_question['slider_2016_'+slider_idx] - current_question['slider'+slider_idx]);
+            if (current_dev > current_max){
+                current_max = current_dev;
+            }
+        }
+        return current_max;
+    };
+
     if (curr_experiment.current_question == 0) {
         sliders = {};
+        var max_slider_dev = find_max_deviation();
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             var slider_current = 0;
             if (current_question['slider'+slider_idx]){
-                slider_current = Math.max(0.01, Number(current_question['slider'+slider_idx]));
-                var slider_min = Math.max(0.01, slider_current - (radius)*1.25);
-                var slider_max = slider_current + (radius)*1.25;
+                slider_current = Math.max(0.01,Number(current_question['slider'+slider_idx]));
+                var slider_2016_val = current_question['slider_2016_'+slider_idx];
+                var slider_min = Math.max(0.01, slider_2016_val - max_slider_dev - (radius)*1.25);
+                var slider_max = slider_2016_val + max_slider_dev + (radius)*1.25;
                 Session.set('slider'+slider_idx, slider_current);
                 sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
                     start: slider_current,
@@ -392,8 +407,11 @@ Template.answer1.onRendered(function () {
                     }
                 }).noUiSlider_pips({
                     mode: 'positions',
-                    values: [0,25,50,75,100],
-                    density: 4
+                    values: [0, 50, 100]
+                }).noUiSlider_pips({
+                    mode: 'values',
+                    values: [slider_current],
+                    density: 9999
                 }).on('slide', function (ev, val) {
                     // set real values on 'slide' event
                     try {
@@ -421,12 +439,14 @@ Template.answer1.onRendered(function () {
 
     } else if (curr_experiment.current_question == 3) {
         sliders = {};
+        var max_slider_dev = find_max_deviation();
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             var slider_current = 0;
             if (current_question['slider'+slider_idx]){
                 slider_current = Math.max(0.01,Number(current_question['slider'+slider_idx]));
-                var slider_min = Math.max(0.01, slider_current - (radius)*1.25);
-                var slider_max = slider_current + (radius)*1.25;
+                var slider_2016_val = current_question['slider_2016_'+slider_idx];
+                var slider_min = Math.max(0.01, slider_2016_val - max_slider_dev - (radius)*1.25);
+                var slider_max = slider_2016_val + max_slider_dev + (radius)*1.25;
                 Session.set('slider'+slider_idx, slider_current);
                 sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
                     start: slider_current,
@@ -437,8 +457,11 @@ Template.answer1.onRendered(function () {
                     }
                 }).noUiSlider_pips({
                     mode: 'positions',
-                    values: [0,25,50,75,100],
-                    density: 4
+                    values: [0, 50, 100]
+                }).noUiSlider_pips({
+                    mode: 'values',
+                    values: [slider_current],
+                    density: 9999
                 }).on('slide', function (ev, val) {
                     // set real values on 'slide' event
                     try {

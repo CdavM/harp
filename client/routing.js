@@ -6,13 +6,13 @@ $.urlParam = function(name){
     else{
        return decodeURI(results[1]) || 0;
     }
-}
+};
 
 Router.route('/', function(){
 
-  var wid = $.urlParam('workerId')
-  var asg_val = $.urlParam('assignmentId')
-  var hit_val = $.urlParam('hitId')
+  var wid = $.urlParam('workerId');
+  var asg_val = $.urlParam('assignmentId');
+  var hit_val = $.urlParam('hitId');
 
   if (wid == null || wid.length < 10){
       Router.go('/end');// Uncomment this when not debugging anymore
@@ -55,7 +55,7 @@ Router.route('/hitId=:hit&workerId=:wid&assignmentId=:asg', function(){
   Session.set('worker_ID_value', wid);
   console.log(curr_experiment);
   console.log(wid);
-  console.log(hit_val)
+  console.log(hit_val);
   if ((curr_experiment && curr_experiment.experiment_finished) || (wid.length <6 ))
   {
     //Meteor.setTimeout(function(){Session.set('experiment_finished', false);}, 150);
