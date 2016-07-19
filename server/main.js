@@ -135,7 +135,7 @@ Meteor.methods({
             if (post.answer['optionset0']){
                 // only for the comparison mechanism.
                 var option_selected_set0 = post.answer['optionset0'][0];
-                var option_selected_set1 = post.answer['optionset0'][0];
+                var option_selected_set1 = post.answer['optionset1'][0];
 
                 var question_entry = Questions.findOne({"question_ID": current_question});
                 fields_to_be_updated['set0slider'+slider_idx+'1'] = question_entry['set0slider'+slider_idx+option_selected_set0];
