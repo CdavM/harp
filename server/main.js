@@ -239,13 +239,6 @@ Meteor.methods({
                     next_question ++;
                 } while (Questions.findOne({"question_ID": next_question}).busy == true);
             }
-            // look at the number of participants who were assigned here previously.
-            // this number does NOT include the participant just being assigned.
-            var answer_field_query = {};
-            answer_field_query["answer1." + next_question+".1"] = {"$exists": true};
-            var number_of_previous_participants = Answers.find(answer_field_query).count();
-            Questions.update({"question_ID": next_question}, {$set:{"busy":false, "previous_participants": number_of_previous_participants}});
-            Answers.update({"experiment_id": experiment_id_value}, {$set:{"num_of_previous_participants": number_of_previous_participants}}, {upsert: true, multi: true});
             if (counters[experiment_id_value]['random_counter'].length == selection_size){
                 Meteor.clearInterval(intervals[experiment_id_value]);
                 intervals[experiment_id_value]=0;
@@ -254,6 +247,16 @@ Meteor.methods({
             } else {
                 //store result
                 counters[experiment_id_value]['random_counter'][counters[experiment_id_value]['random_counter'].length]= next_question;
+
+                // look at the number of participants who were assigned here previously.
+                // this number does NOT include the participant just being assigned.
+                var answer_field_query = {};
+                answer_field_query["answer1." + next_question+".1"] = {"$exists": true};
+                var number_of_previous_participants = Answers.find(answer_field_query).count();
+                console.log('number of prev parts');
+                console.log(number_of_previous_participants);
+                Questions.update({"question_ID": next_question}, {$set:{"busy":false, "previous_participants": number_of_previous_participants}});
+                Answers.update({"experiment_id": experiment_id_value}, {$set:{"num_of_previous_participants": number_of_previous_participants}}, {upsert: true, multi: true});
 
                 // Set the busy flag
                 console.log("setting busy flag to " + next_question);
