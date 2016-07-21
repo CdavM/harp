@@ -115,6 +115,7 @@ Meteor.methods({
         var total_money_spent = 0;
         var total_money_spent_set0 = 0;
         var total_money_spent_set1 = 0;
+        var total_percentage_of_credits_spent = 0;
 
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             if (post.answer['slider' + slider_idx]){
@@ -131,6 +132,7 @@ Meteor.methods({
                 } else if (current_question == 3) {
                     answers_value['slider' + slider_idx + "_credits"] = Math.abs(slider_relative_diff);
                 }
+                total_percentage_of_credits_spent += answers_value['slider' + slider_idx + "_credits"];
             }
             if (post.answer['optionset0']){
                 // only for the comparison mechanism.
@@ -154,8 +156,16 @@ Meteor.methods({
                 }
             }
         }
+        if (total_percentage_of_credits_spent > 1.1){
+            /*
+            Too many credits used.
+            */
+            console.log("Too many credits used by experiment " + experiment_id_value);
+            console.log("Terminating experiment " + experiment_id_value);
+            return;
+        }
         if (Object.keys(fields_to_be_updated).length && typeof(current_question) == "number" && current_question != 2) {
-            Questions.update({"question_ID": current_question}, {$set: fields_to_be_updated}, {multi: true});
+            Questions.update({"question_ID": current_question}, {$set: fields_to_be_updated});
         }
         // add the deficit term
         if (current_question != 2 && current_answer == 1) {
