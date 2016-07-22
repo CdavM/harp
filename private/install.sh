@@ -4,7 +4,7 @@ echo "Welcome to the Harp experiment installation process."
 echo "Checking for administrator privileges"
 
 if [[ $EUID -ne 0 ]]; then
-   echo "Please run the script with administrator privileges (try sudo ./install.py)" 1>&2
+   echo "Please run the script with administrator privileges (try sudo ./install.sh)" 1>&2
    exit 1
 fi
 echo "Administrator privileges verified"

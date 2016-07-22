@@ -17,11 +17,13 @@ initial_values_mech1 = {0: [600, 950, 140, 1500, 506], 1: [541, 1004, 149, 1460,
 DEBUG_LEVEL = 0
 slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
 mechanism_names = ['l2 Constrained Movement', 'Comparisons', 'Full Elicitation', 'l1 Constrained Movement']
-def plot_sliders_over_time(data, title):
+mechanism_names_expanded = ['l2 Constrained Movement', 'Comparisons Set 0', 'Comparisons Set 1', 'Full Elicitation', 'l1 Constrained Movement']
+
+def plot_sliders_over_time(data, title, prepend = ""):
     n = range(0, len(data) + 1)
 
     for slider in range(0, len(slider_order)):
-        vals = [d['question_data']['slider' + str(slider) + '_loc'] for d in data]
+        vals = [d['question_data'][prepend+'slider' + str(slider) + '_loc'] for d in data]
         vals.insert(0, initial_values[slider]) #prepend initial values
         plt.plot(n, vals, label = slider_order[slider])
     plt.legend(loc='upper left', fontsize = 18)
@@ -29,7 +31,7 @@ def plot_sliders_over_time(data, title):
     plt.tick_params(axis='both', which='major', labelsize=18)
     
     # Add the axis labels
-    plt.title(title, fontsize = 18)
+    plt.title(title + " " + prepend, fontsize = 18)
     plt.ylabel('$ (Billions)', fontsize = 18)
     plt.xlabel('Iteration', fontsize = 18)
     plt.show()
@@ -151,7 +153,8 @@ def analyze_data_experiment0(data): # constrained movement
 
 
 def analyze_data_experiment1(data): # comparisons
-    plot_sliders_over_time(data, 'Comparison Mechanism')
+    for setnum in range(2):
+        plot_sliders_over_time(data, 'Comparison Mechanism', 'set' + str(setnum))
     return None
 
 
@@ -191,38 +194,50 @@ def movingaverage(interval, window_size):
     window = np.ones(int(window_size))/float(window_size)
     return np.convolve(interval, window, 'valid')
 
+keyorder = ['0', '1set0', '1set1', '2', '3']
+
 def plot_percent_movements_over_time(organized_data, LABEL):
-    averages_byitem = {0: [[],[],[],[]], 1:[[],[],[],[]], 2:[[],[],[],[]], 3:[[],[],[],[]]}
-    averages_bymostmovement = {0: [[],[],[],[]], 1:[[],[],[],[]], 2:[[],[],[],[]], 3:[[],[],[],[]]}
-    averages_creditpercentage = {0:[[],[],[],[]], 3:[[],[],[],[]]}
-    averages_creditpercentage_bymost = {0:[[],[],[],[]], 3:[[],[],[],[]]}
+    averages_byitem = {'0': [[],[],[],[]], '1set0':[[],[],[],[]], '1set1':[[],[],[],[]], '2':[[],[],[],[]], '3':[[],[],[],[]]}
+    averages_bymostmovement = {'0': [[],[],[],[]], '1set0':[[],[],[],[]], '1set1':[[],[],[],[]], '2':[[],[],[],[]], '3':[[],[],[],[]]}
+    averages_creditpercentage = {'0':[[],[],[],[]], '3':[[],[],[],[]]}
+    averages_creditpercentage_bymost = {'0':[[],[],[],[]], '3':[[],[],[],[]]}
     for key in organized_data:
         for experiment in organized_data[key]:
-            percentages = get_movement_percentages(experiment)
-            if percentages is None:
-                print "Did not move at all", experiment['experiment_id']
-                continue
-            for i in range(len(percentages)):
-                averages_byitem[key][i].append(percentages[i])
-                averages_bymostmovement[key][i].append(sorted(percentages, reverse = True)[i])
-            if key == 0 or key == 3:
-                credit_percentages = get_credit_percentage(experiment)
-                for i in range(len(credit_percentages)):
-                    averages_creditpercentage[key][i].append(credit_percentages[i])
-                    averages_creditpercentage_bymost[key][i].append(sorted(credit_percentages, reverse=True)[i])
+            if key != 1:
+                percentages = get_movement_percentages(experiment)
+                if percentages is None:
+                    print "Did not move at all", experiment['experiment_id']
+                    continue
+                for i in range(len(percentages)):
+                    averages_byitem[str(key)][i].append(percentages[i])
+                    averages_bymostmovement[str(key)][i].append(sorted(percentages, reverse = True)[i])
+                if key == 0 or key == 3:
+                    credit_percentages = get_credit_percentage(experiment)
+                    for i in range(len(credit_percentages)):
+                        averages_creditpercentage[str(key)][i].append(credit_percentages[i])
+                        averages_creditpercentage_bymost[str(key)][i].append(sorted(credit_percentages, reverse=True)[i])
+            else:
+                for setnum in range(0, 2):
+                    percentages = get_movement_percentages(experiment, prepend = 'set' + str(setnum))
+                    if percentages is None:
+                        print "Did not move at all", experiment['experiment_id']
+                        continue
+                    for i in range(len(percentages)):
+                        averages_byitem[str(key) + 'set' + str(setnum)][i].append(percentages[i])
+                        averages_bymostmovement[str(key) + 'set' + str(setnum)][i].append(sorted(percentages, reverse = True)[i])      
 
     f, axarr = plt.subplots(4, sharex=True)
     lines = []
-    mechanisms_to_do = [2]
+    mechanisms_to_do = [0, 1, 2, 3, 4]
     for slider in xrange(0, 4):
         for mechanism in mechanisms_to_do:#xrange(0, 4):
-            n = range(0, len(averages_byitem[mechanism][slider]))
-            vals = averages_byitem[mechanism][slider]
-            l = axarr[slider].plot(n, vals, label = mechanism_names[mechanism], linestyle = 'None', marker = '.')
+            n = range(0, len(averages_byitem[keyorder[mechanism]][slider]))
+            vals = averages_byitem[keyorder[mechanism]][slider]
+            l = axarr[slider].plot(n, vals, label = mechanism_names_expanded[mechanism], linestyle = 'None', marker = '.')
             #plot line of best fit
-            #l = axarr[slider].plot(n, np.poly1d(np.polyfit(n, vals, 1))(n), label = mechanism_names[mechanism])
+            #l = axarr[slider].plot(n, np.poly1d(np.polyfit(n, vals, 1))(n), label = mechanism_names_expanded[mechanism])
             mvgs = movingaverage(vals, 10)
-            #l = axarr[slider].plot(range(len(mvgs)),mvgs, label = mechanism_names[mechanism])
+            #l = axarr[slider].plot(range(len(mvgs)),mvgs, label = mechanism_names_expanded[mechanism])
             
             if slider == 0:
                 lines.append(l[0])
@@ -231,55 +246,71 @@ def plot_percent_movements_over_time(organized_data, LABEL):
         axarr[slider].set_ylim([0.1,.4])
         axarr[slider].tick_params(axis='both', which='major', labelsize=18)
 
-    axarr[len(mechanisms_to_do)-1].set_xlabel('Iteration', fontsize = 18)
-    f.legend(lines, [mechanism_names[mechanisms_to_do[i]] for i in range(len(mechanisms_to_do))], loc='Upper Left', borderaxespad=0., ncol = 4, fontsize = 18)
+    axarr[3].set_xlabel('Iteration', fontsize = 18)
+    f.legend(lines, [mechanism_names_expanded[mechanisms_to_do[i]] for i in range(len(mechanisms_to_do))], loc='Upper Left', borderaxespad=0., ncol = 4, fontsize = 18)
     print lines
     plt.show()
 
-
 def analyze_movement_and_weights(organized_data, LABEL):
-    averages_byitem = {0: np.zeros(4), 1:np.zeros(4), 2:np.zeros(4), 3:np.zeros(4)}
-    averages_bymostmovement = {0: np.zeros(4), 1:np.zeros(4), 2:np.zeros(4), 3:np.zeros(4)}
-    averages_creditpercentage = {0:np.zeros(4), 3:np.zeros(4)}
-    averages_creditpercentage_bymost = {0:np.zeros(4), 3:np.zeros(4)}
+    averages_byitem = {'0': np.zeros(4), '1set0':np.zeros(4), '1set1':np.zeros(4), '2':np.zeros(4), '3':np.zeros(4)}
+    averages_bymostmovement = {'0': np.zeros(4), '1set0':np.zeros(4), '1set1':np.zeros(4), '2':np.zeros(4), '3':np.zeros(4)}
+    averages_creditpercentage = {'0':np.zeros(4), '3':np.zeros(4)}
+    averages_creditpercentage_bymost = {'0':np.zeros(4), '3':np.zeros(4)}
     num_key_positive = np.zeros(4)
     for key in organized_data:
         for experiment in organized_data[key]:
-            percentages = get_movement_percentages(experiment)
-            if percentages is None:
-                print "Did not move at all", experiment['experiment_id']
-                continue
             num_key_positive[key] += 1
-            #print key, percentages
-            averages_byitem[key] += percentages
-            averages_bymostmovement[key] += sorted(percentages, reverse = True)
-            if key == 0 or key == 3:
-                credit_percentages = get_credit_percentage(experiment)
-                averages_creditpercentage[key] += credit_percentages
-                averages_creditpercentage_bymost[key] += sorted(credit_percentages, reverse=True)
-        averages_byitem[key] /= num_key_positive[key]
-        averages_bymostmovement[key] /= num_key_positive[key]
-        if key == 0 or key == 3:
-            averages_creditpercentage[key] /= num_key_positive[key]
-            averages_creditpercentage_bymost[key] /= num_key_positive[key]
+            if key!= 1:
+                percentages = get_movement_percentages(experiment)
+                if percentages is None:
+                    print "Did not move at all", experiment['experiment_id']
+                    continue
+                #print key, percentages
+                averages_byitem[str(key)] += percentages
+                averages_bymostmovement[str(key)] += sorted(percentages, reverse = True)
 
+                if key == 0 or key == 3:
+                    credit_percentages = get_credit_percentage(experiment)
+                    averages_creditpercentage[str(key)] += credit_percentages
+                    averages_creditpercentage_bymost[str(key)] += sorted(credit_percentages, reverse=True)
+            else:
+                for setnum in range(2):
+                    percentages = get_movement_percentages(experiment, prepend = 'set' + str(setnum))
+                    if percentages is None:
+                        print "Did not move at all", experiment['experiment_id']
+                        continue
+                    #print key, percentages
+                    averages_byitem[str(key) + 'set' + str(setnum)] += percentages
+                    averages_bymostmovement[str(key) + 'set' + str(setnum)] += sorted(percentages, reverse = True)
+        if key!= 1:
+            averages_byitem[str(key)] /= num_key_positive[key] 
+            averages_bymostmovement[str(key)] /= num_key_positive[key] 
+            if key == 0 or key == 3:
+                averages_creditpercentage[str(key)] /= num_key_positive[key] 
+                averages_creditpercentage_bymost[str(key)] /= num_key_positive[key] 
+        else:
+            for setnum in range(2):
+                averages_byitem[str(key) + 'set' + str(setnum)] /= num_key_positive[key] 
+                averages_bymostmovement[str(key) + 'set' + str(setnum)] /= num_key_positive[key]
+                
     dpoints_byitem = []
     dpoints_bymost = []
     dpoints_credits = []
     dpoints_credits_bymost = []
 
-    for key in averages_byitem.keys():
+    for key in range(5):
         for idx in xrange(4):
-            dpoints_byitem.append([mechanism_names[key], slider_order[idx], averages_byitem[key][idx]])
-            dpoints_bymost.append([mechanism_names[key], str(idx), averages_bymostmovement[key][idx]])
-            if key == 0 or key == 3:
-                dpoints_credits.append([mechanism_names[key], slider_order[idx], averages_creditpercentage[key][idx]])
-                dpoints_credits_bymost.append([mechanism_names[key], str(idx), averages_creditpercentage_bymost[key][idx]])
+            averageskey = keyorder[key]
+            dpoints_byitem.append([mechanism_names_expanded[key], slider_order[idx], averages_byitem[averageskey][idx]])
+            dpoints_bymost.append([mechanism_names_expanded[key], str(idx), averages_bymostmovement[averageskey][idx]])
+            if averageskey == '0' or averageskey == '3':
+                dpoints_credits.append([mechanism_names_expanded[key], slider_order[idx], averages_creditpercentage[averageskey][idx]])
+                dpoints_credits_bymost.append([mechanism_names_expanded[key], str(idx), averages_creditpercentage_bymost[averageskey][idx]])
 
-    barplot(np.array(dpoints_byitem), LABEL, 'Percent of movement', 'Item', slider_order[0:4], mechanism_names)
-    barplot(np.array(dpoints_bymost), LABEL, 'Percent of movement', 'Order by movement', [str(x) for x in xrange(4)], mechanism_names)
-    barplot(np.array(dpoints_credits), LABEL, 'Percent of credits used', 'Item', slider_order[0:4], [mechanism_names[0], mechanism_names[3]])
-    barplot(np.array(dpoints_credits_bymost), LABEL, 'Percent of credits used', 'Order by movement', [str(x) for x in xrange(4)], [mechanism_names[0], mechanism_names[3]])
+    barplot(np.array(dpoints_byitem), LABEL, 'Percent of movement', 'Item', slider_order[0:4], mechanism_names_expanded)
+    barplot(np.array(dpoints_bymost), LABEL, 'Percent of movement', 'Order by movement', [str(x) for x in xrange(4)], mechanism_names_expanded)
+    barplot(np.array(dpoints_credits), LABEL, 'Percent of credits used', 'Item', slider_order[0:4], [mechanism_names_expanded[0], mechanism_names_expanded[4]])
+    barplot(np.array(dpoints_credits_bymost), LABEL, 'Percent of credits used', 'Order by movement', [str(x) for x in xrange(4)], [mechanism_names_expanded[0], mechanism_names_expanded[4]])
 
 
 def get_credit_percentage(experiment):
@@ -289,12 +320,12 @@ def get_credit_percentage(experiment):
     return movement/np.sum(movement)
 
 
-def get_movement_percentages(single_experiment_data):
+def get_movement_percentages(single_experiment_data, prepend = ""):
     if single_experiment_data['question_num'] == 2:
         movement = [single_experiment_data['question_data']['slider0_weight'], single_experiment_data['question_data']['slider1_weight'], single_experiment_data['question_data']['slider2_weight'], single_experiment_data['question_data']['slider3_weight']]
     else:
-        new_vals = [single_experiment_data['question_data']['slider0_loc'], single_experiment_data['question_data']['slider1_loc'], single_experiment_data['question_data']['slider2_loc'], single_experiment_data['question_data']['slider3_loc']]
-        previous_vals = single_experiment_data['question_data']['previous_slider_values'][0:4]
+        new_vals = [single_experiment_data['question_data'][prepend + 'slider0_loc'], single_experiment_data['question_data'][prepend + 'slider1_loc'], single_experiment_data['question_data'][prepend + 'slider2_loc'], single_experiment_data['question_data'][prepend + 'slider3_loc']]
+        previous_vals = single_experiment_data['question_data'][prepend + 'previous_slider_values'][0:4]
         movement = np.abs(np.subtract(new_vals, previous_vals))
     if sum(movement) < .0001: #did not move
         return None
@@ -313,7 +344,7 @@ def calculate_time_spent(organized_data, LABEL):
     barplot(np.array(dpoints), LABEL, 'Time (Seconds)', 'Page', pagenames, mechanism_names)
 
 def organize_payment(organized_data):
-    with open ('bonusinfo_real.csv', 'wb') as file:
+    with open ('bonusinfo_real_run2.csv', 'wb') as file:
         writer = csv.writer(file)
         for key in organized_data:
             for d in organized_data[key]:
@@ -336,7 +367,7 @@ def main():
 
 
     #data, organized_data = 445.70 clean_data(load_data('export-20160707161738_PILOTFINAL_fixed.csv'))
-    data, organized_data = clean_data(load_data('export-20160719053607.csv'))
+    data, organized_data = clean_data(load_data('export-20160722200126.csv'))
 
     LABEL = 'Actual'
     print len(data)
@@ -345,16 +376,18 @@ def main():
 
     for key in organized_data:
         print key, len(organized_data[key])    
-    #plot_percent_movements_over_time(organized_data, 'Real Experiment')
-    plot_allmechansisms_together(organized_data)
+
+    plot_percent_movements_over_time(organized_data, 'Real Experiment')
+    
+    #plot_allmechansisms_together(organized_data)
 
     #analyze_data(organized_data, LABEL)
 
-    organize_payment(organized_data)
+    #organize_payment(organized_data)
 
-    print_different_things(organized_data  )
+    #print_different_things(organized_data  )
 
 if __name__ == "__main__":
-    main()
+    main()     
 
 
