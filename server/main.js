@@ -119,6 +119,12 @@ Meteor.methods({
 
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             if (post.answer['slider' + slider_idx]){
+                if (isNaN(Number(post.answer['slider' + slider_idx][0]))){
+                    console.log("Value cannot be converted into a number.");
+                    console.log(post.answer['slider' + slider_idx][0]);
+                    console.log("Rejecting the entry for experiment " + experiment_id_value);
+                    return;
+                }
                 fields_to_be_updated['slider'+slider_idx] = Math.max(.01, Number(post.answer['slider' + slider_idx][0]));
                 if (slider_idx == 3) {
                     total_money_spent -= Number(post.answer['slider' + slider_idx][0]);
@@ -265,8 +271,6 @@ Meteor.methods({
                 var answer_field_query = {};
                 answer_field_query["answer1." + next_question+".1"] = {"$exists": true};
                 var number_of_previous_participants = Answers.find(answer_field_query).count();
-                console.log('number of prev parts');
-                console.log(number_of_previous_participants);
                 Questions.update({"question_ID": next_question}, {$set:{"busy":false, "previous_participants": number_of_previous_participants}});
                 Answers.update({"experiment_id": experiment_id_value}, {$set:{"num_of_previous_participants": number_of_previous_participants}}, {upsert: true, multi: true});
 
