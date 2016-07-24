@@ -320,6 +320,10 @@
     <h3>
         {{> timer}}
         {{> deficit_template (deficit_names)}}
+        <br>
+        <button type="button" id="reset_sliders" class="btn btn-default">Reset All Sliders</button>
+        <br>
+        <hr style="clear: both">
         {{> mech2_slider (slider_names "slider0" "blue" "National Defense")}}
         {{> mech2_slider (slider_names "slider1" "green" "Medicare & Health")}}
         {{> mech2_slider (slider_names "slider2" "orange" "Transportation & Science")}}
