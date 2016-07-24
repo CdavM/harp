@@ -23,39 +23,6 @@ Template.registerHelper('experiment_finished', function(){return Session.get('ex
 Template.registerHelper('show_payment_system', function(){
     return Meteor.settings.public.show_payment; //show the user their current payment
 });
-Template.registerHelper('slider', function () {
-    return Session.get("slider");
-});
-Template.registerHelper('slider0_value', function () {
-    return Session.get('slider0');
-});
-Template.registerHelper('slider1_value', function () {
-    return Session.get('slider1');
-});
-Template.registerHelper('slider2_value', function () {
-    return Session.get('slider2');
-});
-Template.registerHelper('slider3_value', function () {
-    return Session.get('slider3');
-});
-Template.registerHelper('slider4_value', function () {
-    return Session.get('slider4');
-});
-Template.registerHelper('slider0w_value', function () {
-    return Session.get('slider0weight');
-});
-Template.registerHelper('slider1w_value', function () {
-    return Session.get('slider1weight');
-});
-Template.registerHelper('slider2w_value', function () {
-    return Session.get('slider2weight');
-});
-Template.registerHelper('slider3w_value', function () {
-    return Session.get('slider3weight');
-});
-Template.registerHelper('slider4w_value', function () {
-    return Session.get('slider4weight');
-});
 Template.registerHelper('slider_names', function(slider_name_arg, color_arg, slider_title_arg) {
     var slider_object = Object();
     slider_object.id = slider_name_arg;
