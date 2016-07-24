@@ -443,7 +443,7 @@ Template.answer1.onRendered(function () {
         return current_max;
     };
 
-    if (curr_experiment.current_question == 0) {
+    if ([0, 4].indexOf(curr_experiment.current_question) > -1) {
         sliders = {};
         var max_slider_dev = find_max_deviation();
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
@@ -493,7 +493,7 @@ Template.answer1.onRendered(function () {
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
 
-    } else if (curr_experiment.current_question == 3) {
+    } else if ([3, 7].indexOf(curr_experiment.current_question) > -1) {
         sliders = {};
         var max_slider_dev = find_max_deviation();
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
@@ -540,7 +540,7 @@ Template.answer1.onRendered(function () {
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
 
-    } else if (curr_experiment.current_question == 1){
+    } else if ([1, 5].indexOf(curr_experiment.current_question) > -1){
         //mechanism 1 specific js
         //initialize all 15 sliders in one loop!
         var slider_idx = 0;
@@ -580,7 +580,7 @@ Template.answer1.onRendered(function () {
             set_num ++;
         }
         //initialize the deficit sliders
-        set_num = 0
+        set_num = 0;
         while (set_num < 2){
             var initial_deficit = current_question['set' + set_num + 'slider41'];
             for (var well_idx = 0; well_idx < 3; well_idx++){
@@ -611,7 +611,7 @@ Template.answer1.onRendered(function () {
             set_num ++;
         }
 
-    } else if (curr_experiment.current_question == 2){
+    } else if ([2, 6].indexOf(curr_experiment.current_question) > -1){
         //mechanism 2 specific js
 
         sliders = {};

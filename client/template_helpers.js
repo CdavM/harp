@@ -97,11 +97,15 @@ Template.registerHelper('current_answer', function(){
 
 Template.registerHelper('current_mechanism', function(){
     var current_mechanism_value = Answers.findOne({worker_ID: Session.get("worker_ID_value")}).current_question;
+    if (current_mechanism_value > 3)
+        current_mechanism_value -= 4;
     return "mechanism"+current_mechanism_value;
 });
 
 Template.registerHelper('current_question_text', function(){
     var current_question_value = Answers.findOne({worker_ID: Session.get("worker_ID_value")}).current_question;
+    if (current_question_value > 3)
+        current_question_value -= 4;
     return "question"+current_question_value+"text";
 });
 
