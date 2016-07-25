@@ -95,7 +95,7 @@ def load_data_experiment1(answerdata, restofdata): #comparisons
         
         answer['set' + str(set_num) + 'previous_slider_values'] = answer['set' + str(set_num) + 'option1']
 
-    print answer
+    #print answer
     #TODO include radius values and so forth
     return answer
 

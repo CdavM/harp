@@ -319,6 +319,93 @@ def get_credit_percentage(experiment):
         return None
     return movement/np.sum(movement)
 
+def TwoSetComparisonsAnalysis(comparisonsdata):
+    differences_over_time = [[],[],[],[]]
+
+   #get direction, amount of movement per person on the different set (difference from option 1...)
+   #plot abs value of difference in amount per item per person
+    for experiment in comparisonsdata:
+        movement_set0, movement_set1 = get_movement_values_comparisons_sets(experiment)
+        differences = np.abs(np.subtract(movement_set0, movement_set1))
+        for i in range(0, 4):
+            differences_over_time[i].append(differences[i])
+
+    n = len(differences_over_time[0])
+    for slider in xrange(0, 4):
+        vals = differences_over_time[slider]
+        plt.plot(range(n), vals, label = slider_order[slider])
+        plt.plot(range(n), np.poly1d(np.polyfit(range(n), vals, 1))(range(n)), label = slider_order[slider])
+
+    plt.title('Comparisons set differences over time', fontsize = 18)
+    plt.ylabel('Percent difference', fontsize = 18)
+    plt.xlabel('Iteration', fontsize = 18)
+    plt.legend(loc='Upper Left', borderaxespad=0., ncol = 4, fontsize = 18)
+    plt.show()
+
+    #for each budget item, sort the options from least to highest. See which option they picked for each, how it different per person.  
+    optionsorteddifferences_over_time = [[],[],[],[]]
+    set0 = [[], [], [], []]
+    set1 = [[], [], [], []]
+    for experiment in comparisonsdata:
+        set0option0 = experiment['question_data']['set' + '0' + 'option0']
+        set0option1 = experiment['question_data']['set' + '0' + 'option1']
+        set0option2 = experiment['question_data']['set' + '0' + 'option2']
+        set1option0 = experiment['question_data']['set' + '1' + 'option0']
+        set1option1 = experiment['question_data']['set' + '1' + 'option1']
+        set1option2 = experiment['question_data']['set' + '1' + 'option2']
+
+
+        for slider in range(0, 4):
+            optionvals_set0 = [set0option0[slider], set0option1[slider], set0option2[slider]]
+            sorted_set0 = np.argsort(optionvals_set0)
+            orderset0 = np.nonzero(sorted_set0 == experiment['question_data']['set0selection'])[0][0]
+
+            optionvals_set1 = [set1option0[slider], set1option1[slider], set1option2[slider]]
+            sorted_set1 = np.argsort(optionvals_set1)
+            orderset1 = np.nonzero(sorted_set1 == experiment['question_data']['set1selection'])[0][0]
+
+            optionsorteddifferences_over_time[slider].append(abs(orderset0 - orderset1))
+            set0[slider].append(orderset0)
+            set1[slider].append(orderset1)
+    print [np.average(set0[slider]) for slider in range(4)]
+    print [np.average(set1[slider]) for slider in range(4)]
+
+
+    n = len(optionsorteddifferences_over_time[0])
+    for slider in xrange(0, 4):
+        vals = optionsorteddifferences_over_time[slider]
+        print vals
+        #plt.plot(range(n), vals, label = slider_order[slider])
+        #plt.plot(range(n), np.poly1d(np.polyfit(range(n), vals, 20))(range(n)), label = slider_order[slider])
+        movav = movingaverage(vals, len(vals)-1)
+        plt.plot(range(len(movav)), movav, label = slider_order[slider])
+
+    plt.title('Comparisons options (ordered) differences over time', fontsize = 18)
+    plt.ylabel('Option difference', fontsize = 18)
+    plt.xlabel('Iteration', fontsize = 18)
+    plt.legend(loc='Upper Left', borderaxespad=0., ncol = 4, fontsize = 18)
+    plt.show()
+
+
+    return 0
+
+def get_movement_values_comparisons_sets(single_experiment_data):
+
+    new_vals_set0 = [single_experiment_data['question_data']['set0' + 'slider0_loc'], single_experiment_data['question_data']['set0' + 'slider1_loc'], single_experiment_data['question_data']['set0' + 'slider2_loc'], single_experiment_data['question_data']['set0' + 'slider3_loc']]
+    previous_vals_set0 = single_experiment_data['question_data']['set0' + 'previous_slider_values'][0:4]
+    movement_set0 = np.subtract(new_vals_set0, previous_vals_set0)
+    abssum_set0 = sum(abs(movement_set0))
+    if abssum_set0 > 0:
+        movement_set0 = movement_set0/abssum_set0
+
+    new_vals_set1 = [single_experiment_data['question_data']['set1' + 'slider0_loc'], single_experiment_data['question_data']['set1' + 'slider1_loc'], single_experiment_data['question_data']['set1' + 'slider2_loc'], single_experiment_data['question_data']['set1' + 'slider3_loc']]
+    previous_vals_set1 = single_experiment_data['question_data']['set1' + 'previous_slider_values'][0:4]
+    movement_set1 = np.subtract(new_vals_set1, previous_vals_set1)
+    abssum_set1 = sum(abs(movement_set1))
+    if abssum_set1 > 0:
+        movement_set1 = movement_set1/abssum_set1
+     
+    return movement_set0, movement_set1
 
 def get_movement_percentages(single_experiment_data, prepend = ""):
     if single_experiment_data['question_num'] == 2:
@@ -344,7 +431,7 @@ def calculate_time_spent(organized_data, LABEL):
     barplot(np.array(dpoints), LABEL, 'Time (Seconds)', 'Page', pagenames, mechanism_names)
 
 def organize_payment(organized_data):
-    with open ('bonusinfo_real_run2.csv', 'wb') as file:
+    with open ('bonusinfo_real_run2_finalppl.csv', 'wb') as file:
         writer = csv.writer(file)
         for key in organized_data:
             for d in organized_data[key]:
@@ -363,27 +450,45 @@ def print_different_things(organized_data):
         print "MECHANISM: " + mechanism_names[key]
         for d in organized_data[key]:
             print d['feedback_data']['feedback'][0], "\n"
+
+def payments_new_people(organized_data):
+    newids = []
+    with open ('newpeople_endof_2ndrun.csv', 'rb') as file:
+        reader = csv.reader(file)
+        newids = [q[0] for q in list(reader)]
+    print newids
+
+    with open ('bonusinfo_real_run2_finalppl222.csv', 'wb') as file:
+        writer = csv.writer(file)
+        for key in organized_data:
+            for d in organized_data[key]:
+                if d['worker_ID'] in newids:
+                    writer.writerow([d['worker_ID'], d['question_num'], d['question_data']['explanation'], d['feedback_data']['feedback'],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page3']])
+
 def main():
 
 
-    #data, organized_data = 445.70 clean_data(load_data('export-20160707161738_PILOTFINAL_fixed.csv'))
+    #data, organized_data = clean_data(load_data('export-20160707161738_PILOTFINAL_fixed.csv'))
     data, organized_data = clean_data(load_data('export-20160722200126.csv'))
 
     LABEL = 'Actual'
-    print len(data)
-    for key in organized_data:
-        print key, len(organized_data[key])#[d['experiment_id'] for d in organized_data[key]]
+    #print len(data)
+    #for key in organized_data:
+    #    print key, len(organized_data[key])#[d['experiment_id'] for d in organized_data[key]]
 
-    for key in organized_data:
-        print key, len(organized_data[key])    
+    # for key in organized_data:
+    #     print key, len(organized_data[key])    
 
-    plot_percent_movements_over_time(organized_data, 'Real Experiment')
+    #TwoSetComparisonsAnalysis(organized_data[1])    
+
+    #plot_percent_movements_over_time(organized_data, 'Real Experiment')
     
     #plot_allmechansisms_together(organized_data)
 
     #analyze_data(organized_data, LABEL)
 
     #organize_payment(organized_data)
+    payments_new_people(organized_data)
 
     #print_different_things(organized_data  )
 
