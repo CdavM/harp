@@ -176,12 +176,12 @@ Meteor.methods({
         // add the deficit term
         if (current_question != 2 && current_answer == 1) {
             if(post.answer['optionset0']){ //only for comparisons mechanism
-                answers_value[current_question][current_answer]['deficitset0'] = total_money_spent_set0 + 316;
-                answers_value[current_question][current_answer]['deficitset1'] = total_money_spent_set1 + 316;
+                answers_value[current_question][current_answer]['deficitset0'] = total_money_spent_set0 + 16;
+                answers_value[current_question][current_answer]['deficitset1'] = total_money_spent_set1 + 16;
 
             }
             else{
-                answers_value[current_question][current_answer]['deficit'] = total_money_spent + 316;
+                answers_value[current_question][current_answer]['deficit'] = total_money_spent + 16;
             }
         }
         //Add entry to Answers
@@ -292,7 +292,8 @@ Meteor.methods({
                 Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
                 
                 var radius_fn = function (previous_participants) {
-                    return 50.0/(Math.floor(previous_participants/10.0)+1);
+                    //return 50.0/(Math.floor(previous_participants/10.0)+1);
+                    return 25.0;
                 };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
                 if ([0, 4, 3, 7].indexOf(next_question) > -1){
@@ -310,7 +311,7 @@ Meteor.methods({
                         }
                     }
                     //compute the deficit
-                    db_storage['initial_deficit'] = total_money_spent + 316;
+                    db_storage['initial_deficit'] = total_money_spent + 16;
                     //store everything
                     Answers.update({experiment_id: experiment_id_value}, {$set: db_storage}, {upsert: true, multi: true});
 
@@ -380,7 +381,7 @@ Meteor.methods({
                             total_money_spent += vector_object["set" + setnum +"slider"+slider_idx_counter+well_idx];
                         }
                         total_money_spent -= vector_object["set" + setnum +"slider3"+well_idx]; // decreases by amt of income tax collected
-                        var deficit_value = total_money_spent + 316; 
+                        var deficit_value = total_money_spent + 16; 
                         return deficit_value;
                     };
 
