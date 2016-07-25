@@ -1,3 +1,51 @@
+compute_averages = function(slider_ID, value){
+    var ratio = 0;
+    if (slider_ID == 0){
+        ratio = value / 541; //TODO update with real values
+    } else if (slider_ID == 1){
+        ratio = value / 1004;
+    } else if (slider_ID == 2){
+        ratio = value / 149;
+    } else if (slider_ID == 3){
+        ratio = value / 1460;
+    }
+    percentage_difference = 100 * (ratio - 1);
+    return percentage_difference;
+};
+
+update_deficit = function(well_idx){
+    if (typeof(well_idx) == "undefined"){
+        well_idx = "";
+    }
+    var total_money_spent = 0;
+    for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
+        total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
+    }
+    total_money_spent -= Session.get("slider"+3+well_idx); // decreases by amt of income tax collected
+    var deficit_value = total_money_spent + 316; //TODO: update with real numbers
+    var deficit_value_percentage = 100 * ((deficit_value / 550) - 1); //TODO: update with real numbers
+    deficit_value = parseInt(deficit_value * 100)/100;
+    if (deficit_value >= 0){
+        $("#deficit_text"+well_idx).text("deficit");
+        $("#deficit_value"+well_idx).css('color','red');
+    } else {
+        deficit_value = deficit_value.toString().substr(1);
+        $("#deficit_text"+well_idx).text("surplus");
+        $("#deficit_value"+well_idx).css('color','green');
+    }
+    if (deficit_value_percentage >= 0){
+        deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
+        $("#deficit_percentage"+well_idx).css('color','red');
+        $("#deficit_percentage"+well_idx).text(deficit_value_percentage+"% increase");
+    } else {
+        deficit_value_percentage = -(parseInt(deficit_value_percentage*100)/100).toString();
+        $("#deficit_percentage"+well_idx).css('color','green');
+        $("#deficit_percentage"+well_idx).text(deficit_value_percentage+"% decrease");
+    }
+    $("#deficit_value"+well_idx).text("$"+deficit_value+"B");
+
+};
+
 Template.experiment.events({
     'click #begin_experiment': function (event) {
         worker_ID_value = Session.get("worker_ID_value");
@@ -60,6 +108,61 @@ Template.experiment.events({
                 Session.set('waiting', false);
             }
         });
+    },
+
+    'click #reset_sliders': function () {
+        console.log('Resetting sliders.');
+        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+        var radius = curr_experiment.radius;
+        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
+            sliders['slider'+slider_idx].val(current_question['slider'+slider_idx]);
+            Session.set('slider'+slider_idx, current_question['slider'+slider_idx]);
+            $('textarea#slider'+slider_idx).val(current_question['slider'+slider_idx]);
+        }
+        //update stacked bars
+        var slider_idx_counter = 0;
+        var curr_slider_total_width = 0;
+        var credit_percentage_spent = 0;
+        while (slider_idx_counter < 4){
+            var curr_slider = "slider"+slider_idx_counter.toString();
+            var curr_slider_value = Session.get(curr_slider);
+            var curr_slider_bar = curr_slider + "bar";
+            var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
+            credit_percentage_spent += slider_width_fraction;
+            $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.3); //laplace smoothing
+            $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));
+            curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
+            slider_idx_counter ++;
+        }
+        var credits_left_fraction = 100*(1-credit_percentage_spent);
+        if (credits_left_fraction < 0.15){
+            credits_left_fraction = 0;
+        }
+        $("#creditsleft").text("Credits left: " + round(credits_left_fraction, 1));
+
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+            var percent_difference = compute_averages(slider_idx, current_question['slider' + slider_idx]);
+            if (percent_difference < 0) {
+                //red background
+                $("#slider" + slider_idx + "comp").css('color', 'red');
+                // set value
+                $("#slider" + slider_idx + "comp").text(round(percent_difference, 2) + "%");
+            } else {
+                //green background
+                $("#slider" + slider_idx + "comp").css('color', 'green');
+                // set value
+                $("#slider" + slider_idx + "comp").text("+" + round(percent_difference, 2) + "%");
+            }
+        }
+        var total_money_spent = 0;
+        slider_idx_counter = 0;
+        while (slider_idx_counter < 4){
+            total_money_spent += Session.get("slider"+slider_idx_counter);
+            slider_idx_counter++;
+        }
+        update_deficit();
+        return;
     }
 
 });
@@ -132,7 +235,6 @@ Template.answer1.onRendered(function () {
         var slider_idx_counter = 0;
         var curr_slider_total_width = 0;
         var credit_percentage_spent = 0;
-        var slider_laplace_smoothing = true;
         while (slider_idx_counter < 4){
             var curr_slider = "slider"+slider_idx_counter.toString();
             var curr_slider_value = Session.get(curr_slider);
@@ -306,52 +408,7 @@ Template.answer1.onRendered(function () {
             $("div").mouseup(); //release the mouse
         }
     };
-    var compute_averages = function(slider_ID, value){
-        var ratio = 0;
-        if (slider_ID == 0){
-            ratio = value / 541; //TODO update with real values
-        } else if (slider_ID == 1){
-            ratio = value / 1004;
-        } else if (slider_ID == 2){
-            ratio = value / 149;
-        } else if (slider_ID == 3){
-            ratio = value / 1460;
-        }
-        percentage_difference = 100 * (ratio - 1);
-        return percentage_difference;
-    };
-    var update_deficit = function(well_idx){
-        if (typeof(well_idx) == "undefined"){
-            well_idx = "";
-        }
-        var total_money_spent = 0;
-        for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
-            total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
-        }
-        total_money_spent -= Session.get("slider"+3+well_idx); // decreases by amt of income tax collected
-        var deficit_value = total_money_spent + 316; //TODO: update with real numbers
-        var deficit_value_percentage = 100 * ((deficit_value / 550) - 1); //TODO: update with real numbers
-        deficit_value = parseInt(deficit_value * 100)/100;
-        if (deficit_value >= 0){
-            $("#deficit_text"+well_idx).text("deficit");
-            $("#deficit_value"+well_idx).css('color','red');
-        } else {
-            deficit_value = deficit_value.toString().substr(1);
-            $("#deficit_text"+well_idx).text("surplus");
-            $("#deficit_value"+well_idx).css('color','green');
-        }
-        if (deficit_value_percentage >= 0){
-            deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
-            $("#deficit_percentage"+well_idx).css('color','red');
-            $("#deficit_percentage"+well_idx).text(deficit_value_percentage+"% increase");
-        } else {
-            deficit_value_percentage = -(parseInt(deficit_value_percentage*100)/100).toString();
-            $("#deficit_percentage"+well_idx).css('color','green');
-            $("#deficit_percentage"+well_idx).text(deficit_value_percentage+"% decrease");
-        }
-        $("#deficit_value"+well_idx).text("$"+deficit_value+"B");
 
-    };
     var update_comps = function(){
         var percentage_difference = 0;
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
@@ -377,7 +434,6 @@ Template.answer1.onRendered(function () {
 
     var find_max_deviation = function(){
         var current_max = 0;
-        console.log(current_question);
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
             var current_dev = Math.abs(current_question['slider_2016_'+slider_idx] - current_question['slider'+slider_idx]);
             if (current_dev > current_max){
@@ -387,7 +443,7 @@ Template.answer1.onRendered(function () {
         return current_max;
     };
 
-    if (curr_experiment.current_question == 0) {
+    if ([0, 4].indexOf(curr_experiment.current_question) > -1) {
         sliders = {};
         var max_slider_dev = find_max_deviation();
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
@@ -437,7 +493,7 @@ Template.answer1.onRendered(function () {
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
 
-    } else if (curr_experiment.current_question == 3) {
+    } else if ([3, 7].indexOf(curr_experiment.current_question) > -1) {
         sliders = {};
         var max_slider_dev = find_max_deviation();
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
@@ -484,7 +540,7 @@ Template.answer1.onRendered(function () {
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
 
-    } else if (curr_experiment.current_question == 1){
+    } else if ([1, 5].indexOf(curr_experiment.current_question) > -1){
         //mechanism 1 specific js
         //initialize all 15 sliders in one loop!
         var slider_idx = 0;
@@ -492,7 +548,7 @@ Template.answer1.onRendered(function () {
         var set_num = 0;
         while (set_num < 2){
             while(slider_idx<4){
-                while(well_idx<3){
+                while(well_idx<4){
                     var total_width = $(".progress").width();
                     var value_difference = (current_question["set" + set_num + "slider"+slider_idx+well_idx]-current_question["set" + set_num + "slider"+slider_idx+"1"]);
                     var relative_difference = value_difference/radius;
@@ -524,10 +580,10 @@ Template.answer1.onRendered(function () {
             set_num ++;
         }
         //initialize the deficit sliders
-        set_num = 0
+        set_num = 0;
         while (set_num < 2){
             var initial_deficit = current_question['set' + set_num + 'slider41'];
-            for (var well_idx = 0; well_idx < 3; well_idx++){
+            for (var well_idx = 0; well_idx < 4; well_idx++){
                 var current_deficit = current_question['set' + set_num + 'slider'+4+well_idx];
                 var deficit_difference = current_deficit - initial_deficit;
                 var deficit_scaled_difference = deficit_difference / (2*radius);
@@ -548,14 +604,11 @@ Template.answer1.onRendered(function () {
                     $("#set" + set_num + "slider"+4+well_idx+"comp").text("+"+round(deficit_percentage_change, 2)+"%");
                 }
             }
-            for (well_idx = 0; well_idx < 3; well_idx++){ //Not sure if needed for the comparison mechanism.
-                update_deficit(well_idx);
-            }
             $('[data-toggle="tooltip"]').tooltip();
             set_num ++;
         }
 
-    } else if (curr_experiment.current_question == 2){
+    } else if ([2, 6].indexOf(curr_experiment.current_question) > -1){
         //mechanism 2 specific js
 
         sliders = {};
