@@ -548,7 +548,7 @@ Template.answer1.onRendered(function () {
         var set_num = 0;
         while (set_num < 2){
             while(slider_idx<4){
-                while(well_idx<3){
+                while(well_idx<4){
                     var total_width = $(".progress").width();
                     var value_difference = (current_question["set" + set_num + "slider"+slider_idx+well_idx]-current_question["set" + set_num + "slider"+slider_idx+"1"]);
                     var relative_difference = value_difference/radius;
@@ -583,7 +583,7 @@ Template.answer1.onRendered(function () {
         set_num = 0;
         while (set_num < 2){
             var initial_deficit = current_question['set' + set_num + 'slider41'];
-            for (var well_idx = 0; well_idx < 3; well_idx++){
+            for (var well_idx = 0; well_idx < 4; well_idx++){
                 var current_deficit = current_question['set' + set_num + 'slider'+4+well_idx];
                 var deficit_difference = current_deficit - initial_deficit;
                 var deficit_scaled_difference = deficit_difference / (2*radius);
@@ -603,9 +603,6 @@ Template.answer1.onRendered(function () {
                     // set value
                     $("#set" + set_num + "slider"+4+well_idx+"comp").text("+"+round(deficit_percentage_change, 2)+"%");
                 }
-            }
-            for (well_idx = 0; well_idx < 3; well_idx++){ //Not sure if needed for the comparison mechanism.
-                update_deficit(well_idx);
             }
             $('[data-toggle="tooltip"]').tooltip();
             set_num ++;
