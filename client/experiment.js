@@ -5,9 +5,9 @@ compute_averages = function(slider_ID, value){
     } else if (slider_ID == 1){
         ratio = value / 1004;
     } else if (slider_ID == 2){
-        ratio = value / 149;
+        ratio = value / 303;
     } else if (slider_ID == 3){
-        ratio = value / 1460;
+        ratio = value / 1248;
     }
     percentage_difference = 100 * (ratio - 1);
     return percentage_difference;
@@ -22,7 +22,7 @@ update_deficit = function(well_idx){
         total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
     }
     total_money_spent -= Session.get("slider"+3+well_idx); // decreases by amt of income tax collected
-    var deficit_value = total_money_spent + 316; //TODO: update with real numbers
+    var deficit_value = total_money_spent + 16; //TODO: update with real numbers
     var deficit_value_percentage = 100 * ((deficit_value / 550) - 1); //TODO: update with real numbers
     deficit_value = parseInt(deficit_value * 100)/100;
     if (deficit_value >= 0){
