@@ -82,7 +82,7 @@ db.questions.insert({
       "set0slider11": 1100,
       "set0slider21": 253,
       "set0slider31": 1420,
-      "set1slider01": 460,
+      "set1slider01": 600,
       "set1slider11": 1150,
       "set1slider21": 283,
       "set1slider31": 1520
