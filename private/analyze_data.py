@@ -37,20 +37,20 @@ def plot_sliders_over_time(data, title, prepend = ""):
     plt.show()
 
 def calculate_full_elicitation_euclideanpoint(data):
-    X = cvxpy.Variable(4) #1 point for each mechanism
+    X = cvxpy.Variable(5) #1 point for each mechanism
     fun = 0
     for d in data:
-        y = [d['question_data']['slider' + str(slider) + '_loc'] for slider in range(4)]
-        w = [d['question_data']['slider' + str(slider) + '_weight'] for slider in range(4)]
-        sumsq = math.sqrt(sum([math.pow(w[i],2) for i in range(4)]))
-        w = [w[i] / sumsq for i in range(4)]
-        for slider in range(4):
+        y = [d['question_data']['slider' + str(slider) + '_loc'] for slider in range(5)]
+        w = [d['question_data']['slider' + str(slider) + '_weight'] for slider in range(5)]
+        sumsq = math.sqrt(sum([math.pow(w[i],2) for i in range(5)]))
+        w = [w[i] / sumsq for i in range(5)]
+        for slider in range(5):
             fun += w[slider]*cvxpy.abs(X[slider] - y[slider])
     obj = cvxpy.Minimize(fun)
-    constraints = [X >= 0]
+    constraints = [X >= 0, X[0] + X[1] + X[2] - X[3] + 316 == X[4]]
     prob = cvxpy.Problem(obj, constraints)
     result = prob.solve()
-    items = [X.value[i,0] for i in range(4)]
+    items = [X.value[i,0] for i in range(5)]
     print 'Optimal full elicitation:', items
     deficit = items[0] + items[1] + items[2] - items[3] + 316
     items.append(deficit)
@@ -87,17 +87,18 @@ def plot_allmechansisms_together(organized_data):
     lines = []
     rawaverages_mech2, weightedaverages_l2_mech2, weightedaverages_l1_mech2, euclideanprefs_mech2 = calculate_full_elicitation_average(organized_data[2])
     maxn = -1
+    lines_to_do = [0, 2, 3]
     for slider in xrange(0, len(slider_order)):
-        for mechanism in [0, 3]:#xrange(0, 4):
-            n = range(0, len(organized_data[mechanism]) + 1)
-            maxn = max(maxn, len(n))
-            vals = [d['question_data']['slider' + str(slider) + '_loc'] for d in organized_data[mechanism]]
-            vals.insert(0, initial_values[slider]) #prepend initial values
-            l = axarr[slider].plot(n, vals, label = mechanism_names[mechanism])
-            if slider == 0:
-                lines.append(l[0])
+        # for mechanism in [0, 3]:#xrange(0, 4):
+        #     n = range(0, len(organized_data[mechanism]) + 1)
+        #     maxn = max(maxn, len(n))
+        #     vals = [d['question_data']['slider' + str(slider) + '_loc'] for d in organized_data[mechanism]]
+        #     vals.insert(0, initial_values[slider]) #prepend initial values
+        #     l = axarr[slider].plot(n, vals, label = mechanism_names[mechanism])
+        #     if slider == 0:
+        #         lines.append(l[0])
 
-        #mechanism 1, comparisons
+        # #mechanism 1, comparisons
         for set_num in range(2):
             n = range(0, len(organized_data[1]) + 1)
             maxn = max(maxn, len(n))
@@ -483,12 +484,12 @@ def main():
 
     #plot_percent_movements_over_time(organized_data, 'Real Experiment')
     
-    #plot_allmechansisms_together(organized_data)
+    plot_allmechansisms_together(organized_data)
 
-    #analyze_data(organized_data, LABEL)
+    analyze_data(organized_data, LABEL)
 
     #organize_payment(organized_data)
-    payments_new_people(organized_data)
+    #payments_new_people(organized_data)
 
     #print_different_things(organized_data  )
 
