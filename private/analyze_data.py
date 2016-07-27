@@ -17,7 +17,7 @@ initial_values_mech1 = {0: [600, 950, 140, 1500, 506], 1: [541, 1004, 149, 1460,
 DEBUG_LEVEL = 0
 slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
 mechanism_names = ['l2 Constrained Movement', 'Comparisons', 'Full Elicitation', 'l1 Constrained Movement']
-mechanism_names_expanded = ['l2 Constrained Movement', 'Comparisons Set 0', 'Comparisons Set 1', 'Full Elicitation', 'l1 Constrained Movement']
+mechanism_names_expanded = ['Group 1 l2 Constrained Movement', 'Group 1 Comparisons Set 0', 'Group 1 Comparisons Set 1', 'Group 1 Full Elicitation', 'Group 1 l1 Constrained Movement', 'Group 2 l2 Constrained Movement', 'Group 2 Comparisons Set 0', 'Group 2 Comparisons Set 1', 'Group 2 Full Elicitation', 'Group 2 l1 Constrained Movement']
 
 def plot_sliders_over_time(data, title, prepend = ""):
     n = range(0, len(data) + 1)
@@ -85,11 +85,11 @@ def calculate_full_elicitation_average(data):
 def plot_allmechansisms_together(organized_data):
     f, axarr = plt.subplots(5, sharex=True)
     lines = []
-    rawaverages_mech2, weightedaverages_l2_mech2, weightedaverages_l1_mech2, euclideanprefs_mech2 = calculate_full_elicitation_average(organized_data[2])
+    #rawaverages_mech2, weightedaverages_l2_mech2, weightedaverages_l1_mech2, euclideanprefs_mech2 = calculate_full_elicitation_average(organized_data[2])
     maxn = -1
     lines_to_do = [0, 2, 3]
     for slider in xrange(0, len(slider_order)):
-        # for mechanism in [0, 3]:#xrange(0, 4):
+        # for mechanism in [0, 3, 4, 7]:#xrange(0, 4):
         #     n = range(0, len(organized_data[mechanism]) + 1)
         #     maxn = max(maxn, len(n))
         #     vals = [d['question_data']['slider' + str(slider) + '_loc'] for d in organized_data[mechanism]]
@@ -98,42 +98,51 @@ def plot_allmechansisms_together(organized_data):
         #     if slider == 0:
         #         lines.append(l[0])
 
-        # #mechanism 1, comparisons
+        # #mechanism 1 & 5, comparisons
         for set_num in range(2):
             n = range(0, len(organized_data[1]) + 1)
             maxn = max(maxn, len(n))
             vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[1]]
             vals.insert(0, initial_values_mech1[set_num][slider]) #prepend initial values
-            l = axarr[slider].plot(n, vals, label = mechanism_names[1] + ", Set " + str(set_num))
+            l = axarr[slider].plot(n, vals, label = "Group 1 " + mechanism_names[1] + ", Set " + str(set_num))
             if slider == 0:
                 lines.append(l[0])
 
-        #mechanism 2, fullelicitation:
-        n = range(maxn)
-        vals = [rawaverages_mech2[slider] for _ in n]
-        l = axarr[slider].plot(n, vals, label = mechanism_names[2])
-        if slider == 0:
-            lines.append(l[0])
-        # vals = [weightedaverages_l2_mech2[slider] for _ in n]
-        # l = axarr[slider].plot(n, vals, label ='Full Elicitation Weighted L2')
-        # if slider == 0:
-        #     lines.append(l[0])
-        # vals = [weightedaverages_l1_mech2[slider] for _ in n]
-        # l = axarr[slider].plot(n, vals, label = 'Full Elicitation Weighted')
-        # if slider == 0:
-        #     lines.append(l[0])
+        for set_num in range(2):
+            n = range(0, len(organized_data[1]) + 1)
+            maxn = max(maxn, len(n))
+            vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[5]]
+            vals.insert(0, initial_values_mech1[set_num][slider]) #prepend initial values
+            l = axarr[slider].plot(n, vals, label = "Group 1 " + mechanism_names[1] + ", Set " + str(set_num))
+            if slider == 0:
+                lines.append(l[0])
 
-        vals = [euclideanprefs_mech2[slider] for _ in n]
-        l = axarr[slider].plot(n, vals, label = 'Full Elicitation -- Euclidean')
-        if slider == 0:
-            lines.append(l[0])
+        # #mechanism 2, fullelicitation:
+        # n = range(maxn)
+        # vals = [rawaverages_mech2[slider] for _ in n]
+        # l = axarr[slider].plot(n, vals, label = mechanism_names[2])
+        # if slider == 0:
+        #     lines.append(l[0])
+        # # vals = [weightedaverages_l2_mech2[slider] for _ in n]
+        # # l = axarr[slider].plot(n, vals, label ='Full Elicitation Weighted L2')
+        # # if slider == 0:
+        # #     lines.append(l[0])
+        # # vals = [weightedaverages_l1_mech2[slider] for _ in n]
+        # # l = axarr[slider].plot(n, vals, label = 'Full Elicitation Weighted')
+        # # if slider == 0:
+        # #     lines.append(l[0])
+
+        # vals = [euclideanprefs_mech2[slider] for _ in n]
+        # l = axarr[slider].plot(n, vals, label = 'Full Elicitation -- Euclidean')
+        # if slider == 0:
+        #     lines.append(l[0])
 
         axarr[slider].set_title(slider_order[slider], fontsize = 18)
         axarr[slider].set_ylabel('$ (Billions)', fontsize = 18)
         axarr[slider].tick_params(axis='both', which='major', labelsize=18)
 
     axarr[len(slider_order)-1].set_xlabel('Iteration', fontsize = 18)
-    f.legend(lines, [mechanism_names[0], mechanism_names[3], "Comparisons, Set 0", "Comparisons, Set 1", mechanism_names[2], 'Full Elicitation -- Euclidean'], loc='Upper Center', borderaxespad=0., ncol = 3, fontsize = 18)
+    f.legend(lines, [mechanism_names_expanded[0], mechanism_names_expanded[4], mechanism_names_expanded[5], mechanism_names_expanded[11], mechanism_names_expanded[1], mechanism_names_expanded[2], mechanism_names_expanded[6], mechanism_names_expanded[7],  mechanism_names_expanded[3], 'Full Elicitation -- Euclidean'], loc='Upper Center', borderaxespad=0., ncol = 3, fontsize = 18)
     print lines
     #f.legend(loc='upper left', fontsize = 18)
     #plt.legend()
@@ -174,7 +183,11 @@ switcher_analyze_data = {
     0: analyze_data_experiment0,
     1: analyze_data_experiment1,
     2: analyze_data_experiment2,
-    3: analyze_data_experiment3
+    3: analyze_data_experiment3,
+    4: analyze_data_experiment0,
+    5: analyze_data_experiment1,
+    6: analyze_data_experiment2,
+    7: analyze_data_experiment3
 }
 
 def calc_credits_used(experiment):
@@ -470,8 +483,8 @@ def main():
 
 
     #data, organized_data = clean_data(load_data('export-20160707161738_PILOTFINAL_fixed.csv'))
-    data, organized_data = clean_data(load_data('export-20160727020404.csv'))
-
+    data, organized_data = clean_data(load_data('export-20160727020804.csv'))
+    print organized_data
     LABEL = 'Actual'
     #print len(data)
     #for key in organized_data:

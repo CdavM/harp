@@ -54,6 +54,11 @@ set0slider12
 set0slider22
 set0slider32
 set0slider42
+set0slider03
+set0slider13
+set0slider23
+set0slider33
+set0slider43
 set1slider00
 set1slider10
 set1slider20
@@ -69,6 +74,11 @@ set1slider12
 set1slider22
 set1slider32
 set1slider42
+set1slider03
+set1slider13
+set1slider23
+set1slider33
+set1slider43
 answer1.slider0_credits
 answer1.slider1_credits
 answer1.slider2_credits

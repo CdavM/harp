@@ -110,7 +110,11 @@ switcher_load_data = {
     0: load_data_experiment0,
     1: load_data_experiment1,
     2: load_data_experiment2,
-    3: load_data_experiment3
+    3: load_data_experiment3,
+    4: load_data_experiment0,
+    5: load_data_experiment1,
+    6: load_data_experiment2,
+    7: load_data_experiment3
 }
 
 def clean_data(dirty):
@@ -120,9 +124,13 @@ def clean_data(dirty):
     organized_data[1] = []
     organized_data[2] = []
     organized_data[3] = []
+    organized_data[4] = []
+    organized_data[5] = []
+    organized_data[6] = []
+    organized_data[7] = []
 
     for row in dirty:
-        if len(row['experiment_id'])==0 or (len(row['answer1.0.1']) == 0 and len(row['answer1.1.1']) == 0 and len(row['answer1.2.1']) == 0 and len(row['answer1.3.1']) == 0):
+        if len(row['experiment_id'])==0 or (len(row['answer1.0.1']) == 0 and len(row['answer1.1.1']) == 0 and len(row['answer1.2.1']) == 0 and len(row['answer1.3.1']) == 0 and len(row['answer1.4.1']) == 0 and len(row['answer1.5.1']) == 0 and len(row['answer1.6.1']) == 0 and len(row['answer1.7.1']) == 0):
             continue
         d = {}
         copy_over = ['worker_ID', 'asg_ID']
