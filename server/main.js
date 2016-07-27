@@ -293,7 +293,7 @@ Meteor.methods({
                 
                 var radius_fn = function (previous_participants) {
                     //return 50.0/(Math.floor(previous_participants/10.0)+1);
-                    return 40.0;
+                    return 35.0;
                 };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
                 if ([0, 4, 3, 7].indexOf(next_question) > -1){
