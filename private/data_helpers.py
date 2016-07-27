@@ -87,6 +87,7 @@ def load_data_experiment1(answerdata, restofdata): #comparisons
         answer['set' + str(set_num) + 'option0'] = [float(restofdata['set' + str(set_num) + 'slider00']), float(restofdata['set' + str(set_num) + 'slider10']), float(restofdata['set' + str(set_num) + 'slider20']), float(restofdata['set' + str(set_num) + 'slider30']), float(restofdata['set' + str(set_num) + 'slider40'])]
         answer['set' + str(set_num) + 'option1'] = [float(restofdata['set' + str(set_num) + 'slider01']), float(restofdata['set' + str(set_num) + 'slider11']), float(restofdata['set' + str(set_num) + 'slider21']), float(restofdata['set' + str(set_num) + 'slider31']), float(restofdata['set' + str(set_num) + 'slider41'])]
         answer['set' + str(set_num) + 'option2'] = [float(restofdata['set' + str(set_num) + 'slider02']), float(restofdata['set' + str(set_num) + 'slider12']), float(restofdata['set' + str(set_num) + 'slider22']), float(restofdata['set' + str(set_num) + 'slider32']), float(restofdata['set' + str(set_num) + 'slider42'])]
+        answer['set' + str(set_num) + 'option3'] = [float(restofdata['set' + str(set_num) + 'slider03']), float(restofdata['set' + str(set_num) + 'slider13']), float(restofdata['set' + str(set_num) + 'slider23']), float(restofdata['set' + str(set_num) + 'slider33']), float(restofdata['set' + str(set_num) + 'slider43'])]
 
         real_answer = {}
         real_answer[set_num] = answer['set' + str(set_num) + 'option' + str(answer['set' + str(set_num) + 'selection'])]
