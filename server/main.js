@@ -240,20 +240,20 @@ Meteor.methods({
                     } else {
                         do {
                             var rnd_sample = Math.random();
-                            if (rnd_sample < 0.135)
+                            if (rnd_sample < 0.0)
                                 question_selected = 0;
-                            else if (rnd_sample < (0.135 * 2))
+                            else if (rnd_sample < (0.45 * 1))
                                 question_selected = 1;
-                            else if (rnd_sample < (0.135 * 3))
-                                question_selected = 3;
-                            else if (rnd_sample < (0.135 * 4))
-                                question_selected = 4;
-                            else if (rnd_sample < (0.135 * 5))
+                            // else if (rnd_sample < (0.135 * 3))
+                            //     question_selected = 3;
+                            // else if (rnd_sample < (0.135 * 4))
+                            //     question_selected = 4;
+                            else if (rnd_sample < (0.45 * 2))
                                 question_selected = 5;
-                            else if (rnd_sample < (0.135 * 6))
-                                question_selected = 7;
-                            else if (rnd_sample < (0.135 * 6 + 0.095))
-                                question_selected = 2;
+                            // else if (rnd_sample < (0.135 * 6))
+                            //     question_selected = 7;
+                            // else if (rnd_sample < (0.135 * 6 + 0.095))
+                            //     question_selected = 2;
                             else
                                 question_selected = 6;
                         } while ((counters[experiment_id_value]['random_counter'].indexOf(question_selected) != -1
