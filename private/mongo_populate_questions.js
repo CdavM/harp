@@ -15,11 +15,11 @@ db.questions.insert({
       "slider0": 541,
       "slider1": 1054,
       "slider2": 303,
-      "slider3": 1298,
+      "slider3": 1500,
       "slider_2016_0": 541,
       "slider_2016_1": 1004,
       "slider_2016_2": 303,
-      "slider_2016_3": 1248 
+      "slider_2016_3": 1460
 });
 db.questions.insert({
     "question_ID": 1,
@@ -27,13 +27,13 @@ db.questions.insert({
     "busy": false,
     "previous_participants": 0,
       "set0slider01": 541,
-      "set0slider11": 1054,
+      "set0slider11": 1004,
       "set0slider21": 303,
-      "set0slider31": 1298,
-      "set1slider01": 541,
+      "set0slider31": 1460,
+      "set1slider01": 480,
       "set1slider11": 1054,
-      "set1slider21": 303,
-      "set1slider31": 1298
+      "set1slider21": 323,
+      "set1slider31": 1500
 });
 db.questions.insert({
     "question_ID": 2,
@@ -43,7 +43,7 @@ db.questions.insert({
       "slider0": 541,
       "slider1": 1004,
       "slider2": 303,
-      "slider3": 1248
+      "slider3": 1460
 });
 db.questions.insert({
     "question_ID": 3,
@@ -53,11 +53,11 @@ db.questions.insert({
       "slider0": 541,
       "slider1": 1054,
       "slider2": 303,
-      "slider3": 1298,
+      "slider3": 1500,
       "slider_2016_0": 541,
       "slider_2016_1": 1004,
       "slider_2016_2": 303,
-      "slider_2016_3": 1248
+      "slider_2016_3": 1460
 });
 db.questions.insert({
       "question_ID": 4,
@@ -67,11 +67,11 @@ db.questions.insert({
       "slider0": 500,
       "slider1": 1100,
       "slider2": 253,
-      "slider3": 1350,
+      "slider3": 1500,
       "slider_2016_0": 541,
       "slider_2016_1": 1004,
       "slider_2016_2": 303,
-      "slider_2016_3": 1248
+      "slider_2016_3": 1460
 });
 db.questions.insert({
       "question_ID": 5,
@@ -81,11 +81,11 @@ db.questions.insert({
       "set0slider01": 500,
       "set0slider11": 1100,
       "set0slider21": 253,
-      "set0slider31": 1350,
-      "set1slider01": 541,
-      "set1slider11": 1054,
-      "set1slider21": 303,
-      "set1slider31": 1298
+      "set0slider31": 1420,
+      "set1slider01": 460,
+      "set1slider11": 1150,
+      "set1slider21": 283,
+      "set1slider31": 1520
 });
 db.questions.insert({
       "question_ID": 6,
@@ -95,7 +95,7 @@ db.questions.insert({
       "slider0": 541,
       "slider1": 1004,
       "slider2": 303,
-      "slider3": 1248
+      "slider3": 1460
 });
 db.questions.insert({
       "question_ID": 7,
@@ -105,9 +105,9 @@ db.questions.insert({
       "slider0": 500,
       "slider1": 1100,
       "slider2": 253,
-      "slider3": 1350,
+      "slider3": 1400,
       "slider_2016_0": 541,
       "slider_2016_1": 1004,
       "slider_2016_2": 303,
-      "slider_2016_3": 1248
+      "slider_2016_3": 1460
 });
