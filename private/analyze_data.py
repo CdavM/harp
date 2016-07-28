@@ -12,7 +12,8 @@ from data_helpers import *
 import cvxpy
 
 initial_values = [600, 950, 140, 1500, 506]
-initial_values_mech1 = {0: [600, 950, 140, 1500, 506], 1: [541, 1004, 149, 1460, 550]}
+initial_values_mech1_group1 = {0: [541, 1004, 303, 1460, 550], 1: [480, 1054, 323, 1500, 519]}
+initial_values_mech1_group2 = {0: [500, 1100, 253, 1400, 615], 1: [600, 1150, 283, 1520, 675]}
 
 DEBUG_LEVEL = 0
 slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
@@ -103,16 +104,16 @@ def plot_allmechansisms_together(organized_data):
             n = range(0, len(organized_data[1]) + 1)
             maxn = max(maxn, len(n))
             vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[1]]
-            vals.insert(0, initial_values_mech1[set_num][slider]) #prepend initial values
+            vals.insert(0, initial_values_mech1_group1[set_num][slider]) #prepend initial values
             l = axarr[slider].plot(n, vals, label = "Group 1 " + mechanism_names[1] + ", Set " + str(set_num))
             if slider == 0:
                 lines.append(l[0])
 
         for set_num in range(2):
-            n = range(0, len(organized_data[1]) + 1)
+            n = range(0, len(organized_data[5]) + 1)
             maxn = max(maxn, len(n))
             vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[5]]
-            vals.insert(0, initial_values_mech1[set_num][slider]) #prepend initial values
+            vals.insert(0, initial_values_mech1_group2[set_num][slider]) #prepend initial values
             l = axarr[slider].plot(n, vals, label = "Group 1 " + mechanism_names[1] + ", Set " + str(set_num))
             if slider == 0:
                 lines.append(l[0])
@@ -141,8 +142,10 @@ def plot_allmechansisms_together(organized_data):
         axarr[slider].set_ylabel('$ (Billions)', fontsize = 18)
         axarr[slider].tick_params(axis='both', which='major', labelsize=18)
 
+    legendnames_normal = [mechanism_names_expanded[0], mechanism_names_expanded[4], mechanism_names_expanded[5], mechanism_names_expanded[9], mechanism_names_expanded[1], mechanism_names_expanded[2], mechanism_names_expanded[6], mechanism_names_expanded[7],  mechanism_names_expanded[3], 'Full Elicitation -- Euclidean']
+    legendnames_componly = [mechanism_names_expanded[1], mechanism_names_expanded[2], mechanism_names_expanded[6], mechanism_names_expanded[7]]
     axarr[len(slider_order)-1].set_xlabel('Iteration', fontsize = 18)
-    f.legend(lines, [mechanism_names_expanded[0], mechanism_names_expanded[4], mechanism_names_expanded[5], mechanism_names_expanded[11], mechanism_names_expanded[1], mechanism_names_expanded[2], mechanism_names_expanded[6], mechanism_names_expanded[7],  mechanism_names_expanded[3], 'Full Elicitation -- Euclidean'], loc='Upper Center', borderaxespad=0., ncol = 3, fontsize = 18)
+    f.legend(lines,legendnames_componly , loc='upper center', borderaxespad=0., ncol = 3, fontsize = 18)
     print lines
     #f.legend(loc='upper left', fontsize = 18)
     #plt.legend()
@@ -261,7 +264,7 @@ def plot_percent_movements_over_time(organized_data, LABEL):
         axarr[slider].tick_params(axis='both', which='major', labelsize=18)
 
     axarr[3].set_xlabel('Iteration', fontsize = 18)
-    f.legend(lines, [mechanism_names_expanded[mechanisms_to_do[i]] for i in range(len(mechanisms_to_do))], loc='Upper Left', borderaxespad=0., ncol = 4, fontsize = 18)
+    f.legend(lines, [mechanism_names_expanded[mechanisms_to_do[i]] for i in range(len(mechanisms_to_do))], loc='upper left', borderaxespad=0., ncol = 4, fontsize = 18)
     print lines
     plt.show()
 
@@ -353,7 +356,7 @@ def TwoSetComparisonsAnalysis(comparisonsdata):
     plt.title('Comparisons set differences over time', fontsize = 18)
     plt.ylabel('Percent difference', fontsize = 18)
     plt.xlabel('Iteration', fontsize = 18)
-    plt.legend(loc='Upper Left', borderaxespad=0., ncol = 4, fontsize = 18)
+    plt.legend(loc='upper left', borderaxespad=0., ncol = 4, fontsize = 18)
     plt.show()
 
     #for each budget item, sort the options from least to highest. See which option they picked for each, how it different per person.  
@@ -397,7 +400,7 @@ def TwoSetComparisonsAnalysis(comparisonsdata):
     plt.title('Comparisons options (ordered) differences over time', fontsize = 18)
     plt.ylabel('Option difference', fontsize = 18)
     plt.xlabel('Iteration', fontsize = 18)
-    plt.legend(loc='Upper Left', borderaxespad=0., ncol = 4, fontsize = 18)
+    plt.legend(loc='upper left', borderaxespad=0., ncol = 4, fontsize = 18)
     plt.show()
 
 
@@ -483,7 +486,7 @@ def main():
 
 
     #data, organized_data = clean_data(load_data('export-20160707161738_PILOTFINAL_fixed.csv'))
-    data, organized_data = clean_data(load_data('export-20160727020804.csv'))
+    data, organized_data = clean_data(load_data('export-20160727220017.csv'))
     print organized_data
     LABEL = 'Actual'
     #print len(data)
