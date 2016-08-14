@@ -443,7 +443,8 @@ Template.answer1.onRendered(function () {
         return current_max;
     };
 
-    if ([0, 4].indexOf(curr_experiment.current_question) > -1) {
+    if ([1, 2, 3].indexOf(curr_experiment.current_question) > -1) {
+        // L2 sliders
         sliders = {};
         var max_slider_dev = find_max_deviation();
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
@@ -493,7 +494,7 @@ Template.answer1.onRendered(function () {
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
 
-    } else if ([3, 7].indexOf(curr_experiment.current_question) > -1) {
+    } else if ([4, 5, 6].indexOf(curr_experiment.current_question) > -1) {
         sliders = {};
         var max_slider_dev = find_max_deviation();
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
@@ -540,76 +541,8 @@ Template.answer1.onRendered(function () {
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
 
-    } else if ([1, 5].indexOf(curr_experiment.current_question) > -1){
-        //mechanism 1 specific js
-        //initialize all 15 sliders in one loop!
-        var slider_idx = 0;
-        var well_idx = 0;
-        var set_num = 0;
-        while (set_num < 2){
-            while(slider_idx<4){
-                while(well_idx<4){
-                    var total_width = $(".progress").width();
-                    var value_difference = (current_question["set" + set_num + "slider"+slider_idx+well_idx]-current_question["set" + set_num + "slider"+slider_idx+"1"]);
-                    var relative_difference = value_difference/radius;
-                    var current_width = relative_difference * 0.3 + 0.5;
-                    $("#set" + set_num + "slider"+slider_idx+well_idx).width(Math.max(58, current_width*total_width));
-                    //display chosen value
-                    $("#set" + set_num + "slider"+slider_idx+well_idx).text("$"+round(current_question["set" + set_num + "slider"+slider_idx+well_idx],2)+"B");
-                    //display comparison to 2016 estimates
-                    Session.set("set" + set_num + 'slider'+slider_idx+well_idx, current_question["set" + set_num + "slider"+slider_idx+well_idx]);
-                    var percentage_difference = compute_averages(slider_idx, current_question["set" + set_num + "slider"+slider_idx+well_idx]);
-                    if (percentage_difference < 0){
-                        //red background
-                        $("#set" + set_num + "slider"+slider_idx+well_idx+"comp").css('color','red');
-                        // set value
-                        $("#set" + set_num + "slider"+slider_idx+well_idx+"comp").text(round(percentage_difference, 2)+"%");
-                    } else {
-                        //green background
-                        $("#set" + set_num + "slider"+slider_idx+well_idx+"comp").css('color','green');
-                        // set value
-                        $("#set" + set_num + "slider"+slider_idx+well_idx+"comp").text("+"+round(percentage_difference, 2)+"%");
-                    }
-                    well_idx ++;
-                }
-                slider_idx++;
-                well_idx = 0;
-            }
-            slider_idx = 0;
-            well_idx = 0;
-            set_num ++;
-        }
-        //initialize the deficit sliders
-        set_num = 0;
-        while (set_num < 2){
-            var initial_deficit = current_question['set' + set_num + 'slider41'];
-            for (var well_idx = 0; well_idx < 4; well_idx++){
-                var current_deficit = current_question['set' + set_num + 'slider'+4+well_idx];
-                var deficit_difference = current_deficit - initial_deficit;
-                var deficit_scaled_difference = deficit_difference / (2*radius);
-                var total_width = $(".progress").width();
-                var current_width = deficit_scaled_difference * 0.5 + 0.5;
-                $("#set" + set_num + "slider"+4+well_idx).width(Math.max(58, current_width*total_width));
-                $("#set" + set_num + "slider"+4+well_idx).text("$"+round(current_deficit, 2) +"B");
-                var deficit_percentage_change = (current_deficit - 550) / 5.5;
-                if (deficit_percentage_change < 0){
-                    //red background
-                    $("#set" + set_num + "slider"+4+well_idx+"comp").css('color','green');
-                    // set value
-                    $("#set" + set_num + "slider"+4+well_idx+"comp").text(round(deficit_percentage_change, 2)+"%");
-                } else {
-                    //green background
-                    $("#set" + set_num + "slider"+4+well_idx+"comp").css('color','red');
-                    // set value
-                    $("#set" + set_num + "slider"+4+well_idx+"comp").text("+"+round(deficit_percentage_change, 2)+"%");
-                }
-            }
-            $('[data-toggle="tooltip"]').tooltip();
-            set_num ++;
-        }
-
-    } else if ([2, 6].indexOf(curr_experiment.current_question) > -1){
-        //mechanism 2 specific js
+    } else if ([0].indexOf(curr_experiment.current_question) > -1){
+        // full elicitation
 
         sliders = {};
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
