@@ -117,31 +117,32 @@ Meteor.methods({
         var total_money_spent_set0 = 0;
         var total_money_spent_set1 = 0;
         var total_percentage_of_credits_spent = 0;
+        for (var well_idx = 0; well_idx < 2; well_idx++) {
+            for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+                if (post.answer['slider' + slider_idx + well_idx]) {
+                    if (isNaN(Number(post.answer['slider' + slider_idx + well_idx][0]))) {
+                        console.log("Value cannot be converted into a number.");
+                        console.log(post.answer['slider' + slider_idx + well_idx][0]);
+                        console.log("Rejecting the entry for experiment " + experiment_id_value);
+                        return;
+                    }
+                    fields_to_be_updated['slider' + slider_idx + well_idx] = Math.max(.01, Number(post.answer['slider' + slider_idx + well_idx][0]));
+                    if (slider_idx == 3) {
+                        total_money_spent -= Number(post.answer['slider' + slider_idx + well_idx][0]);
+                    } else {
+                        total_money_spent += Number(post.answer['slider' + slider_idx + well_idx][0]);
+                    }
+                    var slider_difference = Number(post.answer['slider' + slider_idx + well_idx][0]) - existing_entry['initial_slider' + slider_idx + well_idx];
+                    var slider_relative_diff = slider_difference / existing_entry['radius'];
+                    if (current_question == 0) {
+                        answers_value['slider' + slider_idx + well_idx + "_credits"] = Math.pow(slider_relative_diff, 2);
+                    } else if (current_question == 3) {
+                        answers_value['slider' + slider_idx + well_idx + "_credits"] = Math.abs(slider_relative_diff);
+                    }
+                    total_percentage_of_credits_spent += answers_value['slider' + slider_idx + well_idx + "_credits"];
+                }
 
-        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-            if (post.answer['slider' + slider_idx]){
-                if (isNaN(Number(post.answer['slider' + slider_idx][0]))){
-                    console.log("Value cannot be converted into a number.");
-                    console.log(post.answer['slider' + slider_idx][0]);
-                    console.log("Rejecting the entry for experiment " + experiment_id_value);
-                    return;
-                }
-                fields_to_be_updated['slider'+slider_idx] = Math.max(.01, Number(post.answer['slider' + slider_idx][0]));
-                if (slider_idx == 3) {
-                    total_money_spent -= Number(post.answer['slider' + slider_idx][0]);
-                } else {
-                    total_money_spent += Number(post.answer['slider' + slider_idx][0]);
-                }
-                var slider_difference = Number(post.answer['slider' + slider_idx][0]) - existing_entry['initial_slider'+slider_idx];
-                var slider_relative_diff = slider_difference / existing_entry['radius'];
-                if (current_question == 0) {
-                    answers_value['slider' + slider_idx + "_credits"] = Math.pow(slider_relative_diff, 2);
-                } else if (current_question == 3) {
-                    answers_value['slider' + slider_idx + "_credits"] = Math.abs(slider_relative_diff);
-                }
-                total_percentage_of_credits_spent += answers_value['slider' + slider_idx + "_credits"];
             }
-
         }
         if (total_percentage_of_credits_spent > 1.1){
             /*
@@ -273,19 +274,21 @@ Meteor.methods({
                 if ([1, 2, 3, 4, 5, 6].indexOf(next_question) > -1){
                     var current_question = Questions.findOne({"question_ID": next_question});
                     var db_storage = {};
-                    var total_money_spent = 0;
-                    for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-                        db_storage['initial_slider'+slider_idx] = current_question['slider'+slider_idx];
-                        if (slider_idx != 3) {
-                            // add everything but taxes
-                            total_money_spent += current_question['slider'+slider_idx];
-                        } else {
-                            // subtract the taxes
-                            total_money_spent -= current_question['slider'+slider_idx];
+                    for (var well_idx = 0; well_idx < 2; well_idx++) {
+                        var total_money_spent = 0;
+                        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+                            db_storage['initial_slider' + slider_idx + well_idx] = current_question['slider' + slider_idx + well_idx];
+                            if (slider_idx != 3) {
+                                // add everything but taxes
+                                total_money_spent += current_question['slider' + slider_idx + well_idx];
+                            } else {
+                                // subtract the taxes
+                                total_money_spent -= current_question['slider' + slider_idx + well_idx];
+                            }
                         }
+                        //compute the deficit
+                        db_storage['initial_deficit'+well_idx] = total_money_spent + 162;
                     }
-                    //compute the deficit
-                    db_storage['initial_deficit'] = total_money_spent + 162;
                     //store everything
                     Answers.update({experiment_id: experiment_id_value}, {$set: db_storage}, {upsert: true, multi: true});
 
