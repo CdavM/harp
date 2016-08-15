@@ -1,3 +1,59 @@
+reset_sliders = function(well_idx){
+    console.log('Resetting sliders.');
+    var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+    var radius = curr_experiment.radius;
+    var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+    for (var slider_idx = 0; slider_idx < 4; slider_idx++){
+        sliders['slider'+slider_idx+well_idx].val(current_question['slider'+slider_idx+well_idx]);
+        Session.set('slider'+slider_idx+well_idx, current_question['slider'+slider_idx+well_idx]);
+        $('textarea#slider'+slider_idx+well_idx).val(current_question['slider'+slider_idx+well_idx]);
+    }
+    //update stacked bars
+    var slider_idx_counter = 0;
+    var curr_slider_total_width = 0;
+    var credit_percentage_spent = 0;
+    while (slider_idx_counter < 4){
+        var curr_slider = "slider"+slider_idx_counter.toString()+well_idx.toString();
+        var curr_slider_value = Session.get(curr_slider);
+        var curr_slider_bar = curr_slider + "bar";
+        var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
+        credit_percentage_spent += slider_width_fraction;
+        $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.3); //laplace smoothing
+        $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));
+        curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
+        slider_idx_counter ++;
+    }
+    var credits_left_fraction = 100*(1-credit_percentage_spent);
+    if (credits_left_fraction < 0.15){
+        credits_left_fraction = 0;
+    }
+    $("#creditsleft"+well_idx).text("Credits left: " + round(credits_left_fraction, 1));
+
+    for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+        var percent_difference = compute_averages(slider_idx, current_question['slider' +slider_idx+well_idx]);
+        if (percent_difference < 0) {
+            //red background
+            $("#slider" +slider_idx+well_idx + "comp").css('color', 'red');
+            // set value
+            $("#slider" +slider_idx+well_idx + "comp").text(round(percent_difference, 2) + "%");
+        } else {
+            //green background
+            $("#slider" +slider_idx+well_idx + "comp").css('color', 'green');
+            // set value
+            $("#slider" +slider_idx+well_idx + "comp").text("+" + round(percent_difference, 2) + "%");
+        }
+    }
+    var total_money_spent = 0;
+    slider_idx_counter = 0;
+    while (slider_idx_counter < 4){
+        total_money_spent += Session.get("slider"+slider_idx_counter);
+        slider_idx_counter++;
+    }
+    update_deficit();
+    return;
+}
+
+
 compute_averages = function(slider_ID, value){
     var ratio = 0;
     if (slider_ID == 0){
@@ -109,62 +165,14 @@ Template.experiment.events({
             }
         });
     },
-
-    'click #reset_sliders': function () {
-        console.log('Resetting sliders.');
-        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
-        var radius = curr_experiment.radius;
-        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
-        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-            sliders['slider'+slider_idx].val(current_question['slider'+slider_idx]);
-            Session.set('slider'+slider_idx, current_question['slider'+slider_idx]);
-            $('textarea#slider'+slider_idx).val(current_question['slider'+slider_idx]);
-        }
-        //update stacked bars
-        var slider_idx_counter = 0;
-        var curr_slider_total_width = 0;
-        var credit_percentage_spent = 0;
-        while (slider_idx_counter < 4){
-            var curr_slider = "slider"+slider_idx_counter.toString();
-            var curr_slider_value = Session.get(curr_slider);
-            var curr_slider_bar = curr_slider + "bar";
-            var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
-            credit_percentage_spent += slider_width_fraction;
-            $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.3); //laplace smoothing
-            $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));
-            curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
-            slider_idx_counter ++;
-        }
-        var credits_left_fraction = 100*(1-credit_percentage_spent);
-        if (credits_left_fraction < 0.15){
-            credits_left_fraction = 0;
-        }
-        $("#creditsleft").text("Credits left: " + round(credits_left_fraction, 1));
-
-        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
-            var percent_difference = compute_averages(slider_idx, current_question['slider' + slider_idx]);
-            if (percent_difference < 0) {
-                //red background
-                $("#slider" + slider_idx + "comp").css('color', 'red');
-                // set value
-                $("#slider" + slider_idx + "comp").text(round(percent_difference, 2) + "%");
-            } else {
-                //green background
-                $("#slider" + slider_idx + "comp").css('color', 'green');
-                // set value
-                $("#slider" + slider_idx + "comp").text("+" + round(percent_difference, 2) + "%");
-            }
-        }
-        var total_money_spent = 0;
-        slider_idx_counter = 0;
-        while (slider_idx_counter < 4){
-            total_money_spent += Session.get("slider"+slider_idx_counter);
-            slider_idx_counter++;
-        }
-        update_deficit();
-        return;
+    'click #reset_sliders1': function () {
+        well_idx = 0;
+        reset_sliders(well_idx);
+    },
+    'click #reset_sliders2': function () {
+        well_idx = 1;
+        reset_sliders(well_idx);
     }
-
 });
 Template.experiment.helpers({
     questions: function() {
@@ -197,9 +205,10 @@ Template.answer1.onRendered(function () {
         if (!update_slider_flag)
             update_slider_flag = false;
         var radius_sum = 0;
+        var well_idx = ev.target.id[ev.target.id.length-1];
         var slider_idx_counter = 0;
         while (slider_idx_counter < 4){
-            var curr_slider = "slider"+slider_idx_counter.toString();
+            var curr_slider = "slider"+slider_idx_counter.toString() + well_idx.toString();
             var curr_slider_value = Session.get(curr_slider);
             if (isNaN(curr_slider_value)){
                 sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
@@ -236,7 +245,7 @@ Template.answer1.onRendered(function () {
         var curr_slider_total_width = 0;
         var credit_percentage_spent = 0;
         while (slider_idx_counter < 4){
-            var curr_slider = "slider"+slider_idx_counter.toString();
+            var curr_slider = "slider"+slider_idx_counter.toString() + well_idx.toString();
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
             var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
@@ -250,9 +259,11 @@ Template.answer1.onRendered(function () {
         if (credits_left_fraction < 0.15){
             credits_left_fraction = 0;
         }
-        $("#creditsleft").text("Credits left: " + round(credits_left_fraction, 1));
+        if (!isNaN(credits_left_fraction)) {
+            $("#creditsleft"+well_idx).text("Credits left: " + round(credits_left_fraction, 1));
+        }
 
-        var percent_difference = compute_averages(Number(ev.target.id.substr(ev.target.id.length-1)), val);
+        var percent_difference = compute_averages(Number(ev.target.id[ev.target.id.length-2]), val);
         if (percent_difference < 0){
             //red background
             $("#"+ev.target.id+"comp").css('color','red');
@@ -267,10 +278,10 @@ Template.answer1.onRendered(function () {
         var total_money_spent = 0;
         slider_idx_counter = 0;
         while (slider_idx_counter < 4){
-            total_money_spent += Session.get("slider"+slider_idx_counter);
+            total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
             slider_idx_counter++;
         }
-        update_deficit();
+        update_deficit(well_idx);
     };
     update_slider_mech31 = function (ev, val, update_slider_flag) {
         // the vars below are global and declared once the page is rendered!
@@ -280,9 +291,10 @@ Template.answer1.onRendered(function () {
         if (!update_slider_flag)
             update_slider_flag = false;
         var radius_sum = 0;
+        var well_idx = ev.target.id[ev.target.id.length-1];
         var slider_idx_counter = 0;
         while (slider_idx_counter < 4){
-            var curr_slider = "slider"+slider_idx_counter.toString();
+            var curr_slider = "slider"+slider_idx_counter.toString() + well_idx.toString();
             var curr_slider_value = Session.get(curr_slider);
             if (isNaN(curr_slider_value)){
                 sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
@@ -318,7 +330,7 @@ Template.answer1.onRendered(function () {
         if (isNaN(credits_percentage)){
             credits_percentage = 0;
         }
-        $("#creditsleft").text("Credits left: " + round(credits_percentage, 1));
+        $("#creditsleft"+well_idx).text("Credits left: " + round(credits_percentage, 1));
         if (update_slider_flag){
             sliders[ev.target.id].val(round(val, 2));
         }
@@ -327,7 +339,7 @@ Template.answer1.onRendered(function () {
         var curr_slider_total_width = 0;
         var slider_laplace_smoothing = true;
         while (slider_idx_counter < 4){
-            var curr_slider = "slider"+slider_idx_counter.toString();
+            var curr_slider = "slider"+slider_idx_counter.toString() + well_idx.toString();
             var curr_slider_value = Session.get(curr_slider);
             var curr_slider_bar = curr_slider + "bar";
             var slider_width_fraction = Math.abs(curr_slider_value - current_question[curr_slider]) / Math.abs(radius);
@@ -351,10 +363,10 @@ Template.answer1.onRendered(function () {
         var total_money_spent = 0;
         slider_idx_counter = 0;
         while (slider_idx_counter < 4){
-            total_money_spent += Session.get("slider"+slider_idx_counter);
+            total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
             slider_idx_counter++;
         }
-        update_deficit();
+        update_deficit(well_idx);
     };
 
     update_slider_mech21 = function (ev, val, update_slider_flag) {
@@ -409,20 +421,20 @@ Template.answer1.onRendered(function () {
         }
     };
 
-    var update_comps = function(){
+    var update_comps = function(well_idx){
         var percentage_difference = 0;
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-            percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx));
+            percentage_difference = compute_averages(slider_idx, Session.get("slider"+slider_idx+well_idx));
             if (percentage_difference < 0){
                 //red background
-                $("#"+"slider"+slider_idx+"comp").css('color','red');
+                $("#"+"slider"+slider_idx+well_idx+"comp").css('color','red');
                 // set value
-                $("#"+"slider"+slider_idx+"comp").text(Number(percentage_difference).toFixed(2)+"%");
+                $("#"+"slider"+slider_idx+well_idx+"comp").text(Number(percentage_difference).toFixed(2)+"%");
             } else {
                 //green background
-                $("#"+"slider"+slider_idx+"comp").css('color','green');
+                $("#"+"slider"+slider_idx+well_idx+"comp").css('color','green');
                 // set value
-                $("#"+"slider"+slider_idx+"comp").text("+"+Number(percentage_difference).toFixed(2)+"%");
+                $("#"+"slider"+slider_idx+well_idx+"comp").text("+"+Number(percentage_difference).toFixed(2)+"%");
             }
         }
     };
@@ -432,10 +444,13 @@ Template.answer1.onRendered(function () {
     update_slider_mech2 = _.throttle(update_slider_mech21, 100);
 
 
-    var find_max_deviation = function(){
+    var find_max_deviation = function(well_idx){
+        if (typeof(well_idx) == "undefined")
+            well_idx = "";
         var current_max = 0;
         for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-            var current_dev = Math.abs(current_question['slider_2016_'+slider_idx] - current_question['slider'+slider_idx]);
+            var current_dev = Math.abs(current_question['slider_2016_'+slider_idx+well_idx]
+                - current_question['slider'+slider_idx+well_idx]);
             if (current_dev > current_max){
                 current_max = current_dev;
             }
@@ -446,98 +461,105 @@ Template.answer1.onRendered(function () {
     if ([1, 2, 3].indexOf(curr_experiment.current_question) > -1) {
         // L2 sliders
         sliders = {};
-        var max_slider_dev = find_max_deviation();
-        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-            var slider_current = 0;
-            if (current_question['slider'+slider_idx]){
-                slider_current = Math.max(0.01,Number(current_question['slider'+slider_idx]));
-                var slider_2016_val = current_question['slider_2016_'+slider_idx];
-                var slider_min = Math.max(0.01, slider_2016_val - max_slider_dev - (radius)*1.25);
-                var slider_max = slider_2016_val + max_slider_dev + (radius)*1.25;
-                Session.set('slider'+slider_idx, slider_current);
-                sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
-                    start: slider_current,
-                    connect: "lower",
-                    range: {
-                        'min': slider_min,
-                        'max': slider_max
-                    }
-                }).noUiSlider_pips({
-                    mode: 'positions',
-                    values: [0, 50, 100]
-                }).noUiSlider_pips({
-                    mode: 'values',
-                    values: [slider_current],
-                    density: 9999
-                }).on('slide', function (ev, val) {
-                    // set real values on 'slide' event
-                    try {
-                        update_slider(ev, val);
-                    } catch (TypeError){
-                    }
-                }).on('change', function (ev, val) {
-                    // round off values on 'change' event
-                    try {
-                        update_slider(ev, val);
-                    } catch (TypeError){
-                    }
-                });
-                $("#slider"+slider_idx+"min").text("$"+round(slider_min,2)+"B");
-                $("#slider"+slider_idx+"cur").text("$"+round(slider_current,2)+"B");
-                $("#slider"+slider_idx+"max").text("$"+round(slider_max,2)+"B");
+        for (var well_idx = 0; well_idx < 2; well_idx++) {
+            var max_slider_dev = find_max_deviation(well_idx);
+            for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+                var slider_current = 0;
+                if (current_question['slider' + slider_idx + well_idx]) {
+                    slider_current = Math.max(0.01, Number(current_question['slider' + slider_idx + well_idx]));
+                    var slider_2016_val = current_question['slider_2016_' + slider_idx + well_idx];
+                    var slider_min = Math.max(0.01, slider_2016_val - max_slider_dev - (radius) * 1.25);
+                    var slider_max = slider_2016_val + max_slider_dev + (radius) * 1.25;
+                    Session.set('slider' + slider_idx + well_idx, slider_current);
+                    sliders['slider' + slider_idx+well_idx] = this.$("div#slider" + slider_idx + well_idx).noUiSlider({
+                        start: slider_current,
+                        connect: "lower",
+                        range: {
+                            'min': slider_min,
+                            'max': slider_max
+                        }
+                    }).noUiSlider_pips({
+                        mode: 'positions',
+                        values: [0, 50, 100]
+                    }).noUiSlider_pips({
+                        mode: 'values',
+                        values: [slider_current],
+                        density: 9999
+                    }).on('slide', function (ev, val) {
+                        // set real values on 'slide' event
+                        try {
+                            update_slider(ev, val);
+                        } catch (TypeError) {
+                        }
+                    }).on('change', function (ev, val) {
+                        // round off values on 'change' event
+                        try {
+                            update_slider(ev, val);
+                        } catch (TypeError) {
+                        }
+                    });
+                }
             }
         }
-        //update comparisons
-        update_comps();
-        //update the deficit text
-        update_deficit();
+
+        for (var well_idx = 0; well_idx < 2; well_idx++){
+            //update comparisons
+            update_comps(well_idx);
+            //update the deficit text
+            update_deficit(well_idx);
+        }
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
 
     } else if ([4, 5, 6].indexOf(curr_experiment.current_question) > -1) {
+        // L1 sliders
         sliders = {};
-        var max_slider_dev = find_max_deviation();
-        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-            var slider_current = 0;
-            if (current_question['slider'+slider_idx]){
-                slider_current = Math.max(0.01,Number(current_question['slider'+slider_idx]));
-                var slider_2016_val = current_question['slider_2016_'+slider_idx];
-                var slider_min = Math.max(0.01, slider_2016_val - max_slider_dev - (radius)*1.25);
-                var slider_max = slider_2016_val + max_slider_dev + (radius)*1.25;
-                Session.set('slider'+slider_idx, slider_current);
-                sliders['slider'+slider_idx] = this.$("div#slider"+slider_idx).noUiSlider({
-                    start: slider_current,
-                    connect: "lower",
-                    range: {
-                        'min': slider_min,
-                        'max': slider_max
-                    }
-                }).noUiSlider_pips({
-                    mode: 'positions',
-                    values: [0, 50, 100]
-                }).noUiSlider_pips({
-                    mode: 'values',
-                    values: [slider_current],
-                    density: 9999
-                }).on('slide', function (ev, val) {
-                    // set real values on 'slide' event
-                    try {
-                        update_slider_mech3(ev, val);
-                    } catch (TypeError){
-                    }
-                }).on('change', function (ev, val) {
-                    // round off values on 'change' event
-                    try {
-                        update_slider_mech3(ev, val);
-                    } catch (TypeError){
-                    }
-                });
+        for (var well_idx = 0; well_idx < 2; well_idx++) {
+            var max_slider_dev = find_max_deviation(well_idx);
+            for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+                var slider_current = 0;
+                if (current_question['slider' + slider_idx + well_idx]) {
+                    slider_current = Math.max(0.01, Number(current_question['slider' + slider_idx + well_idx]));
+                    var slider_2016_val = current_question['slider_2016_' + slider_idx + well_idx];
+                    var slider_min = Math.max(0.01, slider_2016_val - max_slider_dev - (radius) * 1.25);
+                    var slider_max = slider_2016_val + max_slider_dev + (radius) * 1.25;
+                    Session.set('slider' + slider_idx + well_idx, slider_current);
+                    sliders['slider' + slider_idx+well_idx] = this.$("div#slider" + slider_idx + well_idx).noUiSlider({
+                        start: slider_current,
+                        connect: "lower",
+                        range: {
+                            'min': slider_min,
+                            'max': slider_max
+                        }
+                    }).noUiSlider_pips({
+                        mode: 'positions',
+                        values: [0, 50, 100]
+                    }).noUiSlider_pips({
+                        mode: 'values',
+                        values: [slider_current],
+                        density: 9999
+                    }).on('slide', function (ev, val) {
+                        // set real values on 'slide' event
+                        try {
+                            update_slider_mech3(ev, val);
+                        } catch (TypeError) {
+                        }
+                    }).on('change', function (ev, val) {
+                        // round off values on 'change' event
+                        try {
+                            update_slider_mech3(ev, val);
+                        } catch (TypeError) {
+                        }
+                    });
+                }
             }
         }
-        //update comparisons
-        update_comps();
-        //update the deficit text
-        update_deficit();
+        for (var well_idx = 0; well_idx < 2; well_idx++){
+            //update comparisons
+            update_comps(well_idx);
+            //update the deficit text
+            update_deficit(well_idx);
+        }
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -617,17 +639,17 @@ Template.answer1.onRendered(function () {
     }
     $('#scroll_here').ScrollTo();
 });
-Template.mechanism0.events({
+Template.L2_mechanism.events({
     'change textarea': function(event){
         update_slider(event, event.target.value, true);
     }
 });
-Template.mechanism2.events({
+Template.full_elicitation_mechanism.events({
     'change textarea': function(event){
         update_slider_mech2(event, event.target.value, true);
     }
 });
-Template.mechanism3.events({
+Template.L1_mechanism.events({
     'change textarea': function(event){
         update_slider_mech3(event, event.target.value, true);
     }

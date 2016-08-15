@@ -22,7 +22,7 @@ Meteor.startup(function(){
     clear_busy_flags:{
         Questions.update({},{$set:{'busy': false}}, {multi: true});
     }
-    /*
+
     //check and potentially update question database
     update_questions:{
         for(post in Meteor.settings.questions){
@@ -36,6 +36,7 @@ Meteor.startup(function(){
             }
         }
     }
+
     //check and potentially update answer_forms
 
     update_answer_forms:{
@@ -50,7 +51,7 @@ Meteor.startup(function(){
             }
         }
     }
-    */
+
 });
 
 Meteor.methods({

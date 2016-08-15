@@ -101,52 +101,53 @@
     <p style="margin-bottom:100px;"></p>
 </template>
 
-<template name="L2_mechanism">
+<template name="sliders_mechanism">
     <h4>
         {{> timer}}
-        <p class="center">Current Credit Allocation</p>
         <div>
-            <div id="budgetbar" class="progress">
-                <div id="slider0bar" class="progress-bar progress-bar-primary" style="width: 0%; color: rgb(245,245,245);"></div>
-                <div id="slider1bar" class="progress-bar progress-bar-success" style="width: 0%; color: rgb(245,245,245);"></div>
-                <div id="slider2bar" class="progress-bar progress-bar-warning" style="width: 0%; color: rgb(245,245,245);"></div>
-                <div id="slider3bar" class="progress-bar progress-bar-danger" style="width: 0%; color: rgb(245,245,245);"></div>
+            <p> Set 1</p>
+            <p class="center">Current Credit Allocation</p>
+            <div>
+                <div id="budgetbar" class="progress">
+                    <div id="slider00bar" class="progress-bar progress-bar-primary" style="width: 0%; color: rgb(245,245,245);"></div>
+                    <div id="slider10bar" class="progress-bar progress-bar-success" style="width: 0%; color: rgb(245,245,245);"></div>
+                    <div id="slider20bar" class="progress-bar progress-bar-warning" style="width: 0%; color: rgb(245,245,245);"></div>
+                    <div id="slider30bar" class="progress-bar progress-bar-danger" style="width: 0%; color: rgb(245,245,245);"></div>
+                </div>
+                <div style="margin: auto;"><b id = "creditsleft0">Credits left: 100</b></div>
             </div>
-            <div style="margin: auto;"><b id = "creditsleft">Credits left: 100</b></div>
+            <br>
+            <button type="button" id="reset_sliders1" class="btn btn-default">Reset All Sliders</button>
+            <br>
+            <hr style="clear: both">
+            {{> deficit_template (deficit_names 0)}}
+            {{> mech0_slider (slider_names "slider00" "blue" "National Defense")}}
+            {{> mech0_slider (slider_names "slider10" "green" "Medicare & Health")}}
+            {{> mech0_slider (slider_names "slider20" "orange" "Education, Science, Environment, & Transportation")}}
+            {{> mech0_slider (slider_names "slider30" "red" "Individual Income Tax")}}
         </div>
-        <br>
-        <button type="button" id="reset_sliders" class="btn btn-default">Reset All Sliders</button>
-        <br>
-        <hr style="clear: both">
-        {{> deficit_template (deficit_names)}}
-        {{> mech0_slider (slider_names "slider0" "blue" "National Defense")}}
-        {{> mech0_slider (slider_names "slider1" "green" "Medicare & Health")}}
-        {{> mech0_slider (slider_names "slider2" "orange" "Education, Science, Environment, & Transportation")}}
-        {{> mech0_slider (slider_names "slider3" "red" "Individual Income Tax")}}
-    </h4>
-</template>
-<template name="L1_mechanism">
-    <h4>
-        {{> timer}}
-        <p class="center" style="font-size: 17px;">Current Credit Allocation</p>
         <div>
-            <div id="budgetbar" class="progress">
-                <div id="slider0bar" class="progress-bar progress-bar-primary" style="width: 0%; color: rgb(245,245,245);"></div>
-                <div id="slider1bar" class="progress-bar progress-bar-success" style="width: 0%; color: rgb(245,245,245);"></div>
-                <div id="slider2bar" class="progress-bar progress-bar-warning" style="width: 0%; color: rgb(245,245,245);"></div>
-                <div id="slider3bar" class="progress-bar progress-bar-danger" style="width: 0%; color: rgb(245,245,245);"></div>
+            <p> Set 2</p>
+            <p class="center">Current Credit Allocation</p>
+            <div>
+                <div id="budgetbar" class="progress">
+                    <div id="slider01bar" class="progress-bar progress-bar-primary" style="width: 0%; color: rgb(245,245,245);"></div>
+                    <div id="slider11bar" class="progress-bar progress-bar-success" style="width: 0%; color: rgb(245,245,245);"></div>
+                    <div id="slider21bar" class="progress-bar progress-bar-warning" style="width: 0%; color: rgb(245,245,245);"></div>
+                    <div id="slider31bar" class="progress-bar progress-bar-danger" style="width: 0%; color: rgb(245,245,245);"></div>
+                </div>
+                <div style="margin: auto;"><b id = "creditsleft1">Credits left: 100</b></div>
             </div>
-            <div style="margin: auto;"><b id = "creditsleft">Credits left: 100</b></div>
+            <br>
+            <button type="button" id="reset_sliders2" class="btn btn-default">Reset All Sliders</button>
+            <br>
+            <hr style="clear: both">
+            {{> deficit_template (deficit_names 1)}}
+            {{> mech0_slider (slider_names "slider01" "blue" "National Defense")}}
+            {{> mech0_slider (slider_names "slider11" "green" "Medicare & Health")}}
+            {{> mech0_slider (slider_names "slider21" "orange" "Education, Science, Environment, & Transportation")}}
+            {{> mech0_slider (slider_names "slider31" "red" "Individual Income Tax")}}
         </div>
-        <br>
-        <button type="button" id="reset_sliders" class="btn btn-default">Reset All Sliders</button>
-        <br>
-        <hr style="clear: both">
-        {{> deficit_template (deficit_names)}}
-        {{> mech0_slider (slider_names "slider0" "blue" "National Defense")}}
-        {{> mech0_slider (slider_names "slider1" "green" "Medicare & Health")}}
-        {{> mech0_slider (slider_names "slider2" "orange" "Education, Science, Environment, & Transportation")}}
-        {{> mech0_slider (slider_names "slider3" "red" "Individual Income Tax")}}
     </h4>
 </template>
 <template name="mechanism1">

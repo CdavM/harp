@@ -99,10 +99,8 @@ Template.registerHelper('current_mechanism', function(){
     var current_question_value = Answers.findOne({worker_ID: Session.get("worker_ID_value")}).current_question;
     if (current_question_value == 0){
         return "full_elicitation_mechanism";
-    } else if ([1, 2, 3].indexOf(current_question_value) > -1){
-        return "L2_mechanism";
-    } else if ([4, 5, 6].indexOf(current_question_value) > -1){
-        return "L1_mechanism";
+    } else if ([1, 2, 3, 4, 5, 6].indexOf(current_question_value) > -1){
+        return "sliders_mechanism";
     }
 });
 
