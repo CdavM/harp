@@ -50,8 +50,7 @@ reset_sliders = function(well_idx){
         slider_idx_counter++;
     }
     update_deficit();
-    return;
-}
+};
 
 
 compute_averages = function(slider_ID, value){
