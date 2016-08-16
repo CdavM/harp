@@ -22,7 +22,7 @@ Meteor.startup(function(){
     clear_busy_flags:{
         Questions.update({},{$set:{'busy': false}}, {multi: true});
     }
-    /*
+
     //check and potentially update question database
     update_questions:{
         for(post in Meteor.settings.questions){
@@ -36,6 +36,7 @@ Meteor.startup(function(){
             }
         }
     }
+
     //check and potentially update answer_forms
 
     update_answer_forms:{
@@ -50,7 +51,7 @@ Meteor.startup(function(){
             }
         }
     }
-    */
+
 });
 
 Meteor.methods({
@@ -116,50 +117,31 @@ Meteor.methods({
         var total_money_spent_set0 = 0;
         var total_money_spent_set1 = 0;
         var total_percentage_of_credits_spent = 0;
-
-        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-            if (post.answer['slider' + slider_idx]){
-                if (isNaN(Number(post.answer['slider' + slider_idx][0]))){
-                    console.log("Value cannot be converted into a number.");
-                    console.log(post.answer['slider' + slider_idx][0]);
-                    console.log("Rejecting the entry for experiment " + experiment_id_value);
-                    return;
+        for (var well_idx = 0; well_idx < 2; well_idx++) {
+            for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+                if (post.answer['slider' + slider_idx + well_idx]) {
+                    if (isNaN(Number(post.answer['slider' + slider_idx + well_idx][0]))) {
+                        console.log("Value cannot be converted into a number.");
+                        console.log(post.answer['slider' + slider_idx + well_idx][0]);
+                        console.log("Rejecting the entry for experiment " + experiment_id_value);
+                        return;
+                    }
+                    fields_to_be_updated['slider' + slider_idx + well_idx] = Math.max(.01, Number(post.answer['slider' + slider_idx + well_idx][0]));
+                    if (slider_idx == 3) {
+                        total_money_spent -= Number(post.answer['slider' + slider_idx + well_idx][0]);
+                    } else {
+                        total_money_spent += Number(post.answer['slider' + slider_idx + well_idx][0]);
+                    }
+                    var slider_difference = Number(post.answer['slider' + slider_idx + well_idx][0]) - existing_entry['initial_slider' + slider_idx + well_idx];
+                    var slider_relative_diff = slider_difference / existing_entry['radius'];
+                    if (current_question == 0) {
+                        answers_value['slider' + slider_idx + well_idx + "_credits"] = Math.pow(slider_relative_diff, 2);
+                    } else if (current_question == 3) {
+                        answers_value['slider' + slider_idx + well_idx + "_credits"] = Math.abs(slider_relative_diff);
+                    }
+                    total_percentage_of_credits_spent += answers_value['slider' + slider_idx + well_idx + "_credits"];
                 }
-                fields_to_be_updated['slider'+slider_idx] = Math.max(.01, Number(post.answer['slider' + slider_idx][0]));
-                if (slider_idx == 3) {
-                    total_money_spent -= Number(post.answer['slider' + slider_idx][0]);
-                } else {
-                    total_money_spent += Number(post.answer['slider' + slider_idx][0]);
-                }
-                var slider_difference = Number(post.answer['slider' + slider_idx][0]) - existing_entry['initial_slider'+slider_idx];
-                var slider_relative_diff = slider_difference / existing_entry['radius'];
-                if (current_question == 0) {
-                    answers_value['slider' + slider_idx + "_credits"] = Math.pow(slider_relative_diff, 2);
-                } else if (current_question == 3) {
-                    answers_value['slider' + slider_idx + "_credits"] = Math.abs(slider_relative_diff);
-                }
-                total_percentage_of_credits_spent += answers_value['slider' + slider_idx + "_credits"];
-            }
-            if (post.answer['optionset0']){
-                // only for the comparison mechanism.
-                var option_selected_set0 = post.answer['optionset0'][0];
-                var option_selected_set1 = post.answer['optionset1'][0];
 
-                var question_entry = Questions.findOne({"question_ID": current_question});
-                fields_to_be_updated['set0slider'+slider_idx+'1'] = question_entry['set0slider'+slider_idx+option_selected_set0];
-                fields_to_be_updated['set1slider'+slider_idx+'1'] = question_entry['set1slider'+slider_idx+option_selected_set1];
-
-                if (slider_idx == 3) {
-                    // subtract taxes
-                    total_money_spent_set0 -= question_entry['set0slider'+slider_idx+option_selected_set0];
-                    total_money_spent_set1 -= question_entry['set1slider'+slider_idx+option_selected_set1];
-
-                } else {
-                    // add everything else.
-                    total_money_spent_set0 += question_entry['set0slider'+slider_idx+option_selected_set0];
-                    total_money_spent_set1 += question_entry['set1slider'+slider_idx+option_selected_set1];
-
-                }
             }
         }
         if (total_percentage_of_credits_spent > 1.1){
@@ -175,14 +157,7 @@ Meteor.methods({
         }
         // add the deficit term
         if (current_question != 2 && current_answer == 1) {
-            if(post.answer['optionset0']){ //only for comparisons mechanism
-                answers_value[current_question][current_answer]['deficitset0'] = total_money_spent_set0 + 162;
-                answers_value[current_question][current_answer]['deficitset1'] = total_money_spent_set1 + 162;
-
-            }
-            else{
-                answers_value[current_question][current_answer]['deficit'] = total_money_spent + 162;
-            }
+            answers_value[current_question][current_answer]['deficit'] = total_money_spent + 162;
         }
         //Add entry to Answers
         Answers.update({worker_ID: post.worker_ID}, {$set: {answer1: answers_value}}, {upsert: true});
@@ -296,102 +271,27 @@ Meteor.methods({
                     return 35.0/Math.max(1, Math.ceil((previous_participants - 45.0)/10.0) + 1.0);
                 };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
-                if ([0, 4, 3, 7].indexOf(next_question) > -1){
+                if ([1, 2, 3, 4, 5, 6].indexOf(next_question) > -1){
                     var current_question = Questions.findOne({"question_ID": next_question});
                     var db_storage = {};
-                    var total_money_spent = 0;
-                    for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-                        db_storage['initial_slider'+slider_idx] = current_question['slider'+slider_idx];
-                        if (slider_idx != 3) {
-                            // add everything but taxes
-                            total_money_spent += current_question['slider'+slider_idx];
-                        } else {
-                            // subtract the taxes
-                            total_money_spent -= current_question['slider'+slider_idx];
+                    for (var well_idx = 0; well_idx < 2; well_idx++) {
+                        var total_money_spent = 0;
+                        for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+                            db_storage['initial_slider' + slider_idx + well_idx] = current_question['slider' + slider_idx + well_idx];
+                            if (slider_idx != 3) {
+                                // add everything but taxes
+                                total_money_spent += current_question['slider' + slider_idx + well_idx];
+                            } else {
+                                // subtract the taxes
+                                total_money_spent -= current_question['slider' + slider_idx + well_idx];
+                            }
                         }
+                        //compute the deficit
+                        db_storage['initial_deficit'+well_idx] = total_money_spent + 162;
                     }
-                    //compute the deficit
-                    db_storage['initial_deficit'] = total_money_spent + 162;
                     //store everything
                     Answers.update({experiment_id: experiment_id_value}, {$set: db_storage}, {upsert: true, multi: true});
 
-                } else if ([1,5].indexOf(next_question) > -1){
-                    //vector generating function
-                    var generate_point_on_surface_ball = function(num_of_dimensions){
-                        //ball always has unit radius!
-                        if (!num_of_dimensions) {
-                            num_of_dimensions = 4; // default choice is 4
-                        }
-                        do {
-                            var dimension_counter = 0;
-                            var length_of_vector = 0;
-                            var vector = [];
-                            while (dimension_counter < num_of_dimensions){
-                                //generate point by point
-                                vector[dimension_counter] = 2*Math.random() - 1;
-                                length_of_vector += Math.pow(vector[dimension_counter],2);
-                                dimension_counter++;
-                            }
-                        } while (length_of_vector > 1);
-                        length_of_vector = Math.sqrt(length_of_vector);
-                        //scale the vector to unit norm
-                        dimension_counter = 0;
-                        while (dimension_counter < num_of_dimensions){
-                            vector[dimension_counter] = round(vector[dimension_counter]/length_of_vector,3);
-                            dimension_counter++;
-                        }
-                        return vector;
-                    };
-                    //generate two vectors on unit ball
-                    var sampled_vector_00 = generate_point_on_surface_ball(4);
-                    var sampled_vector_02 = generate_point_on_surface_ball(4);
-                    var sampled_vector_03 = generate_point_on_surface_ball(4);
-
-                    var sampled_vector_10 = generate_point_on_surface_ball(4);
-                    var sampled_vector_12 = generate_point_on_surface_ball(4);
-                    var sampled_vector_13 = generate_point_on_surface_ball(4);
-
-                    var current_question = Questions.findOne({"question_ID": next_question});
-
-                    var vector_object = {};
-                    for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
-                        vector_object["set0slider" + slider_idx + "1"] = current_question["set0slider" + slider_idx + "1"];
-                        vector_object["set0slider" + slider_idx + "0"] = Math.max(0, vector_object["set0slider" + slider_idx + "1"] +
-                            sampled_vector_00[slider_idx] * (radius_val));
-                        vector_object["set0slider" + slider_idx + "2"] = Math.max(0, vector_object["set0slider" + slider_idx + "1"] +
-                            sampled_vector_02[slider_idx] * (radius_val));
-                        vector_object["set0slider" + slider_idx + "3"] = Math.max(0, vector_object["set0slider" + slider_idx + "1"] +
-                            sampled_vector_03[slider_idx] * (radius_val));
-
-                        vector_object["set1slider" + slider_idx + "1"] = current_question["set1slider" + slider_idx + "1"];
-                        vector_object["set1slider" + slider_idx + "0"] = Math.max(0, vector_object["set1slider" + slider_idx + "1"] +
-                            sampled_vector_10[slider_idx] * (radius_val));
-                        vector_object["set1slider" + slider_idx + "2"] = Math.max(0, vector_object["set1slider" + slider_idx + "1"] +
-                            sampled_vector_12[slider_idx] * (radius_val));
-                        vector_object["set1slider" + slider_idx + "3"] = Math.max(0, vector_object["set1slider" + slider_idx + "1"] +
-                            sampled_vector_13[slider_idx] * (radius_val));
-                    }
-
-                    var compute_deficit = function (well_idx, setnum) {
-                        if (typeof(well_idx) == "undefined"){
-                            well_idx = "";
-                        }
-                        var total_money_spent = 0;
-                        for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
-                            total_money_spent += vector_object["set" + setnum +"slider"+slider_idx_counter+well_idx];
-                        }
-                        total_money_spent -= vector_object["set" + setnum +"slider3"+well_idx]; // decreases by amt of income tax collected
-                        var deficit_value = total_money_spent + 162; 
-                        return deficit_value;
-                    };
-
-                    for (well_idx=0; well_idx < 4; well_idx++) {
-                        vector_object['set0slider'+4+well_idx] = compute_deficit(well_idx, 0);
-                        vector_object['set1slider'+4+well_idx] = compute_deficit(well_idx, 1);
-                    }
-                    //assign
-                    Questions.update({"question_ID": next_question}, {$set:vector_object}, {upsert:true});
-                    Answers.update({experiment_id: experiment_id_value}, {$set: vector_object}, {upsert: true, multi: true});
                 }
                 Answers.update({experiment_id: experiment_id_value}, {$set: {current_question: next_question, current_answer: 0, "radius":radius_val, latest_time: new Date().getTime()}}, {upsert: true, multi: true});
                 console.log("question for experiment " + experiment_id_value + " changed to " + next_question);
