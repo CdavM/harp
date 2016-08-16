@@ -12,13 +12,24 @@ from data_helpers import *
 import cvxpy
 
 initial_values = [600, 950, 140, 1500, 506]
-initial_values_mech1_group1 = {0: [541, 1004, 303, 1460, 550], 1: [480, 1054, 323, 1500, 519]}
-initial_values_mech1_group2 = {0: [500, 1100, 253, 1400, 615], 1: [600, 1150, 283, 1520, 675]}
+# initial_values_mech1_group1 = {0: [541, 1004, 303, 1460, 550], 1: [480, 1054, 323, 1500, 519]}
+# initial_values_mech1_group2 = {0: [500, 1100, 253, 1400, 615], 1: [600, 1150, 283, 1520, 675]}
+
+initial_values = [450, 1200, 370, 1300, 882]
+initial_values_mech1_group1 = {0: [450, 1200, 370, 1300, 882], 1: [450, 1200, 370, 1300, 882]}
+initial_values_mech1_group2 = {0: [450, 1200, 370, 1300, 882], 1: [450, 1200, 370, 1300, 882]}
+INITIALDEFICITADDITIVE = 162;
 
 DEBUG_LEVEL = 0
 slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
+
 mechanism_names = ['l2 Constrained Movement', 'Comparisons', 'Full Elicitation', 'l1 Constrained Movement']
 mechanism_names_expanded = ['Group 1 l2 Constrained Movement', 'Group 1 Comparisons Set 0', 'Group 1 Comparisons Set 1', 'Group 1 Full Elicitation', 'Group 1 l1 Constrained Movement', 'Group 2 l2 Constrained Movement', 'Group 2 Comparisons Set 0', 'Group 2 Comparisons Set 1', 'Group 2 Full Elicitation', 'Group 2 l1 Constrained Movement']
+
+mechanism_names_fixed = ['Group 1 l2 Constrained Movement', 'Group 1 Comparisons', 'Group 1 Full Elicitation Euclidean', 'Group 1 l1 Constrained Movement', 'Group 2 l2 Constrained Movement', 'Group 2 Comparisons', 'Group 2 Full Elicitation Euclidean', 'Group 2 l1 Constrained Movement']
+
+keyorder = ['0', '1set0', '1set1', '2', '3', '4', '5set0', '5set1', '6', '7']
+
 
 def plot_sliders_over_time(data, title, prepend = ""):
     n = range(0, len(data) + 1)
@@ -48,12 +59,12 @@ def calculate_full_elicitation_euclideanpoint(data):
         for slider in range(5):
             fun += w[slider]*cvxpy.abs(X[slider] - y[slider])
     obj = cvxpy.Minimize(fun)
-    constraints = [X >= 0, X[0] + X[1] + X[2] - X[3] + 316 == X[4]]
+    constraints = [X >= 0, X[0] + X[1] + X[2] - X[3] + INITIALDEFICITADDITIVE == X[4]]
     prob = cvxpy.Problem(obj, constraints)
     result = prob.solve()
     items = [X.value[i,0] for i in range(5)]
     print 'Optimal full elicitation:', items
-    deficit = items[0] + items[1] + items[2] - items[3] + 316
+    deficit = items[0] + items[1] + items[2] - items[3] + INITIALDEFICITADDITIVE
     items.append(deficit)
     return items
 
@@ -83,69 +94,100 @@ def calculate_full_elicitation_average(data):
     return rawaverages, weightedaverages_l2, weightedaverages_l1, calculate_full_elicitation_euclideanpoint(data)
 
 
+
 def plot_allmechansisms_together(organized_data):
     f, axarr = plt.subplots(5, sharex=True)
     lines = []
-    #rawaverages_mech2, weightedaverages_l2_mech2, weightedaverages_l1_mech2, euclideanprefs_mech2 = calculate_full_elicitation_average(organized_data[2])
+    rawaverages_mech2_group1, weightedaverages_l2_mech2_group1, weightedaverages_l1_mech2_group1, euclideanprefs_mech2_group1 = calculate_full_elicitation_average(organized_data[2])
+    rawaverages_mech2_group2, weightedaverages_l2_mech2_group2, weightedaverages_l1_mech2_group2, euclideanprefs_mech2_group2 = calculate_full_elicitation_average(organized_data[6])
+
     maxn = -1
-    lines_to_do = [0, 2, 3]
+    group1_lines_to_do = [0, 1, 2, 3]
+    lines_to_do = group1_lines_to_do
+    legend_names = []
     for slider in xrange(0, len(slider_order)):
-        # for mechanism in [0, 3, 4, 7]:#xrange(0, 4):
-        #     n = range(0, len(organized_data[mechanism]) + 1)
-        #     maxn = max(maxn, len(n))
-        #     vals = [d['question_data']['slider' + str(slider) + '_loc'] for d in organized_data[mechanism]]
-        #     vals.insert(0, initial_values[slider]) #prepend initial values
-        #     l = axarr[slider].plot(n, vals, label = mechanism_names[mechanism])
-        #     if slider == 0:
-        #         lines.append(l[0])
+        for mechanism in [0, 3, 4, 7] :
+            if mechanism not in lines_to_do:
+                continue
+            n = range(0, len(organized_data[mechanism]) + 1)
+            maxn = max(maxn, len(n))
+            vals = [d['question_data']['slider' + str(slider) + '_loc'] for d in organized_data[mechanism]]
+            vals.insert(0, initial_values[slider]) #prepend initial values
+            l = axarr[slider].plot(n, vals, label = mechanism_names_fixed[mechanism])
+            if slider == 0:
+                lines.append(l[0])
+                legend_names.append(mechanism_names_fixed[mechanism])
 
         # #mechanism 1 & 5, comparisons
-        for set_num in range(2):
-            n = range(0, len(organized_data[1]) + 1)
-            maxn = max(maxn, len(n))
-            vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[1]]
-            vals.insert(0, initial_values_mech1_group1[set_num][slider]) #prepend initial values
-            l = axarr[slider].plot(n, vals, label = "Group 1 " + mechanism_names[1] + ", Set " + str(set_num))
-            if slider == 0:
-                lines.append(l[0])
+        if 1 in lines_to_do:
+            for set_num in range(2):
+                n = range(0, len(organized_data[1]) + 1)
+                maxn = max(maxn, len(n))
+                vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[1]]
+                vals.insert(0, initial_values_mech1_group1[set_num][slider]) #prepend initial values
+                l = axarr[slider].plot(n, vals, label = mechanism_names_fixed[1] + ", Set " + str(set_num))
+                if slider == 0:
+                    lines.append(l[0])
+                    legend_names.append(mechanism_names_fixed[1] + ", Set " + str(set_num))
 
-        for set_num in range(2):
-            n = range(0, len(organized_data[5]) + 1)
-            maxn = max(maxn, len(n))
-            vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[5]]
-            vals.insert(0, initial_values_mech1_group2[set_num][slider]) #prepend initial values
-            l = axarr[slider].plot(n, vals, label = "Group 1 " + mechanism_names[1] + ", Set " + str(set_num))
-            if slider == 0:
-                lines.append(l[0])
+        if 5 in lines_to_do:
+            for set_num in range(2):
+                n = range(0, len(organized_data[5]) + 1)
+                maxn = max(maxn, len(n))
+                vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[5]]
+                vals.insert(0, initial_values_mech1_group2[set_num][slider]) #prepend initial values
+                l = axarr[slider].plot(n, vals, label = mechanism_names_fixed[5] + ", Set " + str(set_num))
+
+                if slider == 0:
+                    lines.append(l[0])
+                    legend_names.append(mechanism_names_fixed[5] + ", Set " + str(set_num))
 
         # #mechanism 2, fullelicitation:
         # n = range(maxn)
         # vals = [rawaverages_mech2[slider] for _ in n]
-        # l = axarr[slider].plot(n, vals, label = mechanism_names[2])
+        # l = axarr[slider].plot(n, vals, label = mechanism_names_fixed[2])
         # if slider == 0:
         #     lines.append(l[0])
-        # # vals = [weightedaverages_l2_mech2[slider] for _ in n]
-        # # l = axarr[slider].plot(n, vals, label ='Full Elicitation Weighted L2')
-        # # if slider == 0:
-        # #     lines.append(l[0])
-        # # vals = [weightedaverages_l1_mech2[slider] for _ in n]
-        # # l = axarr[slider].plot(n, vals, label = 'Full Elicitation Weighted')
-        # # if slider == 0:
-        # #     lines.append(l[0])
+        #     legend_names.append(mechanism_names_fixed[2])
 
-        # vals = [euclideanprefs_mech2[slider] for _ in n]
-        # l = axarr[slider].plot(n, vals, label = 'Full Elicitation -- Euclidean')
+        # vals = [weightedaverages_l2_mech2[slider] for _ in n]
+        # l = axarr[slider].plot(n, vals, label ='Full Elicitation Weighted L2')
+        #legend_names.append('Full Elicitation Weighted L2')
+
         # if slider == 0:
         #     lines.append(l[0])
+        # vals = [weightedaverages_l1_mech2[slider] for _ in n]
+        # l = axarr[slider].plot(n, vals, label = 'Full Elicitation Weighted')
+        # if slider == 0:
+        #     lines.append(l[0])
+        #legend_names.append('Full Elicitation Weighted')
+        n = range(maxn)
+        if 2 in lines_to_do:
+            vals = [euclideanprefs_mech2_group1[slider] for _ in n]
+            l = axarr[slider].plot(n, vals, label = mechanism_names_fixed[2])
+
+            if slider == 0:
+                lines.append(l[0])
+                legend_names.append(mechanism_names_fixed[2])
+
+        if 6 in lines_to_do:
+            vals = [euclideanprefs_mech2_group2[slider] for _ in n]
+            l = axarr[slider].plot(n, vals, label = mechanism_names_fixed[6])
+            if slider == 0:
+                lines.append(l[0])
+                legend_names.append(mechanism_names_fixed[6])
 
         axarr[slider].set_title(slider_order[slider], fontsize = 18)
         axarr[slider].set_ylabel('$ (Billions)', fontsize = 18)
         axarr[slider].tick_params(axis='both', which='major', labelsize=18)
 
-    legendnames_normal = [mechanism_names_expanded[0], mechanism_names_expanded[4], mechanism_names_expanded[5], mechanism_names_expanded[9], mechanism_names_expanded[1], mechanism_names_expanded[2], mechanism_names_expanded[6], mechanism_names_expanded[7],  mechanism_names_expanded[3], 'Full Elicitation -- Euclidean']
-    legendnames_componly = [mechanism_names_expanded[1], mechanism_names_expanded[2], mechanism_names_expanded[6], mechanism_names_expanded[7]]
+    #legendnames_normal = [mechanism_names_expanded[0], mechanism_names_expanded[4], mechanism_names_expanded[5], mechanism_names_expanded[9], mechanism_names_expanded[1], mechanism_names_expanded[2], mechanism_names_expanded[6], mechanism_names_expanded[7],  mechanism_names_expanded[3], 'Full Elicitation -- Euclidean']
+    #legendnames_componly = [mechanism_names_expanded[1], mechanism_names_expanded[2], mechanism_names_expanded[6], mechanism_names_expanded[7]]
+    
     axarr[len(slider_order)-1].set_xlabel('Iteration', fontsize = 18)
-    f.legend(lines,legendnames_componly , loc='upper center', borderaxespad=0., ncol = 3, fontsize = 18)
+    #f.legend(lines,legendnames_componly , loc='upper center', borderaxespad=0., ncol = 3, fontsize = 18)
+    f.legend(lines,legend_names , loc='upper center', borderaxespad=0., ncol = 3, fontsize = 18)
+    
     print lines
     #f.legend(loc='upper left', fontsize = 18)
     #plt.legend()
@@ -202,16 +244,14 @@ def analyze_data(organized_data, LABEL):
     # also calculate average time for each mechanism
     calculate_time_spent(organized_data, LABEL)
 
-    for key in organized_data:
-        print switcher_analyze_data[key](organized_data[key])
+    #for key in organized_data:
+    #    print switcher_analyze_data[key](organized_data[key])
     analyze_movement_and_weights(organized_data, LABEL)
 slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
 
 def movingaverage(interval, window_size):
     window = np.ones(int(window_size))/float(window_size)
     return np.convolve(interval, window, 'valid')
-
-keyorder = ['0', '1set0', '1set1', '2', '3']
 
 def plot_percent_movements_over_time(organized_data, LABEL):
     averages_byitem = {'0': [[],[],[],[]], '1set0':[[],[],[],[]], '1set1':[[],[],[],[]], '2':[[],[],[],[]], '3':[[],[],[],[]]}
@@ -269,15 +309,15 @@ def plot_percent_movements_over_time(organized_data, LABEL):
     plt.show()
 
 def analyze_movement_and_weights(organized_data, LABEL):
-    averages_byitem = {'0': np.zeros(4), '1set0':np.zeros(4), '1set1':np.zeros(4), '2':np.zeros(4), '3':np.zeros(4)}
-    averages_bymostmovement = {'0': np.zeros(4), '1set0':np.zeros(4), '1set1':np.zeros(4), '2':np.zeros(4), '3':np.zeros(4)}
-    averages_creditpercentage = {'0':np.zeros(4), '3':np.zeros(4)}
-    averages_creditpercentage_bymost = {'0':np.zeros(4), '3':np.zeros(4)}
-    num_key_positive = np.zeros(4)
+    averages_byitem = {'0': np.zeros(4), '1set0':np.zeros(4), '1set1':np.zeros(4), '2':np.zeros(4), '3':np.zeros(4), '4':np.zeros(4), '5set0':np.zeros(4), '5set1':np.zeros(4), '6':np.zeros(4), '7':np.zeros(4)}
+    averages_bymostmovement = {'0': np.zeros(4), '1set0':np.zeros(4), '1set1':np.zeros(4), '2':np.zeros(4), '3':np.zeros(4), '4':np.zeros(4), '5set0':np.zeros(4), '5set1':np.zeros(4), '6':np.zeros(4), '7':np.zeros(4)}
+    averages_creditpercentage = {'0':np.zeros(4), '3':np.zeros(4), '4':np.zeros(4), '7':np.zeros(4)}
+    averages_creditpercentage_bymost = {'0':np.zeros(4), '3':np.zeros(4), '4':np.zeros(4), '7':np.zeros(4)}
+    num_key_positive = np.zeros(8)
     for key in organized_data:
         for experiment in organized_data[key]:
             num_key_positive[key] += 1
-            if key!= 1:
+            if key!= 1 and key !=5:
                 percentages = get_movement_percentages(experiment)
                 if percentages is None:
                     print "Did not move at all", experiment['experiment_id']
@@ -286,7 +326,7 @@ def analyze_movement_and_weights(organized_data, LABEL):
                 averages_byitem[str(key)] += percentages
                 averages_bymostmovement[str(key)] += sorted(percentages, reverse = True)
 
-                if key == 0 or key == 3:
+                if key%4 == 0 or key%4 == 3:
                     credit_percentages = get_credit_percentage(experiment)
                     averages_creditpercentage[str(key)] += credit_percentages
                     averages_creditpercentage_bymost[str(key)] += sorted(credit_percentages, reverse=True)
@@ -299,10 +339,10 @@ def analyze_movement_and_weights(organized_data, LABEL):
                     #print key, percentages
                     averages_byitem[str(key) + 'set' + str(setnum)] += percentages
                     averages_bymostmovement[str(key) + 'set' + str(setnum)] += sorted(percentages, reverse = True)
-        if key!= 1:
+        if key!= 1 and key!=5:
             averages_byitem[str(key)] /= num_key_positive[key] 
             averages_bymostmovement[str(key)] /= num_key_positive[key] 
-            if key == 0 or key == 3:
+            if key == 0%4 or key%4 == 3:
                 averages_creditpercentage[str(key)] /= num_key_positive[key] 
                 averages_creditpercentage_bymost[str(key)] /= num_key_positive[key] 
         else:
@@ -315,19 +355,19 @@ def analyze_movement_and_weights(organized_data, LABEL):
     dpoints_credits = []
     dpoints_credits_bymost = []
 
-    for key in range(5):
+    for key in range(10):
         for idx in xrange(4):
             averageskey = keyorder[key]
             dpoints_byitem.append([mechanism_names_expanded[key], slider_order[idx], averages_byitem[averageskey][idx]])
             dpoints_bymost.append([mechanism_names_expanded[key], str(idx), averages_bymostmovement[averageskey][idx]])
-            if averageskey == '0' or averageskey == '3':
+            if averageskey == '0' or averageskey == '3' or averageskey == '4' or averageskey == '7':
                 dpoints_credits.append([mechanism_names_expanded[key], slider_order[idx], averages_creditpercentage[averageskey][idx]])
                 dpoints_credits_bymost.append([mechanism_names_expanded[key], str(idx), averages_creditpercentage_bymost[averageskey][idx]])
 
     barplot(np.array(dpoints_byitem), LABEL, 'Percent of movement', 'Item', slider_order[0:4], mechanism_names_expanded)
     barplot(np.array(dpoints_bymost), LABEL, 'Percent of movement', 'Order by movement', [str(x) for x in xrange(4)], mechanism_names_expanded)
-    barplot(np.array(dpoints_credits), LABEL, 'Percent of credits used', 'Item', slider_order[0:4], [mechanism_names_expanded[0], mechanism_names_expanded[4]])
-    barplot(np.array(dpoints_credits_bymost), LABEL, 'Percent of credits used', 'Order by movement', [str(x) for x in xrange(4)], [mechanism_names_expanded[0], mechanism_names_expanded[4]])
+    barplot(np.array(dpoints_credits), LABEL, 'Percent of credits used', 'Item', slider_order[0:4], [mechanism_names_expanded[0], mechanism_names_expanded[4], mechanism_names_expanded[5], mechanism_names_expanded[9]])
+    barplot(np.array(dpoints_credits_bymost), LABEL, 'Percent of credits used', 'Order by movement', [str(x) for x in xrange(4)], [mechanism_names_expanded[0], mechanism_names_expanded[4], mechanism_names_expanded[5], mechanism_names_expanded[9]])
 
 
 def get_credit_percentage(experiment):
@@ -425,7 +465,7 @@ def get_movement_values_comparisons_sets(single_experiment_data):
     return movement_set0, movement_set1
 
 def get_movement_percentages(single_experiment_data, prepend = ""):
-    if single_experiment_data['question_num'] == 2:
+    if single_experiment_data['question_num']%4 == 2:
         movement = [single_experiment_data['question_data']['slider0_weight'], single_experiment_data['question_data']['slider1_weight'], single_experiment_data['question_data']['slider2_weight'], single_experiment_data['question_data']['slider3_weight']]
     else:
         new_vals = [single_experiment_data['question_data'][prepend + 'slider0_loc'], single_experiment_data['question_data'][prepend + 'slider1_loc'], single_experiment_data['question_data'][prepend + 'slider2_loc'], single_experiment_data['question_data'][prepend + 'slider3_loc']]
@@ -444,8 +484,8 @@ def calculate_time_spent(organized_data, LABEL):
         for page in range(0, len(pagenames)):
             #print organized_data[key]
             print [d['time_page' + str(page)] for d in organized_data[key]]
-            dpoints.append([mechanism_names[key], pagenames[page], np.mean([d['time_page' + str(page)] for d in organized_data[key]])])
-    barplot(np.array(dpoints), LABEL, 'Time (Seconds)', 'Page', pagenames, mechanism_names)
+            dpoints.append([mechanism_names_fixed[key], pagenames[page], np.mean([d['time_page' + str(page)] for d in organized_data[key]])])
+    barplot(np.array(dpoints), LABEL, 'Time (Seconds)', 'Page', pagenames, mechanism_names_fixed)
 
 def organize_payment(organized_data):
     with open ('bonusinfo_real_run2_finalppl.csv', 'wb') as file:
@@ -455,7 +495,7 @@ def organize_payment(organized_data):
                 writer.writerow([d['worker_ID'], d['question_num'], d['question_data']['explanation'], d['feedback_data']['feedback'],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page3']])
 def print_different_things(organized_data):
     for key in organized_data:
-        print "MECHANISM: " + mechanism_names[key]
+        print "MECHANISM: " + mechanism_names_expanded[key]
         for d in organized_data[key]:
 			print d['question_data']['explanation'][0], "\n"
 			print d['question_data']['slider0_weight'], d['question_data']['slider1_weight'], d['question_data']['slider2_weight'], d['question_data']['slider3_weight']
@@ -464,7 +504,7 @@ def print_different_things(organized_data):
 
 
     for key in organized_data:
-        print "MECHANISM: " + mechanism_names[key]
+        print "MECHANISM: " + mechanism_names_expanded[key]
         for d in organized_data[key]:
             print d['feedback_data']['feedback'][0], "\n"
 
@@ -486,8 +526,18 @@ def main():
 
 
     #data, organized_data = clean_data(load_data('export-20160707161738_PILOTFINAL_fixed.csv'))
-    data, organized_data = clean_data(load_data('export-20160727220017.csv'))
-    print organized_data
+    #data, organized_data = clean_data(load_data('export-20160728133206.csv'))
+    #data, organized_data = clean_data(load_data('simulated_experiment.csv'))
+#    data, organized_data = clean_data(load_data('simulated_experiment_slowlyfallingradius.csv'))
+    #data, organized_data = clean_data(load_data('simulated_experiment_slowlyfallingradius2.csv'))
+   # data, organized_data = clean_data(load_data('simulated_experiment_constantradius.csv'))
+#    data, organized_data = clean_data(load_data('simulated_experiment_decreasingradius_giant.csv'))
+   # data, organized_data = clean_data(load_data('simulated_experiment_decreasingradius_small.csv'))
+    data, organized_data = clean_data(load_data('simulated_experiment_constantradius_tiny.csv'))
+
+
+
+   # print organized_data
     LABEL = 'Actual'
     #print len(data)
     #for key in organized_data:

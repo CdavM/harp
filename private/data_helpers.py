@@ -222,7 +222,7 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order):
         vals = dpoints[dpoints[:,0] == cond][:,2].astype(np.float)
         pos = [j - (1 - space) / 2. + i * width for j in indeces]
         ax.bar(pos, vals, width=width, label=cond, 
-               color=current_palette[i]
+               color=current_palette[i%len(current_palette)]
                )
     
     # Set the x-axis tick labels to be equal to the categories
