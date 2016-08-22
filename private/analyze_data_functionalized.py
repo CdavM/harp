@@ -8,7 +8,7 @@ import operator as o
 from operator import itemgetter
 import math
 import numpy as np
-from data_helpers import *
+from data_helpers_multiplesets import *
 import cvxpy
 
 slider_order = ['Defense', 'Health',
@@ -34,32 +34,32 @@ def plot_sliders_over_time(data, title, prepend=""):
 	plt.show()
 
 
-def calculate_full_elicitation_euclideanpoint(data):
+def calculate_full_elicitation_euclideanpoint(data, deficit_offset):
 	X = cvxpy.Variable(5)  # 1 point for each mechanism
 	fun = 0
 	for d in data:
 		y = [d['question_data']['slider' +
-			str(slider) + '_loc'] for slider in range(5)]
+			str(slider) + '0_loc'] for slider in range(5)]
 		w = [d['question_data']['slider' +
-			str(slider) + '_weight'] for slider in range(5)]
+			str(slider) + '0_weight'] for slider in range(5)]
 		sumsq = math.sqrt(sum([math.pow(w[i], 2) for i in range(5)]))
 		w = [w[i] / sumsq for i in range(5)]
 		for slider in range(5):
 			fun += w[slider] * cvxpy.abs(X[slider] - y[slider])
 	obj = cvxpy.Minimize(fun)
 	constraints = [X >= 0, X[0] + X[1] + X[2] -
-		X[3] + INITIALDEFICITADDITIVE == X[4]]
+		X[3] + deficit_offset == X[4]]
 	prob = cvxpy.Problem(obj, constraints)
 	result = prob.solve()
 	items = [X.value[i, 0] for i in range(5)]
 	print 'Optimal full elicitation:', items
 	deficit = items[0] + items[1] + items[2] - \
-		items[3] + INITIALDEFICITADDITIVE
+		items[3] + deficit_offset
 	items.append(deficit)
 	return items
 
 
-def calculate_full_elicitation_average(data):
+def calculate_full_elicitation_average(data , deficit_offset):
 	sliders = {0: [], 1: [], 2: [], 3: [], 4: []}
 	weights = {0: [], 1: [], 2: [], 3: [], 4: []}
 	rawaverages = {}
@@ -68,9 +68,9 @@ def calculate_full_elicitation_average(data):
 
 	for slider in sliders:
 		sliders[slider] = [d['question_data'][
-			'slider' + str(slider) + '_loc'] for d in data]
+			'slider' + str(slider) + '0_loc'] for d in data]
 		weights[slider] = [d['question_data'][
-			'slider' + str(slider) + '_weight'] for d in data]
+			'slider' + str(slider) + '0_weight'] for d in data]
 
 	# normalize slider weights
 	for i in range(len(weights[0])):
@@ -86,70 +86,80 @@ def calculate_full_elicitation_average(data):
 			sliders[slider], weights=[math.pow(x, 2) for x in weights[slider]])
 
 	return rawaverages, weightedaverages_l2, weightedaverages_l1, calculate_full_elicitation_euclideanpoint(
-		data)
+		data, deficit_offset)
 
 
 def plot_allmechansisms_together(
-	organized_data, mechanism_super_dictionary, slider_order, lines_to_do=None):
+	organized_data, mechanism_super_dictionary, slider_order, lines_to_do=None, deficit_offset = 0, labels = [''], LABEL = ''):
 	if lines_to_do is None:
-		lines_to_do = mechanism_super_dictionary.keys();
+		lines_to_do = [mechanism_super_dictionary.keys()];
 
-	legend_names = []
-	f, axarr = plt.subplots(5, sharex=True)
-	lines = []
+	for ltd in range(len(lines_to_do)):
+		legend_names = []
+		f, axarr = plt.subplots(5, sharex=True)
+		lines = []
 
-	full_elicitation_averages = {}
-	for mech in mechanism_super_dictionary:
-		if mechanism_super_dictionary[mech]['type'] == 'full':
-			rawaverages, weightedaverages_l2, weightedaverages_l1, euclideanprefs = calculate_full_elicitation_average(organized_data[mech])
-			full_elicitation_averages[mech] = {'rawaverages': rawaverages, 'weightedaverages_l2': weightedaverages_l2, 'weightedaverages_l1': weightedaverages_l1, 'euclideanprefs': euclideanprefs}
+		full_elicitation_averages = {}
+		for mech in mechanism_super_dictionary:
+			if mechanism_super_dictionary[mech]['type'] == 'full':
+				rawaverages, weightedaverages_l2, weightedaverages_l1, euclideanprefs = calculate_full_elicitation_average(organized_data[mech], deficit_offset)
+				full_elicitation_averages[mech] = {'rawaverages': rawaverages, 'weightedaverages_l2': weightedaverages_l2, 'weightedaverages_l1': weightedaverages_l1, 'euclideanprefs': euclideanprefs}
 
-	maxn = -1
-	for slider in xrange(0, len(slider_order)):
-		for mechanism in mechanism_super_dictionary:
-			if mechanism not in lines_to_do:
-				continue
-			if mechanism_super_dictionary[mechanism]['type'] == 'l1' or mechanism_super_dictionary[mechanism]['type'] == 'l2':
-				n = range(0, len(organized_data[mechanism]) + 1)
-				maxn = max(maxn, len(n))
-				vals = [d['question_data']['slider' + str(slider) + '_loc'] for d in organized_data[mechanism]]
-				vals.insert(0, mechanism_super_dictionary[mechanism]['initial_values'][slider]) #prepend initial values
-				l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'])
-				if slider == 0:
-					lines.append(l[0])
-					legend_names.append(mechanism_super_dictionary[mechanism]['name'])
+		maxn = 25
+		for slider in xrange(0, len(slider_order)):
+			for mechanism in mechanism_super_dictionary:
+				if mechanism not in lines_to_do[ltd]:
+					continue
+				if mechanism_super_dictionary[mechanism]['type'] == 'l1' or mechanism_super_dictionary[mechanism]['type'] == 'l2':
+					for set_num in range(mechanism_super_dictionary[mechanism]['numsets']):
+						n = range(0, len(organized_data[mechanism]) + 1)
+						maxn = max(maxn, len(n))
+						vals = [d['question_data']['slider' + str(slider) + str(set_num) + '_loc'] for d in organized_data[mechanism]]
+						vals.insert(0, mechanism_super_dictionary[mechanism]['initial_values'][set_num][slider]) #prepend initial values
+						l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'] + ", Set " + str(set_num))
+						if slider == 0:
+							lines.append(l[0])
+							legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ", Set " + str(set_num))
 
-		# comparisons
-			if mechanism_super_dictionary[mechanism]['type'] == 'comparisons':
-				for set_num in range(mechanism_super_dictionary[mechanism]['numsets']):
-					n = range(0, len(organized_data[mechanism]) + 1)
-					maxn = max(maxn, len(n))
-					vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[mechanism]]
-					vals.insert(0, mechanism_super_dictionary[mechanism]['initial_values'][set_num][slider]) #prepend initial values
-					l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'] + ", Set " + str(set_num))
+			# comparisons
+				if mechanism_super_dictionary[mechanism]['type'] == 'comparisons':
+					for set_num in range(mechanism_super_dictionary[mechanism]['numsets']):
+						n = range(0, len(organized_data[mechanism]) + 1)
+						maxn = max(maxn, len(n))
+						vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[mechanism]]
+						vals.insert(0, mechanism_super_dictionary[mechanism]['initial_values'][set_num][slider]) #prepend initial values
+						l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'] + ", Set " + str(set_num))
+						if slider == 0:
+							lines.append(l[0])
+							legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ", Set " + str(set_num))
+
+				n = range(maxn)
+				if mechanism_super_dictionary[mechanism]['type'] == 'full':
+					vals = [full_elicitation_averages[mechanism]['euclideanprefs'][slider] for _ in n]
+					l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'])
+
 					if slider == 0:
 						lines.append(l[0])
-						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ", Set " + str(set_num))
+						legend_names.append(mechanism_super_dictionary[mechanism]['name'])
 
-			n = range(maxn)
-			if mechanism_super_dictionary[mechanism]['type'] == 'full':
-				vals = [full_elicitation_averages[mechanism]['euclideanprefs'][slider] for _ in n]
-				l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'])
-
-				if slider == 0:
-					lines.append(l[0])
-					legend_names.append(mechanism_super_dictionary[mechanism]['name'])
-
-		axarr[slider].set_title(slider_order[slider], fontsize = 18)
-		axarr[slider].set_ylabel('$ (Billions)', fontsize = 18)
-		axarr[slider].tick_params(axis='both', which='major', labelsize=18)
-	
-	axarr[len(slider_order)-1].set_xlabel('Iteration', fontsize = 18)
-	f.legend(lines,legend_names , loc='upper center', borderaxespad=0., ncol = 3, fontsize = 18)
+			axarr[slider].set_title(slider_order[slider], fontsize = 18)
+			axarr[slider].set_ylabel('$ (Billions)', fontsize = 18)
+			axarr[slider].tick_params(axis='both', which='major', labelsize=18)
 		
-	plt.show()
+		axarr[len(slider_order)-1].set_xlabel('Iteration', fontsize = 18)
+		f.legend(lines,legend_names , loc='upper center', borderaxespad=0., ncol = 3, fontsize = 18)
 
-def analyze_data_experiment0(data): # constrained movement
+
+		mng = plt.get_current_fig_manager()
+		#mng.frame.Maximize(True)
+		mng.window.showMaximized()
+
+		#mng.window.state('zoomed') #works fine on Windows!
+
+		#plt.show()
+		plt.savefig("simulated_plots/" + LABEL + labels[ltd] + '.png')
+
+def analyze_data_experiment_l2(data): # constrained movement
 	plot_sliders_over_time(data, 'l2 Constrained Movement Mechanism')
 	creditsused = [] #histogram of credits used
 	for exp in data:
@@ -159,16 +169,32 @@ def analyze_data_experiment0(data): # constrained movement
 	return None
 
 
-def analyze_data_experiment1(data): # comparisons
+def analyze_data_experiment_comparisons(data): # comparisons
 	for setnum in range(2):
 		plot_sliders_over_time(data, 'Comparison Mechanism', 'set' + str(setnum))
 	return None
 
 
-def analyze_data_experiment2(data): # ideal points and elicitation
+def analyze_data_experiment_full(data): # ideal points and elicitation
+	f_weights, axarr_weights = plt.subplots(5, sharex=False)
+	f_values, axarr_values = plt.subplots(5, sharex=False)
+
+	lines_values = []
+	lines_weights = []
+
+	#plot distribution of points, weights
+	for slider in range(5):
+		values = [row['question_data']['slider' + str(slider) + '0_loc'] for row in data]
+		weights = [min(10, row['question_data']['slider' + str(slider) + '0_weight']) for row in data]
+		axarr_values[slider].hist(values,40)
+		axarr_weights[slider].hist(weights,40)
+		if max(weights) > 10:
+			print weights
+
+	plt.show()
 	return None
 
-def analyze_data_experiment3(data): # constrained movement
+def analyze_data_experiment_l1(data): # constrained movement
 	plot_sliders_over_time(data, 'l1 Constrained Movement Mechanism')
 	creditsused = []
 	for exp in data:
@@ -176,34 +202,28 @@ def analyze_data_experiment3(data): # constrained movement
 	plt.hist(creditsused, bins = 10, range =[0, 1])
 	plt.show()
 
-switcher_analyze_data = {
-	0: analyze_data_experiment0,
-	1: analyze_data_experiment1,
-	2: analyze_data_experiment2,
-	3: analyze_data_experiment3,
-	4: analyze_data_experiment0,
-	5: analyze_data_experiment1,
-	6: analyze_data_experiment2,
-	7: analyze_data_experiment3,
-	8: analyze_data_experiment0,
-	9: analyze_data_experiment1,
-	10: analyze_data_experiment2,
-	11: analyze_data_experiment3
-
-}
-
 def calc_credits_used(experiment):
 	return experiment['question_data']['slider0_creditsused'] + experiment['question_data']['slider1_creditsused'] + experiment['question_data']['slider2_creditsused'] + experiment['question_data']['slider3_creditsused']
 
-def analyze_data(organized_data, LABEL):
+switcher_analyze_data ={
+	'full' : analyze_data_experiment_full,
+	'l1' : analyze_data_experiment_l1,
+	'l2' : analyze_data_experiment_l2,
+	'comparisons' : analyze_data_experiment_comparisons
+}
+
+def analyze_data(organized_data, LABEL, lines_to_do):
 	# for comparisons & constrained movement, plot the locations for each slider (with labels) and deficit over time
 	# for raw elicitation, calculate the minimizer (optimal point)
 	# also calculate average time for each mechanism
-	calculate_time_spent(organized_data, LABEL)
+	#calculate_time_spent(organized_data, LABEL)
 
-	# for key in organized_data:
-	#	print switcher_analyze_data[key](organized_data[key])
-	analyze_movement_and_weights(organized_data, LABEL)
+	for key in organized_data:
+		if key not in lines_to_do[0]:
+			continue
+		print switcher_analyze_data[key](organized_data[key])
+	#analyze_movement_and_weights(organized_data, LABEL)
+
 slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
 
 def movingaverage(interval, window_size):
@@ -479,16 +499,22 @@ def payments_new_people(organized_data):
 				if d['worker_ID'] in newids:
 					writer.writerow([d['worker_ID'], d['question_num'], d['question_data']['explanation'], d['feedback_data']['feedback'],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page3']])
 
-def analysis_call(filename, LABEL, mechanism_super_dictionary, do2SetComparisonsAnalysis = False, plotPercentMovementOverTime = False, organizePayment = False, slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', 'Deficit']):
-	data, organized_data = clean_data(load_data(filename));
+def analysis_call(filename, LABEL, mechanism_super_dictionary, lines_to_do = None, labels = [''], plotHistogramOfFull = False, plotAllOverTime = False, do2SetComparisonsAnalysis = False, plotPercentMovementOverTime = False, organizePayment = False, slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', 'Deficit'], deficit_offset = 0):
+	data, organized_data = clean_data(load_data(filename), mechanism_super_dictionary, deficit_offset);
 
 	if do2SetComparisonsAnalysis:
 		TwoSetComparisonsAnalysis(organized_data[1])	
 
 	if plotPercentMovementOverTime:
 		plot_percent_movements_over_time(organized_data, LABEL)
+
+	if plotHistogramOfFull:
+		for key in mechanism_super_dictionary:
+			if mechanism_super_dictionary[key]['type'] == "full":
+				analyze_data_experiment_full(organized_data[key])
 	
-	plot_allmechansisms_together(organized_data, mechanism_super_dictionary, slider_order = slider_order)
+	if plotAllOverTime:
+		plot_allmechansisms_together(organized_data, mechanism_super_dictionary, slider_order = slider_order, deficit_offset = deficit_offset, labels = labels, lines_to_do = lines_to_do, LABEL = LABEL)
 
 	# analyze_data(organized_data, LABEL)
 

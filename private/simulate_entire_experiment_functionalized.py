@@ -18,43 +18,50 @@ import csv
 
 
 def create_ideal_points_and_weights(
-    num_items=5, centers=[450, 1200, 370, 1300, 882]):
+    num_items=5, centers=[425, 1200, 350, 1450, 753], weight_centers = [8, 8, 6, 5, 5]):
+	centers[4] = calculate_deficit(centers, deficit_offset = 228)
 	ideals = []
 	weights = []
 	for i in range(num_items):
-		ideals.append(np.random.uniform(
-		    low=centers[i] * .25, high=centers[i] * 1.75));
-		weights.append(np.random.uniform(low=0, high=10));
+		ideals.append(min(max(0.01, np.random.normal(loc = centers[i], scale = centers[i]*.3)), centers[i]*2))
+		#ideals.append(np.random.uniform(
+		    #low=centers[i] * .25, high=centers[i] * 1.75));
+		    #low=centers[i] * .5, high=centers[i] * 1.5));
+		weights.append(min(10, max(0.01,np.random.normal(weight_centers[i], scale = 2))));
 	return [ideals, weights]
 
 
-def calculate_deficit(values, deficit_additive=162):
-	return values[0] + values[1] + values[2] - values[3] + deficit_additive;
+def calculate_deficit(values, deficit_offset=228):
+	return values[0] + values[1] + values[2] - values[3] + deficit_offset;
 
 
 def intialize_mechanisms(mechanism_super_dictionary):
 	mechanisms = {}
 	for mech in range(len(mechanism_super_dictionary)):
+		for setnum in range(mechanism_super_dictionary[mech]['numsets']):
+			mechanism_super_dictionary[mech]['initial_values'][setnum][4] = calculate_deficit(mechanism_super_dictionary[mech]['initial_values'][setnum])
+
 		if mechanism_super_dictionary[mech]['type'] == 'comparisons':
 			mechanisms[mech] = {'question_ID': mechanism_super_dictionary[mech][
 			    'type'], 'values': mechanism_super_dictionary[mech]['initial_values'], 'number_previous': 0, 'busy': False}
 			for setnum in range(mechanism_super_dictionary[mech]['numsets']):
 				for item in range(4):
-					mechanisms[mech][str(setnum) + "slider" + str(item) +
+					mechanisms[mech]["set" + str(setnum) + "slider" + str(item) +
 					                  "1"] = mechanism_super_dictionary[mech]['initial_values'][setnum][item]
 	 	else:
 		 	mechanisms[mech] = {'question_ID': mechanism_super_dictionary[mech][
 		 	    'type'], 'values': mechanism_super_dictionary[mech]['initial_values'], 'number_previous': 0, 'busy': False}
+	print mechanisms
 	return mechanisms
 
 
-def radius_fn(num_previous, radius_type=0):
-	if radius_type == 0:
-		return 35;
-	elif radius_type == 1:
-		return 200.0 / (num_previous + 1);
-	elif radius_type == 2:
-		return 50.0 / (math.floor(num_previous / 10.0) + 1)
+def radius_fn(num_previous, radius_parameters):
+	if radius_parameters['radius_type'] == 'constant':
+		return float(radius_parameters['starting']);
+	elif radius_parameters['radius_type'] == 'decreasing':
+		return float(radius_parameters['starting']) / (num_previous + 1);
+	elif radius_parameters['radius_type'] == 'decreasing_slow':
+		return float(radius_parameters['starting']) / (math.floor(num_previous / float(radius_parameters['decrease_every'])) + 1)
 
 
 def get_turker_times(num_turkers, window_length, max_turkers_per_window):
@@ -70,18 +77,18 @@ def get_turker_times(num_turkers, window_length, max_turkers_per_window):
 
 
 def do_mechanism(turker_idealpt, mechanism_assignment,
-                 mechanisms, time_of_last_turker, turker_time):
+                 mechanisms, time_of_last_turker, turker_time, mechanism_super_dictionary, deficit_offset, radius_parameters):
 	row = fill_out_preliminaries(
-	    {}, mechanism_assignment, mechanisms, turker_time)
+	    {}, mechanism_assignment, mechanisms, turker_time, mechanism_super_dictionary[mechanism_assignment]['numsets'], deficit_offset, radius_parameters)
 	mechanisms[mechanism_assignment]['number_previous'] = mechanisms[
 	    mechanism_assignment]['number_previous'] + 1
 	time_of_last_turker[mechanism_assignment] = turker_time
-	row = simulate_person(turker_idealpt, mechanism_assignment, mechanisms, row)
+	row = simulate_person(turker_idealpt, mechanism_assignment, mechanisms, row, mechanism_super_dictionary, deficit_offset)
 
 	return row;
 
 
-def fill_out_preliminaries(row, mechanism_assignment, mechanisms, turker_time):
+def fill_out_preliminaries(row, mechanism_assignment, mechanisms, turker_time, numsets, deficit_offset, radius_parameters):
 	row['worker_ID'] = 'NA'
 	row['asg_ID'] = 'NA'
 	row['initial_time'] = int(turker_time)
@@ -94,15 +101,18 @@ def fill_out_preliminaries(row, mechanism_assignment, mechanisms, turker_time):
 	row['num_of_previous_participants'] = mechanisms[
 	    mechanism_assignment]['number_previous']
 	row['current_answer'] = 0
-	row['initial_slider0'] = mechanisms[mechanism_assignment]['values'][0]
-	row['initial_slider1'] = mechanisms[mechanism_assignment]['values'][1]
-	row['initial_slider2'] = mechanisms[mechanism_assignment]['values'][2]
-	row['initial_slider3'] = mechanisms[mechanism_assignment]['values'][3]
-	row['initial_deficit'] = calculate_deficit(
-	    mechanisms[mechanism_assignment]['values']);
+	for setnum in range(numsets):
+		row['initial_slider0' + str(setnum)] = mechanisms[mechanism_assignment]['values'][setnum][0]
+		row['initial_slider1' + str(setnum)] = mechanisms[mechanism_assignment]['values'][setnum][1]
+		row['initial_slider2' + str(setnum)] = mechanisms[mechanism_assignment]['values'][setnum][2]
+		row['initial_slider3' + str(setnum)] = mechanisms[mechanism_assignment]['values'][setnum][3]
+		row['initial_deficit' + str(setnum)] = calculate_deficit(
+		    mechanisms[mechanism_assignment]['values'][setnum], deficit_offset);
 	row['timer'] = 100;
 	row['radius'] = radius_fn(mechanisms[mechanism_assignment][
-	                          'number_previous'], radius_type=0)
+	                          'number_previous'], radius_parameters)
+
+	# print row
 	return row
 
 
@@ -145,7 +155,7 @@ def generate_random_list(LIMIT, mechs_per_list):
 		lst = np.append(lst, np.random.choice(range(0, 4), size=mechs_per_list, replace=False))
 	return lst
 
-def find_ideal_pt_for_person_in_ball(center, radius, idealpt_and_radius, constraint = "l1"):
+def find_ideal_pt_for_person_in_ball(center, radius, idealpt_and_radius, constraint = "l1", deficit_offset = 228):
 	X = cvxpy.Variable(5) #1 point for each item
 	fun = 0
 	y = idealpt_and_radius[0];
@@ -156,7 +166,7 @@ def find_ideal_pt_for_person_in_ball(center, radius, idealpt_and_radius, constra
 	for slider in range(5):
 		fun += w[slider]*cvxpy.abs(X[slider] - y[slider])
 	obj = cvxpy.Minimize(fun)
-	constraints = [X >= 0, X[0] + X[1] + X[2] - X[3] + 162 == X[4]]
+	constraints = [X >= 0, X[0] + X[1] + X[2] - X[3] + deficit_offset == X[4]]
 
 	if constraint == "l1":
 		constraints += [cvxpy.sum_entries(cvxpy.abs(X[0:4] - center[0:4])) <= radius]
@@ -197,7 +207,7 @@ def calculate_disutility_of_vector(pts, vector):
 	return sum([weights[i]*abs(idealpts[i] - vector[i]) for i in range(5)]);
 
 
-def simulate_person(idealpts, mechanism_assignment, mechanisms, row):
+def simulate_person(idealpts, mechanism_assignment, mechanisms, row, mechanism_super_dictionary, deficit_offset = 228):
 	prepend = "answer1." + str(mechanism_assignment) + ".";
 	row[prepend + "0"] = '{"time" : 1}';
 	answer = {}
@@ -205,69 +215,63 @@ def simulate_person(idealpts, mechanism_assignment, mechanisms, row):
 	answer["time"] = 1
 
 	if mechanisms[mechanism_assignment]['question_ID'] == 'comparisons':
-		sampled_vector_00 = sample_in_ball(4);
-		sampled_vector_02 = sample_in_ball(4);
-		sampled_vector_03 = sample_in_ball(4);
+		for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
+			sampled_vector_00 = sample_in_ball(4);
+			sampled_vector_02 = sample_in_ball(4);
+			sampled_vector_03 = sample_in_ball(4);
+			setstr = "set" + str(setnum);
 
-		sampled_vector_10 = sample_in_ball(4);
-		sampled_vector_12 = sample_in_ball(4);
-		sampled_vector_13 = sample_in_ball(4);
+			for slider_idx in range(4):
+				row[setstr + "slider" + str(slider_idx) + "1"] = mechanisms[mechanism_assignment][setstr + "slider" + str(slider_idx) + "1"];
+				row[setstr + "slider" + str(slider_idx) + "0"] = max(0, row[setstr + "slider" + str(slider_idx) + "1"] + sampled_vector_00[slider_idx] * (row['radius']));
+				row[setstr + "slider" + str(slider_idx) + "2"] = max(0, row[setstr + "slider" + str(slider_idx) + "1"] + sampled_vector_02[slider_idx] * (row['radius']));
+				row[setstr + "slider" + str(slider_idx) + "3"] = max(0, row[setstr + "slider" + str(slider_idx) + "1"] + sampled_vector_03[slider_idx] * (row['radius']));
 
-		for slider_idx in range(4):
-			row["set0slider" + str(slider_idx) + "1"] = mechanisms[mechanism_assignment]["set0slider" + str(slider_idx) + "1"];
-			row["set0slider" + str(slider_idx) + "0"] = max(0, row["set0slider" + str(slider_idx) + "1"] + sampled_vector_00[slider_idx] * (row['radius']));
-			row["set0slider" + str(slider_idx) + "2"] = max(0, row["set0slider" + str(slider_idx) + "1"] + sampled_vector_02[slider_idx] * (row['radius']));
-			row["set0slider" + str(slider_idx) + "3"] = max(0, row["set0slider" + str(slider_idx) + "1"] + sampled_vector_03[slider_idx] * (row['radius']));
+			# set deficit terms
+			for well_idx in range(4):
+				row[setstr + 'slider4'+str(well_idx)] = calculate_deficit([row[setstr + 'slider'+str(i)+str(well_idx)] for i in range(4)]);
 
-			row["set1slider" + str(slider_idx) + "1"] = mechanisms[mechanism_assignment]["set1slider" + str(slider_idx) + "1"];
-			row["set1slider" + str(slider_idx) + "0"] = max(0, row["set1slider" + str(slider_idx) + "1"] + sampled_vector_10[slider_idx] * (row['radius']));
-			row["set1slider" + str(slider_idx) + "2"] = max(0, row["set1slider" + str(slider_idx) + "1"] + sampled_vector_12[slider_idx] * (row['radius']));
-			row["set1slider" + str(slider_idx) + "3"] = max(0, row["set1slider" + str(slider_idx) + "1"] + sampled_vector_13[slider_idx] * (row['radius']));
+			# for each set, find person's favorite vector, select that as option
+			utilities = [calculate_disutility_of_vector(idealpts, [row[setstr + 'slider' + str(item)+str(well_idx)] for item in range(5)]) for well_idx in range(4) ]
+			answer['option'+setstr] = [str(np.argmin(utilities))]
+			answer['deficit' + setstr] = row[setstr + 'slider4'+str(answer['option' + setstr][0])]
 
-		# set deficit terms
-		for well_idx in range(4):
-			row['set0slider4'+str(well_idx)] = calculate_deficit([row['set0slider'+str(i)+str(well_idx)] for i in range(4)]);
-			row['set1slider4'+str(well_idx)] = calculate_deficit([row['set1slider'+str(i)+str(well_idx)] for i in range(4)]);
-
-		# for each set, find person's favorite vector, select that as option
-		set0utilities = [calculate_disutility_of_vector(idealpts, [row['set0slider' + str(item)+str(well_idx)] for item in range(5)]) for well_idx in range(4) ]
-		set1utilities = [calculate_disutility_of_vector(idealpts, [row['set1slider' + str(item)+str(well_idx)] for item in range(5)]) for well_idx in range(4) ]
-		answer['optionset0'] = [str(np.argmin(set0utilities))]
-		answer['optionset1'] = [str(np.argmin(set1utilities))]
-		answer['deficitset0'] = row['set0slider4'+str(answer['optionset0'][0])]
-		answer['deficitset1'] = row['set1slider4'+str(answer['optionset1'][0])]
-
-		for slider_idx in range(5):
-		 	mechanisms[mechanism_assignment]["set0slider" + str(slider_idx) + "1"] = row["set0slider" + str(slider_idx) + answer['optionset0'][0]]
-		 	mechanisms[mechanism_assignment]["set1slider" + str(slider_idx) + "1"] = row["set1slider" + str(slider_idx) + answer['optionset1'][0]]
+			for slider_idx in range(5):
+			 	mechanisms[mechanism_assignment][setstr + "slider" + str(slider_idx) + "1"] = row[setstr + "slider" + str(slider_idx) + answer['option' + setstr][0]]
 
 	elif mechanisms[mechanism_assignment]['question_ID'] == 'l2':
-		values, credits = find_ideal_pt_for_person_in_ball(mechanisms[mechanism_assignment]['values'], row['radius'], idealpts, constraint = "l2")
-		for i in range(0, 4):
-			answer["slider" + str(i)] = [str(values[i])];
-			answer['deficit'] = values[4]
-			row['answer1.slider' + str(i) + "_credits"] = credits[i];
-			mechanisms[mechanism_assignment]['values'][i] = values[i]
+		for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
+			values, credits = find_ideal_pt_for_person_in_ball(mechanisms[mechanism_assignment]['values'][setnum], row['radius'], idealpts, constraint = "l2", deficit_offset = deficit_offset)
+			setstr = str(setnum)
+			for i in range(0, 4):
+				answer["slider" + str(i) + setstr] = [str(values[i])];
+				answer['deficit' + setstr] = values[4]
+				row['answer1.slider' + str(i) + setstr + "_credits"] = credits[i];
+				mechanisms[mechanism_assignment]['values'][setnum][i] = values[i]
 	elif mechanisms[mechanism_assignment]['question_ID'] == 'full': #full elicitation
-		for i in range(0, 5):
-			answer["slider" + str(i) + "_text"] = [str(idealpts[0][i])];
-			answer["slider" + str(i) + "weight_text"] = [str(idealpts[1][i])]
+		for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
+			setstr = str(setnum)
+			for i in range(0, 5):
+				answer["slider" + str(i) + setstr + "_text"] = [str(idealpts[0][i])];
+				answer["slider" + str(i) + setstr + "weight_text"] = [str(idealpts[1][i])]
 	elif mechanisms[mechanism_assignment]['question_ID'] == 'l1':
-		values, credits = find_ideal_pt_for_person_in_ball(mechanisms[mechanism_assignment]['values'], row['radius'], idealpts, constraint = "l1")
-		for i in range(0, 4):
-			answer["slider" + str(i)] = [str(values[i])];
-			answer['deficit'] = values[4]
-			row['answer1.slider' + str(i) + "_credits"] = credits[i];
-			mechanisms[mechanism_assignment]['values'][i] = values[i]
+		for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
+			setstr = str(setnum)
+			values, credits = find_ideal_pt_for_person_in_ball(mechanisms[mechanism_assignment]['values'][setnum], row['radius'], idealpts, constraint = "l1", deficit_offset = deficit_offset)
+			for i in range(0, 4):
+				answer["slider" + str(i)+ setstr] = [str(values[i])];
+				answer['deficit'+ setstr] = values[4]
+				row['answer1.slider' + str(i) + setstr + "_credits"] = credits[i];
+				mechanisms[mechanism_assignment]['values'][setnum][i] = values[i]
 
 	row[prepend + "1"] = answer;
 	row[prepend + "2"] = {"political_stance_report":["somewhat"], "feedback" : ["simulated"], "time" : 100};
 
+	# if row['current_question'] == 4 or row['current_question'] == 1:
+	# 	print row
 	return row;
 
-
-
-def simulate_experiment_functionalized(filename, LABEL, mechanism_super_dictionary, LIMIT = 100, TIME_IN_MECHANISM = 6, WINDOW_LEN = 12 ,TURKERS_PER_WINDOW = 3):
+def simulate_experiment_functionalized(filename, LABEL, mechanism_super_dictionary, radius_parameters, LIMIT = 100, TIME_IN_MECHANISM = 6, WINDOW_LEN = 12 ,TURKERS_PER_WINDOW = 3, deficit_offset = 0):
 	time_of_last_turker = {};
 	for mech in mechanism_super_dictionary:
 		time_of_last_turker[mech] = -100;
@@ -276,12 +280,12 @@ def simulate_experiment_functionalized(filename, LABEL, mechanism_super_dictiona
 	mechanisms = intialize_mechanisms(mechanism_super_dictionary);
 
 	with open(filename, 'wb') as f:
-		fieldnames = ['worker_ID','asg_ID','initial_time','begin_time','experiment_id','current_question','experiment_finished','begin_experiment','num_of_previous_participants','current_answer','initial_slider0','initial_slider1','initial_slider2','initial_slider3','initial_deficit','timer','radius','answer1.0.0','answer1.0.1','answer1.0.2','answer1.1.0','answer1.1.1','answer1.1.2','answer1.2.0','answer1.2.1','answer1.2.2','answer1.3.0','answer1.3.1','answer1.3.2','answer1.4.0','answer1.4.1','answer1.4.2','answer1.5.0','answer1.5.1','answer1.5.2','answer1.6.0','answer1.6.1','answer1.6.2','answer1.7.0','answer1.7.1','answer1.7.2','set0slider00','set0slider10','set0slider20','set0slider30','set0slider40','set0slider01','set0slider11','set0slider21','set0slider31','set0slider41','set0slider02','set0slider12','set0slider22','set0slider32','set0slider42','set0slider03','set0slider13','set0slider23','set0slider33','set0slider43','set1slider00','set1slider10','set1slider20','set1slider30','set1slider40','set1slider01','set1slider11','set1slider21','set1slider31','set1slider41','set1slider02','set1slider12','set1slider22','set1slider32','set1slider42','set1slider03','set1slider13','set1slider23','set1slider33','set1slider43','answer1.slider0_credits','answer1.slider1_credits','answer1.slider2_credits','answer1.slider3_credits']
+		fieldnames = ['worker_ID','asg_ID','initial_time','begin_time','experiment_id','current_question','experiment_finished','begin_experiment','num_of_previous_participants','current_answer','initial_slider00','initial_slider10','initial_slider20','initial_slider30','initial_deficit0','initial_slider01','initial_slider11','initial_slider21','initial_slider31', 'initial_deficit1', 'timer','radius','answer1.0.0','answer1.0.1','answer1.0.2','answer1.1.0','answer1.1.1','answer1.1.2','answer1.2.0','answer1.2.1','answer1.2.2','answer1.3.0','answer1.3.1','answer1.3.2','answer1.4.0','answer1.4.1','answer1.4.2','answer1.5.0','answer1.5.1','answer1.5.2','answer1.6.0','answer1.6.1','answer1.6.2','answer1.7.0','answer1.7.1','answer1.7.2','answer1.8.0','answer1.8.1','answer1.8.2','answer1.9.0','answer1.9.1','answer1.9.2','set0slider00','set0slider10','set0slider20','set0slider30','set0slider40','set0slider01','set0slider11','set0slider21','set0slider31','set0slider41','set0slider02','set0slider12','set0slider22','set0slider32','set0slider42','set0slider03','set0slider13','set0slider23','set0slider33','set0slider43','set1slider00','set1slider10','set1slider20','set1slider30','set1slider40','set1slider01','set1slider11','set1slider21','set1slider31','set1slider41','set1slider02','set1slider12','set1slider22','set1slider32','set1slider42','set1slider03','set1slider13','set1slider23','set1slider33','set1slider43','answer1.slider00_credits','answer1.slider10_credits','answer1.slider20_credits','answer1.slider30_credits', 'answer1.slider01_credits','answer1.slider11_credits','answer1.slider21_credits','answer1.slider31_credits']
 		writer = csv.DictWriter(f, fieldnames = fieldnames);
 		writer.writeheader();
 
 		for turker_time in turker_times:
 			mechanism_assignment = assignment_david_option2(time_of_last_turker, turker_time, mechanism_super_dictionary, TIME_IN_MECHANISM)
 			turker_idealpt = create_ideal_points_and_weights();
-			row = do_mechanism(turker_idealpt, mechanism_assignment, mechanisms, time_of_last_turker, turker_time)
+			row = do_mechanism(turker_idealpt, mechanism_assignment, mechanisms, time_of_last_turker, turker_time, mechanism_super_dictionary, deficit_offset, radius_parameters)
 			writer.writerow(row);
