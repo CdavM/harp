@@ -356,7 +356,7 @@ Meteor.methods({
 
                 //var number_of_previous_participants = Answers.find(answer_field_query).count();
                 //new way to calculate previous participants to handle the multiple averaging case
-                previous_question_dict = Questions.find_one({
+                previous_question_dict = Questions.findOne({
                     "question_ID": next_question
                 });
                 var number_of_previous_participants =  previous_question_dict.previous_participants;
@@ -534,7 +534,7 @@ Meteor.methods({
               //Nikhil's comment: Potentially this is where I update the averaging status, do teh averaging, etc. TODO
                 //remove the busy flag.
                 console.log("removing busy flag from " + curr_experiment.current_question);
-                current_question_dictionary = Questions.find_one({"question_ID": curr_experiment.current_question});
+                current_question_dictionary = Questions.findOne({"question_ID": curr_experiment.current_question});
                 if (wasTimedOut == 'false'){
                   current_question_dictionary.averaging_status_array[curr_experiment.current_avg_number] = 'DONE';
                   var alldone = true;
