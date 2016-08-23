@@ -114,7 +114,7 @@ def plot_allmechansisms_together(
 					for set_num in range(mechanism_super_dictionary[mechanism]['numsets']):
 						n = range(0, len(organized_data[mechanism]) + 1)
 						maxn = max(maxn, len(n))
-						vals = [d['question_data']['slider' + str(slider) + str(set_num) + '_loc'] for d in organized_data[mechanism]]
+						vals = [d['question_data']['initial_slider' + str(slider) + str(set_num) + '_loc'] for d in organized_data[mechanism]] #initial instead of actual for averaging purposes
 						vals.insert(0, mechanism_super_dictionary[mechanism]['initial_values'][set_num][slider]) #prepend initial values
 						l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'] + ", Set " + str(set_num))
 						if slider == 0:
@@ -158,7 +158,7 @@ def plot_allmechansisms_together(
 
 		#plt.show()
 		plt.savefig("simulated_plots/" + LABEL + labels[ltd] + '.png')
-
+		plt.close();
 def analyze_data_experiment_l2(data): # constrained movement
 	plot_sliders_over_time(data, 'l2 Constrained Movement Mechanism')
 	creditsused = [] #histogram of credits used

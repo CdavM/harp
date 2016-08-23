@@ -52,6 +52,13 @@ def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive = 
         answer['slider2' + setstr + '_loc'] = float(answerdata['slider2' + setstr][0])
         answer['slider3' + setstr + '_loc'] = float(answerdata['slider3' + setstr][0])
         answer['slider4' + setstr + '_loc'] = float(answerdata['deficit' + setstr])
+        
+        answer['initial_slider0' + setstr + '_loc'] = float(restofdata['initial_slider0' + setstr])
+        answer['initial_slider1' + setstr + '_loc'] = float(restofdata['initial_slider1' + setstr])
+        answer['initial_slider2' + setstr + '_loc'] = float(restofdata['initial_slider2' + setstr])
+        answer['initial_slider3' + setstr + '_loc'] = float(restofdata['initial_slider3' + setstr])
+        answer['initial_slider4' + setstr + '_loc'] = float(restofdata['initial_deficit' + setstr])
+
         answer['explanation'] = answerdata['text_explanation']
         
         answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
@@ -75,6 +82,13 @@ def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive = 
         answer['slider4' + setstr + '_loc'] = float(answerdata['deficit'+ setstr])
         answer['explanation'] = answerdata['text_explanation']
         
+        answer['initial_slider0' + setstr + '_loc'] = float(restofdata['initial_slider0' + setstr])
+        answer['initial_slider1' + setstr + '_loc'] = float(restofdata['initial_slider1' + setstr])
+        answer['initial_slider2' + setstr + '_loc'] = float(restofdata['initial_slider2' + setstr])
+        answer['initial_slider3' + setstr + '_loc'] = float(restofdata['initial_slider3' + setstr])
+        answer['initial_slider4' + setstr + '_loc'] = float(restofdata['initial_deficit' + setstr])
+
+
         answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
         
         answer['slider0' + setstr + '_creditsused'] = float(restofdata['answer1.slider0' + setstr + '_credits']) 

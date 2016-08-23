@@ -4,7 +4,7 @@ import random
 import numpy as np
 import cvxpy
 import csv
-
+import sys
 # THINGS TO ADD
 # Each mechanism
 #	 Saving values across people
@@ -43,15 +43,14 @@ def intialize_mechanisms(mechanism_super_dictionary):
 
 		if mechanism_super_dictionary[mech]['type'] == 'comparisons':
 			mechanisms[mech] = {'question_ID': mechanism_super_dictionary[mech][
-			    'type'], 'values': mechanism_super_dictionary[mech]['initial_values'], 'number_previous': 0, 'busy': False}
+			    'type'], 'values': mechanism_super_dictionary[mech]['initial_values'], 'number_previous': 0, 'busy': False, 'averaging_status_array' : [-100]*mechanism_super_dictionary[mech]['num_to_average_per_step']}
 			for setnum in range(mechanism_super_dictionary[mech]['numsets']):
 				for item in range(4):
 					mechanisms[mech]["set" + str(setnum) + "slider" + str(item) +
 					                  "1"] = mechanism_super_dictionary[mech]['initial_values'][setnum][item]
 	 	else:
 		 	mechanisms[mech] = {'question_ID': mechanism_super_dictionary[mech][
-		 	    'type'], 'values': mechanism_super_dictionary[mech]['initial_values'], 'number_previous': 0, 'busy': False}
-	print mechanisms
+		 	    'type'], 'values': mechanism_super_dictionary[mech]['initial_values'], 'number_previous': 0, 'busy': False, 'num_to_average_per_step' : mechanism_super_dictionary[mech]['num_to_average_per_step'], 'averaging_array' : np.zeros((mechanism_super_dictionary[mech]['numsets'], mechanism_super_dictionary[mech]['num_to_average_per_step'], 5)), 'averaging_status_array' : [-100]*mechanism_super_dictionary[mech]['num_to_average_per_step']}
 	return mechanisms
 
 
@@ -77,18 +76,17 @@ def get_turker_times(num_turkers, window_length, max_turkers_per_window):
 
 
 def do_mechanism(turker_idealpt, mechanism_assignment,
-                 mechanisms, time_of_last_turker, turker_time, mechanism_super_dictionary, deficit_offset, radius_parameters):
+                 mechanisms, time_of_last_turker, turker_time, mechanism_super_dictionary, deficit_offset, radius_parameters, current_avg_number):
 	row = fill_out_preliminaries(
-	    {}, mechanism_assignment, mechanisms, turker_time, mechanism_super_dictionary[mechanism_assignment]['numsets'], deficit_offset, radius_parameters)
-	mechanisms[mechanism_assignment]['number_previous'] = mechanisms[
-	    mechanism_assignment]['number_previous'] + 1
+	    {}, mechanism_assignment, mechanisms, turker_time, mechanism_super_dictionary[mechanism_assignment]['numsets'], deficit_offset, radius_parameters, current_avg_number)
+
 	time_of_last_turker[mechanism_assignment] = turker_time
-	row = simulate_person(turker_idealpt, mechanism_assignment, mechanisms, row, mechanism_super_dictionary, deficit_offset)
+	row = simulate_person(turker_idealpt, mechanism_assignment, mechanisms, row, mechanism_super_dictionary, deficit_offset, current_avg_number)
 
 	return row;
 
 
-def fill_out_preliminaries(row, mechanism_assignment, mechanisms, turker_time, numsets, deficit_offset, radius_parameters):
+def fill_out_preliminaries(row, mechanism_assignment, mechanisms, turker_time, numsets, deficit_offset, radius_parameters, current_avg_number):
 	row['worker_ID'] = 'NA'
 	row['asg_ID'] = 'NA'
 	row['initial_time'] = int(turker_time)
@@ -118,8 +116,10 @@ def fill_out_preliminaries(row, mechanism_assignment, mechanisms, turker_time, n
 
 def check_busy(mechanism, time, time_of_last_turker,
                busy_time=6):
-	return (time_of_last_turker[mechanism] + busy_time > time)
+	return check_busy_times(time_of_last_turker[mechanism], time, busy_time)
 
+def check_busy_times (time_last, current_time, busy_time = 6):
+	return (time_last > current_time - busy_time)
 
 def assignment_david_option2(
     time_of_last_turker, time, mechanism_super_dictionary, TIME_IN_MECHANISM, probabilities=None):
@@ -183,8 +183,6 @@ def find_ideal_pt_for_person_in_ball(center, radius, idealpt_and_radius, constra
 	else:
 		credits = [(items[i] - center[i])**2/radius**2 for i in range(4)]
 
-	deficit = calculate_deficit(items)
-	items.append(deficit)
 	return items, credits
 
 def sample_in_ball(radius, num_dimensions = 4):
@@ -207,7 +205,7 @@ def calculate_disutility_of_vector(pts, vector):
 	return sum([weights[i]*abs(idealpts[i] - vector[i]) for i in range(5)]);
 
 
-def simulate_person(idealpts, mechanism_assignment, mechanisms, row, mechanism_super_dictionary, deficit_offset = 228):
+def simulate_person(idealpts, mechanism_assignment, mechanisms, row, mechanism_super_dictionary, deficit_offset = 228, current_avg_number = 0):
 	prepend = "answer1." + str(mechanism_assignment) + ".";
 	row[prepend + "0"] = '{"time" : 1}';
 	answer = {}
@@ -239,6 +237,8 @@ def simulate_person(idealpts, mechanism_assignment, mechanisms, row, mechanism_s
 			for slider_idx in range(5):
 			 	mechanisms[mechanism_assignment][setstr + "slider" + str(slider_idx) + "1"] = row[setstr + "slider" + str(slider_idx) + answer['option' + setstr][0]]
 
+		mechanisms[mechanism_assignment]['number_previous'] = mechanisms[mechanism_assignment]['number_previous'] + 1
+
 	elif mechanisms[mechanism_assignment]['question_ID'] == 'l2':
 		for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
 			values, credits = find_ideal_pt_for_person_in_ball(mechanisms[mechanism_assignment]['values'][setnum], row['radius'], idealpts, constraint = "l2", deficit_offset = deficit_offset)
@@ -247,7 +247,22 @@ def simulate_person(idealpts, mechanism_assignment, mechanisms, row, mechanism_s
 				answer["slider" + str(i) + setstr] = [str(values[i])];
 				answer['deficit' + setstr] = values[4]
 				row['answer1.slider' + str(i) + setstr + "_credits"] = credits[i];
-				mechanisms[mechanism_assignment]['values'][setnum][i] = values[i]
+			#	mechanisms[mechanism_assignment]['values'][setnum][i] = values[i]
+			
+			mechanisms[mechanism_assignment]['averaging_array'][setnum, current_avg_number, :] = values
+		mechanisms[mechanism_assignment]['averaging_status_array'][current_avg_number] = sys.maxsize
+		if current_avg_number == mechanisms[mechanism_assignment]['num_to_average_per_step']-1:
+			#Do the averaging, set it to initial_value, reset the array, reset overall busy, increase "number_previous"
+	
+			mechanisms[mechanism_assignment]['number_previous'] = mechanisms[mechanism_assignment]['number_previous'] + 1
+			for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
+				avg_values = np.average(mechanisms[mechanism_assignment]['averaging_array'][setnum, :, :], axis = 0)
+				for i in range(0, 4):
+					mechanisms[mechanism_assignment]['values'][setnum][i] = avg_values[i]
+
+			for i in range(len(mechanisms[mechanism_assignment]['averaging_status_array'])):
+				mechanisms[mechanism_assignment]['averaging_status_array'][i] = -100;
+
 	elif mechanisms[mechanism_assignment]['question_ID'] == 'full': #full elicitation
 		for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
 			setstr = str(setnum)
@@ -260,16 +275,57 @@ def simulate_person(idealpts, mechanism_assignment, mechanisms, row, mechanism_s
 			values, credits = find_ideal_pt_for_person_in_ball(mechanisms[mechanism_assignment]['values'][setnum], row['radius'], idealpts, constraint = "l1", deficit_offset = deficit_offset)
 			for i in range(0, 4):
 				answer["slider" + str(i)+ setstr] = [str(values[i])];
-				answer['deficit'+ setstr] = values[4]
 				row['answer1.slider' + str(i) + setstr + "_credits"] = credits[i];
-				mechanisms[mechanism_assignment]['values'][setnum][i] = values[i]
 
+				#mechanisms[mechanism_assignment]['values'][setnum][i] = values[i]
+			answer['deficit'+ setstr] = values[4]
+			mechanisms[mechanism_assignment]['averaging_array'][setnum, current_avg_number, :] = values
+		mechanisms[mechanism_assignment]['averaging_status_array'][current_avg_number] = sys.maxsize
+		if current_avg_number == mechanisms[mechanism_assignment]['num_to_average_per_step']-1:
+			#Do the averaging, set it to initial_value, reset the array, reset overall busy, increase "number_previous"
+	
+			mechanisms[mechanism_assignment]['number_previous'] = mechanisms[mechanism_assignment]['number_previous'] + 1
+			for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
+				avg_values = np.average(mechanisms[mechanism_assignment]['averaging_array'][setnum, :, :], axis = 0)
+				for i in range(0, 4):
+					mechanisms[mechanism_assignment]['values'][setnum][i] = avg_values[i]
+
+			for i in range(len(mechanisms[mechanism_assignment]['averaging_status_array'])):
+				mechanisms[mechanism_assignment]['averaging_status_array'][i] = -100;
+			
 	row[prepend + "1"] = answer;
 	row[prepend + "2"] = {"political_stance_report":["somewhat"], "feedback" : ["simulated"], "time" : 100};
 
 	# if row['current_question'] == 4 or row['current_question'] == 1:
 	# 	print row
 	return row;
+
+
+#instead of "BUSY" as would happen on real thing, will just have the turker's time there
+def assignemnt_with_averaging(mechanisms, turker_time, mechanism_super_dictionary, TIME_IN_MECHANISM, probabilities=None):
+	if probabilities is None:
+		probabilities = [1.0 / len(mechanism_super_dictionary.keys())
+		                           for _ in range(len(mechanism_super_dictionary.keys()))]
+	all_busy = True;
+
+	for mech in mechanism_super_dictionary.keys():
+		all_busy = all_busy and check_busy_times(mechanisms[mech]['averaging_status_array'][-1], turker_time, busy_time = TIME_IN_MECHANISM)
+
+	if all_busy:
+		return 0, 0;
+	else:
+		mechanism = np.random.choice(range(len(mechanism_super_dictionary.keys())), p=probabilities)
+		while check_busy_times(mechanisms[mechanism]['averaging_status_array'][-1], turker_time, busy_time = TIME_IN_MECHANISM): 
+			mechanism = np.random.choice(range(len(mechanism_super_dictionary.keys())), p=probabilities)
+		current_avg_number = -1;
+		for i in range(0, mechanisms[mechanism]['num_to_average_per_step']):
+			if not check_busy_times(mechanisms[mechanism]['averaging_status_array'][i], turker_time, busy_time = TIME_IN_MECHANISM):
+				current_avg_number = i;
+				mechanisms[mechanism]['averaging_status_array'][i] = turker_time
+				break;
+
+		return mechanism, current_avg_number
+
 
 def simulate_experiment_functionalized(filename, LABEL, mechanism_super_dictionary, radius_parameters, LIMIT = 100, TIME_IN_MECHANISM = 6, WINDOW_LEN = 12 ,TURKERS_PER_WINDOW = 3, deficit_offset = 0):
 	time_of_last_turker = {};
@@ -285,7 +341,9 @@ def simulate_experiment_functionalized(filename, LABEL, mechanism_super_dictiona
 		writer.writeheader();
 
 		for turker_time in turker_times:
-			mechanism_assignment = assignment_david_option2(time_of_last_turker, turker_time, mechanism_super_dictionary, TIME_IN_MECHANISM)
+			#mechanism_assignment = assignment_david_option2(time_of_last_turker, turker_time, mechanism_super_dictionary, TIME_IN_MECHANISM)
+			mechanism_assignment, current_avg_number = assignemnt_with_averaging(mechanisms, turker_time, mechanism_super_dictionary, TIME_IN_MECHANISM)
+			
 			turker_idealpt = create_ideal_points_and_weights();
-			row = do_mechanism(turker_idealpt, mechanism_assignment, mechanisms, time_of_last_turker, turker_time, mechanism_super_dictionary, deficit_offset, radius_parameters)
+			row = do_mechanism(turker_idealpt, mechanism_assignment, mechanisms, time_of_last_turker, turker_time, mechanism_super_dictionary, deficit_offset, radius_parameters, current_avg_number)
 			writer.writerow(row);

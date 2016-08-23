@@ -154,7 +154,7 @@ Meteor.methods({
             console.log("Terminating experiment " + experiment_id_value);
             return;
         }
-        if (Object.keys(fields_to_be_updated).length && typeof(current_question) == "number" && current_question != 2) {
+        if (Object.keys(fields_to_be_updated).length && typeof(current_question) == "number" && current_question != 0) {
             Questions.update({"question_ID": current_question}, {$set: fields_to_be_updated});
         }
         // add the deficit term
@@ -209,28 +209,20 @@ Meteor.methods({
                     // if all mechanisms are busy
                     if (Questions.find({"busy": true}).count() == 8) {
                         var rnd_sample = Math.random();
-                        if (rnd_sample < 0.5){
-                            question_selected = 2;
-                        } else {
-                            question_selected = 6;
-                        }
+                        question_selected = 0;
                     } else {
                         do {
                             var rnd_sample = Math.random();
-                            if (rnd_sample < 0.0)
+                            if (rnd_sample < 0.1666666666667)
                                 question_selected = 0;
-                            else if (rnd_sample < (0.45 * 1))
+                            else if (rnd_sample < (0.1666666666667 * 2))
                                 question_selected = 1;
-                            // else if (rnd_sample < (0.135 * 3))
-                            //     question_selected = 3;
-                            // else if (rnd_sample < (0.135 * 4))
-                            //     question_selected = 4;
-                            else if (rnd_sample < (0.45 * 2))
+                            else if (rnd_sample < (0.1666666666667 * 3))
+                                question_selected = 3;
+                            else if (rnd_sample < (0.1666666666667 * 4))
+                                question_selected = 4;
+                            else if (rnd_sample < (0.1666666666667 * 5))
                                 question_selected = 5;
-                            // else if (rnd_sample < (0.135 * 6))
-                            //     question_selected = 7;
-                            // else if (rnd_sample < (0.135 * 6 + 0.095))
-                            //     question_selected = 2;
                             else
                                 question_selected = 6;
                         } while ((counters[experiment_id_value]['random_counter'].indexOf(question_selected) != -1
@@ -266,11 +258,30 @@ Meteor.methods({
 
                 // Set the busy flag
                 console.log("setting busy flag to " + next_question);
-                Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
-                
+                if (next_questions != 0){
+                  Questions.update({"question_ID": next_question}, {$set:{"busy":true}});
+
+                  question_dictionary = Questions.findOne({"question_ID": next_question});
+                  current_avg_number = -1;
+                  for (i = 0; i < question_dictionary['averaging_status_array'].length; i++){
+                    if (question_dictionary['averaging_status_array'][i] == "FREE"){
+                      current_avg_number = i;
+                      break;
+                    }
+                  }
+                  question_dictionary['averaging_status_array'][current_avg_number] = "BUSY";
+                  for (i = 0; i < question_dictionary['averaging_status_array'].length; i++){
+                    if (question_dictionary['averaging_status_array'][i] == "FREE"){
+                      Questions.update({"question_ID": next_question}, {$set:{"busy":false}});
+                    }
+                  }
+                }
+
+                //Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
+
                 var radius_fn = function (previous_participants) {
                     //return 50.0/(Math.floor(previous_participants/10.0)+1);
-                    return 35.0/Math.max(1, Math.ceil((previous_participants - 45.0)/10.0) + 1.0);
+                    return 35.0/Math.max(1, Math.ceil((previous_participants)/10.0) + 1.0);
                 };
                 var radius_val = radius_fn(Questions.findOne({"question_ID": next_question}).previous_participants);
                 if ([1, 2, 3, 4, 5, 6].indexOf(next_question) > -1){

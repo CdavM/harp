@@ -17,7 +17,10 @@ db.questions.insert(
             "slider0": 541,
             "slider1": 1004,
             "slider2": 303,
-            "slider3": 1460
+            "slider3": 1460,
+            "number_to_average" : 12,
+            "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"]
+            "averaging_array" : [[],[],[],[],[],[],[],[],[],[],[],[]]
         },
         {
             "question_ID": 1,
@@ -39,7 +42,13 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
+            "number_to_average" : 12,
+            "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"]
+            "averaging_array" : [[],[],[],[],[],[],[],[],[],[],[],[]]],
+            "number_to_average" : 12,
+            "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"]
+            "averaging_array" : [[],[],[],[],[],[],[],[],[],[],[],[]]
         },
         {
             "question_ID": 2,
@@ -61,7 +70,13 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
+            "number_to_average" : 12,
+            "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"]
+            "averaging_array" : [[],[],[],[],[],[],[],[],[],[],[],[]],
+            "number_to_average" : 12,
+            "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"]
+            "averaging_array" : [[],[],[],[],[],[],[],[],[],[],[],[]]
         },
         {
             "question_ID": 3,
@@ -83,7 +98,10 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
+            "number_to_average" : 12,
+            "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"]
+            "averaging_array" : [[],[],[],[],[],[],[],[],[],[],[],[]]
         },
         {
             "question_ID": 4,
@@ -105,7 +123,10 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
+            "number_to_average" : 12,
+            "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"]
+            "averaging_array" : [[],[],[],[],[],[],[],[],[],[],[],[]]
         },
         {
             "question_ID": 5,
@@ -127,7 +148,10 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
+            "number_to_average" : 12,
+            "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"]
+            "averaging_array" : [[],[],[],[],[],[],[],[],[],[],[],[]]
         },
         {
             "question_ID": 6,
@@ -149,7 +173,10 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
+            "number_to_average" : 12,
+            "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"]
+            "averaging_array" : [[],[],[],[],[],[],[],[],[],[],[],[]]
         }
     ]
 );
