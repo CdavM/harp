@@ -206,7 +206,7 @@ Meteor.methods({
             console.log("Terminating experiment " + experiment_id_value);
             return;
         }
-        if (Object.keys(fields_to_be_updated).length && typeof(current_question) == "number" && current_question != 0) {
+        if (Object.keys(new_slider_values).length && typeof(current_question) == "number" && current_question != 0) {
           //set it to proper array location for averaging purposes
           current_question_dict = Questions.findOne({"question_ID": current_question});
           current_question_dict.averaging_array[current_avg_number] = new_slider_values;
@@ -298,7 +298,7 @@ Meteor.methods({
                             var rnd_sample = Math.random();
                             if (rnd_sample < 0.1666666666667)
                                 question_selected = 0;
-                            else if (rnd_sample < (0.1666666666667 * 2))
+                            else if (rnd_sample < (0.1666666666667 * 7)) //TODO change from 7 to 2 after testing averaging
                                 question_selected = 1;
                             else if (rnd_sample < (0.1666666666667 * 3))
                                 question_selected = 3;
