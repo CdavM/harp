@@ -135,7 +135,7 @@ Meteor.methods({
                 upsert: true,
                 multi: true
             });
-            Meteor.call('beginQuestionScheduler', experiment_id_value);
+            Meteor.call('beginQuestionScheduler', experiment_id_value, 'false', 'initialPost');
             counters[experiment_id_value]['initial_timer'] = false;
         }
     },
@@ -210,6 +210,7 @@ Meteor.methods({
           //set it to proper array location for averaging purposes
           current_question_dict = Questions.findOne({"question_ID": current_question});
           current_question_dict.averaging_array[current_avg_number] = new_slider_values;
+          current_question_dict.averaging_status_array[current_avg_number] = 'DONE';
 
             Questions.update({
                 "question_ID": current_question
@@ -242,7 +243,7 @@ Meteor.methods({
         }
         var num_of_workers = Meteor.settings.threshold_workers;
         if (counters[experiment_id_value][current_question] >= num_of_workers) {
-            Meteor.call('beginQuestionScheduler', experiment_id_value);
+            Meteor.call('beginQuestionScheduler', experiment_id_value, 'false', 'newPost');
         }
 
     },
@@ -262,8 +263,11 @@ Meteor.methods({
         console.log("Feedback inserted for worker " + worker_ID_value);
     },
 
-    beginQuestionScheduler: function(experiment_id_value, wasTimedOut) {
+    beginQuestionScheduler: function(experiment_id_value, wasTimedOut, calledBy) {
       wasTimedOut = (typeof wasTimedOut === 'undefined') ? 'false' : wasTimedOut;
+      calledBy = (typeof calledBy === 'undefined') ? 'unknown caller' : calledBy;
+
+      console.log('question scheduler called. Timed Out:' + wasTimedOut + ', Called By:' + calledBy);
         //update questions every duration seconds
         var curr_experiment = Answers.findOne({
             experiment_id: experiment_id_value
@@ -536,7 +540,6 @@ Meteor.methods({
                 console.log("removing busy flag from " + curr_experiment.current_question);
                 current_question_dictionary = Questions.findOne({"question_ID": curr_experiment.current_question});
                 if (wasTimedOut == 'false'){
-                  current_question_dictionary.averaging_status_array[curr_experiment.current_avg_number] = 'DONE';
                   var alldone = true;
                   for (var i = 0; i < current_question_dictionary.averaging_status_array.length; i++){
                     if (current_question_dictionary.averaging_status_array[i] != 'DONE'){
@@ -554,16 +557,16 @@ Meteor.methods({
                     for (var well_idx = 0; well_idx < 2; well_idx ++){
                       for (var slider_idx = 0; slider_idx < 4; slider_idx ++){
                         var sumval = 0.0;
-                        for (var avgi = 0; avgi < current_question_dictionary.num_to_average; avgi++)
+                        for (var avgi = 0; avgi < current_question_dictionary.number_to_average; avgi++)
                         {
-                          sumval = sumval + current_question_dictionary[averaging_array][avgi]['slider' + slider_idx + well_idx];
+                          sumval = sumval + current_question_dictionary['averaging_array'][avgi]['slider' + slider_idx + well_idx];
                         }
-                        sumval = sumval / current_question_dictionary.num_to_average;
+                        sumval = sumval / current_question_dictionary.number_to_average;
                         current_question_dictionary['slider' + slider_idx + well_idx] = sumval;
                       }
                     }
-                    for (var avgi = 0; avgi < current_question_dictionary.num_to_average; avgi++){
-                      current_question_dictionary.averaging_status_array[avgi] = 'FREE';
+                    for (var avgii = 0; avgii < current_question_dictionary.number_to_average; avgii++){
+                      current_question_dictionary.averaging_status_array[avgii] = 'FREE';
                     }
                     current_question_dictionary.busy = false;
                     current_question_dictionary.previous_participants = current_question_dictionary.previous_participants+1;
@@ -656,7 +659,7 @@ Meteor.methods({
                 decrease_time(experiment_id_value);
             }, 1000);
             intervals[experiment_id_value] = Meteor.setTimeout(function() {
-                Meteor.call('beginQuestionScheduler', experiment_id_value, 'true');
+                Meteor.call('beginQuestionScheduler', experiment_id_value, 'true', 'timeout');
             }, time_value * 1000);
         }
     }
