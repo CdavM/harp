@@ -186,10 +186,10 @@ Meteor.methods({
                     }
                     var slider_difference = Number(post.answer['slider' + slider_idx + well_idx][0]) - existing_entry['initial_slider' + slider_idx + well_idx];
                     var slider_relative_diff = slider_difference / existing_entry['radius'];
-                    if ([1, 2, 3].indexOf(current_question) > -1) {
+                    if ([4,5,6].indexOf(current_question) > -1) {
                         // L1
                         answers_value['slider' + slider_idx + well_idx + "_credits"] = Math.abs(slider_relative_diff);
-                    } else if ([4, 5, 6].indexOf(current_question) > -1) {
+                    } else if ([1,2,3].indexOf(current_question) > -1) {
                         // L2
                         answers_value['slider' + slider_idx + well_idx + "_credits"] = Math.pow(slider_relative_diff, 2);
                     }
@@ -201,7 +201,7 @@ Meteor.methods({
                 /*
                 Too many credits used.
                 */
-                console.log("Too many credits used by experiment " + experiment_id_value);
+                console.log("Too many credits used by experiment " + experiment_id_value + '(' + total_percentage_of_credits_spent + ') credits');
                 console.log("Terminating experiment " + experiment_id_value);
                 return;
             }
