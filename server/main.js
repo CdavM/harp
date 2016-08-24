@@ -186,10 +186,10 @@ Meteor.methods({
                     }
                     var slider_difference = Number(post.answer['slider' + slider_idx + well_idx][0]) - existing_entry['initial_slider' + slider_idx + well_idx];
                     var slider_relative_diff = slider_difference / existing_entry['radius'];
-                    if ([4,5,6].indexOf(current_question) > -1) {
+                    if ([4, 5, 6].indexOf(current_question) > -1) {
                         // L1
                         answers_value['slider' + slider_idx + well_idx + "_credits"] = Math.abs(slider_relative_diff);
-                    } else if ([1,2,3].indexOf(current_question) > -1) {
+                    } else if ([1, 2, 3].indexOf(current_question) > -1) {
                         // L2
                         answers_value['slider' + slider_idx + well_idx + "_credits"] = Math.pow(slider_relative_diff, 2);
                     }
@@ -197,7 +197,7 @@ Meteor.methods({
                 }
 
             }
-          if (total_percentage_of_credits_spent > 1.1) {
+            if (total_percentage_of_credits_spent > 1.1) {
                 /*
                 Too many credits used.
                 */
@@ -207,20 +207,22 @@ Meteor.methods({
             }
         }
         if (Object.keys(new_slider_values).length && typeof(current_question) == "number" && current_question != 0) {
-          //set it to proper array location for averaging purposes
-          current_question_dict = Questions.findOne({"question_ID": current_question});
-          current_question_dict.averaging_array[current_avg_number] = new_slider_values;
-          current_question_dict.averaging_status_array[current_avg_number] = 'DONE';
+            //set it to proper array location for averaging purposes
+            current_question_dict = Questions.findOne({
+                "question_ID": current_question
+            });
+            current_question_dict.averaging_array[current_avg_number] = new_slider_values;
+            current_question_dict.averaging_status_array[current_avg_number] = 'DONE';
 
             Questions.update({
                 "question_ID": current_question
             }, {
-                $set: current_question_dict
+                $set: {'averaging_array' : current_question_dict.averaging_array, 'averaging_status_array' : current_question_dict.averaging_status_array}
             });
         }
         // add the deficit term
         if (current_question != 0 && current_answer == 1) {
-            answers_value[current_question][current_answer]['deficit'] = total_money_spent + 162;
+            answers_value[current_question][current_answer]['deficit'] = total_money_spent + 228;
         }
         //Add entry to Answers
         Answers.update({
@@ -264,10 +266,10 @@ Meteor.methods({
     },
 
     beginQuestionScheduler: function(experiment_id_value, wasTimedOut, calledBy) {
-      wasTimedOut = (typeof wasTimedOut === 'undefined') ? 'false' : wasTimedOut;
-      calledBy = (typeof calledBy === 'undefined') ? 'unknown caller' : calledBy;
+        wasTimedOut = (typeof wasTimedOut === 'undefined') ? 'false' : wasTimedOut;
+        calledBy = (typeof calledBy === 'undefined') ? 'unknown caller' : calledBy;
 
-      console.log('question scheduler called. Timed Out:' + wasTimedOut + ', Called By:' + calledBy);
+        console.log('question scheduler called. Timed Out:' + wasTimedOut + ', Called By:' + calledBy);
         //update questions every duration seconds
         var curr_experiment = Answers.findOne({
             experiment_id: experiment_id_value
@@ -363,7 +365,7 @@ Meteor.methods({
                 previous_question_dict = Questions.findOne({
                     "question_ID": next_question
                 });
-                var number_of_previous_participants =  previous_question_dict.previous_participants;
+                var number_of_previous_participants = previous_question_dict.previous_participants;
                 Questions.update({
                     "question_ID": next_question
                 }, {
@@ -414,7 +416,10 @@ Meteor.methods({
                     Questions.update({
                         "question_ID": next_question
                     }, {
-                        $set: question_dictionary
+                        $set: {
+                          'averaging_status_array': question_dictionary.averaging_status_array,
+                          'busy' : question_dictionary.busy,
+                        }
                     });
                     Answers.update({
                         "experiment_id": experiment_id_value
@@ -455,7 +460,7 @@ Meteor.methods({
                             }
                         }
                         //compute the deficit
-                        db_storage['initial_deficit' + well_idx] = total_money_spent + 162;
+                        db_storage['initial_deficit' + well_idx] = total_money_spent + 228;
                     }
                     //store everything
                     Answers.update({
@@ -519,7 +524,7 @@ Meteor.methods({
         //always update timer
         var curr_answer_form = curr_experiment.current_answer;
         if (curr_answer_form < Meteor.settings.public.answer_forms.length - 1) {
-          //Nikhil's understanding: question not done yet
+            //Nikhil's understanding: question not done yet
             var next_answer_form = curr_answer_form + 1;
             Answers.update({
                 experiment_id: experiment_id_value
@@ -535,57 +540,69 @@ Meteor.methods({
             counters[experiment_id_value][curr_experiment.current_question] = 0;
             //potentially removes the busy flag
             if (curr_answer_form == 1) {
-              //Nikhil's comment: Potentially this is where I update the averaging status, do teh averaging, etc. TODO
+                //Nikhil's comment: Potentially this is where I update the averaging status, do teh averaging, etc. TODO
                 //remove the busy flag.
                 console.log("removing busy flag from " + curr_experiment.current_question);
-                current_question_dictionary = Questions.findOne({"question_ID": curr_experiment.current_question});
-                if (wasTimedOut == 'false'){
-                  var alldone = true;
-                  for (var i = 0; i < current_question_dictionary.averaging_status_array.length; i++){
-                    if (current_question_dictionary.averaging_status_array[i] != 'DONE'){
-                      alldone = false;
-                    }
-                  }
-                  // c. If entire array has been filled (all are DONE)
-                  //       i. Do the averaging
-                  //       ii. set it to initial_value
-                  //       iii. reset the array
-                  //       iv. reset overall busy
-                  //       v. increase "number_previous"
-
-                  if (alldone){
-                    for (var well_idx = 0; well_idx < 2; well_idx ++){
-                      for (var slider_idx = 0; slider_idx < 4; slider_idx ++){
-                        var sumval = 0.0;
-                        for (var avgi = 0; avgi < current_question_dictionary.number_to_average; avgi++)
-                        {
-                          sumval = sumval + current_question_dictionary['averaging_array'][avgi]['slider' + slider_idx + well_idx];
+                current_question_dictionary = Questions.findOne({
+                    "question_ID": curr_experiment.current_question
+                });
+                if (wasTimedOut == 'false') {
+                    var alldone = true;
+                    for (var i = 0; i < current_question_dictionary.averaging_status_array.length; i++) {
+                        if (current_question_dictionary.averaging_status_array[i] != 'DONE') {
+                            alldone = false;
                         }
-                        sumval = sumval / current_question_dictionary.number_to_average;
-                        current_question_dictionary['slider' + slider_idx + well_idx] = sumval;
-                      }
                     }
-                    for (var avgii = 0; avgii < current_question_dictionary.number_to_average; avgii++){
-                      current_question_dictionary.averaging_status_array[avgii] = 'FREE';
+                    // c. If entire array has been filled (all are DONE)
+                    //       i. Do the averaging
+                    //       ii. set it to initial_value
+                    //       iii. reset the array
+                    //       iv. reset overall busy
+                    //       v. increase "number_previous"
+
+                    if (alldone) {
+                        for (var well_idx = 0; well_idx < 2; well_idx++) {
+                            for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+                                var sumval = 0.0;
+                                for (var avgi = 0; avgi < current_question_dictionary.number_to_average; avgi++) {
+                                    sumval = sumval + current_question_dictionary['averaging_array'][avgi]['slider' + slider_idx + well_idx];
+                                }
+                                sumval = sumval / current_question_dictionary.number_to_average;
+                                current_question_dictionary['slider' + slider_idx + well_idx] = sumval;
+                            }
+                        }
+                        for (var avgii = 0; avgii < current_question_dictionary.number_to_average; avgii++) {
+                            current_question_dictionary.averaging_status_array[avgii] = 'FREE';
+                        }
+                        current_question_dictionary.busy = false;
+                        current_question_dictionary.previous_participants = current_question_dictionary.previous_participants + 1;
                     }
+                } else { //timed out rather than completed
+                    //		a. Set averaging_status_array[current_avg_number] to FREE
+                    //     b. reset overall busy
+                    current_question_dictionary.averaging_status_array[curr_experiment.current_avg_number] = 'FREE';
                     current_question_dictionary.busy = false;
-                    current_question_dictionary.previous_participants = current_question_dictionary.previous_participants+1;
-                  }
-                }
-                else{ //timed out rather than completed
-                  //		a. Set averaging_status_array[current_avg_number] to FREE
-		              //     b. reset overall busy
-                  current_question_dictionary.averaging_status_array[curr_experiment.current_avg_number] = 'FREE';
-                  current_question_dictionary.busy = false;
                 }
                 Questions.update({
                     "question_ID": curr_experiment.current_question
                 }, {
-                    $set: current_question_dictionary
+                    $set: {
+                        'averaging_status_array': current_question_dictionary.averaging_status_array,
+                        'slider00': current_question_dictionary.slider00,
+                        'slider10': current_question_dictionary.slider10,
+                        'slider20': current_question_dictionary.slider20,
+                        'slider30': current_question_dictionary.slider30,
+                        'slider01': current_question_dictionary.slider01,
+                        'slider11': current_question_dictionary.slider11,
+                        'slider21': current_question_dictionary.slider21,
+                        'slider31': current_question_dictionary.slider31,
+                        'busy' : current_question_dictionary.busy,
+                        'previous_participants' : current_question_dictionary.previous_participants
+                    }
                 });
             }
         } else {
-          //Nikhil's understanding: person has finished answering the question, including feedback
+            //Nikhil's understanding: person has finished answering the question, including feedback
             //updates the question
 
             //award the payment to a group
