@@ -168,8 +168,8 @@ Meteor.methods({
         var total_money_spent = 0;
         var total_money_spent_set0 = 0;
         var total_money_spent_set1 = 0;
-        var total_percentage_of_credits_spent = 0;
         for (var well_idx = 0; well_idx < 2; well_idx++) {
+            var total_percentage_of_credits_spent = 0;
             for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
                 if (post.answer['slider' + slider_idx + well_idx]) {
                     if (isNaN(Number(post.answer['slider' + slider_idx + well_idx][0]))) {
@@ -197,14 +197,14 @@ Meteor.methods({
                 }
 
             }
-        }
-        if (total_percentage_of_credits_spent > 1.1) {
-            /*
-            Too many credits used.
-            */
-            console.log("Too many credits used by experiment " + experiment_id_value);
-            console.log("Terminating experiment " + experiment_id_value);
-            return;
+          if (total_percentage_of_credits_spent > 1.1) {
+                /*
+                Too many credits used.
+                */
+                console.log("Too many credits used by experiment " + experiment_id_value);
+                console.log("Terminating experiment " + experiment_id_value);
+                return;
+            }
         }
         if (Object.keys(new_slider_values).length && typeof(current_question) == "number" && current_question != 0) {
           //set it to proper array location for averaging purposes
