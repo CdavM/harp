@@ -157,7 +157,7 @@
       {
         "answer_ID": 1,
         "template": "answer1",
-        "timer": 0
+        "timer": 600
       },
       {
         "answer_ID": 2,
