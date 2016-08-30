@@ -437,7 +437,7 @@ Meteor.methods({
 
                 var radius_fn = function(previous_participants) {
                     //return 50.0/(Math.floor(previous_participants/10.0)+1);
-                    return 35.0 / Math.max(1, Math.ceil((previous_participants) / 10.0) + 1.0);
+                    return 100.0 / Math.max(1, Math.ceil((previous_participants) / 10.0) + 1.0);
                 };
                 var radius_val = radius_fn(Questions.findOne({
                     "question_ID": next_question
