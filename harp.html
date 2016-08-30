@@ -101,76 +101,6 @@
     <p style="margin-bottom:100px;"></p>
 </template>
 
-<template name="L2_and_full_mechanism">
-    <h4>
-        {{> timer}}
-        <div>
-            <p> Set 1</p>
-            <p class="center">Current Credit Allocation</p>
-            <div>
-                <div id="budgetbar" class="progress">
-                    <div id="slider00bar" class="progress-bar progress-bar-primary" style="width: 0%; color: rgb(245,245,245);"></div>
-                    <div id="slider10bar" class="progress-bar progress-bar-success" style="width: 0%; color: rgb(245,245,245);"></div>
-                    <div id="slider20bar" class="progress-bar progress-bar-warning" style="width: 0%; color: rgb(245,245,245);"></div>
-                    <div id="slider30bar" class="progress-bar progress-bar-danger" style="width: 0%; color: rgb(245,245,245);"></div>
-                </div>
-                <div style="margin: auto;"><b id = "creditsleft0">Credits left: 100</b></div>
-            </div>
-            <br>
-            <button type="button" id="reset_sliders1" class="btn btn-default">Reset All Sliders</button>
-            <br>
-            <hr style="clear: both">
-            {{> deficit_template (deficit_names 0)}}
-            {{> mech0_slider (slider_names "slider00" "blue" "National Defense")}}
-            {{> mech0_slider (slider_names "slider10" "green" "Medicare & Health")}}
-            {{> mech0_slider (slider_names "slider20" "orange" "Education, Science, Environment, & Transportation")}}
-            {{> mech0_slider (slider_names "slider30" "red" "Individual Income Tax")}}
-        </div>
-        <div>
-            <p> Set 2</p>
-            <p class="center">Current Credit Allocation</p>
-            <div>
-                <div id="budgetbar" class="progress">
-                    <div id="slider01bar" class="progress-bar progress-bar-primary" style="width: 0%; color: rgb(245,245,245);"></div>
-                    <div id="slider11bar" class="progress-bar progress-bar-success" style="width: 0%; color: rgb(245,245,245);"></div>
-                    <div id="slider21bar" class="progress-bar progress-bar-warning" style="width: 0%; color: rgb(245,245,245);"></div>
-                    <div id="slider31bar" class="progress-bar progress-bar-danger" style="width: 0%; color: rgb(245,245,245);"></div>
-                </div>
-                <div style="margin: auto;"><b id = "creditsleft1">Credits left: 100</b></div>
-            </div>
-            <br>
-            <button type="button" id="reset_sliders2" class="btn btn-default">Reset All Sliders</button>
-            <br>
-            <hr style="clear: both">
-            {{> deficit_template (deficit_names 1)}}
-            {{> mech0_slider (slider_names "slider01" "blue" "National Defense")}}
-            {{> mech0_slider (slider_names "slider11" "green" "Medicare & Health")}}
-            {{> mech0_slider (slider_names "slider21" "orange" "Education, Science, Environment, & Transportation")}}
-            {{> mech0_slider (slider_names "slider31" "red" "Individual Income Tax")}}
-        </div>
-
-        {{> deficit_template (deficit_names full)}}
-        <br>
-        <button type="button" id="reset_sliders_full" class="btn btn-default">Reset All Sliders</button>
-        <br>
-        <hr style="clear: both">
-        {{> mech2_slider (slider_names "fullslider0" "blue" "National Defense")}}
-        {{> mech2_slider (slider_names "fullslider1" "green" "Medicare & Health")}}
-        {{> mech2_slider (slider_names "fullslider2" "orange" "Education, Science, Environment, & Transportation")}}
-        {{> mech2_slider (slider_names "fullslider3" "red" "Individual Income Tax")}}
-
-        <br style="clear: both;">
-
-        <p align = "left"> On the following sliders, please indicate how strong your feelings are regarding the budget values you indicated above on a scale of 0 to 10 (“Indifferent” to “Care Very Much”). For example, if it's extremely important to you that we decrease spending on defense, you would put a high value on the slider below, along with a low spending figure above. If on the other hand you would prefer high spending on defense but do not feel strongly about it, you would put a high spending figure above but a low value below.  </p>
-
-        {{> mech2_weight_slider (slider_names "fullslider0weight" "blue" "National Defense")}}
-        {{> mech2_weight_slider (slider_names "fullslider1weight" "green" "Medicare & Health")}}
-        {{> mech2_weight_slider (slider_names "fullslider2weight" "orange" "Education, Science, Environment, & Transportation")}}
-        {{> mech2_weight_slider (slider_names "fullslider3weight" "red" "Individual Income Tax")}}
-        {{> mech2_weight_slider (slider_names "fullslider4weight" "lightblue" "Deficit")}}
-    </h4>
-</template>
-
 <template name="L2_mechanism">
     <h4>
         {{> timer}}
@@ -477,6 +407,32 @@
     </h3>
 </template>
 
+<template name="full_elicitation_mechanism_as_extra">
+    <h3>
+        {{> timer}}
+        {{> deficit_template (deficit_names)}}
+        <br>
+        <button type="button" id="reset_sliders" class="btn btn-default">Reset All Sliders</button>
+        <br>
+        <hr style="clear: both">
+        {{> mech2_slider (slider_names "fullslider0" "blue" "National Defense")}}
+        {{> mech2_slider (slider_names "fullslider1" "green" "Medicare & Health")}}
+        {{> mech2_slider (slider_names "fullslider2" "orange" "Education, Science, Environment, & Transportation")}}
+        {{> mech2_slider (slider_names "fullslider3" "red" "Individual Income Tax")}}
+
+        <br style="clear: both;">
+
+        <p align = "left"> On the following sliders, please indicate how strong your feelings are regarding the budget values you indicated above on a scale of 0 to 10 (“Indifferent” to “Care Very Much”). For example, if it's extremely important to you that we decrease spending on defense, you would put a high value on the slider below, along with a low spending figure above. If on the other hand you would prefer high spending on defense but do not feel strongly about it, you would put a high spending figure above but a low value below.  </p>
+
+        {{> mech2_weight_slider (slider_names "fullslider0weight" "blue" "National Defense")}}
+        {{> mech2_weight_slider (slider_names "fullslider1weight" "green" "Medicare & Health")}}
+        {{> mech2_weight_slider (slider_names "fullslider2weight" "orange" "Education, Science, Environment, & Transportation")}}
+        {{> mech2_weight_slider (slider_names "fullslider3weight" "red" "Individual Income Tax")}}
+        {{> mech2_weight_slider (slider_names "fullslider4weight" "lightblue" "Deficit")}}
+
+    </h3>
+</template>
+
 <template name="timer">
     <div>
         {{#if waiting}}
@@ -517,6 +473,24 @@
 </template>
 
 <template name="answer2">
+    <div class="center">
+        {{>Template.dynamic template=full_elicitation_as_extra_text}}
+        <div id="scroll_here">
+            {{>Template.dynamic template=full_elicitation_mechanism_as_extra}}
+        </div>
+        <h4>
+            <br style="clear: both;">
+            Please explain your answers:
+            <br>
+        </h4>
+        <form name="text_explanation">
+            <textarea rows="8" cols="75"> </textarea> <br>
+        </form>
+        <input type="button" value="SUBMIT" id="answer_submission" class="btn btn-default">
+    </div>
+</template>
+
+<template name="answer3">
     <div id="scroll_here" class="center">
         <h3>
             <p> How do you identify?</p>
@@ -599,6 +573,16 @@ Below, please indicate your preferences regarding the US Federal Budget. Two set
     <h4>
         <p align = "left">
 Below, indicate your preferences regarding the US Federal Budget. For each of the given budget items, please move the sliders to indicate your ideal value for that budget item. <b> To successfully complete the experiment, you must advance before time is up. </b> You have 5 minutes to read these instructions and another 10 minutes to answer the questions (you will be able to see these instructions on the next page as well). </p>
+        <p><a href="#iqiuwy" id="2_arrows" class="arrows" onclick="expand_collapse('2');">&#9660;</a><span style="font-size:105%;">Detailed instructions (Click to expand)</span>
+<div id="2" style="display:none;"><p align = "left">Note that the figures are in Billions of dollars. Note also that this survey only pertains to Federal spending -- each state also spends significantly on some of these budget categories. On the left-hand side is the percent change from how much the government is budgeted to spend in 2016. This value, along with the deficit term, will be automatically calculated as you move the bars. You may also enter a value in the textbox on the right instead of moving the slider.
+</p></div> </p>
+    </h4>
+</template>
+
+<template name="full_elicitation_as_extra_text">
+    <h4>
+        <p align = "left">
+For each of the following budget items, please move the sliders to indicate your ideal value for that budget item. There are no constraints to the movement. <b> To successfully complete the experiment, you must advance before time is up. </b> You have 10 minutes to answer the questions. </p>
         <p><a href="#iqiuwy" id="2_arrows" class="arrows" onclick="expand_collapse('2');">&#9660;</a><span style="font-size:105%;">Detailed instructions (Click to expand)</span>
 <div id="2" style="display:none;"><p align = "left">Note that the figures are in Billions of dollars. Note also that this survey only pertains to Federal spending -- each state also spends significantly on some of these budget categories. On the left-hand side is the percent change from how much the government is budgeted to spend in 2016. This value, along with the deficit term, will be automatically calculated as you move the bars. You may also enter a value in the textbox on the right instead of moving the slider.
 </p></div> </p>
