@@ -546,7 +546,7 @@ Meteor.methods({
                 current_question_dictionary = Questions.findOne({
                     "question_ID": curr_experiment.current_question
                 });
-                if (wasTimedOut == 'false') {
+                if (wasTimedOut == 'false' && curr_experiment.current_question > 0) {
                     var alldone = true;
                     for (var i = 0; i < current_question_dictionary.averaging_status_array.length; i++) {
                         if (current_question_dictionary.averaging_status_array[i] != 'DONE') {
