@@ -269,7 +269,6 @@ Meteor.methods({
         wasTimedOut = (typeof wasTimedOut === 'undefined') ? 'false' : wasTimedOut;
         calledBy = (typeof calledBy === 'undefined') ? 'unknown caller' : calledBy;
 
-        console.log('question scheduler called. Timed Out:' + wasTimedOut + ', Called By:' + calledBy);
         //update questions every duration seconds
         var curr_experiment = Answers.findOne({
             experiment_id: experiment_id_value
@@ -396,7 +395,6 @@ Meteor.methods({
                             "busy": true
                         }
                     });
-                    console.log('finding an averaging thing that is available');
                     question_dictionary = Questions.findOne({
                         "question_ID": next_question
                     });
@@ -415,6 +413,7 @@ Meteor.methods({
                             break;
                         }
                     }
+                    console.log('Averaging array: ' + question_dictionary.averaging_status_array)
                     Questions.update({
                         "question_ID": next_question
                     }, {
