@@ -18,9 +18,6 @@ db.questions.insert(
             "slider1": 1004,
             "slider2": 303,
             "slider3": 1460,
-            "number_to_average" : 1,
-            "averaging_status_array" : ["FREE"],
-            "averaging_array" : [[]]
         },
         {
             "question_ID": 1,
