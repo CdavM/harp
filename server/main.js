@@ -47,7 +47,7 @@ Meteor.startup(function() {
     //check and potentially update question database
     update_questions: {
         for (var post in Meteor.settings.questions) {
-            if (!Questions.findOne(Meteor.settings.questions[post]) || Questions.find().count() != Meteor.settings.questions.length) {
+            if (!Questions.findOne({'question_ID' : Meteor.settings.questions[post]['question_ID']}) || Questions.find().count() != Meteor.settings.questions.length) {
                 console.log("Updating questionbank database");
                 Questions.remove({});
                 for (post in Meteor.settings.questions) {
@@ -296,7 +296,7 @@ Meteor.methods({
                     // if all mechanisms are busy
                     if (Questions.find({
                             "busy": true
-                        }).count() == 8) {
+                        }).count() == 7) {
                         var rnd_sample = Math.random();
                         question_selected = 0;
                     } else {
@@ -542,7 +542,6 @@ Meteor.methods({
             counters[experiment_id_value][curr_experiment.current_question] = 0;
             //potentially removes the busy flag
             if (curr_answer_form == 1) {
-                //Nikhil's comment: Potentially this is where I update the averaging status, do teh averaging, etc. TODO
                 //remove the busy flag.
                 console.log("removing busy flag from " + curr_experiment.current_question);
                 current_question_dictionary = Questions.findOne({
