@@ -57,6 +57,7 @@ reset_sliders = function(well_idx, prepend){
 
 
 compute_averages = function(slider_ID, value){
+   console.log(slider_ID, value);
     var ratio = 0;
     if (slider_ID == 0){
         ratio = value / 541;
@@ -87,23 +88,23 @@ update_deficit = function(well_idx, prepend){
     var deficit_value_percentage = 100 * ((deficit_value / 616) - 1);
     deficit_value = parseInt(deficit_value * 100)/100;
     if (deficit_value >= 0){
-        $("#deficit_text"+well_idx).text("deficit");
-        $("#deficit_value"+well_idx).css('color','red');
+        $("#" +prepend + "deficit_text"+well_idx).text("deficit");
+        $("#" +prepend + "deficit_value"+well_idx).css('color','red');
     } else {
         deficit_value = deficit_value.toString().substr(1);
-        $("#deficit_text"+well_idx).text("surplus");
-        $("#deficit_value"+well_idx).css('color','green');
+        $("#" +prepend + "deficit_text"+well_idx).text("surplus");
+        $("#" +prepend + "deficit_value"+well_idx).css('color','green');
     }
     if (deficit_value_percentage >= 0){
         deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
-        $("#deficit_percentage"+well_idx).css('color','red');
-        $("#deficit_percentage"+well_idx).text(deficit_value_percentage+"% increase");
+        $("#" +prepend + "deficit_percentage"+well_idx).css('color','red');
+        $("#" +prepend + "deficit_percentage"+well_idx).text(deficit_value_percentage+"% increase");
     } else {
         deficit_value_percentage = -(parseInt(deficit_value_percentage*100)/100).toString();
-        $("#deficit_percentage"+well_idx).css('color','green');
-        $("#deficit_percentage"+well_idx).text(deficit_value_percentage+"% decrease");
+        $("#" +prepend + "deficit_percentage"+well_idx).css('color','green');
+        $("#" +prepend + "deficit_percentage"+well_idx).text(deficit_value_percentage+"% decrease");
     }
-    $("#deficit_value"+well_idx).text("$"+deficit_value+"B");
+    $("#" +prepend + "deficit_value"+well_idx).text("$"+deficit_value+"B");
 
 };
 
@@ -206,179 +207,6 @@ Template.answer2.onRendered(function () {
     var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
     var radius = curr_experiment.radius;
     var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
-    //$("#creditsleft").text("Credits left: " + round(radius,1)); disabled since we always start with 100 credits.
-    update_slider1 = function (ev, val, update_slider_flag) {
-        // the vars below are global and declared once the page is rendered!
-        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
-        var radius = curr_experiment.radius;
-        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
-        if (!update_slider_flag)
-            update_slider_flag = false;
-        var radius_sum = 0;
-        var well_idx = ev.target.id[ev.target.id.length-1];
-        var slider_idx_counter = 0;
-        while (slider_idx_counter < 4){
-            var curr_slider = "fullslider"+slider_idx_counter.toString() + well_idx.toString();
-            var curr_slider_value = Session.get(curr_slider);
-            if (isNaN(curr_slider_value)){
-                sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
-                return;
-            }
-            radius_sum = radius_sum + Math.pow((curr_slider_value - current_question[curr_slider]),2);
-            slider_idx_counter ++;
-        }
-        //now subtract the radius for the current slider from radius sum
-        radius_sum -= Math.pow((Session.get(ev.target.id)-current_question[ev.target.id]),2);
-        //now see if new radius sum is bigger than radius
-        if (radius_sum + Math.pow((val-current_question[ev.target.id]),2) > Math.pow(radius,2)){
-            //decrease the val until we can do it
-            var rad_difference = Math.sqrt(Math.pow(radius,2)-radius_sum);
-            if (val > current_question[ev.target.id]){
-                val = current_question[ev.target.id] + rad_difference;
-            } else {
-                val = current_question[ev.target.id] - rad_difference;
-            }
-            update_slider_flag = true;
-            $("div").mouseup(); //release the mouse
-        }
-        if (isNaN(val)){
-            sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
-            return;
-        }
-        ev.target.value = round(val, 2); // updates the textbox
-        Session.set(ev.target.id, Number(val));
-        if (update_slider_flag){
-            sliders[ev.target.id].val(round(val, 2));
-        }
-        //update stacked bars
-        var slider_idx_counter = 0;
-        var curr_slider_total_width = 0;
-        var credit_percentage_spent = 0;
-        while (slider_idx_counter < 4){
-            var curr_slider = "fullslider"+slider_idx_counter.toString() + well_idx.toString();
-            var curr_slider_value = Session.get(curr_slider);
-            var curr_slider_bar = curr_slider + "bar";
-            var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
-            credit_percentage_spent += slider_width_fraction;
-            $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.3); //laplace smoothing
-            $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));
-            curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
-            slider_idx_counter ++;
-        }
-        var credits_left_fraction = 100*(1-credit_percentage_spent);
-        if (credits_left_fraction < 0.15){
-            credits_left_fraction = 0;
-        }
-        if (!isNaN(credits_left_fraction)) {
-            $("#creditsleft"+well_idx).text("Credits left: " + round(credits_left_fraction, 1));
-        }
-
-        var percent_difference = compute_averages(Number(ev.target.id[ev.target.id.length-2]), val);
-        if (percent_difference < 0){
-            //red background
-            $("#"+ev.target.id+"comp").css('color','red');
-            // set value
-            $("#"+ev.target.id+"comp").text(round(percent_difference, 2)+"%");
-        } else {
-            //green background
-            $("#"+ev.target.id+"comp").css('color','green');
-            // set value
-            $("#"+ev.target.id+"comp").text("+"+round(percent_difference, 2)+"%");
-        }
-        var total_money_spent = 0;
-        slider_idx_counter = 0;
-        while (slider_idx_counter < 4){
-            total_money_spent += Session.get("fullslider"+slider_idx_counter+well_idx);
-            slider_idx_counter++;
-        }
-        update_deficit(well_idx);
-    };
-    update_slider_mech31 = function (ev, val, update_slider_flag) {
-        // the vars below are global and declared once the page is rendered!
-        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
-        var radius = curr_experiment.radius;
-        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
-        if (!update_slider_flag)
-            update_slider_flag = false;
-        var radius_sum = 0;
-        var well_idx = ev.target.id[ev.target.id.length-1];
-        var slider_idx_counter = 0;
-        while (slider_idx_counter < 4){
-            var curr_slider = "fullslider"+slider_idx_counter.toString() + well_idx.toString();
-            var curr_slider_value = Session.get(curr_slider);
-            if (isNaN(curr_slider_value)){
-                sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
-                return;
-            }
-            radius_sum = radius_sum + Math.abs(curr_slider_value - current_question[curr_slider]);
-            slider_idx_counter ++;
-        }
-        //now subtract the radius for the current slider from radius sum
-        radius_sum -= Math.abs(Session.get(ev.target.id)-current_question[ev.target.id]);
-        //now see if new radius sum is bigger than radius
-        if (radius_sum + Math.abs(val-current_question[ev.target.id]) > radius) {
-            //decrease the val until we can do it
-            var rad_difference = Math.abs(radius-radius_sum);
-            if (val > current_question[ev.target.id]){
-                val = current_question[ev.target.id] + rad_difference;
-            } else {
-                val = current_question[ev.target.id] - rad_difference;
-            }
-            update_slider_flag = true;
-            $("div").mouseup(); //release the mouse
-        }
-        if (isNaN(val)){
-            sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
-            return;
-        }
-        ev.target.value = round(val, 2); // updates the textbox
-        Session.set(ev.target.id, Number(val));
-        var radius_dif = Math.abs(radius - radius_sum);
-        radius_dif -= Math.abs(val-current_question[ev.target.id]);
-        radius_dif = radius_dif + 0.0001; //laplace smoothing
-        var credits_percentage = 100*radius_dif/radius;
-        if (isNaN(credits_percentage)){
-            credits_percentage = 0;
-        }
-        $("#creditsleft"+well_idx).text("Credits left: " + round(credits_percentage, 1));
-        if (update_slider_flag){
-            sliders[ev.target.id].val(round(val, 2));
-        }
-        //update stacked bars
-        var slider_idx_counter = 0;
-        var curr_slider_total_width = 0;
-        var slider_laplace_smoothing = true;
-        while (slider_idx_counter < 4){
-            var curr_slider = "fullslider"+slider_idx_counter.toString() + well_idx.toString();
-            var curr_slider_value = Session.get(curr_slider);
-            var curr_slider_bar = curr_slider + "bar";
-            var slider_width_fraction = Math.abs(curr_slider_value - current_question[curr_slider]) / Math.abs(radius);
-            $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.3); //laplace smoothing
-            $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));
-            curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
-            slider_idx_counter ++;
-        }
-        var percent_difference = compute_averages(Number(ev.target.id.substr(ev.target.id.length-1)), val);
-        if (percent_difference < 0){
-            //red background
-            $("#"+ev.target.id+"comp").css('color','red');
-            // set value
-            $("#"+ev.target.id+"comp").text(round(percent_difference, 2)+"%");
-        } else {
-            //green background
-            $("#"+ev.target.id+"comp").css('color','green');
-            // set value
-            $("#"+ev.target.id+"comp").text("+"+round(percent_difference, 2)+"%");
-        }
-        var total_money_spent = 0;
-        slider_idx_counter = 0;
-        while (slider_idx_counter < 4){
-            total_money_spent += Session.get("fullslider"+slider_idx_counter+well_idx);
-            slider_idx_counter++;
-        }
-        update_deficit(well_idx);
-    };
-
     update_slider_mech21 = function (ev, val, update_slider_flag) {
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
         var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});

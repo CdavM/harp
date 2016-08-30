@@ -18,6 +18,21 @@ def plotHistogramFromFile():
 
   analyze_data_functionalized.analysis_call(filename, 'whatever', mechanism_super_dictionary, plotHistogramOfFull = True)
 
+def actual_experiment_analysis():
+    mechanism_super_dictionary_real= {0:{'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[425, 1200, 350, 1450, 753]]},
+                                  1: {'name': 'Group 1 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                  2: {'name': 'Group 2 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                  3: {'name': 'Group 3 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]},
+                                  4: {'name': 'Group 1 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                  5: {'name': 'Group 2 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                  6: {'name': 'Group 3 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]}
+                                  # 7: {'name': 'Group 1 Comparisons', 'type': 'comparisons', 'numsets': 2, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
+                                  # 8: {'name': 'Group 2 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]},
+                                  # 9: {'name': 'Group 3 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]}
+                                  }
+
+    analyze_data_functionalized.analysis_call('export-20160830154851_BIGEXPERIMENT_PILOT1.csv', 'BigExperimentPilot1', mechanism_super_dictionary_real, lines_to_do = None, labels = [''], plotHistogramOfFull = False, plotAllOverTime = False, do2SetComparisonsAnalysis = False, plotPercentMovementOverTime = False, organizePayment = True, slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', 'Deficit'], deficit_offset = 0)
+
 def main():
     deficit_offset = 228
     LIMIT = 200
@@ -161,6 +176,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    actual_experiment_analysis()
+    #main()
     #plotHistogramFromFile()
     print 'done'
