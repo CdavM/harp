@@ -580,7 +580,9 @@ Meteor.methods({
                 } else { //timed out rather than completed
                     //		a. Set averaging_status_array[current_avg_number] to FREE
                     //     b. reset overall busy
-                    current_question_dictionary.averaging_status_array[curr_experiment.current_avg_number] = 'FREE';
+                    if (curr_experiment.current_question > 0){
+                      current_question_dictionary.averaging_status_array[curr_experiment.current_avg_number] = 'FREE';
+                    }
                     current_question_dictionary.busy = false;
                 }
                 Questions.update({
