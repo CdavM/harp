@@ -173,7 +173,7 @@ Template.experiment.events({
     },
     'click #reset_sliders_full_as_extra': function () {
         well_idx = 0;
-        reset_sliders(well_idx, prepend);
+        reset_sliders(well_idx, 'full');
     },
     'click #reset_sliders1': function () {
         well_idx = 0;
