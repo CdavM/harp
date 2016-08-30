@@ -17,7 +17,7 @@ db.questions.insert(
             "slider0": 541,
             "slider1": 1004,
             "slider2": 303,
-            "slider3": 1460,
+            "slider3": 1460
         },
         {
             "question_ID": 1,
