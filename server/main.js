@@ -527,7 +527,10 @@ Meteor.methods({
         if (curr_answer_form < Meteor.settings.public.answer_forms.length - 1) {
             //question not done yet
             var next_answer_form = curr_answer_form + 1;
-            if (curr_answer_form == 1 && !curr_experiment.do_full_as_well){ //skip the extra full elicitation step
+            current_question_dictionary = Questions.findOne({
+                "question_ID": curr_experiment.current_question
+            });
+            if (curr_answer_form == 1 && !current_question_dictionary.do_full_as_well){ //skip the extra full elicitation step
               next_answer_form = 3;
             }
             Answers.update({

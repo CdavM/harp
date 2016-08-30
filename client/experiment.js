@@ -1,19 +1,22 @@
-reset_sliders = function(well_idx){
+reset_sliders = function(well_idx, prepend){
+    if (typeof(prepend) == "undefined"){
+        prepend = "";
+    }
     console.log('Resetting sliders.');
     var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
     var radius = curr_experiment.radius;
     var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
     for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-        sliders['slider'+slider_idx+well_idx].val(current_question['slider'+slider_idx+well_idx]);
-        Session.set('slider'+slider_idx+well_idx, current_question['slider'+slider_idx+well_idx]);
-        $('textarea#slider'+slider_idx+well_idx).val(current_question['slider'+slider_idx+well_idx]);
+        sliders[prepend+'slider'+slider_idx+well_idx].val(current_question[prepend+'slider'+slider_idx+well_idx]);
+        Session.set(prepend+'slider'+slider_idx+well_idx, current_question[prepend+'slider'+slider_idx+well_idx]);
+        $('textarea#'+prepend + "slider"+slider_idx+well_idx).val(current_question[prepend+'slider'+slider_idx+well_idx]);
     }
     //update stacked bars
     var slider_idx_counter = 0;
     var curr_slider_total_width = 0;
     var credit_percentage_spent = 0;
     while (slider_idx_counter < 4){
-        var curr_slider = "slider"+slider_idx_counter.toString()+well_idx.toString();
+        var curr_slider = prepend + "slider"+slider_idx_counter.toString()+well_idx.toString();
         var curr_slider_value = Session.get(curr_slider);
         var curr_slider_bar = curr_slider + "bar";
         var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
@@ -30,23 +33,23 @@ reset_sliders = function(well_idx){
     $("#creditsleft"+well_idx).text("Credits left: " + round(credits_left_fraction, 1));
 
     for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
-        var percent_difference = compute_averages(slider_idx, current_question['slider' +slider_idx+well_idx]);
+        var percent_difference = compute_averages(slider_idx, current_question[prepend + 'slider' +slider_idx+well_idx]);
         if (percent_difference < 0) {
             //red background
-            $("#slider" +slider_idx+well_idx + "comp").css('color', 'red');
+            $("#" + prepend + "slider" +slider_idx+well_idx + "comp").css('color', 'red');
             // set value
-            $("#slider" +slider_idx+well_idx + "comp").text(round(percent_difference, 2) + "%");
+            $("#" + prepend + "slider" +slider_idx+well_idx + "comp").text(round(percent_difference, 2) + "%");
         } else {
             //green background
-            $("#slider" +slider_idx+well_idx + "comp").css('color', 'green');
+            $("#" + prepend + "slider" +slider_idx+well_idx + "comp").css('color', 'green');
             // set value
-            $("#slider" +slider_idx+well_idx + "comp").text("+" + round(percent_difference, 2) + "%");
+            $("#" + prepend + "slider" +slider_idx+well_idx + "comp").text("+" + round(percent_difference, 2) + "%");
         }
     }
     var total_money_spent = 0;
     slider_idx_counter = 0;
     while (slider_idx_counter < 4){
-        total_money_spent += Session.get("slider"+slider_idx_counter);
+        total_money_spent += Session.get(prepend + "slider"+slider_idx_counter);
         slider_idx_counter++;
     }
     update_deficit();
@@ -68,15 +71,18 @@ compute_averages = function(slider_ID, value){
     return percentage_difference;
 };
 
-update_deficit = function(well_idx){
+update_deficit = function(well_idx, prepend){
     if (typeof(well_idx) == "undefined"){
         well_idx = "";
     }
+    if (typeof(prepend) == "undefined"){
+        prepend = "";
+    }
     var total_money_spent = 0;
     for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
-        total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
+        total_money_spent += Session.get(prepend+"slider"+slider_idx_counter+well_idx);
     }
-    total_money_spent -= Session.get("slider"+3+well_idx); // decreases by amt of income tax collected
+    total_money_spent -= Session.get(prepend+"slider"+3+well_idx); // decreases by amt of income tax collected
     var deficit_value = total_money_spent + 228;
     var deficit_value_percentage = 100 * ((deficit_value / 616) - 1);
     deficit_value = parseInt(deficit_value * 100)/100;
@@ -163,6 +169,10 @@ Template.experiment.events({
                 Session.set('waiting', false);
             }
         });
+    },
+    'click #reset_sliders_full_as_extra': function () {
+        well_idx = 0;
+        reset_sliders(well_idx, prepend);
     },
     'click #reset_sliders1': function () {
         well_idx = 0;
@@ -402,7 +412,8 @@ Template.answer2.onRendered(function () {
             total_money_spent += Session.get("fullslider"+slider_idx_counter);
             slider_idx_counter++;
         }
-        update_deficit();
+        update_deficit("", 'full');
+        update_comps();
     };
     var update_weight_slider1 = function(ev, val, update_slider_flag){
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
@@ -511,7 +522,7 @@ Template.answer2.onRendered(function () {
     //update comps
     update_comps();
     //update the deficit text
-    update_deficit();
+    update_deficit("", 'full');
     //initialize tooltips
     $('[data-toggle="tooltip"]').tooltip();
     $('#scroll_here').ScrollTo();
@@ -971,6 +982,11 @@ Template.L2_mechanism.events({
     }
 });
 Template.full_elicitation_mechanism.events({
+    'change textarea': function(event){
+        update_slider_mech2(event, event.target.value, true);
+    }
+});
+Template.full_elicitation_mechanism_as_extra.events({
     'change textarea': function(event){
         update_slider_mech2(event, event.target.value, true);
     }
