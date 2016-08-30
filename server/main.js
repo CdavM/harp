@@ -206,6 +206,10 @@ Meteor.methods({
                 return;
             }
         }
+        // add the deficit term
+        if (current_question != 0 && current_answer == 1) {
+            answers_value[current_question][current_answer]['deficit' + well_idx] = total_money_spent + 228;
+        }
         if (Object.keys(new_slider_values).length && typeof(current_question) == "number" && current_question != 0) {
             //set it to proper array location for averaging purposes
             current_question_dict = Questions.findOne({
@@ -219,10 +223,6 @@ Meteor.methods({
             }, {
                 $set: {'averaging_array' : current_question_dict.averaging_array, 'averaging_status_array' : current_question_dict.averaging_status_array}
             });
-        }
-        // add the deficit term
-        if (current_question != 0 && current_answer == 1) {
-            answers_value[current_question][current_answer]['deficit'] = total_money_spent + 228;
         }
         //Add entry to Answers
         Answers.update({
