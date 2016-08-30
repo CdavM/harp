@@ -302,15 +302,17 @@ Meteor.methods({
                     } else {
                         do {
                             var rnd_sample = Math.random();
-                            if (rnd_sample < 0.1666666666667)
+                            if (rnd_sample < 0.1428571428571429)
                                 question_selected = 0;
-                            else if (rnd_sample < (0.1666666666667 * 7)) //TODO change from 7 to 2 after testing averaging
+                            else if (rnd_sample < (0.1428571428571429 * 2))
                                 question_selected = 1;
-                            else if (rnd_sample < (0.1666666666667 * 3))
+                            else if (rnd_sample < (0.1428571428571429 * 3))
+                                question_selected = 2;
+                            else if (rnd_sample < (0.1428571428571429 * 4))
                                 question_selected = 3;
-                            else if (rnd_sample < (0.1666666666667 * 4))
+                            else if (rnd_sample < (0.1428571428571429 * 5))
                                 question_selected = 4;
-                            else if (rnd_sample < (0.1666666666667 * 5))
+                            else if (rnd_sample < (0.1428571428571429 * 6))
                                 question_selected = 5;
                             else
                                 question_selected = 6;
