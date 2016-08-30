@@ -70,7 +70,7 @@ db.questions.insert(
             "slider_2016_31": 1460,
             "number_to_average" : 10,
             "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-            "averaging_array" : [[],[],[]],[],[],[]],[],[],[]],[],
+            "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
         },
         {
             "question_ID": 3,
