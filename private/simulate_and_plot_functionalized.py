@@ -53,12 +53,12 @@ def main():
                                   }
 
     mechanism_super_dictionary_potentialreal= {0:{'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[425, 1200, 350, 1450, 753]]},
-                                  1: {'name': 'Group 1 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[550, 1100, 300, 1450, 753], [440, 1050, 350, 1500, 828]]},
-                                  2: {'name': 'Group 2 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[550, 1100, 300, 1450, 753], [440, 1050, 350, 1500, 828]]},
-                                  3: {'name': 'Group 3 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[550, 1100, 300, 1450, 753], [440, 1050, 350, 1500, 828]]},
-                                  4: {'name': 'Group 1 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[550, 1100, 300, 1450, 753], [440, 1050, 350, 1500, 828]]},
-                                  5: {'name': 'Group 2 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[550, 1100, 300, 1450, 753], [440, 1050, 350, 1500, 828]]},
-                                  6: {'name': 'Group 3 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[550, 1100, 300, 1450, 753], [440, 1050, 350, 1500, 828]]}
+                                  1: {'name': 'Group 1 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                  2: {'name': 'Group 2 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                  3: {'name': 'Group 3 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]},
+                                  4: {'name': 'Group 1 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                  5: {'name': 'Group 2 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                  6: {'name': 'Group 3 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]}
                                   # 7: {'name': 'Group 1 Comparisons', 'type': 'comparisons', 'numsets': 2, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
                                   # 8: {'name': 'Group 2 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]},
                                   # 9: {'name': 'Group 3 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]}
@@ -66,16 +66,16 @@ def main():
 
 
     load_people_from_file = False
-    filename_forloadingpeople = "C:\\Users\\Nikhil\\Dropbox\\src\\harp\\private\\resultssofar\\FinalDatas\\export-20160718044154_FIRSTREALRUN_FINAL_sampleforsimulation.csv"
     filename_forloadingpeople = "C:\\Users\\Nikhil\\Dropbox\\src\\harp\\private\\resultssofar\\FinalDatas\\export-20160722200126_SECONDRUN_FINAL_sampleforsimulation.csv"
+    filename_forloadingpeople = "C:\\Users\\Nikhil\\Dropbox\\src\\harp\\private\\resultssofar\\FinalDatas\\export-20160718044154_FIRSTREALRUN_FINAL_sampleforsimulation.csv"
 
     superdictionary_forloadingpeople = mechanism_super_dictionary_forloading_from_old_experiments
     deficit_offset_forloadingpeople = 316;
 
     for starting_radius in [100]:#[50, 75, 100]:#[15, 75, 25, 50, 35, 100, 10]:
-      for decrease_every in [5, 6]:#[7, 10, 12]:#[1, 3, 5, 10, 15, 20, 25]:
+      for decrease_every in [6]:#[7, 10, 12]:#[1, 3, 5, 10, 15, 20, 25]:
         for ppl_in_block in [10]:#[10, 15]:#[1, 3, 5, 10, 15, 20]:
-          LABEL = 'PotentialActualFINALestimate_RADIUS' + str(starting_radius) + 'DecreaseEvery' + str(decrease_every) + 'Block' + str(ppl_in_block) + "ppl" + str(LIMIT) + "_"
+          LABEL = '3differentOldREAL_RADIUS' + str(starting_radius) + 'DecreaseEvery' + str(decrease_every) + 'Block' + str(ppl_in_block) + "ppl" + str(LIMIT) + "_"
           filename = "simulations/" + LABEL + ".csv";
           if os.path.isfile(filename):
             print "skipping because exists", starting_radius, decrease_every, ppl_in_block

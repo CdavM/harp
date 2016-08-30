@@ -305,11 +305,9 @@ def simulate_person(idealpts, mechanism_assignment, mechanisms, row, mechanism_s
 				mechanisms[mechanism_assignment]['averaging_status_array'][i] = -100;
 
 	elif mechanisms[mechanism_assignment]['question_ID'] == 'full':  # full elicitation
-		for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
-			setstr = str(setnum)
-			for i in range(0, 5):
-				answer["slider" + str(i) + setstr + "_text"] = [str(idealpts[0][i])];
-				answer["slider" + str(i) + setstr + "weight_text"] = [str(idealpts[1][i])]
+		for i in range(0, 5):
+			answer["slider" + str(i) + "_text"] = [str(idealpts[0][i])];
+			answer["slider" + str(i) + "weight_text"] = [str(idealpts[1][i])]
 	elif mechanisms[mechanism_assignment]['question_ID'] == 'l1':
 		for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
 			setstr = str(setnum)

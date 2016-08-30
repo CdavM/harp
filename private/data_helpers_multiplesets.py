@@ -23,20 +23,20 @@ mechanism_names = ['l2 Constrained Movement', 'Comparisons', 'Full Elicitation',
 
 def load_data_experiment_full(answerdata, restofdata, num_sets, deficit_additive): #ideal points and weights elicitation
     answer = {}
-    answer['slider00_loc'] = float(answerdata['slider00_text'][0])
-    answer['slider00_weight'] = float(answerdata['slider00weight_text'][0])
+    answer['slider00_loc'] = float(answerdata['slider0_text'][0])
+    answer['slider00_weight'] = float(answerdata['slider0weight_text'][0])
 
-    answer['slider10_loc'] = float(answerdata['slider10_text'][0])
-    answer['slider10_weight'] = float(answerdata['slider10weight_text'][0])
+    answer['slider10_loc'] = float(answerdata['slider1_text'][0])
+    answer['slider10_weight'] = float(answerdata['slider1weight_text'][0])
 
-    answer['slider20_loc'] = float(answerdata['slider20_text'][0])
-    answer['slider20_weight'] = float(answerdata['slider20weight_text'][0])
+    answer['slider20_loc'] = float(answerdata['slider2_text'][0])
+    answer['slider20_weight'] = float(answerdata['slider2weight_text'][0])
 
-    answer['slider30_loc'] = float(answerdata['slider30_text'][0])
-    answer['slider30_weight'] = float(answerdata['slider30weight_text'][0])
+    answer['slider30_loc'] = float(answerdata['slider3_text'][0])
+    answer['slider30_weight'] = float(answerdata['slider3weight_text'][0])
 
     answer['slider40_loc'] = answer['slider00_loc'] + answer['slider10_loc'] + answer['slider20_loc'] - answer['slider30_loc'] + deficit_additive
-    answer['slider40_weight'] = float(answerdata['slider40weight_text'][0])
+    answer['slider40_weight'] = float(answerdata['slider4weight_text'][0])
 
     answer['explanation'] = answerdata['text_explanation']
 
