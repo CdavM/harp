@@ -1,4 +1,7 @@
 reset_sliders = function(well_idx, prepend){
+  if (typeof(well_idx) == "undefined"){
+      well_idx = "";
+  }
     if (typeof(prepend) == "undefined"){
         prepend = "";
     }
@@ -52,12 +55,11 @@ reset_sliders = function(well_idx, prepend){
         total_money_spent += Session.get(prepend + "slider"+slider_idx_counter);
         slider_idx_counter++;
     }
-    update_deficit();
+    update_deficit("", prepend);
 };
 
 
 compute_averages = function(slider_ID, value){
-   console.log(slider_ID, value);
     var ratio = 0;
     if (slider_ID == 0){
         ratio = value / 541;
@@ -171,9 +173,11 @@ Template.experiment.events({
             }
         });
     },
+    'click #reset_sliders': function () {
+        reset_sliders('', '');
+    },
     'click #reset_sliders_full_as_extra': function () {
-        well_idx = 0;
-        reset_sliders(well_idx, 'full');
+        reset_sliders('', 'full');
     },
     'click #reset_sliders1': function () {
         well_idx = 0;
@@ -277,9 +281,7 @@ Template.answer2.onRendered(function () {
             }
         }
     };
-    update_slider = _.throttle(update_slider1, 100);
     update_weight_slider = _.throttle(update_weight_slider1, 100);
-    update_slider_mech3 = _.throttle(update_slider_mech31, 100);
     update_slider_mech2 = _.throttle(update_slider_mech21, 100);
 
     // full elicitation
@@ -427,7 +429,6 @@ Template.answer1.onRendered(function () {
         if (!isNaN(credits_left_fraction)) {
             $("#creditsleft"+well_idx).text("Credits left: " + round(credits_left_fraction, 1));
         }
-
         var percent_difference = compute_averages(Number(ev.target.id[ev.target.id.length-2]), val);
         if (percent_difference < 0){
             //red background
@@ -513,7 +514,7 @@ Template.answer1.onRendered(function () {
             curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
             slider_idx_counter ++;
         }
-        var percent_difference = compute_averages(Number(ev.target.id.substr(ev.target.id.length-1)), val);
+        var percent_difference = compute_averages(Number(ev.target.id[ev.target.id.length-2]), val);
         if (percent_difference < 0){
             //red background
             $("#"+ev.target.id+"comp").css('color','red');

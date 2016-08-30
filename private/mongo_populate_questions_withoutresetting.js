@@ -5,6 +5,7 @@
 
 //add questions
 db.questions.update( {"question_ID": 0},
+        {$set :
         {
             "question_ID": 0,
             "text": "full elicitation mechanism",
@@ -14,8 +15,10 @@ db.questions.update( {"question_ID": 0},
             "slider1": 1004,
             "slider2": 303,
             "slider3": 1460
-        });
+ 
+ }       });
 db.questions.update( {"question_ID": 1},
+        {$set :
         {
             "question_ID": 1,
             "text": "L2 mech - bunch 1",
@@ -34,8 +37,10 @@ db.questions.update( {"question_ID": 1},
             "slider_2016_21": 303,
             "slider_2016_31": 1460,
             "number_to_average" : 10,
-        });
+ 
+ }       });
 db.questions.update( {"question_ID": 2},
+        {$set :
         {
             "question_ID": 2,
             "text": "L2 mech - bunch 2",
@@ -50,8 +55,10 @@ db.questions.update( {"question_ID": 2},
             "slider_2016_21": 303,
             "slider_2016_31": 1460,
             "number_to_average" : 10,
-        });
+ 
+ }       });
 db.questions.update( {"question_ID": 3},
+        {$set :
         {
             "question_ID": 3,
             "text": "L2 mech - bunch 3",
@@ -66,8 +73,9 @@ db.questions.update( {"question_ID": 3},
             "slider_2016_21": 303,
             "slider_2016_31": 1460,
             "number_to_average" : 10,
-        })
+        }});
 db.questions.update( {"question_ID": 4},
+        {$set :
         {
             "question_ID": 4,
             "text": "L1 mech - bunch 1",
@@ -86,8 +94,10 @@ db.questions.update( {"question_ID": 4},
             "slider_2016_21": 303,
             "slider_2016_31": 1460,
             "number_to_average" : 10,
+      }
       });
 db.questions.update( {"question_ID": 5},
+        {$set :
         {
             "question_ID": 5,
             "text": "L1 mech - bunch 2",
@@ -102,8 +112,9 @@ db.questions.update( {"question_ID": 5},
             "slider_2016_21": 303,
             "slider_2016_31": 1460,
             "number_to_average" : 10,
-        });
+ }       });
 db.questions.update( {"question_ID": 6},
+        {$set :
         {
             "question_ID": 6,
             "text": "L1 mech - bunch 3",
@@ -118,4 +129,5 @@ db.questions.update( {"question_ID": 6},
             "slider_2016_21": 303,
             "slider_2016_31": 1460,
             "number_to_average" : 10,
+      }
       });
