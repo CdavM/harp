@@ -205,10 +205,10 @@ Meteor.methods({
                 console.log("Terminating experiment " + experiment_id_value);
                 return;
             }
-        }
-        // add the deficit term
-        if (current_question != 0 && current_answer == 1) {
-            answers_value[current_question][current_answer]['deficit' + well_idx] = total_money_spent + 228;
+          // add the deficit term
+          if (current_question != 0 && current_answer == 1) {
+              answers_value[current_question][current_answer]['deficit' + well_idx] = total_money_spent + 228;
+          }
         }
         if (Object.keys(new_slider_values).length && typeof(current_question) == "number" && current_question != 0) {
             //set it to proper array location for averaging purposes
