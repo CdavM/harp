@@ -28,7 +28,7 @@ def load_data_experiment_full(answerdata, restofdata, num_sets, deficit_additive
 
     answer['slider10_loc'] = float(answerdata['slider10_text'][0])
     answer['slider10_weight'] = float(answerdata['slider10weight_text'][0])
-    
+
     answer['slider20_loc'] = float(answerdata['slider20_text'][0])
     answer['slider20_weight'] = float(answerdata['slider20weight_text'][0])
 
@@ -52,7 +52,7 @@ def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive = 
         answer['slider2' + setstr + '_loc'] = float(answerdata['slider2' + setstr][0])
         answer['slider3' + setstr + '_loc'] = float(answerdata['slider3' + setstr][0])
         answer['slider4' + setstr + '_loc'] = float(answerdata['deficit' + setstr])
-        
+
         answer['initial_slider0' + setstr + '_loc'] = float(restofdata['initial_slider0' + setstr])
         answer['initial_slider1' + setstr + '_loc'] = float(restofdata['initial_slider1' + setstr])
         answer['initial_slider2' + setstr + '_loc'] = float(restofdata['initial_slider2' + setstr])
@@ -60,10 +60,10 @@ def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive = 
         answer['initial_slider4' + setstr + '_loc'] = float(restofdata['initial_deficit' + setstr])
 
         answer['explanation'] = answerdata['text_explanation']
-        
+
         answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
-        
-        answer['slider0' + setstr + '_creditsused'] = float(restofdata['answer1.slider0' + setstr + '_credits']) 
+
+        answer['slider0' + setstr + '_creditsused'] = float(restofdata['answer1.slider0' + setstr + '_credits'])
         answer['slider1' + setstr + '_creditsused'] = float(restofdata['answer1.slider1' + setstr + '_credits'])
         answer['slider2' + setstr + '_creditsused'] = float(restofdata['answer1.slider2' + setstr + '_credits'])
         answer['slider3' + setstr + '_creditsused'] = float(restofdata['answer1.slider3' + setstr + '_credits'])
@@ -81,7 +81,7 @@ def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive = 
         answer['slider3' + setstr + '_loc'] = float(answerdata['slider3' + setstr][0])
         answer['slider4' + setstr + '_loc'] = float(answerdata['deficit'+ setstr])
         answer['explanation'] = answerdata['text_explanation']
-        
+
         answer['initial_slider0' + setstr + '_loc'] = float(restofdata['initial_slider0' + setstr])
         answer['initial_slider1' + setstr + '_loc'] = float(restofdata['initial_slider1' + setstr])
         answer['initial_slider2' + setstr + '_loc'] = float(restofdata['initial_slider2' + setstr])
@@ -90,8 +90,8 @@ def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive = 
 
 
         answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
-        
-        answer['slider0' + setstr + '_creditsused'] = float(restofdata['answer1.slider0' + setstr + '_credits']) 
+
+        answer['slider0' + setstr + '_creditsused'] = float(restofdata['answer1.slider0' + setstr + '_credits'])
         answer['slider1' + setstr + '_creditsused'] = float(restofdata['answer1.slider1' + setstr + '_credits'])
         answer['slider2' + setstr + '_creditsused'] = float(restofdata['answer1.slider2' + setstr + '_credits'])
         answer['slider3' + setstr + '_creditsused'] = float(restofdata['answer1.slider3' + setstr + '_credits'])
@@ -113,7 +113,7 @@ def load_data_experiment_comparisons(answerdata, restofdata, numsets, deficit_ad
         real_answer[set_num] = answer['set' + str(set_num) + 'option' + str(answer['set' + str(set_num) + 'selection'])]
         for loc in xrange(5):
             answer['set' + str(set_num) + 'slider' + str(loc)+'_loc'] = real_answer[set_num][loc]
-        
+
         answer['set' + str(set_num) + 'previous_slider_values'] = answer['set' + str(set_num) + 'option1']
 
     #print answer
@@ -138,7 +138,7 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
     organized_data = {}
     for key in mechanism_super_dictionary:
         organized_data[key] = []
-   
+
     for row in dirty:
         existsanswer = False;
         for key in mechanism_super_dictionary:
@@ -200,7 +200,7 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order):
         modified to take in the matrix already rather than calculating mean values
     Create a barchart for data across different categories with
     multiple conditions for each category.
-    
+
     @param ax: The plotting axes from matplotlib.
     @param dpoints: The data set as an (n, 3) numpy array
     '''
@@ -210,18 +210,18 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order):
 
     # Aggregate the conditions and the categories according to their
     # mean values
-    conditions = [(c, np.mean(dpoints[dpoints[:,0] == c][:,2].astype(float))) 
+    conditions = [(c, np.mean(dpoints[dpoints[:,0] == c][:,2].astype(float)))
                   for c in np.unique(dpoints[:,0])]
-    categories = [(c, np.mean(dpoints[dpoints[:,1] == c][:,2].astype(float))) 
+    categories = [(c, np.mean(dpoints[dpoints[:,1] == c][:,2].astype(float)))
                   for c in np.unique(dpoints[:,1])]
-        
+
     # sort the conditions, categories and data so that the bars in
     # the plot will be ordered by category and condition
     conditions = [c[0] for c in sorted(conditions, key=o.itemgetter(1))]
     categories = [c[0] for c in sorted(categories, key=o.itemgetter(1))]
     categories = categories_order
     conditions = conditions_order
-    
+
     dpoints = np.array(sorted(dpoints, key=lambda x: categories.index(x[1])))
 
     # the space between each set of bars
@@ -235,25 +235,25 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order):
         indeces = range(1, len(categories)+1)
         vals = dpoints[dpoints[:,0] == cond][:,2].astype(np.float)
         pos = [j - (1 - space) / 2. + i * width for j in indeces]
-        ax.bar(pos, vals, width=width, label=cond, 
+        ax.bar(pos, vals, width=width, label=cond,
                color=current_palette[i%len(current_palette)]
                )
-    
+
     # Set the x-axis tick labels to be equal to the categories
     ax.set_xticks(indeces)
     ax.set_xticklabels(categories)
     ax.tick_params(axis='both', which='major', labelsize=18)
 
     plt.setp(plt.xticks()[1])#, rotation=90)
-    
+
     # Add the axis labels
     ax.set_ylabel(ylabel, fontsize = 18)
     #ax.set_xlabel(xlabel, fontsize = 18)
-    
+
     # Add a legend
     handles, labels = ax.get_legend_handles_labels()
     #ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize = 18)
     ax.legend(handles, labels,bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
-       ncol=min(len(conditions), 4), mode="expand", borderaxespad=0., fontsize = 18)    
+       ncol=min(len(conditions), 4), mode="expand", borderaxespad=0., fontsize = 18)
     plt.savefig(label + '.png')
     plt.show()

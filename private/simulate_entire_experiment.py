@@ -15,7 +15,11 @@ import csv
 # Make this so it'll create those files my analysis code can look at.
 
 # Workers have some ideal point, weights on each
-
+def sample_person (createRandom = True, filename = None, superdictionary_for_loading = None, deficit_offset_for_loading = None):
+    if createRandom:
+        return create_ideal_points_and_weights();
+    else:
+        return load_sample_people_from_file(filename, superdictionary_for_loading, deficit_offset_for_loading)
 
 def create_ideal_points_and_weights(num_items=5, centers=[450, 1200, 370, 1300, 882]):
     ideals = []
@@ -324,7 +328,7 @@ def main():
                 time_of_last_turker, turker_time)
             # if mechanism_assignment == 1 or mechanism_assignment == 5 :
             #     continue
-            turker_idealpt = create_ideal_points_and_weights()
+            turker_idealpt = sample_person();
             row = do_mechanism(turker_idealpt, mechanism_assignment,
                                mechanisms, time_of_last_turker, turker_time)
             writer.writerow(row)
