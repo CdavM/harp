@@ -20,7 +20,7 @@ db.questions.insert(
             "slider3": 1460,
             "number_to_average" : 1,
             "averaging_status_array" : ["FREE"],
-            "averaging_array" : [[],[],[]]
+            "averaging_array" : [[]]
         },
         {
             "question_ID": 1,
@@ -42,7 +42,7 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
             "number_to_average" : 10,
             "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
             "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
@@ -67,7 +67,7 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
             "number_to_average" : 10,
             "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
             "averaging_array" : [[],[],[]],[],[],[]],[],[],[]],[],
@@ -92,7 +92,7 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
             "number_to_average" : 10,
             "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
             "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
@@ -117,7 +117,7 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
             "number_to_average" : 10,
             "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
             "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
@@ -142,7 +142,7 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
             "number_to_average" : 10,
             "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
             "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
@@ -167,7 +167,7 @@ db.questions.insert(
             "slider_2016_01": 541,
             "slider_2016_11": 1004,
             "slider_2016_21": 303,
-            "slider_2016_31": 1460
+            "slider_2016_31": 1460,
             "number_to_average" : 10,
             "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
             "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
