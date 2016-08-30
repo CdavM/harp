@@ -604,7 +604,7 @@ Meteor.methods({
                 });
             }
         } else {
-            //Nikhil's understanding: person has finished answering the question, including feedback
+            //Person has finished answering the question, including feedback
             //updates the question
 
             //award the payment to a group
