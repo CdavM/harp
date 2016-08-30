@@ -1,19 +1,25 @@
-reset_sliders = function(well_idx){
+reset_sliders = function(well_idx, prepend){
+  if (typeof(well_idx) == "undefined"){
+      well_idx = "";
+  }
+    if (typeof(prepend) == "undefined"){
+        prepend = "";
+    }
     console.log('Resetting sliders.');
     var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
     var radius = curr_experiment.radius;
     var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
     for (var slider_idx = 0; slider_idx < 4; slider_idx++){
-        sliders['slider'+slider_idx+well_idx].val(current_question['slider'+slider_idx+well_idx]);
-        Session.set('slider'+slider_idx+well_idx, current_question['slider'+slider_idx+well_idx]);
-        $('textarea#slider'+slider_idx+well_idx).val(current_question['slider'+slider_idx+well_idx]);
+        sliders[prepend+'slider'+slider_idx+well_idx].val(current_question[prepend+'slider'+slider_idx+well_idx]);
+        Session.set(prepend+'slider'+slider_idx+well_idx, current_question[prepend+'slider'+slider_idx+well_idx]);
+        $('textarea#'+prepend + "slider"+slider_idx+well_idx).val(current_question[prepend+'slider'+slider_idx+well_idx]);
     }
     //update stacked bars
     var slider_idx_counter = 0;
     var curr_slider_total_width = 0;
     var credit_percentage_spent = 0;
     while (slider_idx_counter < 4){
-        var curr_slider = "slider"+slider_idx_counter.toString()+well_idx.toString();
+        var curr_slider = prepend + "slider"+slider_idx_counter.toString()+well_idx.toString();
         var curr_slider_value = Session.get(curr_slider);
         var curr_slider_bar = curr_slider + "bar";
         var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
@@ -30,26 +36,26 @@ reset_sliders = function(well_idx){
     $("#creditsleft"+well_idx).text("Credits left: " + round(credits_left_fraction, 1));
 
     for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
-        var percent_difference = compute_averages(slider_idx, current_question['slider' +slider_idx+well_idx]);
+        var percent_difference = compute_averages(slider_idx, current_question[prepend + 'slider' +slider_idx+well_idx]);
         if (percent_difference < 0) {
             //red background
-            $("#slider" +slider_idx+well_idx + "comp").css('color', 'red');
+            $("#" + prepend + "slider" +slider_idx+well_idx + "comp").css('color', 'red');
             // set value
-            $("#slider" +slider_idx+well_idx + "comp").text(round(percent_difference, 2) + "%");
+            $("#" + prepend + "slider" +slider_idx+well_idx + "comp").text(round(percent_difference, 2) + "%");
         } else {
             //green background
-            $("#slider" +slider_idx+well_idx + "comp").css('color', 'green');
+            $("#" + prepend + "slider" +slider_idx+well_idx + "comp").css('color', 'green');
             // set value
-            $("#slider" +slider_idx+well_idx + "comp").text("+" + round(percent_difference, 2) + "%");
+            $("#" + prepend + "slider" +slider_idx+well_idx + "comp").text("+" + round(percent_difference, 2) + "%");
         }
     }
     var total_money_spent = 0;
     slider_idx_counter = 0;
     while (slider_idx_counter < 4){
-        total_money_spent += Session.get("slider"+slider_idx_counter);
+        total_money_spent += Session.get(prepend + "slider"+slider_idx_counter);
         slider_idx_counter++;
     }
-    update_deficit();
+    update_deficit("", prepend);
 };
 
 
@@ -68,36 +74,39 @@ compute_averages = function(slider_ID, value){
     return percentage_difference;
 };
 
-update_deficit = function(well_idx){
+update_deficit = function(well_idx, prepend){
     if (typeof(well_idx) == "undefined"){
         well_idx = "";
     }
+    if (typeof(prepend) == "undefined"){
+        prepend = "";
+    }
     var total_money_spent = 0;
     for (var slider_idx_counter = 0; slider_idx_counter < 3; slider_idx_counter++){
-        total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
+        total_money_spent += Session.get(prepend+"slider"+slider_idx_counter+well_idx);
     }
-    total_money_spent -= Session.get("slider"+3+well_idx); // decreases by amt of income tax collected
+    total_money_spent -= Session.get(prepend+"slider"+3+well_idx); // decreases by amt of income tax collected
     var deficit_value = total_money_spent + 228;
     var deficit_value_percentage = 100 * ((deficit_value / 616) - 1);
     deficit_value = parseInt(deficit_value * 100)/100;
     if (deficit_value >= 0){
-        $("#deficit_text"+well_idx).text("deficit");
-        $("#deficit_value"+well_idx).css('color','red');
+        $("#" +prepend + "deficit_text"+well_idx).text("deficit");
+        $("#" +prepend + "deficit_value"+well_idx).css('color','red');
     } else {
         deficit_value = deficit_value.toString().substr(1);
-        $("#deficit_text"+well_idx).text("surplus");
-        $("#deficit_value"+well_idx).css('color','green');
+        $("#" +prepend + "deficit_text"+well_idx).text("surplus");
+        $("#" +prepend + "deficit_value"+well_idx).css('color','green');
     }
     if (deficit_value_percentage >= 0){
         deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
-        $("#deficit_percentage"+well_idx).css('color','red');
-        $("#deficit_percentage"+well_idx).text(deficit_value_percentage+"% increase");
+        $("#" +prepend + "deficit_percentage"+well_idx).css('color','red');
+        $("#" +prepend + "deficit_percentage"+well_idx).text(deficit_value_percentage+"% increase");
     } else {
         deficit_value_percentage = -(parseInt(deficit_value_percentage*100)/100).toString();
-        $("#deficit_percentage"+well_idx).css('color','green');
-        $("#deficit_percentage"+well_idx).text(deficit_value_percentage+"% decrease");
+        $("#" +prepend + "deficit_percentage"+well_idx).css('color','green');
+        $("#" +prepend + "deficit_percentage"+well_idx).text(deficit_value_percentage+"% decrease");
     }
-    $("#deficit_value"+well_idx).text("$"+deficit_value+"B");
+    $("#" +prepend + "deficit_value"+well_idx).text("$"+deficit_value+"B");
 
 };
 
@@ -164,6 +173,12 @@ Template.experiment.events({
             }
         });
     },
+    'click #reset_sliders': function () {
+        reset_sliders('', '');
+    },
+    'click #reset_sliders_full_as_extra': function () {
+        reset_sliders('', 'full');
+    },
     'click #reset_sliders1': function () {
         well_idx = 0;
         reset_sliders(well_idx);
@@ -190,6 +205,159 @@ Template.experiment.helpers({
         }
     }
 });
+
+Template.answer2.onRendered(function () {
+    //initialize variables
+    var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+    var radius = curr_experiment.radius;
+    var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+    update_slider_mech21 = function (ev, val, update_slider_flag) {
+        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+        if (!update_slider_flag)
+            var update_slider_flag = false;
+        if (isNaN(val)){
+            sliders[ev.target.id].val(Number(Session.get(ev.target.id)).toFixed(2));
+            return;
+        }
+        ev.target.value = Number(val).toFixed(2); // updates the textbox
+        Session.set(ev.target.id, Number(val));
+        if (update_slider_flag){
+            sliders[ev.target.id].val(Number(val).toFixed(2));
+            $("div").mouseup(); //release the mouse
+        }
+        var percent_difference = compute_averages(Number(ev.target.id.substr(ev.target.id.length-1)), val);
+        if (percent_difference < 0){
+            //red background
+            $("#"+ev.target.id+"comp").css('color','red');
+            // set value
+            $("#"+ev.target.id+"comp").text(round(percent_difference, 2)+"%");
+        } else {
+            //green background
+            $("#"+ev.target.id+"comp").css('color','green');
+            // set value
+            $("#"+ev.target.id+"comp").text("+"+round(percent_difference, 2)+"%");
+        }
+        var total_money_spent = 0;
+        slider_idx_counter = 0;
+        while (slider_idx_counter < 4){
+            total_money_spent += Session.get("fullslider"+slider_idx_counter);
+            slider_idx_counter++;
+        }
+        update_deficit("", 'full');
+        update_comps();
+    };
+    var update_weight_slider1 = function(ev, val, update_slider_flag){
+        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+        if (!update_slider_flag)
+            var update_slider_flag = false;
+        if (isNaN(val)){
+            weight_sliders[ev.target.id].val(Number(Session.get(ev.target.id)).toFixed(3));
+            return;
+        }
+        ev.target.value = round(val, 2); // updates the textbox
+        Session.set(ev.target.id, val);
+        if (update_slider_flag){
+            weight_sliders[ev.target.id].val(round(val, 2));
+            $("div").mouseup(); //release the mouse
+        }
+    };
+
+    var update_comps = function(well_idx){
+        var percentage_difference = 0;
+        for (var slider_idx = 0; slider_idx < 4; slider_idx++){
+            percentage_difference = compute_averages(slider_idx, Session.get("fullslider"+slider_idx+well_idx));
+            if (percentage_difference < 0){
+                //red background
+                $("#"+"fullslider"+slider_idx+well_idx+"comp").css('color','red');
+                // set value
+                $("#"+"fullslider"+slider_idx+well_idx+"comp").text(Number(percentage_difference).toFixed(2)+"%");
+            } else {
+                //green background
+                $("#"+"fullslider"+slider_idx+well_idx+"comp").css('color','green');
+                // set value
+                $("#"+"fullslider"+slider_idx+well_idx+"comp").text("+"+Number(percentage_difference).toFixed(2)+"%");
+            }
+        }
+    };
+    update_weight_slider = _.throttle(update_weight_slider1, 100);
+    update_slider_mech2 = _.throttle(update_slider_mech21, 100);
+
+    // full elicitation
+    sliders = {};
+    for (var slider_idx = 0; slider_idx < 4; slider_idx++){
+        var slider_current = 0;
+        if (current_question['fullslider'+slider_idx]){
+            slider_current = Number(current_question['fullslider'+slider_idx]);
+            var slider_min = 0;
+            var slider_max = 2*slider_current;
+            Session.set('fullslider'+slider_idx, slider_current);
+            sliders['fullslider'+slider_idx] = this.$("div#fullslider"+slider_idx).noUiSlider({
+                start: slider_current,
+                connect: "lower",
+                range: {
+                    'min': slider_min,
+                    'max': slider_max
+                }
+            }).noUiSlider_pips({
+                mode: 'positions',
+                values: [0,25,50,75,100],
+                density: 4
+            }).on('slide', function (ev, val) {
+                // set real values on 'slide' event
+                try {
+                    update_slider_mech2(ev, val);
+                } catch (TypeError){
+                }
+            }).on('change', function (ev, val) {
+                // round off values on 'change' event
+                try {
+                    update_slider_mech2(ev, val);
+                } catch (TypeError){
+                }
+            });
+        }
+    }
+
+    //WEIGHT SLIDERS
+    weight_sliders = {};
+    for (var slider_idx = 0; slider_idx < 5; slider_idx++) {
+        Session.set('fullslider'+slider_idx+"weight", 5);
+        weight_sliders['fullslider' + slider_idx] = this.$("div#fullslider" + slider_idx + "weight").noUiSlider({
+            start: 5,
+            connect: "lower",
+            range: {
+                'min': 0,
+                'max': 10
+            }
+        }).noUiSlider_pips({
+            mode: 'positions',
+            values: [0,25,50,75,100],
+            density: 4
+        }).on('slide', function (ev, val) {
+            // set real values on 'slide' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError) {
+            }
+        }).on('change', function (ev, val) {
+            // round off values on 'change' event
+            try {
+                update_weight_slider(ev, val);
+            } catch (TypeError) {
+            }
+        });
+    }
+    //update comps
+    update_comps();
+    //update the deficit text
+    update_deficit("", 'full');
+    //initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+    $('#scroll_here').ScrollTo();
+});
+
 Template.answer1.onRendered(function () {
     //initialize variables
     var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
@@ -261,7 +429,6 @@ Template.answer1.onRendered(function () {
         if (!isNaN(credits_left_fraction)) {
             $("#creditsleft"+well_idx).text("Credits left: " + round(credits_left_fraction, 1));
         }
-
         var percent_difference = compute_averages(Number(ev.target.id[ev.target.id.length-2]), val);
         if (percent_difference < 0){
             //red background
@@ -347,7 +514,7 @@ Template.answer1.onRendered(function () {
             curr_slider_total_width = curr_slider_total_width + $("#"+curr_slider_bar).width();
             slider_idx_counter ++;
         }
-        var percent_difference = compute_averages(Number(ev.target.id.substr(ev.target.id.length-1)), val);
+        var percent_difference = compute_averages(Number(ev.target.id[ev.target.id.length-2]), val);
         if (percent_difference < 0){
             //red background
             $("#"+ev.target.id+"comp").css('color','red');
@@ -644,6 +811,11 @@ Template.L2_mechanism.events({
     }
 });
 Template.full_elicitation_mechanism.events({
+    'change textarea': function(event){
+        update_slider_mech2(event, event.target.value, true);
+    }
+});
+Template.full_elicitation_mechanism_as_extra.events({
     'change textarea': function(event){
         update_slider_mech2(event, event.target.value, true);
     }

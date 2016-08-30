@@ -18,9 +18,24 @@ def plotHistogramFromFile():
 
   analyze_data_functionalized.analysis_call(filename, 'whatever', mechanism_super_dictionary, plotHistogramOfFull = True)
 
+def actual_experiment_analysis():
+    mechanism_super_dictionary_real= {0:{'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[425, 1200, 350, 1450, 753]]},
+                                  1: {'name': 'Group 1 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                  2: {'name': 'Group 2 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                  3: {'name': 'Group 3 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]},
+                                  4: {'name': 'Group 1 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                  5: {'name': 'Group 2 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                  6: {'name': 'Group 3 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]}
+                                  # 7: {'name': 'Group 1 Comparisons', 'type': 'comparisons', 'numsets': 2, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
+                                  # 8: {'name': 'Group 2 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]},
+                                  # 9: {'name': 'Group 3 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]}
+                                  }
+
+    analyze_data_functionalized.analysis_call('export-20160830154851_BIGEXPERIMENT_PILOT1.csv', 'BigExperimentPilot1', mechanism_super_dictionary_real, lines_to_do = None, labels = [''], plotHistogramOfFull = False, plotAllOverTime = False, do2SetComparisonsAnalysis = False, plotPercentMovementOverTime = False, organizePayment = True, slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', 'Deficit'], deficit_offset = 0)
+
 def main():
     deficit_offset = 228
-    LIMIT = 1500
+    LIMIT = 200
 
     lines_to_do = [[0, 1, 2, 3], [0, 1], [0, 4, 5, 6], [0, 4]]#, [0, 7, 8, 9], [0, 7]]
     labels = ['L2', 'L2Single', 'L1', 'L1Single', 'Comparisons', 'ComparisonsSingle']
@@ -75,7 +90,7 @@ def main():
     for starting_radius in [100]:#[50, 75, 100]:#[15, 75, 25, 50, 35, 100, 10]:
       for decrease_every in [6]:#[7, 10, 12]:#[1, 3, 5, 10, 15, 20, 25]:
         for ppl_in_block in [10]:#[10, 15]:#[1, 3, 5, 10, 15, 20]:
-          LABEL = '3differentOldREAL_RADIUS' + str(starting_radius) + 'DecreaseEvery' + str(decrease_every) + 'Block' + str(ppl_in_block) + "ppl" + str(LIMIT) + "_"
+          LABEL = 'trynewcode' + str(starting_radius) + 'DecreaseEvery' + str(decrease_every) + 'Block' + str(ppl_in_block) + "ppl" + str(LIMIT) + "_"
           filename = "simulations/" + LABEL + ".csv";
           if os.path.isfile(filename):
             print "skipping because exists", starting_radius, decrease_every, ppl_in_block
@@ -87,12 +102,17 @@ def main():
           for mech in mechanism_super_dictionary_potentialreal:
             if mechanism_super_dictionary_potentialreal[mech]['type'] != 'full':
               mechanism_super_dictionary_potentialreal[mech]['num_to_average_per_step'] = ppl_in_block
+          try:
+            simulate_entire_experiment_functionalized.simulate_experiment_functionalized(
+                 filename, LABEL, copy.deepcopy(mechanism_super_dictionary_potentialreal), deficit_offset = deficit_offset, LIMIT = LIMIT, radius_parameters = radius_parameters_loop, load_people_from_file=load_people_from_file, filename_forloadingpeople=filename_forloadingpeople, superdictionary_forloadingpeople=superdictionary_forloadingpeople, deficit_offset_forloadingpeople=deficit_offset_forloadingpeople)
+          except:
+            print "exception on simulated", starting_radius, decrease_every, ppl_in_block
 
-          simulate_entire_experiment_functionalized.simulate_experiment_functionalized(
-               filename, LABEL, copy.deepcopy(mechanism_super_dictionary_potentialreal), deficit_offset = deficit_offset, LIMIT = LIMIT, radius_parameters = radius_parameters_loop, load_people_from_file=load_people_from_file, filename_forloadingpeople=filename_forloadingpeople, superdictionary_forloadingpeople=superdictionary_forloadingpeople, deficit_offset_forloadingpeople=deficit_offset_forloadingpeople)
-          analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_potentialreal), deficit_offset = deficit_offset, lines_to_do = lines_to_do, labels = labels, plotAllOverTime = True)
-
-
+          try:
+            analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_potentialreal), deficit_offset = deficit_offset, lines_to_do = lines_to_do, labels = labels, plotAllOverTime = True)
+          except:
+            print "exception on analysis", starting_radius, decrease_every, ppl_in_block
+            pass
 
     # LABEL = 'TestAveraging10_decreasing50_5_' + str(LIMIT) + "ppl" + "_"
     # filename = "simulations/" + LABEL + ".csv";
@@ -156,6 +176,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    actual_experiment_analysis()
+    #main()
     #plotHistogramFromFile()
     print 'done'

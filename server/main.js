@@ -525,8 +525,14 @@ Meteor.methods({
         //always update timer
         var curr_answer_form = curr_experiment.current_answer;
         if (curr_answer_form < Meteor.settings.public.answer_forms.length - 1) {
-            //Nikhil's understanding: question not done yet
+            //question not done yet
             var next_answer_form = curr_answer_form + 1;
+            current_question_dictionary = Questions.findOne({
+                "question_ID": curr_experiment.current_question
+            });
+            if (curr_answer_form == 1 && !current_question_dictionary.do_full_as_well){ //skip the extra full elicitation step
+              next_answer_form = 3;
+            }
             Answers.update({
                 experiment_id: experiment_id_value
             }, {
@@ -603,8 +609,16 @@ Meteor.methods({
                     }
                 });
             }
+            else if (curr_answer_form == 2) {
+              if (curr_experiment.do_full_as_well){
+
+              }
+              else {
+
+              }
+            }
         } else {
-            //Nikhil's understanding: person has finished answering the question, including feedback
+            //Person has finished answering the question, including feedback
             //updates the question
 
             //award the payment to a group
