@@ -57,7 +57,7 @@ def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive = 
         answer['initial_slider1' + setstr + '_loc'] = float(restofdata['initial_slider1' + setstr])
         answer['initial_slider2' + setstr + '_loc'] = float(restofdata['initial_slider2' + setstr])
         answer['initial_slider3' + setstr + '_loc'] = float(restofdata['initial_slider3' + setstr])
-        answer['initial_slider4' + setstr + '_loc'] = float(restofdata['initial_deficit' + setstr])
+        answer['initial_slider4' + setstr + '_loc'] =  answer['initial_slider0' + setstr + '_loc'] + answer['initial_slider1' + setstr + '_loc'] + answer['initial_slider2' + setstr + '_loc'] - answer['initial_slider3' + setstr + '_loc'] + deficit_additive #float(restofdata['initial_deficit' + setstr])
 
         answer['explanation'] = answerdata['text_explanation']
 
@@ -86,7 +86,7 @@ def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive = 
         answer['initial_slider1' + setstr + '_loc'] = float(restofdata['initial_slider1' + setstr])
         answer['initial_slider2' + setstr + '_loc'] = float(restofdata['initial_slider2' + setstr])
         answer['initial_slider3' + setstr + '_loc'] = float(restofdata['initial_slider3' + setstr])
-        answer['initial_slider4' + setstr + '_loc'] = float(restofdata['initial_deficit' + setstr])
+        answer['initial_slider4' + setstr + '_loc'] =  answer['initial_slider0' + setstr + '_loc'] + answer['initial_slider1' + setstr + '_loc'] + answer['initial_slider2' + setstr + '_loc'] - answer['initial_slider3' + setstr + '_loc'] + deficit_additive #float(restofdata['initial_deficit' + setstr])
 
 
         answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]

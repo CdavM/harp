@@ -112,10 +112,9 @@ def plot_allmechansisms_together(
 					continue
 				if mechanism_super_dictionary[mechanism]['type'] == 'l1' or mechanism_super_dictionary[mechanism]['type'] == 'l2':
 					for set_num in range(mechanism_super_dictionary[mechanism]['numsets']):
-						n = range(0, len(organized_data[mechanism]) + 1)
+						n = range(0, len(organized_data[mechanism]))
 						maxn = max(maxn, len(n))
 						vals = [d['question_data']['initial_slider' + str(slider) + str(set_num) + '_loc'] for d in organized_data[mechanism]] #initial instead of actual for averaging purposes
-						vals.insert(0, mechanism_super_dictionary[mechanism]['initial_values'][set_num][slider]) #prepend initial values
 						l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'] + ", Set " + str(set_num))
 						if slider == 0:
 							lines.append(l[0])
@@ -124,10 +123,9 @@ def plot_allmechansisms_together(
 			# comparisons
 				if mechanism_super_dictionary[mechanism]['type'] == 'comparisons':
 					for set_num in range(mechanism_super_dictionary[mechanism]['numsets']):
-						n = range(0, len(organized_data[mechanism]) + 1)
+						n = range(0, len(organized_data[mechanism]))
 						maxn = max(maxn, len(n))
 						vals = [d['question_data']['set' + str(set_num) + 'slider' + str(slider) + '_loc'] for d in organized_data[mechanism]]
-						vals.insert(0, mechanism_super_dictionary[mechanism]['initial_values'][set_num][slider]) #prepend initial values
 						l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'] + ", Set " + str(set_num))
 						if slider == 0:
 							lines.append(l[0])
@@ -145,7 +143,7 @@ def plot_allmechansisms_together(
 			axarr[slider].set_title(slider_order[slider], fontsize = 18)
 			axarr[slider].set_ylabel('$ (Billions)', fontsize = 18)
 			axarr[slider].tick_params(axis='both', which='major', labelsize=18)
-		
+
 		axarr[len(slider_order)-1].set_xlabel('Iteration', fontsize = 18)
 		f.legend(lines,legend_names , loc='upper center', borderaxespad=0., ncol = 3, fontsize = 18)
 
@@ -157,7 +155,7 @@ def plot_allmechansisms_together(
 		#mng.window.state('zoomed') #works fine on Windows!
 
 		#plt.show()
-		plt.savefig("simulated_plots/" + LABEL + labels[ltd] + '.png')
+		plt.savefig("" + LABEL + labels[ltd] + '.png')
 		plt.close();
 def analyze_data_experiment_l2(data): # constrained movement
 	plot_sliders_over_time(data, 'l2 Constrained Movement Mechanism')
@@ -258,7 +256,7 @@ def plot_percent_movements_over_time(organized_data, LABEL):
 						continue
 					for i in range(len(percentages)):
 						averages_byitem[str(key) + 'set' + str(setnum)][i].append(percentages[i])
-						averages_bymostmovement[str(key) + 'set' + str(setnum)][i].append(sorted(percentages, reverse = True)[i])	  
+						averages_bymostmovement[str(key) + 'set' + str(setnum)][i].append(sorted(percentages, reverse = True)[i])
 
 	f, axarr = plt.subplots(4, sharex=True)
 	lines = []
@@ -272,7 +270,7 @@ def plot_percent_movements_over_time(organized_data, LABEL):
 			# l = axarr[slider].plot(n, np.poly1d(np.polyfit(n, vals, 1))(n), label = mechanism_names_expanded[mechanism])
 			mvgs = movingaverage(vals, 10)
 			# l = axarr[slider].plot(range(len(mvgs)),mvgs, label = mechanism_names_expanded[mechanism])
-			
+
 			if slider == 0:
 				lines.append(l[0])
 		axarr[slider].set_title(slider_order[slider], fontsize = 18)
@@ -317,16 +315,16 @@ def analyze_movement_and_weights(organized_data, LABEL):
 					averages_byitem[str(key) + 'set' + str(setnum)] += percentages
 					averages_bymostmovement[str(key) + 'set' + str(setnum)] += sorted(percentages, reverse = True)
 		if key!= 1 and key!=5:
-			averages_byitem[str(key)] /= num_key_positive[key] 
-			averages_bymostmovement[str(key)] /= num_key_positive[key] 
+			averages_byitem[str(key)] /= num_key_positive[key]
+			averages_bymostmovement[str(key)] /= num_key_positive[key]
 			if key == 0%4 or key%4 == 3:
-				averages_creditpercentage[str(key)] /= num_key_positive[key] 
-				averages_creditpercentage_bymost[str(key)] /= num_key_positive[key] 
+				averages_creditpercentage[str(key)] /= num_key_positive[key]
+				averages_creditpercentage_bymost[str(key)] /= num_key_positive[key]
 		else:
 			for setnum in range(2):
-				averages_byitem[str(key) + 'set' + str(setnum)] /= num_key_positive[key] 
+				averages_byitem[str(key) + 'set' + str(setnum)] /= num_key_positive[key]
 				averages_bymostmovement[str(key) + 'set' + str(setnum)] /= num_key_positive[key]
-				
+
 	dpoints_byitem = []
 	dpoints_bymost = []
 	dpoints_credits = []
@@ -376,7 +374,7 @@ def TwoSetComparisonsAnalysis(comparisonsdata):
 	plt.legend(loc='upper left', borderaxespad=0., ncol = 4, fontsize = 18)
 	plt.show()
 
-	# for each budget item, sort the options from least to highest. See which option they picked for each, how it different per person.  
+	# for each budget item, sort the options from least to highest. See which option they picked for each, how it different per person.
 	optionsorteddifferences_over_time = [[],[],[],[]]
 	set0 = [[], [], [], []]
 	set1 = [[], [], [], []]
@@ -438,7 +436,7 @@ def get_movement_values_comparisons_sets(single_experiment_data):
 	abssum_set1 = sum(abs(movement_set1))
 	if abssum_set1 > 0:
 		movement_set1 = movement_set1/abssum_set1
-	 
+
 	return movement_set0, movement_set1
 
 def get_movement_percentages(single_experiment_data, prepend = ""):
@@ -503,7 +501,7 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, lines_to_do = Non
 	data, organized_data = clean_data(load_data(filename), mechanism_super_dictionary, deficit_offset);
 
 	if do2SetComparisonsAnalysis:
-		TwoSetComparisonsAnalysis(organized_data[1])	
+		TwoSetComparisonsAnalysis(organized_data[1])
 
 	if plotPercentMovementOverTime:
 		plot_percent_movements_over_time(organized_data, LABEL)
@@ -512,7 +510,7 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, lines_to_do = Non
 		for key in mechanism_super_dictionary:
 			if mechanism_super_dictionary[key]['type'] == "full":
 				analyze_data_experiment_full(organized_data[key])
-	
+
 	if plotAllOverTime:
 		plot_allmechansisms_together(organized_data, mechanism_super_dictionary, slider_order = slider_order, deficit_offset = deficit_offset, labels = labels, lines_to_do = lines_to_do, LABEL = LABEL)
 
@@ -524,4 +522,3 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, lines_to_do = Non
 	# payments_new_people(organized_data)
 
 	# print_different_things(organized_data  )
-
