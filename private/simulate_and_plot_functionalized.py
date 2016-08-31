@@ -19,11 +19,11 @@ def plotHistogramFromFile():
   analyze_data_functionalized.analysis_call(filename, 'whatever', mechanism_super_dictionary, plotHistogramOfFull = True)
 
 def actual_experiment_analysis():
-    filename ='export-20160831044337.csv'
-    LABEL = 'BigExperimentPilot3'
+    filename ='export-20160831162352_BIGEXPERIMENT_DAY2.csv'
+    LABEL = 'BigExperiment_DAY2_'
     deficit_offset = 228
-    lines_to_do = [[0, 1, 2, 3], [0, 1], [0, 4, 5, 6], [0, 4]]#, [0, 7, 8, 9], [0, 7]]
-    labels = ['L2', 'L2Single', 'L1', 'L1Single', 'Comparisons', 'ComparisonsSingle']
+    lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6]]#, [0, 1], [0, 4]]#, [0, 7, 8, 9], [0, 7]]
+    labels = ['L2', 'L1', 'L2Single', 'L1Single', 'Comparisons', 'ComparisonsSingle']
 
     mechanism_super_dictionary_real= {0:{'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[425, 1200, 350, 1450, 753]]},
                                   1: {'name': 'Group 1 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},

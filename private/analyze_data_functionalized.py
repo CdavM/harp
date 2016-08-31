@@ -134,7 +134,7 @@ def plot_allmechansisms_together(
 				n = range(maxn)
 				if mechanism_super_dictionary[mechanism]['type'] == 'full':
 					vals = [full_elicitation_averages[mechanism]['euclideanprefs'][slider] for _ in n]
-					l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'])
+					l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary[mechanism]['name'], linestyle = '--', marker = '+')
 
 					if slider == 0:
 						lines.append(l[0])
