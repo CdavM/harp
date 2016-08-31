@@ -90,23 +90,23 @@ update_deficit = function(well_idx, prepend){
     var deficit_value_percentage = 100 * ((deficit_value / 616) - 1);
     deficit_value = parseInt(deficit_value * 100)/100;
     if (deficit_value >= 0){
-        $("#" +prepend + "deficit_text"+well_idx).text("deficit");
-        $("#" +prepend + "deficit_value"+well_idx).css('color','red');
+        $("#"+"deficit_text"+well_idx).text("deficit");
+        $("#"+"deficit_value"+well_idx).css('color','red');
     } else {
         deficit_value = deficit_value.toString().substr(1);
-        $("#" +prepend + "deficit_text"+well_idx).text("surplus");
-        $("#" +prepend + "deficit_value"+well_idx).css('color','green');
+        $("#"+"deficit_text"+well_idx).text("surplus");
+        $("#"+"deficit_value"+well_idx).css('color','green');
     }
     if (deficit_value_percentage >= 0){
         deficit_value_percentage = (parseInt(deficit_value_percentage*100)/100).toString();
-        $("#" +prepend + "deficit_percentage"+well_idx).css('color','red');
-        $("#" +prepend + "deficit_percentage"+well_idx).text(deficit_value_percentage+"% increase");
+        $("#"+"deficit_percentage"+well_idx).css('color','red');
+        $("#"+"deficit_percentage"+well_idx).text(deficit_value_percentage+"% increase");
     } else {
         deficit_value_percentage = -(parseInt(deficit_value_percentage*100)/100).toString();
-        $("#" +prepend + "deficit_percentage"+well_idx).css('color','green');
-        $("#" +prepend + "deficit_percentage"+well_idx).text(deficit_value_percentage+"% decrease");
+        $("#"+"deficit_percentage"+well_idx).css('color','green');
+        $("#"+"deficit_percentage"+well_idx).text(deficit_value_percentage+"% decrease");
     }
-    $("#" +prepend + "deficit_value"+well_idx).text("$"+deficit_value+"B");
+    $("#"+"deficit_value"+well_idx).text("$"+deficit_value+"B");
 
 };
 
