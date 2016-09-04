@@ -34,15 +34,17 @@ def plot_sliders_over_time(data, title, prepend=""):
 	plt.show()
 
 
-def calculate_full_elicitation_euclideanpoint(data, deficit_offset):
+def calculate_full_elicitation_euclideanpoint(data, deficit_offset, dataname = 'question_data', sliderprepend = ''):
 	X = cvxpy.Variable(5)  # 1 point for each mechanism
 	fun = 0
 	for d in data:
-		y = [d['question_data']['slider' +
+		if dataname not in d:
+			continue
+		y = [d[dataname][sliderprepend + 'slider' +
 			str(slider) + '0_loc'] for slider in range(5)]
-		w = [d['question_data']['slider' +
+		w = [d[dataname][sliderprepend + 'slider' +
 			str(slider) + '0_weight'] for slider in range(5)]
-		sumsq = math.sqrt(sum([math.pow(w[i], 2) for i in range(5)]))
+		sumsq = max(.001, math.sqrt(sum([math.pow(w[i], 2) for i in range(5)])))
 		w = [w[i] / sumsq for i in range(5)]
 		for slider in range(5):
 			fun += w[slider] * cvxpy.abs(X[slider] - y[slider])
@@ -59,7 +61,7 @@ def calculate_full_elicitation_euclideanpoint(data, deficit_offset):
 	return items
 
 
-def calculate_full_elicitation_average(data , deficit_offset):
+def calculate_full_elicitation_average(data , deficit_offset, dataname = 'question_data', sliderprepend = ''):
 	sliders = {0: [], 1: [], 2: [], 3: [], 4: []}
 	weights = {0: [], 1: [], 2: [], 3: [], 4: []}
 	rawaverages = {}
@@ -67,16 +69,19 @@ def calculate_full_elicitation_average(data , deficit_offset):
 	weightedaverages_l2 = {}
 
 	for slider in sliders:
-		sliders[slider] = [d['question_data'][
-			'slider' + str(slider) + '0_loc'] for d in data]
-		weights[slider] = [d['question_data'][
-			'slider' + str(slider) + '0_weight'] for d in data]
+		for d in data:
+			if d.has_key(dataname) and d[dataname].has_key(sliderprepend + 'slider' + str(slider) + '0_loc'):
+				sliders[slider].append(d[dataname][
+					sliderprepend + 'slider' + str(slider) + '0_loc'])
+				weights[slider].append(d[dataname][
+					sliderprepend + 'slider' + str(slider) + '0_weight'])
+	print sliders, weights
 
 	# normalize slider weights
 	for i in range(len(weights[0])):
 		summ = float(sum([weights[slider][i] for slider in weights]))
 		for s in weights:
-			weights[s][i] /= summ
+			weights[s][i] /= max(summ,.001)
 
 	for slider in sliders:
 		rawaverages[slider] = np.mean(sliders[slider])
@@ -86,7 +91,7 @@ def calculate_full_elicitation_average(data , deficit_offset):
 			sliders[slider], weights=[math.pow(x, 2) for x in weights[slider]])
 
 	return rawaverages, weightedaverages_l2, weightedaverages_l1, calculate_full_elicitation_euclideanpoint(
-		data, deficit_offset)
+		data, deficit_offset, dataname, sliderprepend)
 
 
 def plot_allmechansisms_together(
@@ -105,7 +110,13 @@ def plot_allmechansisms_together(
 				rawaverages, weightedaverages_l2, weightedaverages_l1, euclideanprefs = calculate_full_elicitation_average(organized_data[mech], deficit_offset)
 				full_elicitation_averages[mech] = {'rawaverages': rawaverages, 'weightedaverages_l2': weightedaverages_l2, 'weightedaverages_l1': weightedaverages_l1, 'euclideanprefs': euclideanprefs}
 
-		maxn = 25
+		maxn = 0
+		for mechanism in mechanism_super_dictionary:
+			if mechanism not in lines_to_do[ltd]:
+				continue
+			n = range(0, len(organized_data[mechanism]))
+			maxn = max(maxn, len(n))
+
 		for slider in xrange(0, len(slider_order)):
 			for mechanism in mechanism_super_dictionary:
 				if mechanism not in lines_to_do[ltd]:
@@ -462,12 +473,24 @@ def calculate_time_spent(organized_data, LABEL):
 			dpoints.append([mechanism_names_fixed[key], pagenames[page], np.mean([d['time_page' + str(page)] for d in organized_data[key]])])
 	barplot(np.array(dpoints), LABEL, 'Time (Seconds)', 'Page', pagenames, mechanism_names_fixed)
 
-def organize_payment(organized_data):
-	with open ('bonusinfo_real_run2_finalppl.csv', 'wb') as file:
+def organize_payment(organized_data, LABEL, mechanism_super_dictionary):
+	with open (LABEL + '_bonusinfo.csv', 'wb') as file:
 		writer = csv.writer(file)
 		for key in organized_data:
+			lengthlist = []
+			arraylist = []
 			for d in organized_data[key]:
-				writer.writerow([d['worker_ID'], d['question_num'], d['question_data']['explanation'], d['feedback_data']['feedback'],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page3']])
+				if len(d['feedback_data']['feedback']) == 0:
+					d['feedback_data']['feedback'] = ['']
+				if mechanism_super_dictionary[key]['do_full_as_well'] and 'extra_full_elicitation_data' in d:
+					lengthlist.append(len(d['question_data']['explanation'][0]) + len(d['extra_full_elicitation_data']['explanation'][0]) + len(d['feedback_data']['feedback'][0]))
+					arraylist.append([d['worker_ID'], d['question_num'], d['question_data']['explanation'][0], d['extra_full_elicitation_data']['explanation'][0], d['feedback_data']['feedback'][0],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page3'], d['time_page4']])
+				else:
+					lengthlist.append(len(d['question_data']['explanation'][0]) + len(d['feedback_data']['feedback'][0]))
+					arraylist.append([d['worker_ID'], d['question_num'], d['question_data']['explanation'][0], '', d['feedback_data']['feedback'][0],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page4']])
+			order = np.argsort(lengthlist)[::-1]
+			arraylist = [arraylist[i] for i in order]
+			writer.writerows(arraylist)
 def print_different_things(organized_data):
 	for key in organized_data:
 		print "MECHANISM: " + mechanism_names_expanded[key]
@@ -497,7 +520,51 @@ def payments_new_people(organized_data):
 				if d['worker_ID'] in newids:
 					writer.writerow([d['worker_ID'], d['question_num'], d['question_data']['explanation'], d['feedback_data']['feedback'],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page3']])
 
-def analysis_call(filename, LABEL, mechanism_super_dictionary, lines_to_do = None, labels = [''], plotHistogramOfFull = False, plotAllOverTime = False, do2SetComparisonsAnalysis = False, plotPercentMovementOverTime = False, organizePayment = False, slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', 'Deficit'], deficit_offset = 0):
+def analyze_extra_full_elicitation(data, mechanism_super_dictionary_value, mech_key, LABEL, slider_order, deficit_offset = 0):
+	legend_names = []
+	f, axarr = plt.subplots(5, sharex=True)
+	lines = []
+	rawaverages, weightedaverages_l2, weightedaverages_l1, euclideanprefs = calculate_full_elicitation_average(data, deficit_offset, dataname = 'extra_full_elicitation_data', sliderprepend = '')
+	full_elicitation_averages = {'rawaverages': rawaverages, 'weightedaverages_l2': weightedaverages_l2, 'weightedaverages_l1': weightedaverages_l1, 'euclideanprefs': euclideanprefs}
+
+	maxn = 25
+	for slider in xrange(0, len(slider_order)):
+		for set_num in range(mechanism_super_dictionary_value['numsets']):
+			n = range(0, len(data))
+			maxn = max(maxn, len(n))
+			vals = [d['question_data']['initial_slider' + str(slider) + str(set_num) + '_loc'] for d in data] #initial instead of actual for averaging purposes
+			l = axarr[slider].plot(n, vals, label = mechanism_super_dictionary_value['name'] + ", Set " + str(set_num))
+			if slider == 0:
+				lines.append(l[0])
+				legend_names.append(mechanism_super_dictionary_value['name'] + ", Set " + str(set_num))
+
+		n = range(maxn)
+		vals = [full_elicitation_averages['euclideanprefs'][slider] for _ in n]
+		l = axarr[slider].plot(n, vals, label = 'Mechanism specific full elicitation', linestyle = '--', marker = '+')
+
+		if slider == 0:
+			lines.append(l[0])
+			legend_names.append('Mechanism specific full elicitation')
+
+		axarr[slider].set_title(slider_order[slider], fontsize = 18)
+		axarr[slider].set_ylabel('$ (Billions)', fontsize = 18)
+		axarr[slider].tick_params(axis='both', which='major', labelsize=18)
+
+	axarr[len(slider_order)-1].set_xlabel('Iteration', fontsize = 18)
+	f.legend(lines,legend_names , loc='upper center', borderaxespad=0., ncol = 3, fontsize = 18)
+
+
+	mng = plt.get_current_fig_manager()
+	#mng.frame.Maximize(True)
+	mng.window.showMaximized()
+
+	#mng.window.state('zoomed') #works fine on Windows!
+
+	#plt.show()
+	plt.savefig("" + LABEL + '_FullElicitation Extra, Group ' + str(mech_key)  + '.png')
+	plt.close();
+
+def analysis_call(filename, LABEL, mechanism_super_dictionary, lines_to_do = None, labels = [''], analyzeExtraFull = False, plotHistogramOfFull = False, plotAllOverTime = False, do2SetComparisonsAnalysis = False, plotPercentMovementOverTime = False, organizePayment = False, slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', 'Deficit'], deficit_offset = 0):
 	data, organized_data = clean_data(load_data(filename), mechanism_super_dictionary, deficit_offset);
 
 	if do2SetComparisonsAnalysis:
@@ -514,10 +581,15 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, lines_to_do = Non
 	if plotAllOverTime:
 		plot_allmechansisms_together(organized_data, mechanism_super_dictionary, slider_order = slider_order, deficit_offset = deficit_offset, labels = labels, lines_to_do = lines_to_do, LABEL = LABEL)
 
+	if analyzeExtraFull:
+		for key in mechanism_super_dictionary:
+			if mechanism_super_dictionary[key]['do_full_as_well']:
+				analyze_extra_full_elicitation(organized_data[key], mechanism_super_dictionary[key], key, LABEL, slider_order = slider_order, deficit_offset = deficit_offset)
+
 	# analyze_data(organized_data, LABEL)
 
 	if organizePayment:
-		organize_payment(organized_data)
+		organize_payment(organized_data, LABEL, mechanism_super_dictionary)
 
 	# payments_new_people(organized_data)
 

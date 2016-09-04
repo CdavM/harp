@@ -301,17 +301,17 @@ Meteor.methods({
                     } else {
                         do {
                             var rnd_sample = Math.random();
-                            if (rnd_sample < 0.1428571428571429)
+                            if (rnd_sample < 0.05)
                                 question_selected = 0;
-                            else if (rnd_sample < (0.1428571428571429 * 2))
+                            else if (rnd_sample < (0.158333333333333 * 2))
                                 question_selected = 1;
-                            else if (rnd_sample < (0.1428571428571429 * 3))
+                            else if (rnd_sample < (0.158333333333333 * 3))
                                 question_selected = 2;
-                            else if (rnd_sample < (0.1428571428571429 * 4))
+                            else if (rnd_sample < (0.158333333333333 * 4))
                                 question_selected = 3;
-                            else if (rnd_sample < (0.1428571428571429 * 5))
+                            else if (rnd_sample < (0.158333333333333 * 5))
                                 question_selected = 4;
-                            else if (rnd_sample < (0.1428571428571429 * 6))
+                            else if (rnd_sample < (0.158333333333333 * 6))
                                 question_selected = 5;
                             else
                                 question_selected = 6;
@@ -319,7 +319,9 @@ Meteor.methods({
                                 counters[experiment_id_value]['random_counter'].length < selection_size) ||
                             Questions.findOne({
                                 "question_ID": question_selected
-                            }).busy == true);
+                            }).busy == true || Questions.findOne({
+                                "question_ID": question_selected
+                            }).previous_participants >= 19);
                     }
                     return question_selected;
                 };

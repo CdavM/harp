@@ -19,25 +19,26 @@ def plotHistogramFromFile():
   analyze_data_functionalized.analysis_call(filename, 'whatever', mechanism_super_dictionary, plotHistogramOfFull = True)
 
 def actual_experiment_analysis():
-    filename ='export-20160831162352_BIGEXPERIMENT_DAY2.csv'
-    LABEL = 'BigExperiment_DAY2_'
+    filename ='export-20160904151010.csv'
+    LABEL = 'BigExperiment_DAY6_'
     deficit_offset = 228
     lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6]]#, [0, 1], [0, 4]]#, [0, 7, 8, 9], [0, 7]]
     labels = ['L2', 'L1', 'L2Single', 'L1Single', 'Comparisons', 'ComparisonsSingle']
 
-    mechanism_super_dictionary_real= {0:{'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[425, 1200, 350, 1450, 753]]},
-                                  1: {'name': 'Group 1 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
-                                  2: {'name': 'Group 2 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
-                                  3: {'name': 'Group 3 l2 Constrainted Movement', 'type': 'l2', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]},
-                                  4: {'name': 'Group 1 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
-                                  5: {'name': 'Group 2 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
-                                  6: {'name': 'Group 3 l1 Constrainted Movement', 'type': 'l1', 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]}
+    mechanism_super_dictionary_real= {0:{'type': 'full', 'name': 'Full Elicitation -- Euclidean', 'do_full_as_well' :False, 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[425, 1200, 350, 1450, 753]]},
+                                  1: {'name': 'Group 1 l2 Constrainted Movement', 'type': 'l2', 'do_full_as_well' :True, 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                  2: {'name': 'Group 2 l2 Constrainted Movement', 'type': 'l2', 'do_full_as_well' :False, 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                  3: {'name': 'Group 3 l2 Constrainted Movement', 'type': 'l2', 'do_full_as_well' :False, 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]},
+                                  4: {'name': 'Group 1 l1 Constrainted Movement', 'type': 'l1', 'do_full_as_well' :True, 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                  5: {'name': 'Group 2 l1 Constrainted Movement', 'type': 'l1', 'do_full_as_well' :False, 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                  6: {'name': 'Group 3 l1 Constrainted Movement', 'type': 'l1', 'do_full_as_well' :False, 'numsets': 2, 'num_to_average_per_step' : 10,'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]}
                                   # 7: {'name': 'Group 1 Comparisons', 'type': 'comparisons', 'numsets': 2, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
                                   # 8: {'name': 'Group 2 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]},
                                   # 9: {'name': 'Group 3 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]}
                                   }
 
-    analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_real), deficit_offset = deficit_offset, lines_to_do = lines_to_do, labels = labels, plotAllOverTime = True)
+    analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_real), deficit_offset = deficit_offset, lines_to_do = lines_to_do, labels = labels, plotAllOverTime = True, organizePayment = True, analyzeExtraFull = True)
+
 
 def main():
     deficit_offset = 228

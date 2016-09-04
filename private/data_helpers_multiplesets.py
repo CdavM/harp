@@ -10,7 +10,6 @@ from operator import itemgetter
 import numpy as np
 
 
-
 def load_data(filename):
     with open(filename, mode='rb') as file:
         reader = csv.DictReader(file)
@@ -19,110 +18,167 @@ def load_data(filename):
     return None
 
 slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', "Deficit"]
-mechanism_names = ['l2 Constrained Movement', 'Comparisons', 'Full Elicitation', 'l1 Constrained Movement']
+mechanism_names = ['l2 Constrained Movement', 'Comparisons',
+    'Full Elicitation', 'l1 Constrained Movement']
 
-def load_data_experiment_full(answerdata, restofdata, num_sets, deficit_additive): #ideal points and weights elicitation
+
+# ideal points and weights elicitation
+def load_data_experiment_full(answerdata, restofdata, num_sets, deficit_additive, isfullslider=False):
+    prepend = ""
+    if isfullslider:
+        prepend = "full"
     answer = {}
-    answer['slider00_loc'] = float(answerdata['slider0_text'][0])
-    answer['slider00_weight'] = float(answerdata['slider0weight_text'][0])
+    answer['slider00_loc'] = float(answerdata[prepend + 'slider0_text'][0])
+    answer['slider00_weight'] = float(
+        answerdata[prepend + 'slider0weight_text'][0])
 
-    answer['slider10_loc'] = float(answerdata['slider1_text'][0])
-    answer['slider10_weight'] = float(answerdata['slider1weight_text'][0])
+    answer['slider10_loc'] = float(answerdata[prepend + 'slider1_text'][0])
+    answer['slider10_weight'] = float(
+        answerdata[prepend + 'slider1weight_text'][0])
 
-    answer['slider20_loc'] = float(answerdata['slider2_text'][0])
-    answer['slider20_weight'] = float(answerdata['slider2weight_text'][0])
+    answer['slider20_loc'] = float(answerdata[prepend + 'slider2_text'][0])
+    answer['slider20_weight'] = float(
+        answerdata[prepend + 'slider2weight_text'][0])
 
-    answer['slider30_loc'] = float(answerdata['slider3_text'][0])
-    answer['slider30_weight'] = float(answerdata['slider3weight_text'][0])
+    answer['slider30_loc'] = float(answerdata[prepend + 'slider3_text'][0])
+    answer['slider30_weight'] = float(
+        answerdata[prepend + 'slider3weight_text'][0])
 
-    answer['slider40_loc'] = answer['slider00_loc'] + answer['slider10_loc'] + answer['slider20_loc'] - answer['slider30_loc'] + deficit_additive
-    answer['slider40_weight'] = float(answerdata['slider4weight_text'][0])
+    answer['slider40_loc'] = answer['slider00_loc'] + answer['slider10_loc'] + \
+        answer['slider20_loc'] - answer['slider30_loc'] + deficit_additive
+    answer['slider40_weight'] = float(
+        answerdata[prepend + 'slider4weight_text'][0])
 
     answer['explanation'] = answerdata['text_explanation']
 
     return answer
 
-def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive = 0): #l2 constrained movement
+
+# l2 constrained movement
+def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive=0):
     answer = {}
 
     for setnum in range(numsets):
         setstr = str(setnum);
-        answer['slider0' + setstr + '_loc'] = float(answerdata['slider0' + setstr][0])
-        answer['slider1' + setstr + '_loc'] = float(answerdata['slider1' + setstr][0])
-        answer['slider2' + setstr + '_loc'] = float(answerdata['slider2' + setstr][0])
-        answer['slider3' + setstr + '_loc'] = float(answerdata['slider3' + setstr][0])
-        answer['slider4' + setstr + '_loc'] = float(answerdata['deficit' + setstr])
+        answer['slider0' + setstr +
+            '_loc'] = float(answerdata['slider0' + setstr][0])
+        answer['slider1' + setstr +
+            '_loc'] = float(answerdata['slider1' + setstr][0])
+        answer['slider2' + setstr +
+            '_loc'] = float(answerdata['slider2' + setstr][0])
+        answer['slider3' + setstr +
+            '_loc'] = float(answerdata['slider3' + setstr][0])
+        answer['slider4' + setstr +
+            '_loc'] = float(answerdata['deficit' + setstr])
 
-        answer['initial_slider0' + setstr + '_loc'] = float(restofdata['initial_slider0' + setstr])
-        answer['initial_slider1' + setstr + '_loc'] = float(restofdata['initial_slider1' + setstr])
-        answer['initial_slider2' + setstr + '_loc'] = float(restofdata['initial_slider2' + setstr])
-        answer['initial_slider3' + setstr + '_loc'] = float(restofdata['initial_slider3' + setstr])
-        answer['initial_slider4' + setstr + '_loc'] =  answer['initial_slider0' + setstr + '_loc'] + answer['initial_slider1' + setstr + '_loc'] + answer['initial_slider2' + setstr + '_loc'] - answer['initial_slider3' + setstr + '_loc'] + deficit_additive #float(restofdata['initial_deficit' + setstr])
+        answer['initial_slider0' + setstr +
+            '_loc'] = float(restofdata['initial_slider0' + setstr])
+        answer['initial_slider1' + setstr +
+            '_loc'] = float(restofdata['initial_slider1' + setstr])
+        answer['initial_slider2' + setstr +
+            '_loc'] = float(restofdata['initial_slider2' + setstr])
+        answer['initial_slider3' + setstr +
+            '_loc'] = float(restofdata['initial_slider3' + setstr])
+        answer['initial_slider4' + setstr + '_loc'] = answer['initial_slider0' + setstr + '_loc'] + answer['initial_slider1' + setstr + '_loc'] + answer[
+            'initial_slider2' + setstr + '_loc'] - answer['initial_slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
 
         answer['explanation'] = answerdata['text_explanation']
 
-        answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
+        answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(
+            restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
 
-        answer['slider0' + setstr + '_creditsused'] = float(restofdata['answer1.slider0' + setstr + '_credits'])
-        answer['slider1' + setstr + '_creditsused'] = float(restofdata['answer1.slider1' + setstr + '_credits'])
-        answer['slider2' + setstr + '_creditsused'] = float(restofdata['answer1.slider2' + setstr + '_credits'])
-        answer['slider3' + setstr + '_creditsused'] = float(restofdata['answer1.slider3' + setstr + '_credits'])
+        answer['slider0' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider0' + setstr + '_credits'])
+        answer['slider1' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider1' + setstr + '_credits'])
+        answer['slider2' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider2' + setstr + '_credits'])
+        answer['slider3' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider3' + setstr + '_credits'])
 
     return answer
 
-def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive = 0): #l1 constrained movement
+
+# l1 constrained movement
+def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive=0):
     answer = {}
 
     for setnum in range(numsets):
         setstr = str(setnum);
-        answer['slider0' + setstr + '_loc'] = float(answerdata['slider0' + setstr][0])
-        answer['slider1' + setstr + '_loc'] = float(answerdata['slider1' + setstr][0])
-        answer['slider2' + setstr + '_loc'] = float(answerdata['slider2' + setstr][0])
-        answer['slider3' + setstr + '_loc'] = float(answerdata['slider3' + setstr][0])
-        answer['slider4' + setstr + '_loc'] = float(answerdata['deficit'+ setstr])
+        answer['slider0' + setstr +
+            '_loc'] = float(answerdata['slider0' + setstr][0])
+        answer['slider1' + setstr +
+            '_loc'] = float(answerdata['slider1' + setstr][0])
+        answer['slider2' + setstr +
+            '_loc'] = float(answerdata['slider2' + setstr][0])
+        answer['slider3' + setstr +
+            '_loc'] = float(answerdata['slider3' + setstr][0])
+        answer['slider4' + setstr +
+            '_loc'] = float(answerdata['deficit' + setstr])
         answer['explanation'] = answerdata['text_explanation']
 
-        answer['initial_slider0' + setstr + '_loc'] = float(restofdata['initial_slider0' + setstr])
-        answer['initial_slider1' + setstr + '_loc'] = float(restofdata['initial_slider1' + setstr])
-        answer['initial_slider2' + setstr + '_loc'] = float(restofdata['initial_slider2' + setstr])
-        answer['initial_slider3' + setstr + '_loc'] = float(restofdata['initial_slider3' + setstr])
-        answer['initial_slider4' + setstr + '_loc'] =  answer['initial_slider0' + setstr + '_loc'] + answer['initial_slider1' + setstr + '_loc'] + answer['initial_slider2' + setstr + '_loc'] - answer['initial_slider3' + setstr + '_loc'] + deficit_additive #float(restofdata['initial_deficit' + setstr])
+        answer['initial_slider0' + setstr +
+            '_loc'] = float(restofdata['initial_slider0' + setstr])
+        answer['initial_slider1' + setstr +
+            '_loc'] = float(restofdata['initial_slider1' + setstr])
+        answer['initial_slider2' + setstr +
+            '_loc'] = float(restofdata['initial_slider2' + setstr])
+        answer['initial_slider3' + setstr +
+            '_loc'] = float(restofdata['initial_slider3' + setstr])
+        answer['initial_slider4' + setstr + '_loc'] = answer['initial_slider0' + setstr + '_loc'] + answer['initial_slider1' + setstr + '_loc'] + answer[
+            'initial_slider2' + setstr + '_loc'] - answer['initial_slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
 
+        answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(
+            restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
 
-        answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
-
-        answer['slider0' + setstr + '_creditsused'] = float(restofdata['answer1.slider0' + setstr + '_credits'])
-        answer['slider1' + setstr + '_creditsused'] = float(restofdata['answer1.slider1' + setstr + '_credits'])
-        answer['slider2' + setstr + '_creditsused'] = float(restofdata['answer1.slider2' + setstr + '_credits'])
-        answer['slider3' + setstr + '_creditsused'] = float(restofdata['answer1.slider3' + setstr + '_credits'])
+        answer['slider0' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider0' + setstr + '_credits'])
+        answer['slider1' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider1' + setstr + '_credits'])
+        answer['slider2' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider2' + setstr + '_credits'])
+        answer['slider3' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider3' + setstr + '_credits'])
 
     return answer
 
-def load_data_experiment_comparisons(answerdata, restofdata, numsets, deficit_additive = 0): #comparisons
+
+# comparisons
+def load_data_experiment_comparisons(answerdata, restofdata, numsets, deficit_additive=0):
     answer = {}
     answer['explanation'] = answerdata['text_explanation']
     for set_num in range(numsets):
-        answer['set' + str(set_num) + 'selection'] = int(answerdata["optionset" + str(set_num)][0])
+        answer[
+            'set' + str(set_num) + 'selection'] = int(answerdata["optionset" + str(set_num)][0])
 
-        answer['set' + str(set_num) + 'option0'] = [float(restofdata['set' + str(set_num) + 'slider00']), float(restofdata['set' + str(set_num) + 'slider10']), float(restofdata['set' + str(set_num) + 'slider20']), float(restofdata['set' + str(set_num) + 'slider30']), float(restofdata['set' + str(set_num) + 'slider40'])]
-        answer['set' + str(set_num) + 'option1'] = [float(restofdata['set' + str(set_num) + 'slider01']), float(restofdata['set' + str(set_num) + 'slider11']), float(restofdata['set' + str(set_num) + 'slider21']), float(restofdata['set' + str(set_num) + 'slider31']), float(restofdata['set' + str(set_num) + 'slider41'])]
-        answer['set' + str(set_num) + 'option2'] = [float(restofdata['set' + str(set_num) + 'slider02']), float(restofdata['set' + str(set_num) + 'slider12']), float(restofdata['set' + str(set_num) + 'slider22']), float(restofdata['set' + str(set_num) + 'slider32']), float(restofdata['set' + str(set_num) + 'slider42'])]
-        answer['set' + str(set_num) + 'option3'] = [float(restofdata['set' + str(set_num) + 'slider03']), float(restofdata['set' + str(set_num) + 'slider13']), float(restofdata['set' + str(set_num) + 'slider23']), float(restofdata['set' + str(set_num) + 'slider33']), float(restofdata['set' + str(set_num) + 'slider43'])]
+        answer['set' + str(set_num) + 'option0'] = [float(restofdata['set' + str(set_num) + 'slider00']), float(restofdata['set' + str(set_num) + 'slider10']), float(
+            restofdata['set' + str(set_num) + 'slider20']), float(restofdata['set' + str(set_num) + 'slider30']), float(restofdata['set' + str(set_num) + 'slider40'])]
+        answer['set' + str(set_num) + 'option1'] = [float(restofdata['set' + str(set_num) + 'slider01']), float(restofdata['set' + str(set_num) + 'slider11']), float(
+            restofdata['set' + str(set_num) + 'slider21']), float(restofdata['set' + str(set_num) + 'slider31']), float(restofdata['set' + str(set_num) + 'slider41'])]
+        answer['set' + str(set_num) + 'option2'] = [float(restofdata['set' + str(set_num) + 'slider02']), float(restofdata['set' + str(set_num) + 'slider12']), float(
+            restofdata['set' + str(set_num) + 'slider22']), float(restofdata['set' + str(set_num) + 'slider32']), float(restofdata['set' + str(set_num) + 'slider42'])]
+        answer['set' + str(set_num) + 'option3'] = [float(restofdata['set' + str(set_num) + 'slider03']), float(restofdata['set' + str(set_num) + 'slider13']), float(
+            restofdata['set' + str(set_num) + 'slider23']), float(restofdata['set' + str(set_num) + 'slider33']), float(restofdata['set' + str(set_num) + 'slider43'])]
 
         real_answer = {}
-        real_answer[set_num] = answer['set' + str(set_num) + 'option' + str(answer['set' + str(set_num) + 'selection'])]
+        real_answer[set_num] = answer[
+            'set' + str(set_num) + 'option' + str(answer['set' + str(set_num) + 'selection'])]
         for loc in xrange(5):
-            answer['set' + str(set_num) + 'slider' + str(loc)+'_loc'] = real_answer[set_num][loc]
+            answer['set' + str(set_num) + 'slider' + str(loc) +
+                               '_loc'] = real_answer[set_num][loc]
 
-        answer['set' + str(set_num) + 'previous_slider_values'] = answer['set' + str(set_num) + 'option1']
+        answer['set' + str(set_num) + 'previous_slider_values'] = answer[
+                           'set' + str(set_num) + 'option1']
 
-    #print answer
-    #TODO include radius values and so forth
+    # print answer
+    # TODO include radius values and so forth
     return answer
+
 
 def load_feedback(feedbackdata, restofdata):
     answer = {}
-    answer['political_stance'] = feedbackdata.get('political_stance_report', None)
+    answer['political_stance'] = feedbackdata.get(
+        'political_stance_report', None)
     answer['feedback'] = feedbackdata.get('feedback', '')
     return answer
 
@@ -133,6 +189,7 @@ switcher_load_data = {
     'comparisons': load_data_experiment_comparisons,
 }
 
+
 def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
     clean = []
     organized_data = {}
@@ -142,9 +199,10 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
     for row in dirty:
         existsanswer = False;
         for key in mechanism_super_dictionary:
-            existsanswer = existsanswer or (len(row['answer1.' + str(key) + '.1']) != 0);
+            existsanswer = existsanswer or (
+                len(row['answer1.' + str(key) + '.1']) != 0);
 
-        if len(row['experiment_id'])==0 or not existsanswer:
+        if len(row['experiment_id']) == 0 or not existsanswer:
             continue
         d = {}
         copy_over = ['worker_ID', 'asg_ID']
@@ -159,30 +217,51 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
         d['last_page'] = int(row['current_answer'])
         d['participant_number'] = int(row['num_of_previous_participants']) + 1
         d['finished'] = row['experiment_finished']
-        #print d['question_num'], d['experiment_id']
-
-        answerdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.1'])
+        # print d['question_num'], d['experiment_id']
+        if len (row['answer1.' + str(d['question_num']) + '.1']) == 0:
+            continue
+        answerdict = ast.literal_eval(
+            row['answer1.' + str(d['question_num']) + '.1'])
         if len(answerdict.get('text_explanation', '')) == 0:
         	continue
-        d['time_page0'] = (d['begin_time'] - d['initial_time'])/1000.0
+        d['time_page0'] = (d['begin_time'] - d['initial_time']) / 1000.0
         if len(row['answer1.' + str(d['question_num']) + '.0']) > 0:
-        	d['time_page1'] = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.0'])['time']/1000.0 #in seconds
+        	d['time_page1'] = ast.literal_eval(
+        	    row['answer1.' + str(d['question_num']) + '.0'])['time'] / 1000.0  # in seconds
         else:
         	d['time_page1'] = 300
-        d['time_page2'] = answerdict['time']/1000.0
-        #print row['answer1.1.1']
-        #print row['answer1.1.2']
-        #print "row erroring: ", row['answer1.' + str(d['question_num']) + '.2']
-        if len(row['answer1.' + str(d['question_num']) + '.2']) > 0: #otherwise they didn't submit last page
-            feedbackdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.2'])
-            d['time_page3'] = feedbackdict['time']/1000.0
+        d['time_page2'] = answerdict['time'] / 1000.0
+
+        # either last page or extra full elicitation
+        if len(row['answer1.' + str(d['question_num']) + '.2']) > 0:
+            # column is a feedback dict
+            if 'political_stance_report' in row['answer1.' + str(d['question_num']) + '.2']:
+                feedbackdict = ast.literal_eval(
+                    row['answer1.' + str(d['question_num']) + '.2'])
+                d['time_page3'] = 0;
+                d['time_page4'] = feedbackdict['time'] / 1000.0
+            else:
+                if 'full' not in row['answer1.' + str(d['question_num']) + '.2']:
+                    continue
+                extrafull_dict = ast.literal_eval(
+                    row['answer1.' + str(d['question_num']) + '.2'])
+                d['extra_full_elicitation_data'] = load_data_experiment_full(
+                    extrafull_dict, row, 1, deficit_offset, isfullslider=True)
+                d['time_page3'] = extrafull_dict['time'] / 1000.0
+                d['time_page4'] = 300
         else:
-        	feedbackdict={}
-        	d['time_page3'] = 300
+            feedbackdict = {'feedback' : ['']}
+            d['time_page3'] = 0;
+            d['time_page4'] = 300
+
+        if len(row['answer1.' + str(d['question_num']) + '.3']) > 0: #last page
+            feedbackdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.3'])
+            d['time_page4'] = feedbackdict['time']/1000.0
+
         d['feedback_data'] = load_feedback(feedbackdict, row)
 
 
-        #print d['experiment_id'], d['question_num'], answerdict, row
+        # print d['experiment_id'], d['question_num'], answerdict, row
         d['question_data'] = switcher_load_data[mechanism_super_dictionary[d['question_num']]['type']](answerdict, row, mechanism_super_dictionary[d['question_num']]['numsets'], deficit_offset)
 
         clean.append(d)
@@ -190,6 +269,7 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
 
     for key in organized_data:
         organized_data[key] = sorted(organized_data[key], key=itemgetter('experiment_id'))
+    print organized_data[1][-1]
     return clean, organized_data
 
 
@@ -248,11 +328,11 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order):
 
     # Add the axis labels
     ax.set_ylabel(ylabel, fontsize = 18)
-    #ax.set_xlabel(xlabel, fontsize = 18)
+    # ax.set_xlabel(xlabel, fontsize = 18)
 
     # Add a legend
     handles, labels = ax.get_legend_handles_labels()
-    #ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize = 18)
+    # ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize = 18)
     ax.legend(handles, labels,bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
        ncol=min(len(conditions), 4), mode="expand", borderaxespad=0., fontsize = 18)
     plt.savefig(label + '.png')
