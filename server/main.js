@@ -1,23 +1,23 @@
 //This code only executed on the server
-
 Meteor.publish("answers", function() {
     return Answers.find();
 });
 Meteor.publish("questions", function() {
     return Questions.find();
 });
-Solutions = new Mongo.Collection("solutions");
+var Solutions = new Mongo.Collection("solutions");
 Meteor.publish("answerforms", function() {
     return AnswerForms.find();
 });
-intervals = {};
-counters = {};
-timers = {};
 
-threshold = Meteor.settings.threshold_workers; //we need at least threshold users in every experiment
-experiment_id_counter = 1;
+var intervals = {};
+var counters = {};
+var timers = {};
 
-existing_experiment_counter = 0;
+var threshold = Meteor.settings.threshold_workers; //we need at least threshold users in every experiment
+var experiment_id_counter = 1;
+
+var existing_experiment_counter = 0;
 if (Answers.findOne({
         begin_experiment: true
     })) {
@@ -61,12 +61,12 @@ Meteor.startup(function() {
     //check and potentially update answer_forms
 
     update_answer_forms: {
-        for (post in Meteor.settings.public.answer_forms) {
-            if (!AnswerForms.findOne(Meteor.settings.public.answer_forms[post]) || AnswerForms.find().count() != Meteor.settings.public.answer_forms.length) {
+        for (var post2 in Meteor.settings.public.answer_forms) {
+            if (!AnswerForms.findOne(Meteor.settings.public.answer_forms[post2]) || AnswerForms.find().count() != Meteor.settings.public.answer_forms.length) {
                 console.log("Updating answer form database");
                 AnswerForms.remove({});
-                for (post in Meteor.settings.public.answer_forms) {
-                    AnswerForms.insert(Meteor.settings.public.answer_forms[post]);
+                for (post2 in Meteor.settings.public.answer_forms) {
+                    AnswerForms.insert(Meteor.settings.public.answer_forms[post2]);
                 }
                 break update_answer_forms;
             }
@@ -93,7 +93,7 @@ Meteor.methods({
                 latest_time: initial_time_val
             });
             return;
-        } else {
+        }
             var experiment_id_value = experiment_id_counter;
             var begin_time_val = new Date().getTime();
             Answers.update({
@@ -107,7 +107,6 @@ Meteor.methods({
                     latest_time: begin_time_val
                 }
             });
-        }
 
         if (counters[experiment_id_value]) {
             counters[experiment_id_value]['initial_counter']++;
@@ -206,13 +205,13 @@ Meteor.methods({
                 return;
             }
           // add the deficit term
-          if (current_question != 0 && current_answer == 1) {
+          if (current_question !== 0 && current_answer == 1) {
               answers_value[current_question][current_answer]['deficit' + well_idx] = total_money_spent + 228;
           }
         }
-        if (Object.keys(new_slider_values).length && typeof(current_question) == "number" && current_question != 0) {
+        if (Object.keys(new_slider_values).length && typeof(current_question) == "number" && current_question !== 0) {
             //set it to proper array location for averaging purposes
-            current_question_dict = Questions.findOne({
+            var current_question_dict = Questions.findOne({
                 "question_ID": current_question
             });
             current_question_dict.averaging_array[current_avg_number] = new_slider_values;
@@ -274,7 +273,7 @@ Meteor.methods({
             experiment_id: experiment_id_value
         });
         var num_of_questions = Questions.find().count();
-        update_question = function(experiment_id_value) {
+        var update_question = function(experiment_id_value) {
             var curr_experiment = Answers.findOne({
                 experiment_id: experiment_id_value
             });
@@ -292,15 +291,16 @@ Meteor.methods({
                 //generate random question
                 var question_sampler = function() {
                     var question_selected = -1;
+                    var rnd_sample;
                     // if all mechanisms are busy
                     if (Questions.find({
                             "busy": true
                         }).count() == 7) {
-                        var rnd_sample = Math.random();
+                        rnd_sample = Math.random();
                         question_selected = 0;
                     } else {
                         do {
-                            var rnd_sample = Math.random();
+                            rnd_sample = Math.random();
                             if (rnd_sample < 0.05)
                                 question_selected = 0;
                             else if (rnd_sample < (0.158333333333333 * 2))
@@ -365,7 +365,7 @@ Meteor.methods({
 
                 //var number_of_previous_participants = Answers.find(answer_field_query).count();
                 //new way to calculate previous participants to handle the multiple averaging case
-                previous_question_dict = Questions.findOne({
+                var previous_question_dict = Questions.findOne({
                     "question_ID": next_question
                 });
                 var number_of_previous_participants = previous_question_dict.previous_participants;
@@ -389,7 +389,7 @@ Meteor.methods({
 
                 // Set the busy flag
                 console.log("setting busy flag to " + next_question);
-                if (next_question != 0) {
+                if (next_question !== 0) {
                     Questions.update({
                         "question_ID": next_question
                     }, {
@@ -397,10 +397,10 @@ Meteor.methods({
                             "busy": true
                         }
                     });
-                    question_dictionary = Questions.findOne({
+                    var question_dictionary = Questions.findOne({
                         "question_ID": next_question
                     });
-                    current_avg_number = -1;
+                    var current_avg_number = -1;
                     for (i = 0; i < question_dictionary['averaging_status_array'].length; i++) {
                         if (question_dictionary['averaging_status_array'][i] == "FREE") {
                             current_avg_number = i;
@@ -415,7 +415,7 @@ Meteor.methods({
                             break;
                         }
                     }
-                    console.log('Averaging array: ' + question_dictionary.averaging_status_array)
+                    console.log('Averaging array: ' + question_dictionary.averaging_status_array);
                     Questions.update({
                         "question_ID": next_question
                     }, {
@@ -494,7 +494,7 @@ Meteor.methods({
 
         };
 
-        decrease_time = function(experiment_id_value) {
+        var decrease_time = function(experiment_id_value) {
             var curr_experiment = Answers.findOne({
                 experiment_id: experiment_id_value
             });
@@ -529,7 +529,7 @@ Meteor.methods({
         if (curr_answer_form < Meteor.settings.public.answer_forms.length - 1) {
             //question not done yet
             var next_answer_form = curr_answer_form + 1;
-            current_question_dictionary = Questions.findOne({
+            var current_question_dictionary = Questions.findOne({
                 "question_ID": curr_experiment.current_question
             });
             if (curr_answer_form == 1 && !current_question_dictionary.do_full_as_well){ //skip the extra full elicitation step
@@ -649,7 +649,7 @@ Meteor.methods({
                             //var existing_payments = existing_entry.payments;
                             if (!payments_value) {
                                 //create new payments array
-                                var payments_value = [];
+                                payments_value = [];
                                 for (i = 0; i < num_of_questions; i++) {
                                     payments_value[payments_value.length] = 0;
                                 }

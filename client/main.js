@@ -18,7 +18,7 @@ var history_data_temp = [];
 
 for (var i = 0; i < Meteor.settings.public.history_duration; i++) {
     history_data_temp[i]={};
-    if (i == 0){
+    if (i === 0){
         history_data_temp[i]["Title"] = "Last question";
     } else {
         history_data_temp[i]["Title"] = (i+1) + " questions ago";

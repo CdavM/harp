@@ -24,7 +24,7 @@ Template.registerHelper('show_payment_system', function(){
     return Meteor.settings.public.show_payment; //show the user their current payment
 });
 Template.registerHelper('slider_names', function(slider_name_arg, color_arg, slider_title_arg) {
-    var slider_object = Object();
+    var slider_object = {};
     slider_object.id = slider_name_arg;
     slider_object.title = slider_title_arg;
     slider_object.text = slider_name_arg+"_text";
@@ -66,7 +66,7 @@ Template.registerHelper('slider_names', function(slider_name_arg, color_arg, sli
             slider_object.tooltip = "The amount the Federal Government collects through individual income taxes. Assume that everyone’s taxes (including yours!) change proportionally to the amount you have increased or decreased. This amount is estimated to be $1,460 Billion ($1.46 Trillion) in 2016. Estimtes of income tax receipts are inexact, but assume that tax policy will be adjusted to try to achieve the increase or decrease specified.";
             break;
         case "Deficit":
-            slider_object.tooltip = "The amount by which spending exceeds revenues. A negative value indicates a budget surplus. This value assumes spending on all other items is held constant. Like the income tax, this value is a rough estimate in any given year. However, you can assume for this survey that the estimes are approximately correct."
+            slider_object.tooltip = "The amount by which spending exceeds revenues. A negative value indicates a budget surplus. This value assumes spending on all other items is held constant. Like the income tax, this value is a rough estimate in any given year. However, you can assume for this survey that the estimes are approximately correct.";
     }
     return slider_object;
 });
@@ -75,7 +75,7 @@ Template.registerHelper('deficit_names', function(well_idx) {
     if (typeof(well_idx) == "undefined") {
         well_idx = "";
     }
-    deficit_object = Object();
+    deficit_object = {};
     deficit_object.deficit_text = "deficit_text"+well_idx;
     deficit_object.deficit_value = "deficit_value"+well_idx;
     deficit_object.deficit_percentage = "deficit_percentage"+well_idx;

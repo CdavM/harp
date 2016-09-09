@@ -35,7 +35,7 @@ reset_sliders = function(well_idx, prepend){
     }
     $("#creditsleft"+well_idx).text("Credits left: " + round(credits_left_fraction, 1));
 
-    for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+    for (slider_idx = 0; slider_idx < 4; slider_idx++) {
         var percent_difference = compute_averages(slider_idx, current_question[prepend + 'slider' +slider_idx+well_idx]);
         if (percent_difference < 0) {
             //red background
@@ -61,7 +61,7 @@ reset_sliders = function(well_idx, prepend){
 
 compute_averages = function(slider_ID, value){
     var ratio = 0;
-    if (slider_ID == 0){
+    if (slider_ID === 0){
         ratio = value / 541;
     } else if (slider_ID == 1){
         ratio = value / 1004;
@@ -215,7 +215,7 @@ Template.answer2.onRendered(function () {
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
         var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
         if (!update_slider_flag)
-            var update_slider_flag = false;
+            update_slider_flag = false;
         if (isNaN(val)){
             sliders[ev.target.id].val(Number(Session.get(ev.target.id)).toFixed(2));
             return;
@@ -251,7 +251,7 @@ Template.answer2.onRendered(function () {
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
         var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
         if (!update_slider_flag)
-            var update_slider_flag = false;
+            update_slider_flag = false;
         if (isNaN(val)){
             weight_sliders[ev.target.id].val(Number(Session.get(ev.target.id)).toFixed(3));
             return;
@@ -322,7 +322,7 @@ Template.answer2.onRendered(function () {
 
     //WEIGHT SLIDERS
     weight_sliders = {};
-    for (var slider_idx = 0; slider_idx < 5; slider_idx++) {
+    for (slider_idx = 0; slider_idx < 5; slider_idx++) {
         Session.set('fullslider'+slider_idx+"weight", 5);
         weight_sliders['fullslider' + slider_idx] = this.$("div#fullslider" + slider_idx + "weight").noUiSlider({
             start: 5,
@@ -408,14 +408,14 @@ Template.answer1.onRendered(function () {
             sliders[ev.target.id].val(round(val, 2));
         }
         //update stacked bars
-        var slider_idx_counter = 0;
+        slider_idx_counter = 0;
         var curr_slider_total_width = 0;
         var credit_percentage_spent = 0;
         while (slider_idx_counter < 4){
-            var curr_slider = "slider"+slider_idx_counter.toString() + well_idx.toString();
-            var curr_slider_value = Session.get(curr_slider);
-            var curr_slider_bar = curr_slider + "bar";
-            var slider_width_fraction = (Math.pow((curr_slider_value - current_question[curr_slider]), 2) / Math.pow(radius,2));
+            var curr_slider_local = "slider"+slider_idx_counter.toString() + well_idx.toString();
+            var curr_slider_value_local = Session.get(curr_slider_local);
+            var curr_slider_bar = curr_slider_local + "bar";
+            var slider_width_fraction = (Math.pow((curr_slider_value_local - current_question[curr_slider_local]), 2) / Math.pow(radius,2));
             credit_percentage_spent += slider_width_fraction;
             $("#" + curr_slider_bar).width(slider_width_fraction * $("#budgetbar").width()-0.3); //laplace smoothing
             $("#" + curr_slider_bar).text(round(slider_width_fraction*100, 1));

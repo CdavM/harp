@@ -19,8 +19,9 @@ def plotHistogramFromFile():
   analyze_data_functionalized.analysis_call(filename, 'whatever', mechanism_super_dictionary, plotHistogramOfFull = True)
 
 def actual_experiment_analysis():
-    filename ='export-20160904151010.csv'
-    LABEL = 'BigExperiment_DAY6_'
+    filename ='export-20160906041734_BIGEXPERIMENT_FINAL.csv'
+    LABEL = 'BigExperiment_FINAL'
+    alreadyPaidFiles = ['BIGEXPERIMENT_Day35_BonustoUpload.csv']
     deficit_offset = 228
     lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6]]#, [0, 1], [0, 4]]#, [0, 7, 8, 9], [0, 7]]
     labels = ['L2', 'L1', 'L2Single', 'L1Single', 'Comparisons', 'ComparisonsSingle']
@@ -37,7 +38,7 @@ def actual_experiment_analysis():
                                   # 9: {'name': 'Group 3 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]}
                                   }
 
-    analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_real), deficit_offset = deficit_offset, lines_to_do = lines_to_do, labels = labels, plotAllOverTime = True, organizePayment = True, analyzeExtraFull = True)
+    analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_real), alreadyPaidFiles = alreadyPaidFiles, deficit_offset = deficit_offset, lines_to_do = lines_to_do, labels = labels, analyzeUtilityFunctions = True, plotAllOverTime = False, organizePayment = False, analyzeExtraFull = False)
 
 
 def main():

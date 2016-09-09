@@ -473,22 +473,59 @@ def calculate_time_spent(organized_data, LABEL):
 			dpoints.append([mechanism_names_fixed[key], pagenames[page], np.mean([d['time_page' + str(page)] for d in organized_data[key]])])
 	barplot(np.array(dpoints), LABEL, 'Time (Seconds)', 'Page', pagenames, mechanism_names_fixed)
 
-def organize_payment(organized_data, LABEL, mechanism_super_dictionary):
+def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary):
+	pass
+
+def organize_payment(organized_data, LABEL, mechanism_super_dictionary, alreadyPaidFiles = None):
+	alreadyPaid = []
+	if alreadyPaidFiles is not None:
+		for alreadyPaidFile in alreadyPaidFiles:
+			with open (alreadyPaidFile, 'rb') as file:
+				reader = csv.reader(file)
+				for row in reader:
+					alreadyPaid.append(row[0]);
+
+	print alreadyPaid
+
 	with open (LABEL + '_bonusinfo.csv', 'wb') as file:
 		writer = csv.writer(file)
+
 		for key in organized_data:
 			lengthlist = []
 			arraylist = []
+			length_list_for_mechanism =[]
 			for d in organized_data[key]:
+				if d['worker_ID'] in alreadyPaid:
+					continue
 				if len(d['feedback_data']['feedback']) == 0:
 					d['feedback_data']['feedback'] = ['']
 				if mechanism_super_dictionary[key]['do_full_as_well'] and 'extra_full_elicitation_data' in d:
-					lengthlist.append(len(d['question_data']['explanation'][0]) + len(d['extra_full_elicitation_data']['explanation'][0]) + len(d['feedback_data']['feedback'][0]))
-					arraylist.append([d['worker_ID'], d['question_num'], d['question_data']['explanation'][0], d['extra_full_elicitation_data']['explanation'][0], d['feedback_data']['feedback'][0],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page3'], d['time_page4']])
+					length_list_for_mechanism.append(len(d['question_data']['explanation'][0]) + len(d['extra_full_elicitation_data']['explanation'][0]) + len(d['feedback_data']['feedback'][0]))
 				else:
-					lengthlist.append(len(d['question_data']['explanation'][0]) + len(d['feedback_data']['feedback'][0]))
-					arraylist.append([d['worker_ID'], d['question_num'], d['question_data']['explanation'][0], '', d['feedback_data']['feedback'][0],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page4']])
+					length_list_for_mechanism.append(len(d['question_data']['explanation'][0]) + len(d['feedback_data']['feedback'][0]))
+			sortedlength = sorted(length_list_for_mechanism)[int(.2*len(length_list_for_mechanism))] #find 80th percentile
+
+			for d in organized_data[key]:
+				if d['worker_ID'] in alreadyPaid:
+					continue
+				if len(d['feedback_data']['feedback']) == 0:
+					d['feedback_data']['feedback'] = ['']
+				if mechanism_super_dictionary[key]['do_full_as_well'] and 'extra_full_elicitation_data' in d:
+					bonuspayment = .4; #incrased base due to extra do_full_as_well
+					lengthextra = len(d['question_data']['explanation'][0]) + len(d['extra_full_elicitation_data']['explanation'][0]) + len(d['feedback_data']['feedback'][0])
+					if lengthextra >= sortedlength:
+						bonuspayment+= .5 #bonus on top of increased base
+					lengthlist.append(lengthextra)
+					arraylist.append([d['worker_ID'], bonuspayment, d['question_num'], d['question_data']['explanation'][0], d['extra_full_elicitation_data']['explanation'][0], d['feedback_data']['feedback'][0],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page3'], d['time_page4']])
+				else:
+					bonuspayment = 0;
+					lengthextra = len(d['question_data']['explanation'][0]) + len(d['feedback_data']['feedback'][0])
+					if lengthextra >= sortedlength:
+						bonuspayment+= .4 #bonus on top of increased base
+					lengthlist.append(lengthextra)
+					arraylist.append([d['worker_ID'], bonuspayment, d['question_num'], d['question_data']['explanation'][0], '', d['feedback_data']['feedback'][0],  d['time_page0'],  d['time_page1'],  d['time_page2'],  d['time_page4']])
 			order = np.argsort(lengthlist)[::-1]
+
 			arraylist = [arraylist[i] for i in order]
 			writer.writerows(arraylist)
 def print_different_things(organized_data):
@@ -564,7 +601,7 @@ def analyze_extra_full_elicitation(data, mechanism_super_dictionary_value, mech_
 	plt.savefig("" + LABEL + '_FullElicitation Extra, Group ' + str(mech_key)  + '.png')
 	plt.close();
 
-def analysis_call(filename, LABEL, mechanism_super_dictionary, lines_to_do = None, labels = [''], analyzeExtraFull = False, plotHistogramOfFull = False, plotAllOverTime = False, do2SetComparisonsAnalysis = False, plotPercentMovementOverTime = False, organizePayment = False, slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', 'Deficit'], deficit_offset = 0):
+def analysis_call(filename, LABEL, mechanism_super_dictionary, alreadyPaidFiles = None, lines_to_do = None, labels = [''], analyzeUtilityFunctions = False, analyzeExtraFull = False, plotHistogramOfFull = False, plotAllOverTime = False, do2SetComparisonsAnalysis = False, plotPercentMovementOverTime = False, organizePayment = False, slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', 'Deficit'], deficit_offset = 0):
 	data, organized_data = clean_data(load_data(filename), mechanism_super_dictionary, deficit_offset);
 
 	if do2SetComparisonsAnalysis:
@@ -586,10 +623,14 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, lines_to_do = Non
 			if mechanism_super_dictionary[key]['do_full_as_well']:
 				analyze_extra_full_elicitation(organized_data[key], mechanism_super_dictionary[key], key, LABEL, slider_order = slider_order, deficit_offset = deficit_offset)
 
+
+	if analyzeUtilityFunctions:
+		analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary);
+		
 	# analyze_data(organized_data, LABEL)
 
 	if organizePayment:
-		organize_payment(organized_data, LABEL, mechanism_super_dictionary)
+		organize_payment(organized_data, LABEL, mechanism_super_dictionary, alreadyPaidFiles)
 
 	# payments_new_people(organized_data)
 
