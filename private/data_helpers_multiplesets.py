@@ -274,7 +274,7 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
 
 
 
-def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order):
+def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, ax = None, showplot = True, createlegend = True):
     '''
     copied from http://emptypipes.org/2013/11/09/matplotlib-multicategory-barchart/ on 6/27/2016
         modified to take in the matrix already rather than calculating mean values
@@ -285,8 +285,11 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order):
     @param dpoints: The data set as an (n, 3) numpy array
     '''
 
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
+    wasNone = False
+    if ax is None:
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        wasNone = True
 
     # Aggregate the conditions and the categories according to their
     # mean values
@@ -333,7 +336,13 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order):
     # Add a legend
     handles, labels = ax.get_legend_handles_labels()
     # ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize = 18)
-    ax.legend(handles, labels,bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
-       ncol=min(len(conditions), 4), mode="expand", borderaxespad=0., fontsize = 18)
-    plt.savefig(label + '.png')
-    plt.show()
+
+    if createlegend:
+        ax.legend(handles, labels,bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+           ncol=min(len(conditions), 4), mode="expand", borderaxespad=0., fontsize = 18)
+
+    if showplot:
+        mng = plt.get_current_fig_manager()
+        mng.window.showMaximized()
+        plt.savefig(label + '.png')
+        plt.show()
