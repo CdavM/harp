@@ -68,34 +68,34 @@ Meteor.startup(function() {
         });
     }
 
-    //check and potentially update question database
-    update_questions: {
-        for (var post in Meteor.settings.questions) {
-            if (!Questions.findOne({'question_ID' : Meteor.settings.questions[post]['question_ID']}) || Questions.find().count() != Meteor.settings.questions.length) {
-                console.log("Updating questionbank database");
-                Questions.remove({});
-                for (post in Meteor.settings.questions) {
-                    Questions.insert(Meteor.settings.questions[post]);
-                }
-                break update_questions;
-            }
-        }
-    }
-
-    //check and potentially update answer_forms
-
-    update_answer_forms: {
-        for (var post2 in Meteor.settings.public.answer_forms) {
-            if (!AnswerForms.findOne(Meteor.settings.public.answer_forms[post2]) || AnswerForms.find().count() != Meteor.settings.public.answer_forms.length) {
-                console.log("Updating answer form database");
-                AnswerForms.remove({});
-                for (post2 in Meteor.settings.public.answer_forms) {
-                    AnswerForms.insert(Meteor.settings.public.answer_forms[post2]);
-                }
-                break update_answer_forms;
-            }
-        }
-    }
+    // //check and potentially update question database
+    // update_questions: {
+    //     for (var post in Meteor.settings.questions) {
+    //         if (!Questions.findOne({'question_ID' : Meteor.settings.questions[post]['question_ID']}) || Questions.find().count() != Meteor.settings.questions.length) {
+    //             console.log("Updating questionbank database");
+    //             Questions.remove({});
+    //             for (post in Meteor.settings.questions) {
+    //                 Questions.insert(Meteor.settings.questions[post]);
+    //             }
+    //             break update_questions;
+    //         }
+    //     }
+    // }
+    //
+    // //check and potentially update answer_forms
+    //
+    // update_answer_forms: {
+    //     for (var post2 in Meteor.settings.public.answer_forms) {
+    //         if (!AnswerForms.findOne(Meteor.settings.public.answer_forms[post2]) || AnswerForms.find().count() != Meteor.settings.public.answer_forms.length) {
+    //             console.log("Updating answer form database");
+    //             AnswerForms.remove({});
+    //             for (post2 in Meteor.settings.public.answer_forms) {
+    //                 AnswerForms.insert(Meteor.settings.public.answer_forms[post2]);
+    //             }
+    //             break update_answer_forms;
+    //         }
+    //     }
+    // }
     // TimerJob decreases the timer every second
     class TimerJob extends Job {
         run() {
