@@ -305,7 +305,7 @@ Meteor.methods({
             upsert: true
         });
         //update question when we get ALL the answers
-        var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+        scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
 
         if (scheduling_entry.current_question) {
             Scheduling.update({'experiment_ID': experiment_id_value},{$set:{
@@ -316,7 +316,7 @@ Meteor.methods({
                 current_question: 1
             }});
         }
-        var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+        scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
 
         var num_of_workers = Meteor.settings.threshold_workers;
         if (scheduling_entry.current_question >= num_of_workers) {
