@@ -9,15 +9,15 @@ var Solutions = new Mongo.Collection("solutions");
 Meteor.publish("answerforms", function() {
     return AnswerForms.find();
 });
+var Scheduling = new Mongo.Collection("scheduling");
 
-var intervals = {};
-var counters = {};
-var timers = {};
+intervals = {};
+counters = {};
+timers = {};
 
-var threshold = Meteor.settings.threshold_workers; //we need at least threshold users in every experiment
-var experiment_id_counter = 1;
+experiment_id_counter = 1;
 
-var existing_experiment_counter = 0;
+existing_experiment_counter = 0;
 if (Answers.findOne({
         begin_experiment: true
     })) {
@@ -94,36 +94,66 @@ Meteor.methods({
             });
             return;
         }
-            var experiment_id_value = experiment_id_counter;
-            var begin_time_val = new Date().getTime();
-            Answers.update({
-                worker_ID: post.worker_ID
-            }, {
-                $set: {
-                    begin_time: begin_time_val,
-                    experiment_id: experiment_id_value,
-                    avg_payment: 0,
-                    experiment_finished: false,
-                    latest_time: begin_time_val
-                }
-            });
+        var experiment_id_value = experiment_id_counter;
+        var begin_time_val = new Date().getTime();
+        Answers.update({
+            worker_ID: post.worker_ID
+        }, {
+            $set: {
+                begin_time: begin_time_val,
+                experiment_id: experiment_id_value,
+                avg_payment: 0,
+                experiment_finished: false,
+                latest_time: begin_time_val
+            }
+        });
 
-        if (counters[experiment_id_value]) {
-            counters[experiment_id_value]['initial_counter']++;
+        var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+        // if (!counters){
+        //     counters = {};
+        // }
+        if (scheduling_entry) {
+            Scheduling.update(
+                {'experiment_ID': experiment_id_value},
+                {$set:
+                    {
+                        'initial_counter': scheduling_entry.initial_counter + 1
+                    }
+                }
+            );
+            // counters[experiment_id_value]['initial_counter']++;
         } else {
-            counters[experiment_id_value] = {};
-            counters[experiment_id_value]['initial_counter'] = 1;
-            counters[experiment_id_value]['initial_timer'] = true;
+            Scheduling.update(
+                {'experiment_ID': experiment_id_value},
+                {$set:{
+                    'initial_counter': 1,
+                    'initial_timer': true,
+                    'random_counter': []
+                }}, {upsert: true});
+            // counters[experiment_id_value] = {};
+            // counters[experiment_id_value]['initial_counter'] = 1;
+            // counters[experiment_id_value]['initial_timer'] = true;
             //set timeout, also cancel a flag
             //TODO: implement automatic start
         }
-        if (!counters[experiment_id_value]['random_counter']) {
-            counters[experiment_id_value]['random_counter'] = [];
-        }
+        // if (!counters[experiment_id_value]['random_counter']) {
+        //     counters[experiment_id_value]['random_counter'] = [];
+        // }
+
+        scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+        var threshold = Meteor.settings.threshold_workers; //we need at least threshold users in every experiment
+
+        console.log("before the start entry");
+        console.log("scheduling init timer is " + scheduling_entry.initial_timer);
+        console.log("scheduling init counter is " + scheduling_entry.initial_counter);
+        console.log("thresh is " + Meteor.settings);
 
 
-        if (counters[experiment_id_value]['initial_timer'] && counters[experiment_id_value]['initial_counter'] >= threshold) { //call this when we get two entries
+        // if (counters[experiment_id_value]['initial_timer'] && counters[experiment_id_value]['initial_counter'] >= threshold) { //call this when we get two entries
+        if (scheduling_entry.initial_timer && scheduling_entry.initial_counter >= threshold) {
+            //call this when we get threshold entries
             experiment_id_counter++;
+            console.log("starting");
             Answers.update({
                 experiment_id: experiment_id_value
             }, {
@@ -135,7 +165,15 @@ Meteor.methods({
                 multi: true
             });
             Meteor.call('beginQuestionScheduler', experiment_id_value, 'false', 'initialPost');
-            counters[experiment_id_value]['initial_timer'] = false;
+            Scheduling.update(
+                {'experiment_ID': experiment_id_value},
+                {$set:
+                    {
+                    'initial_timer': false
+                    }
+                }
+            );
+            // counters[experiment_id_value]['initial_timer'] = false;
         }
     },
 
@@ -234,16 +272,31 @@ Meteor.methods({
             upsert: true
         });
         //update question when we get ALL the answers
-        if (!counters[experiment_id_value]) {
-            counters[experiment_id_value] = {};
-        }
-        if (counters[experiment_id_value][current_question]) {
-            counters[experiment_id_value][current_question]++;
+        var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+
+        // if (!counters[experiment_id_value]) {
+        //     counters[experiment_id_value] = {};
+        // }
+        // if (counters[experiment_id_value][current_question]) {
+        //     counters[experiment_id_value][current_question]++;
+        // } else {
+        //     counters[experiment_id_value][current_question] = 1;
+        // }
+        if (scheduling_entry.current_question) {
+            Scheduling.update({'experiment_ID': experiment_id_value},{$set:{
+                current_question: scheduling_entry.current_question + 1
+            }});
+            // counters[experiment_id_value][current_question]++;
         } else {
-            counters[experiment_id_value][current_question] = 1;
+            // counters[experiment_id_value][current_question] = 1;
+            Scheduling.update({'experiment_ID': experiment_id_value},{$set:{
+                current_question: 1
+            }});
         }
+        var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+
         var num_of_workers = Meteor.settings.threshold_workers;
-        if (counters[experiment_id_value][current_question] >= num_of_workers) {
+        if (scheduling_entry.current_question >= num_of_workers) {
             Meteor.call('beginQuestionScheduler', experiment_id_value, 'false', 'newPost');
         }
 
@@ -299,6 +352,8 @@ Meteor.methods({
                         rnd_sample = Math.random();
                         question_selected = 0;
                     } else {
+                        var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+                        var random_counter_entry = scheduling_entry.random_counter;
                         do {
                             rnd_sample = Math.random();
                             if (rnd_sample < 0.05)
@@ -315,8 +370,8 @@ Meteor.methods({
                                 question_selected = 5;
                             else
                                 question_selected = 6;
-                        } while ((counters[experiment_id_value]['random_counter'].indexOf(question_selected) != -1 &&
-                                counters[experiment_id_value]['random_counter'].length < selection_size) ||
+                        } while ((random_counter_entry.indexOf(question_selected) != -1 &&
+                            random_counter_entry.length < selection_size) ||
                             Questions.findOne({
                                 "question_ID": question_selected
                             }).busy == true || Questions.findOne({
@@ -335,7 +390,8 @@ Meteor.methods({
                         "question_ID": next_question
                     }).busy == true);
             }
-            if (counters[experiment_id_value]['random_counter'].length == selection_size) {
+            var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+            if (scheduling_entry.random_counter.length == selection_size) {
                 Meteor.clearInterval(intervals[experiment_id_value]);
                 intervals[experiment_id_value] = 0;
                 Answers.update({
@@ -343,7 +399,7 @@ Meteor.methods({
                 }, {
                     $set: {
                         experiment_finished: true,
-                        question_order: counters[experiment_id_value]['random_counter']
+                        question_order: scheduling_entry.random_counter
                     }
                 }, {
                     upsert: true,
@@ -354,8 +410,12 @@ Meteor.methods({
                 }, 30);
             } else {
                 //store result
-                counters[experiment_id_value]['random_counter'][counters[experiment_id_value]['random_counter'].length] = next_question;
-
+                var new_random_counter = scheduling_entry.random_counter;
+                new_random_counter[new_random_counter.length] = next_question;
+                // counters[experiment_id_value]['random_counter'][counters[experiment_id_value]['random_counter'].length] = next_question;
+                Scheduling.update({'experiment_ID': experiment_id_value},{$set:{
+                    'random_counter': new_random_counter
+                }});
                 // look at the number of participants who were assigned here previously.
                 // this number does NOT include the participant just being assigned.
                 var answer_field_query = {};
@@ -546,7 +606,11 @@ Meteor.methods({
                 upsert: true,
                 multi: true
             });
-            counters[experiment_id_value][curr_experiment.current_question] = 0;
+            var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+            Scheduling.update({'experiment_ID': experiment_id_value}, {$set:{
+                current_question: 0
+            }});
+            // counters[experiment_id_value][curr_experiment.current_question] = 0;
             //potentially removes the busy flag
             if (curr_answer_form == 1) {
                 //remove the busy flag.
