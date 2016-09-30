@@ -15,7 +15,8 @@ Router.route('/', function(){
   var hit_val = $.urlParam('hitId');
 
   if (wid == null || wid.length < 10){
-      Router.go('/end');// Uncomment this when not debugging anymore
+      Router.go('/hitId='+makeid()+'&workerId='+makeid()+'&assignmentId='+makeid());
+      // Router.go('/end');// Uncomment this when not debugging anymore
   }
 
   var curr_experiment = Answers.findOne({worker_ID: wid});
