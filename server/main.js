@@ -11,10 +11,6 @@ Meteor.publish("answerforms", function() {
 });
 var Scheduling = new Mongo.Collection("scheduling");
 
-intervals = {};
-counters = {};
-timers = {};
-
 experiment_id_counter = 1;
 
 existing_experiment_counter = 0;
@@ -40,8 +36,6 @@ decrease_time = function(experiment_id_value) {
     var curr_time = curr_experiment.timer;
     if (curr_time <= 0) {
         JobsWorker.collection.remove({"type": "TimerJob", "data.experiment_ID": experiment_id_value});
-        // Meteor.clearInterval(timers[experiment_id_value]);
-        // timers[experiment_id_value] = 0;
     } else {
         Answers.update({
             experiment_id: experiment_id_value
@@ -160,9 +154,6 @@ Meteor.methods({
         });
 
         var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
-        // if (!counters){
-        //     counters = {};
-        // }
         if (scheduling_entry) {
             Scheduling.update(
                 {'experiment_ID': experiment_id_value},
@@ -172,7 +163,6 @@ Meteor.methods({
                     }
                 }
             );
-            // counters[experiment_id_value]['initial_counter']++;
         } else {
             Scheduling.update(
                 {'experiment_ID': experiment_id_value},
@@ -181,15 +171,9 @@ Meteor.methods({
                     'initial_timer': true,
                     'random_counter': []
                 }}, {upsert: true});
-            // counters[experiment_id_value] = {};
-            // counters[experiment_id_value]['initial_counter'] = 1;
-            // counters[experiment_id_value]['initial_timer'] = true;
             //set timeout, also cancel a flag
             //TODO: implement automatic start
         }
-        // if (!counters[experiment_id_value]['random_counter']) {
-        //     counters[experiment_id_value]['random_counter'] = [];
-        // }
 
         scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
         var threshold = Meteor.settings.threshold_workers; //we need at least threshold users in every experiment
@@ -200,7 +184,6 @@ Meteor.methods({
         console.log("thresh is " + Meteor.settings);
 
 
-        // if (counters[experiment_id_value]['initial_timer'] && counters[experiment_id_value]['initial_counter'] >= threshold) { //call this when we get two entries
         if (scheduling_entry.initial_timer && scheduling_entry.initial_counter >= threshold) {
             //call this when we get threshold entries
             experiment_id_counter++;
@@ -224,7 +207,6 @@ Meteor.methods({
                     }
                 }
             );
-            // counters[experiment_id_value]['initial_timer'] = false;
         }
     },
 
@@ -325,21 +307,11 @@ Meteor.methods({
         //update question when we get ALL the answers
         var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
 
-        // if (!counters[experiment_id_value]) {
-        //     counters[experiment_id_value] = {};
-        // }
-        // if (counters[experiment_id_value][current_question]) {
-        //     counters[experiment_id_value][current_question]++;
-        // } else {
-        //     counters[experiment_id_value][current_question] = 1;
-        // }
         if (scheduling_entry.current_question) {
             Scheduling.update({'experiment_ID': experiment_id_value},{$set:{
                 current_question: scheduling_entry.current_question + 1
             }});
-            // counters[experiment_id_value][current_question]++;
         } else {
-            // counters[experiment_id_value][current_question] = 1;
             Scheduling.update({'experiment_ID': experiment_id_value},{$set:{
                 current_question: 1
             }});
@@ -445,8 +417,6 @@ Meteor.methods({
             if (scheduling_entry.random_counter.length == selection_size) {
                 // TODO: Update with new API once released.
                 JobsWorker.collection.remove({"type": "TimeoutJob", "data.experiment_ID": experiment_id_value});
-                // Meteor.clearInterval(intervals[experiment_id_value]);
-                // intervals[experiment_id_value] = 0;
                 Answers.update({
                     experiment_id: experiment_id_value
                 }, {
@@ -470,7 +440,6 @@ Meteor.methods({
                 //store result
                 var new_random_counter = scheduling_entry.random_counter;
                 new_random_counter[new_random_counter.length] = next_question;
-                // counters[experiment_id_value]['random_counter'][counters[experiment_id_value]['random_counter'].length] = next_question;
                 Scheduling.update({'experiment_ID': experiment_id_value},{$set:{
                     'random_counter': new_random_counter
                 }});
@@ -615,17 +584,10 @@ Meteor.methods({
 
         //always clear existing timers
         if (JobsWorker.collection.findOne({"type": "TimerJob", "data.experiment_ID": experiment_id_value})) {
-        // if (timers[experiment_id_value]) {
             JobsWorker.collection.remove({"type": "TimerJob", "data.experiment_ID": experiment_id_value});
-            // Meteor.clearInterval(timers[experiment_id_value]);
-            // timers[experiment_id_value] = 0;
         }
-        // if (intervals[experiment_id_value]) {
         if (JobsWorker.collection.findOne({"type": "TimeoutJob", "data.experiment_ID": experiment_id_value})) {
             JobsWorker.collection.remove({"type": "TimeoutJob", "data.experiment_ID": experiment_id_value});
-            //
-            // Meteor.clearTimeout(intervals[experiment_id_value]);
-            // intervals[experiment_id_value] = 0;
         }
         //always update timer
         var curr_answer_form = curr_experiment.current_answer;
@@ -653,7 +615,6 @@ Meteor.methods({
             Scheduling.update({'experiment_ID': experiment_id_value}, {$set:{
                 current_question: 0
             }});
-            // counters[experiment_id_value][curr_experiment.current_question] = 0;
             //potentially removes the busy flag
             if (curr_answer_form == 1) {
                 //remove the busy flag.
@@ -797,14 +758,8 @@ Meteor.methods({
                 upsert: true,
                 multi: true
             });
-            // timers[experiment_id_value] = Meteor.setInterval(function() {
-            //     decrease_time(experiment_id_value);
-            // }, 1000);
             new TimerJob({"experiment_ID": experiment_id_value}).enqueue({delay: 1000, repeat: {wait: 1000}});
             new TimeoutJob({"experiment_ID": experiment_id_value}).enqueue({delay: time_value * 1000});
-            // intervals[experiment_id_value] = Meteor.setTimeout(function() {
-            //     Meteor.call('beginQuestionScheduler', experiment_id_value, 'true', 'timeout');
-            // }, time_value * 1000);
         }
     }
 
