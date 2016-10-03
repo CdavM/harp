@@ -532,11 +532,12 @@ Meteor.methods({
                 //Questions.update({"question_ID": next_question}, {$set: {"busy": true}});
 
                 var radius_fn = function(previous_participants, questionnum) {
-                    //return 50.0/(Math.floor(previous_participants/10.0)+1);
-                    rad = 100.0 / Math.max(1, Math.floor((previous_participants) / 7.0) + 1);
                     //smaller radius for Linf
                     if ([7,8,9].indexOf(questionnum) > -1){
-                      return rad/2.0;
+                      rad = 100.0 / Math.max(1, Math.floor((previous_participants) / 7.0) + 1);
+                    }
+                    else{
+                      rad = 150.0 / Math.max(1, Math.floor((previous_participants) / 7.0) + 1);
                     }
                     return rad
                 };

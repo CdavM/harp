@@ -309,10 +309,8 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
 
         clean.append(d)
         organized_data[d['question_num']].append(d)
-        print 'here'
     for key in organized_data:
         organized_data[key] = sorted(organized_data[key], key=itemgetter('experiment_id'))
-    print organized_data[1]
     return clean, organized_data
 
 

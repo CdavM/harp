@@ -7,18 +7,28 @@ import csv
 import sys
 from data_helpers_multiplesets import *
 
-def load_sample_people_from_file(filename_forloadingpeople, superdictionary_forloadingpeople, deficit_offset_forloadingpeople):
+def load_sample_people_from_file(filename_forloadingpeople, superdictionary_forloadingpeople, deficit_offset_forloadingpeople, newstyle = True):
     data, organized_data = clean_data(load_data(
         filename_forloadingpeople), superdictionary_forloadingpeople, deficit_offset_forloadingpeople);
     persons = []
-    for row in organized_data[2]:  # full elicitation in most filenames
-        ideals = [row['question_data']['slider' +
-            str(slider) + '0_loc'] for slider in range(5)]
-        ideals[2] = ideals[2] + 88 #added education to new experiment
-        weights = [row['question_data']['slider' +
-            str(slider) + '0_weight'] for slider in range(5)]
-        persons.append([ideals, weights])
-    return persons
+    if newstyle:
+        for row in organized_data[0]:  # full elicitation in most filenames
+            ideals = [row['question_data']['slider' +
+                str(slider) + '0_loc'] for slider in range(5)]
+            ideals[2] = ideals[2] + 88 #added education to new experiment
+            weights = [row['question_data']['slider' +
+                str(slider) + '0_weight'] for slider in range(5)]
+            persons.append([ideals, weights])
+        return persons
+    else:
+        for row in organized_data[2]:  # full elicitation in most filenames
+            ideals = [row['question_data']['slider' +
+                str(slider) + '0_loc'] for slider in range(5)]
+            ideals[2] = ideals[2] + 88 #added education to new experiment
+            weights = [row['question_data']['slider' +
+                str(slider) + '0_weight'] for slider in range(5)]
+            persons.append([ideals, weights])
+        return persons
 
 # Workers have some ideal point, weights on each
 
@@ -182,7 +192,9 @@ def find_ideal_pt_for_person_in_ball(center, radius, idealpt_and_radius, constra
 	fun = 0
 	y = idealpt_and_radius[0];
 	w = idealpt_and_radius[1];
-	sumsq = math.sqrt(sum([math.pow(w[i], 2) for i in range(5)]))
+	sumsq = math.sqrt(sum([math.pow(max(w[i], .001), 2) for i in range(5)]))
+	if sumsq < .01:
+		print center, radius, idealpt_and_radius
 	w = [w[i] / sumsq for i in range(5)]
 
 	for slider in range(5):

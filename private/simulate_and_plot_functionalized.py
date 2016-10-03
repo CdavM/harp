@@ -9,6 +9,14 @@ mechanism_super_dictionary_forloading_from_old_experiments = {2: {'type': 'full'
                                                               1: {'name': 'Group 1 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
                                                               }
 
+mechanism_super_dictionary_real_BIGEXPERIMENT1 = {0: {'type': 'full', 'name': 'Full Elicitation', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[425, 1200, 350, 1450, 753]]},
+                                   1: {'name': 'Group 1 L2', 'type': 'l2', 'do_full_as_well': True, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                   2: {'name': 'Group 2 L2', 'type': 'l2', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                   3: {'name': 'Group 3 L2', 'type': 'l2', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]},
+                                   4: {'name': 'Group 1 L1', 'type': 'l1', 'do_full_as_well': True, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                   5: {'name': 'Group 2 L1', 'type': 'l1', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                   6: {'name': 'Group 3 L1', 'type': 'l1', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]}
+                                   }
 
 def plotHistogramFromFile():
     filename = "simulations/REAL_fullelicitation_withouteducation.csv"
@@ -31,7 +39,7 @@ def actual_experiment_analysis():
     labels = ['L2', 'L1', 'L2Single', 'L1Single',
               'Comparisons', 'ComparisonsSingle']
 
-    mechanism_super_dictionary_real = {0: {'type': 'full', 'name': 'Full Elicitation', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[425, 1200, 350, 1450, 753]]},
+    mechanism_super_dictionary_real_ = {0: {'type': 'full', 'name': 'Full Elicitation', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[425, 1200, 350, 1450, 753]]},
                                        1: {'name': 'Group 1 L2', 'type': 'l2', 'do_full_as_well': True, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
                                        2: {'name': 'Group 2 L2', 'type': 'l2', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
                                        3: {'name': 'Group 3 L2', 'type': 'l2', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]},
@@ -53,7 +61,7 @@ def actual_experiment_analysis():
 
 def main():
     deficit_offset = 228
-    LIMIT = 2500
+    LIMIT = 3000
 
     # , [0, 7, 8, 9], [0, 7]]
     lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6], [0, 7, 8, 9]]
@@ -99,7 +107,7 @@ def main():
     #                               # 9: {'name': 'Group 3 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]}
     #                               }
 
-    mechanism_super_dictionary_BIG2 = {0: {'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'do_full_as_well' : False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[450, 1200, 350, 1400, 828]]},
+    mechanism_super_dictionary_BIG2 = {0: {'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'do_full_as_well' : False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[450, 1100, 350, 1500, 828]]},
                                        1: {'name': 'Group 1 l2 Constrainted Movement', 'do_full_as_well': True, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
                                        2: {'name': 'Group 2 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 1, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828]]},
                                        3: {'name': 'Group 3 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 1, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828]]},
@@ -111,18 +119,32 @@ def main():
                                        9: {'name': 'Group 3 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[450, 1200, 350, 1400, 828]]}
                                        }
 
-    load_people_from_file = False
+    mechanism_super_dictionary_BIG2_farapart = {0: {'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'do_full_as_well' : False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
+                                       1: {'name': 'Group 1 l2 Constrainted Movement', 'do_full_as_well': True, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000,200, 1300, 828], [200, 800, 300, 1400, 828]]},
+                                       2: {'name': 'Group 2 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       3: {'name': 'Group 3 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
+                                       4: {'name': 'Group 1 l1 Constrainted Movement', 'do_full_as_well': True,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                       5: {'name': 'Group 2 l1 Constrainted Movement', 'do_full_as_well': False,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       6: {'name': 'Group 3 l1 Constrainted Movement', 'do_full_as_well': False,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
+                                       7: {'name': 'Group 1 linf Constrained Movement', 'do_full_as_well': True,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                       8: {'name': 'Group 2 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       9: {'name': 'Group 3 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
+                                       }
+
+
+    load_people_from_file = True
     filename_forloadingpeople = "C:\\Users\\Nikhil\\Dropbox\\src\\harp\\private\\resultssofar\\FinalDatas\\export-20160722200126_SECONDRUN_FINAL_sampleforsimulation.csv"
     filename_forloadingpeople = "C:\\Users\\Nikhil\\Dropbox\\src\\harp\\private\\resultssofar\\FinalDatas\\export-20160718044154_FIRSTREALRUN_FINAL_sampleforsimulation.csv"
+    filename_forloadingpeople = "C:\\Users\\Nikhil\\Dropbox\\src\\harp\\private\\resultssofar\\FinalDatas\\export-20160906041734_BIGEXPERIMENT_FINAL.csv"
 
-    superdictionary_forloadingpeople = mechanism_super_dictionary_forloading_from_old_experiments
-    deficit_offset_forloadingpeople = 316
+    superdictionary_forloadingpeople = mechanism_super_dictionary_real_BIGEXPERIMENT1
+    deficit_offset_forloadingpeople = 228
 
     # [50, 75, 100]:#[15, 75, 25, 50, 35, 100, 10]:
-    for starting_radius in [100]:
+    for starting_radius in [150]:
         for decrease_every in [7]:  # [7, 10, 12]:#[1, 3, 5, 10, 15, 20, 25]:
             for ppl_in_block in [10]:  # [10, 15]:#[1, 3, 5, 10, 15, 20]:
-                LABEL = 'uselinf' + str(starting_radius) + 'DecreaseEvery' + str(
+                LABEL = 'BE2far_fromfile_final' + str(starting_radius) + 'DecreaseEvery' + str(
                     decrease_every) + 'Block' + str(ppl_in_block) + "ppl" + str(LIMIT) + "_"
                 filename = "simulations/" + LABEL + ".csv"
                 if os.path.isfile(filename):
@@ -133,19 +155,19 @@ def main():
                 radius_parameters_loop = {'radius_type': 'decreasing_slow',
                                           'starting': starting_radius, 'decrease_every': decrease_every}
 
-                for mech in mechanism_super_dictionary_BIG2:
-                    if mechanism_super_dictionary_BIG2[mech]['type'] != 'full':
-                        mechanism_super_dictionary_BIG2[mech][
+                for mech in mechanism_super_dictionary_BIG2_farapart:
+                    if mechanism_super_dictionary_BIG2_farapart[mech]['type'] != 'full':
+                        mechanism_super_dictionary_BIG2_farapart[mech][
                             'num_to_average_per_step'] = ppl_in_block
                 # try:
                 simulate_entire_experiment_functionalized.simulate_experiment_functionalized(
-                        filename, LABEL, copy.deepcopy(mechanism_super_dictionary_BIG2), deficit_offset=deficit_offset, LIMIT=LIMIT, radius_parameters=radius_parameters_loop, load_people_from_file=load_people_from_file, filename_forloadingpeople=filename_forloadingpeople, superdictionary_forloadingpeople=superdictionary_forloadingpeople, deficit_offset_forloadingpeople=deficit_offset_forloadingpeople)
+                        filename, LABEL, copy.deepcopy(mechanism_super_dictionary_BIG2_farapart), deficit_offset=deficit_offset, LIMIT=LIMIT, radius_parameters=radius_parameters_loop, load_people_from_file=load_people_from_file, filename_forloadingpeople=filename_forloadingpeople, superdictionary_forloadingpeople=superdictionary_forloadingpeople, deficit_offset_forloadingpeople=deficit_offset_forloadingpeople)
                 # except:
                 #print "exception on simulated", starting_radius, decrease_every, ppl_in_block
 
                 # try:
                 analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(
-                    mechanism_super_dictionary_BIG2), deficit_offset=deficit_offset, lines_to_do=lines_to_do, labels=labels, plotAllOverTime=True)
+                    mechanism_super_dictionary_BIG2_farapart), deficit_offset=deficit_offset, lines_to_do=lines_to_do, labels=labels, plotAllOverTime=True)
                 # except:
                 #     print "exception on analysis", starting_radius, decrease_every, ppl_in_block
                 #     pass
