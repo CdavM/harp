@@ -15,6 +15,7 @@ Router.route('/', function(){
   var hit_val = $.urlParam('hitId');
 
   if (wid == null || wid.length < 10){
+      // Router.go('/hitId='+makeid()+'&workerId='+makeid()+'&assignmentId='+makeid());
       Router.go('/end');// Uncomment this when not debugging anymore
   }
 
@@ -30,8 +31,6 @@ Router.route('/', function(){
     this.render('experiment');
   }
 });
-
-
 
 function makeid()
 {

@@ -9,15 +9,11 @@ var Solutions = new Mongo.Collection("solutions");
 Meteor.publish("answerforms", function() {
     return AnswerForms.find();
 });
+var Scheduling = new Mongo.Collection("scheduling");
 
-var intervals = {};
-var counters = {};
-var timers = {};
+experiment_id_counter = 1;
 
-var threshold = Meteor.settings.threshold_workers; //we need at least threshold users in every experiment
-var experiment_id_counter = 1;
-
-var existing_experiment_counter = 0;
+existing_experiment_counter = 0;
 if (Answers.findOne({
         begin_experiment: true
     })) {
@@ -33,6 +29,28 @@ if (Answers.findOne({
 }
 
 
+decrease_time = function(experiment_id_value) {
+    var curr_experiment = Answers.findOne({
+        experiment_id: experiment_id_value
+    });
+    var curr_time = curr_experiment.timer;
+    if (curr_time <= 0) {
+        JobsWorker.collection.remove({"type": "TimerJob", "data.experiment_ID": experiment_id_value});
+    } else {
+        Answers.update({
+            experiment_id: experiment_id_value
+        }, {
+            $set: {
+                timer: curr_time - 1
+            }
+        }, {
+            upsert: true,
+            multi: true
+        });
+    }
+};
+
+
 Meteor.startup(function() {
     clear_busy_flags: {
         Questions.update({}, {
@@ -44,34 +62,61 @@ Meteor.startup(function() {
         });
     }
 
-    //check and potentially update question database
-    update_questions: {
-        for (var post in Meteor.settings.questions) {
-            if (!Questions.findOne({'question_ID' : Meteor.settings.questions[post]['question_ID']}) || Questions.find().count() != Meteor.settings.questions.length) {
-                console.log("Updating questionbank database");
-                Questions.remove({});
-                for (post in Meteor.settings.questions) {
-                    Questions.insert(Meteor.settings.questions[post]);
-                }
-                break update_questions;
-            }
+    // //check and potentially update question database
+    // update_questions: {
+    //     for (var post in Meteor.settings.questions) {
+    //         if (!Questions.findOne({'question_ID' : Meteor.settings.questions[post]['question_ID']}) || Questions.find().count() != Meteor.settings.questions.length) {
+    //             console.log("Updating questionbank database");
+    //             Questions.remove({});
+    //             for (post in Meteor.settings.questions) {
+    //                 Questions.insert(Meteor.settings.questions[post]);
+    //             }
+    //             break update_questions;
+    //         }
+    //     }
+    // }
+    //
+    // //check and potentially update answer_forms
+    //
+    // update_answer_forms: {
+    //     for (var post2 in Meteor.settings.public.answer_forms) {
+    //         if (!AnswerForms.findOne(Meteor.settings.public.answer_forms[post2]) || AnswerForms.find().count() != Meteor.settings.public.answer_forms.length) {
+    //             console.log("Updating answer form database");
+    //             AnswerForms.remove({});
+    //             for (post2 in Meteor.settings.public.answer_forms) {
+    //                 AnswerForms.insert(Meteor.settings.public.answer_forms[post2]);
+    //             }
+    //             break update_answer_forms;
+    //         }
+    //     }
+    // }
+    // TimerJob decreases the timer every second
+    class TimerJob extends Job {
+        run() {
+            decrease_time(this.data.experiment_ID);
         }
     }
+    // Declare it as a global
+    this.TimerJob = TimerJob;
+    TimerJob.register();
 
-    //check and potentially update answer_forms
-
-    update_answer_forms: {
-        for (var post2 in Meteor.settings.public.answer_forms) {
-            if (!AnswerForms.findOne(Meteor.settings.public.answer_forms[post2]) || AnswerForms.find().count() != Meteor.settings.public.answer_forms.length) {
-                console.log("Updating answer form database");
-                AnswerForms.remove({});
-                for (post2 in Meteor.settings.public.answer_forms) {
-                    AnswerForms.insert(Meteor.settings.public.answer_forms[post2]);
-                }
-                break update_answer_forms;
-            }
+    //TimeoutJob changes the question upon a timeout
+    class TimeoutJob extends Job {
+        run() {
+            Meteor.call('beginQuestionScheduler', this.data.experiment_ID, 'true', 'timeout');
         }
     }
+    // Declare it as a global
+    this.TimeoutJob = TimeoutJob;
+    TimeoutJob.register();
+
+    JobsWorker.initialize({
+        collectionName: 'JobQueue',
+        workerInstances: parseInt(process.env.WORKER_INSTANCES || '1'),
+        stalledJobCheckInterval: 5, // ms
+        promoteInterval: 5 // ms
+    });
+    JobsWorker.start();
 
 });
 
@@ -94,36 +139,55 @@ Meteor.methods({
             });
             return;
         }
-            var experiment_id_value = experiment_id_counter;
-            var begin_time_val = new Date().getTime();
-            Answers.update({
-                worker_ID: post.worker_ID
-            }, {
-                $set: {
-                    begin_time: begin_time_val,
-                    experiment_id: experiment_id_value,
-                    avg_payment: 0,
-                    experiment_finished: false,
-                    latest_time: begin_time_val
-                }
-            });
+        var experiment_id_value = experiment_id_counter;
+        var begin_time_val = new Date().getTime();
+        Answers.update({
+            worker_ID: post.worker_ID
+        }, {
+            $set: {
+                begin_time: begin_time_val,
+                experiment_id: experiment_id_value,
+                avg_payment: 0,
+                experiment_finished: false,
+                latest_time: begin_time_val
+            }
+        });
 
-        if (counters[experiment_id_value]) {
-            counters[experiment_id_value]['initial_counter']++;
+        var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+        if (scheduling_entry) {
+            Scheduling.update(
+                {'experiment_ID': experiment_id_value},
+                {$set:
+                    {
+                        'initial_counter': scheduling_entry.initial_counter + 1
+                    }
+                }
+            );
         } else {
-            counters[experiment_id_value] = {};
-            counters[experiment_id_value]['initial_counter'] = 1;
-            counters[experiment_id_value]['initial_timer'] = true;
+            Scheduling.update(
+                {'experiment_ID': experiment_id_value},
+                {$set:{
+                    'initial_counter': 1,
+                    'initial_timer': true,
+                    'random_counter': []
+                }}, {upsert: true});
             //set timeout, also cancel a flag
             //TODO: implement automatic start
         }
-        if (!counters[experiment_id_value]['random_counter']) {
-            counters[experiment_id_value]['random_counter'] = [];
-        }
+
+        scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+        var threshold = Meteor.settings.threshold_workers; //we need at least threshold users in every experiment
+
+        console.log("before the start entry");
+        console.log("scheduling init timer is " + scheduling_entry.initial_timer);
+        console.log("scheduling init counter is " + scheduling_entry.initial_counter);
+        console.log("thresh is " + Meteor.settings);
 
 
-        if (counters[experiment_id_value]['initial_timer'] && counters[experiment_id_value]['initial_counter'] >= threshold) { //call this when we get two entries
+        if (scheduling_entry.initial_timer && scheduling_entry.initial_counter >= threshold) {
+            //call this when we get threshold entries
             experiment_id_counter++;
+            console.log("starting");
             Answers.update({
                 experiment_id: experiment_id_value
             }, {
@@ -135,7 +199,14 @@ Meteor.methods({
                 multi: true
             });
             Meteor.call('beginQuestionScheduler', experiment_id_value, 'false', 'initialPost');
-            counters[experiment_id_value]['initial_timer'] = false;
+            Scheduling.update(
+                {'experiment_ID': experiment_id_value},
+                {$set:
+                    {
+                    'initial_timer': false
+                    }
+                }
+            );
         }
     },
 
@@ -234,16 +305,21 @@ Meteor.methods({
             upsert: true
         });
         //update question when we get ALL the answers
-        if (!counters[experiment_id_value]) {
-            counters[experiment_id_value] = {};
-        }
-        if (counters[experiment_id_value][current_question]) {
-            counters[experiment_id_value][current_question]++;
+        scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+
+        if (scheduling_entry.current_question) {
+            Scheduling.update({'experiment_ID': experiment_id_value},{$set:{
+                current_question: scheduling_entry.current_question + 1
+            }});
         } else {
-            counters[experiment_id_value][current_question] = 1;
+            Scheduling.update({'experiment_ID': experiment_id_value},{$set:{
+                current_question: 1
+            }});
         }
+        scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+
         var num_of_workers = Meteor.settings.threshold_workers;
-        if (counters[experiment_id_value][current_question] >= num_of_workers) {
+        if (scheduling_entry.current_question >= num_of_workers) {
             Meteor.call('beginQuestionScheduler', experiment_id_value, 'false', 'newPost');
         }
 
@@ -299,6 +375,8 @@ Meteor.methods({
                         rnd_sample = Math.random();
                         question_selected = 0;
                     } else {
+                        var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+                        var random_counter_entry = scheduling_entry.random_counter;
                         do {
                             rnd_sample = Math.random();
                             if (rnd_sample < (0.1077777778 * 1))
@@ -321,8 +399,8 @@ Meteor.methods({
                                 question_selected = 9;
                             else
                                 question_selected = 0;
-                        } while ((counters[experiment_id_value]['random_counter'].indexOf(question_selected) != -1 &&
-                                counters[experiment_id_value]['random_counter'].length < selection_size) ||
+                        } while ((random_counter_entry.indexOf(question_selected) != -1 &&
+                            random_counter_entry.length < selection_size) ||
                             Questions.findOne({
                                 "question_ID": question_selected
                             }).busy == true || Questions.findOne({
@@ -341,27 +419,36 @@ Meteor.methods({
                         "question_ID": next_question
                     }).busy == true);
             }
-            if (counters[experiment_id_value]['random_counter'].length == selection_size) {
-                Meteor.clearInterval(intervals[experiment_id_value]);
-                intervals[experiment_id_value] = 0;
+            var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+            if (scheduling_entry.random_counter.length == selection_size) {
+                // TODO: Update with new API once released.
+                JobsWorker.collection.remove({"type": "TimeoutJob", "data.experiment_ID": experiment_id_value});
                 Answers.update({
                     experiment_id: experiment_id_value
                 }, {
                     $set: {
                         experiment_finished: true,
-                        question_order: counters[experiment_id_value]['random_counter']
+                        question_order: scheduling_entry.random_counter
                     }
                 }, {
                     upsert: true,
                     multi: true
                 });
+                // Remove jobs
+                // TODO: Update with new API for job collection.
+                JobsWorker.collection.remove({"type": "TimerJob", "data.experiment_ID": experiment_id_value});
+                JobsWorker.collection.remove({"type": "TimeoutJob", "data.experiment_ID": experiment_id_value});
+
                 Meteor.setTimeout(function() {
                     console.log("all questions passed for experiment " + experiment_id_value);
                 }, 30);
             } else {
                 //store result
-                counters[experiment_id_value]['random_counter'][counters[experiment_id_value]['random_counter'].length] = next_question;
-
+                var new_random_counter = scheduling_entry.random_counter;
+                new_random_counter[new_random_counter.length] = next_question;
+                Scheduling.update({'experiment_ID': experiment_id_value},{$set:{
+                    'random_counter': new_random_counter
+                }});
                 // look at the number of participants who were assigned here previously.
                 // this number does NOT include the participant just being assigned.
                 var answer_field_query = {};
@@ -500,35 +587,13 @@ Meteor.methods({
 
         };
 
-        var decrease_time = function(experiment_id_value) {
-            var curr_experiment = Answers.findOne({
-                experiment_id: experiment_id_value
-            });
-            var curr_time = curr_experiment.timer;
-            if (curr_time <= 0) {
-                Meteor.clearInterval(timers[experiment_id_value]);
-                timers[experiment_id_value] = 0;
-            } else {
-                Answers.update({
-                    experiment_id: experiment_id_value
-                }, {
-                    $set: {
-                        timer: curr_time - 1
-                    }
-                }, {
-                    upsert: true,
-                    multi: true
-                });
-            }
-        };
+
         //always clear existing timers
-        if (timers[experiment_id_value]) {
-            Meteor.clearInterval(timers[experiment_id_value]);
-            timers[experiment_id_value] = 0;
+        if (JobsWorker.collection.findOne({"type": "TimerJob", "data.experiment_ID": experiment_id_value})) {
+            JobsWorker.collection.remove({"type": "TimerJob", "data.experiment_ID": experiment_id_value});
         }
-        if (intervals[experiment_id_value]) {
-            Meteor.clearTimeout(intervals[experiment_id_value]);
-            intervals[experiment_id_value] = 0;
+        if (JobsWorker.collection.findOne({"type": "TimeoutJob", "data.experiment_ID": experiment_id_value})) {
+            JobsWorker.collection.remove({"type": "TimeoutJob", "data.experiment_ID": experiment_id_value});
         }
         //always update timer
         var curr_answer_form = curr_experiment.current_answer;
@@ -552,7 +617,10 @@ Meteor.methods({
                 upsert: true,
                 multi: true
             });
-            counters[experiment_id_value][curr_experiment.current_question] = 0;
+            var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
+            Scheduling.update({'experiment_ID': experiment_id_value}, {$set:{
+                current_question: 0
+            }});
             //potentially removes the busy flag
             if (curr_answer_form == 1) {
                 //remove the busy flag.
@@ -696,12 +764,8 @@ Meteor.methods({
                 upsert: true,
                 multi: true
             });
-            timers[experiment_id_value] = Meteor.setInterval(function() {
-                decrease_time(experiment_id_value);
-            }, 1000);
-            intervals[experiment_id_value] = Meteor.setTimeout(function() {
-                Meteor.call('beginQuestionScheduler', experiment_id_value, 'true', 'timeout');
-            }, time_value * 1000);
+            new TimerJob({"experiment_ID": experiment_id_value}).enqueue({delay: 1000, repeat: {wait: 1000}});
+            new TimeoutJob({"experiment_ID": experiment_id_value}).enqueue({delay: time_value * 1000});
         }
     }
 
