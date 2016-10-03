@@ -101,8 +101,7 @@ def fill_out_preliminaries(row, mechanism_assignment, mechanisms, turker_time, n
 	row['asg_ID'] = 'NA'
 	row['initial_time'] = int(turker_time)
 	row['begin_time'] = int(turker_time)
-	row['experiment_id'] = sum(
-	    [mechanisms[m]['number_previous'] for m in mechanisms])
+	row['experiment_id'] = int(turker_time)
 	row['current_question'] = mechanism_assignment
 	row['experiment_finished'] = True
 	row['begin_experiment'] = True
@@ -193,9 +192,10 @@ def find_ideal_pt_for_person_in_ball(center, radius, idealpt_and_radius, constra
 
 	if constraint == "l1":
 		constraints += [cvxpy.sum_entries(cvxpy.abs(X[0:4] - center[0:4])) <= radius]
-	else:
-		constraints += [cvxpy.sum_entries(cvxpy.square(X[0:4] -
-		                                  center[0:4])) <= radius**2]
+	elif constraint == 'l2':
+		constraints += [cvxpy.sum_entries(cvxpy.square(X[0:4] - center[0:4])) <= radius**2]
+	elif constraint == 'linf':
+		constraints += [cvxpy.max_entries(cvxpy.abs(X[0:4] - center[0:4])) <= radius/2.0] #smaller radius for linf
 
 	prob = cvxpy.Problem(obj, constraints)
 	result = prob.solve(solver = 'SCS')
@@ -237,7 +237,7 @@ def simulate_person(idealpts, mechanism_assignment, mechanisms, row, mechanism_s
 	answer = {}
 	answer["text_explanation"] = ['simulated'];
 	answer["time"] = 1
-
+	answerfullaswell = {}
 	if mechanisms[mechanism_assignment]['question_ID'] == 'comparisons':
 		for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
 			sampled_vector_00 = sample_in_ball(4);
@@ -337,9 +337,47 @@ def simulate_person(idealpts, mechanism_assignment, mechanisms, row, mechanism_s
 
 			for i in range(len(mechanisms[mechanism_assignment]['averaging_status_array'])):
 				mechanisms[mechanism_assignment]['averaging_status_array'][i] = -100;
+	elif mechanisms[mechanism_assignment]['question_ID'] == 'linf':
+		for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
+			setstr = str(setnum)
+			values, credits = find_ideal_pt_for_person_in_ball(mechanisms[mechanism_assignment]['values'][
+			                                                   setnum], row['radius'], idealpts, constraint="linf", deficit_offset=deficit_offset)
+			for i in range(0, 4):
+				answer["slider" + str(i) + setstr] = [str(values[i])];
+				row['answer1.slider' + str(i) + setstr + "_credits"] = credits[i];
+
+				# mechanisms[mechanism_assignment]['values'][setnum][i] = values[i]
+			answer['deficit' + setstr] = values[4]
+			mechanisms[mechanism_assignment]['averaging_array'][
+			    setnum, current_avg_number, :] = values
+		mechanisms[mechanism_assignment]['averaging_status_array'][
+		    current_avg_number] = sys.maxsize
+		if current_avg_number == mechanisms[mechanism_assignment]['num_to_average_per_step'] - 1:
+			# Do the averaging, set it to initial_value, reset the array, reset
+			# overall busy, increase "number_previous"
+
+			mechanisms[mechanism_assignment]['number_previous'] = mechanisms[
+			    mechanism_assignment]['number_previous'] + 1
+			for setnum in range(mechanism_super_dictionary[mechanism_assignment]['numsets']):
+				avg_values = np.average(mechanisms[mechanism_assignment][
+				                        'averaging_array'][setnum, :, :], axis=0)
+				for i in range(0, 4):
+					mechanisms[mechanism_assignment]['values'][setnum][i] = avg_values[i]
+
+			for i in range(len(mechanisms[mechanism_assignment]['averaging_status_array'])):
+				mechanisms[mechanism_assignment]['averaging_status_array'][i] = -100;
+
+	if mechanism_super_dictionary[mechanism_assignment]['do_full_as_well']:  # full elicitation
+		answerfullaswell = {}
+        answerfullaswell["text_explanation"] = ['simulated'];
+        answerfullaswell["time"] = 1
+        for i in range(0, 5):
+        	answerfullaswell ["fullslider" + str(i) + "_text"] = [str(idealpts[0][i])];
+        	answerfullaswell["fullslider" + str(i) + "weight_text"] = [str(idealpts[1][i])]
+        row[prepend + '2'] = answerfullaswell
 
 	row[prepend + "1"] = answer;
-	row[prepend + "2"] = {"political_stance_report": ["somewhat"],
+	row[prepend + "3"] = {"political_stance_report": ["somewhat"],
 	    "feedback": ["simulated"], "time": 100};
 
 	# if row['current_question'] == 4 or row['current_question'] == 1:
@@ -389,7 +427,7 @@ def simulate_experiment_functionalized(filename, LABEL, mechanism_super_dictiona
 		persons = load_sample_people_from_file(filename_forloadingpeople, superdictionary_forloadingpeople, deficit_offset_forloadingpeople);
 
 	with open(filename, 'wb') as f:
-		fieldnames = ['worker_ID','asg_ID','initial_time','begin_time','experiment_id','current_question','experiment_finished','begin_experiment','num_of_previous_participants','current_answer','initial_slider00','initial_slider10','initial_slider20','initial_slider30','initial_deficit0','initial_slider01','initial_slider11','initial_slider21','initial_slider31', 'initial_deficit1', 'timer','radius','answer1.0.0','answer1.0.1','answer1.0.2','answer1.1.0','answer1.1.1','answer1.1.2','answer1.2.0','answer1.2.1','answer1.2.2','answer1.3.0','answer1.3.1','answer1.3.2','answer1.4.0','answer1.4.1','answer1.4.2','answer1.5.0','answer1.5.1','answer1.5.2','answer1.6.0','answer1.6.1','answer1.6.2','answer1.7.0','answer1.7.1','answer1.7.2','answer1.8.0','answer1.8.1','answer1.8.2','answer1.9.0','answer1.9.1','answer1.9.2','set0slider00','set0slider10','set0slider20','set0slider30','set0slider40','set0slider01','set0slider11','set0slider21','set0slider31','set0slider41','set0slider02','set0slider12','set0slider22','set0slider32','set0slider42','set0slider03','set0slider13','set0slider23','set0slider33','set0slider43','set1slider00','set1slider10','set1slider20','set1slider30','set1slider40','set1slider01','set1slider11','set1slider21','set1slider31','set1slider41','set1slider02','set1slider12','set1slider22','set1slider32','set1slider42','set1slider03','set1slider13','set1slider23','set1slider33','set1slider43','answer1.slider00_credits','answer1.slider10_credits','answer1.slider20_credits','answer1.slider30_credits', 'answer1.slider01_credits','answer1.slider11_credits','answer1.slider21_credits','answer1.slider31_credits']
+		fieldnames = ['worker_ID','asg_ID','initial_time','begin_time','experiment_id','current_question','experiment_finished','begin_experiment','num_of_previous_participants','current_answer','initial_slider00','initial_slider10','initial_slider20','initial_slider30','initial_deficit0','initial_slider01','initial_slider11','initial_slider21','initial_slider31', 'initial_deficit1', 'timer','radius','answer1.0.0','answer1.0.1','answer1.0.2','answer1.0.3','answer1.1.0','answer1.1.1','answer1.1.2','answer1.1.3','answer1.2.0','answer1.2.1','answer1.2.2','answer1.2.3','answer1.3.0','answer1.3.1','answer1.3.2','answer1.3.3','answer1.4.0','answer1.4.1','answer1.4.2','answer1.4.3','answer1.5.0','answer1.5.1','answer1.5.2','answer1.5.3','answer1.6.0','answer1.6.1','answer1.6.2','answer1.6.3','answer1.7.0','answer1.7.1','answer1.7.2','answer1.7.3','answer1.8.0','answer1.8.1','answer1.8.2','answer1.8.3','answer1.9.0','answer1.9.1','answer1.9.2','answer1.9.3','set0slider00','set0slider10','set0slider20','set0slider30','set0slider40','set0slider01','set0slider11','set0slider21','set0slider31','set0slider41','set0slider02','set0slider12','set0slider22','set0slider32','set0slider42','set0slider03','set0slider13','set0slider23','set0slider33','set0slider43','set1slider00','set1slider10','set1slider20','set1slider30','set1slider40','set1slider01','set1slider11','set1slider21','set1slider31','set1slider41','set1slider02','set1slider12','set1slider22','set1slider32','set1slider42','set1slider03','set1slider13','set1slider23','set1slider33','set1slider43','answer1.slider00_credits','answer1.slider10_credits','answer1.slider20_credits','answer1.slider30_credits', 'answer1.slider01_credits','answer1.slider11_credits','answer1.slider21_credits','answer1.slider31_credits']
 		writer = csv.DictWriter(f, fieldnames = fieldnames);
 		writer.writeheader();
 

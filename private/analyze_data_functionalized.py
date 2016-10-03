@@ -123,7 +123,7 @@ def plot_allmechansisms_together(
 			for mechanism in mechanism_super_dictionary:
 				if mechanism not in lines_to_do[ltd]:
 					continue
-				if mechanism_super_dictionary[mechanism]['type'] == 'l1' or mechanism_super_dictionary[mechanism]['type'] == 'l2':
+				if mechanism_super_dictionary[mechanism]['type'] == 'l1' or mechanism_super_dictionary[mechanism]['type'] == 'l2' or mechanism_super_dictionary[mechanism]['type'] == 'linf':
 					for set_num in range(mechanism_super_dictionary[mechanism]['numsets']):
 						n = range(0, len(organized_data[mechanism]))
 						maxn = max(maxn, len(n))

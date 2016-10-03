@@ -98,6 +98,48 @@ def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive=0)
 
     return answer
 
+# linf constrained movement
+def load_data_experiment_linf(answerdata, restofdata, numsets, deficit_additive=0):
+    answer = {}
+
+    for setnum in range(numsets):
+        setstr = str(setnum);
+        answer['slider0' + setstr +
+            '_loc'] = float(answerdata['slider0' + setstr][0])
+        answer['slider1' + setstr +
+            '_loc'] = float(answerdata['slider1' + setstr][0])
+        answer['slider2' + setstr +
+            '_loc'] = float(answerdata['slider2' + setstr][0])
+        answer['slider3' + setstr +
+            '_loc'] = float(answerdata['slider3' + setstr][0])
+        answer['slider4' + setstr +
+            '_loc'] = float(answerdata['deficit' + setstr])
+        answer['explanation'] = answerdata['text_explanation']
+
+        answer['initial_slider0' + setstr +
+            '_loc'] = float(restofdata['initial_slider0' + setstr])
+        answer['initial_slider1' + setstr +
+            '_loc'] = float(restofdata['initial_slider1' + setstr])
+        answer['initial_slider2' + setstr +
+            '_loc'] = float(restofdata['initial_slider2' + setstr])
+        answer['initial_slider3' + setstr +
+            '_loc'] = float(restofdata['initial_slider3' + setstr])
+        answer['initial_slider4' + setstr + '_loc'] = answer['initial_slider0' + setstr + '_loc'] + answer['initial_slider1' + setstr + '_loc'] + answer[
+            'initial_slider2' + setstr + '_loc'] - answer['initial_slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
+
+        answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(
+            restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
+
+        answer['slider0' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider0' + setstr + '_credits'])
+        answer['slider1' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider1' + setstr + '_credits'])
+        answer['slider2' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider2' + setstr + '_credits'])
+        answer['slider3' + setstr + '_creditsused'] = float(
+            restofdata['answer1.slider3' + setstr + '_credits'])
+
+    return answer
 
 # l1 constrained movement
 def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive=0):
@@ -186,6 +228,7 @@ switcher_load_data = {
     'full': load_data_experiment_full,
     'l2': load_data_experiment_l2,
     'l1': load_data_experiment_l1,
+    'linf' : load_data_experiment_linf,
     'comparisons': load_data_experiment_comparisons,
 }
 
@@ -266,10 +309,10 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
 
         clean.append(d)
         organized_data[d['question_num']].append(d)
-
+        print 'here'
     for key in organized_data:
         organized_data[key] = sorted(organized_data[key], key=itemgetter('experiment_id'))
-    print organized_data[1][-1]
+    print organized_data[1]
     return clean, organized_data
 
 
