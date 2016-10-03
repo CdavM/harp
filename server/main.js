@@ -535,7 +535,7 @@ Meteor.methods({
 
                   summrad = 7;
               		groupnum = 0;
-              		while (num_previous > summrad){
+              		while (previous_participants > summrad){
                     groupnum = groupnum + 1;
               			summrad += Math.max(4, 7 - groupnum);
                   }
