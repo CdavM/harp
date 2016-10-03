@@ -301,20 +301,26 @@ Meteor.methods({
                     } else {
                         do {
                             rnd_sample = Math.random();
-                            if (rnd_sample < 0.05)
-                                question_selected = 0;
-                            else if (rnd_sample < (0.158333333333333 * 2))
+                            if (rnd_sample < (0.1077777778 * 1))
                                 question_selected = 1;
-                            else if (rnd_sample < (0.158333333333333 * 3))
+                            else if (rnd_sample < (0.1077777778 * 2))
                                 question_selected = 2;
-                            else if (rnd_sample < (0.158333333333333 * 4))
+                            else if (rnd_sample < (0.1077777778 * 3))
                                 question_selected = 3;
-                            else if (rnd_sample < (0.158333333333333 * 5))
+                            else if (rnd_sample < (0.1077777778 * 4))
                                 question_selected = 4;
-                            else if (rnd_sample < (0.158333333333333 * 6))
-                                question_selected = 5;
-                            else
+                            else if (rnd_sample < (0.1077777778 * 5))
+                                question_selected = 5
+                            else if (rnd_sample < (0.1077777778 * 6))
                                 question_selected = 6;
+                            else if (rnd_sample < (0.1077777778 * 7))
+                                question_selected = 7;
+                            else if (rnd_sample < (0.1077777778 * 8))
+                                question_selected = 8;
+                            else if (rnd_sample < (0.1077777778 * 9))
+                                question_selected = 9;
+                            else
+                                question_selected = 0;
                         } while ((counters[experiment_id_value]['random_counter'].indexOf(question_selected) != -1 &&
                                 counters[experiment_id_value]['random_counter'].length < selection_size) ||
                             Questions.findOne({
@@ -445,7 +451,7 @@ Meteor.methods({
                 var radius_val = radius_fn(Questions.findOne({
                     "question_ID": next_question
                 }).previous_participants);
-                if ([1, 2, 3, 4, 5, 6].indexOf(next_question) > -1) {
+                if ([1, 2, 3, 4, 5, 6, 7, 8, 9].indexOf(next_question) > -1) {
                     var current_question = Questions.findOne({
                         "question_ID": next_question
                     });

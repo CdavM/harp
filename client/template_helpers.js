@@ -103,6 +103,8 @@ Template.registerHelper('current_mechanism', function(){
         return "L2_mechanism";
     } else if ([4, 5, 6].indexOf(current_question_value) > -1){
         return "L1_mechanism";
+    } else if ([7, 8, 9].indexOf(current_question_value) > -1){
+        return "Linf_mechanism";
     }
 });
 
@@ -114,6 +116,8 @@ Template.registerHelper('current_question_text', function(){
         return "L2_text";
     } else if ([4, 5, 6].indexOf(current_question_value) > -1){
         return "L1_text";
+    } else if ([7, 8, 9].indexOf(current_question_value) > -1){
+        return "Linf_text";
     }
 });
 
