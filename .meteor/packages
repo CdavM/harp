@@ -22,8 +22,4 @@ iron:router
 mizzao:bootstrap-3
 mrt:mathjax
 rcy:nouislider
-coffeescript            
-mrt:later               
-peerlibrary:classy-job  
-peerlibrary:stacktrace  
-vsivsi:job-collection
+peerlibrary:classy-job
