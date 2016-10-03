@@ -144,7 +144,7 @@ def main():
     for starting_radius in [150]:
         for decrease_every in [7]:  # [7, 10, 12]:#[1, 3, 5, 10, 15, 20, 25]:
             for ppl_in_block in [10]:  # [10, 15]:#[1, 3, 5, 10, 15, 20]:
-                LABEL = 'BE2far_fromfile_final' + str(starting_radius) + 'DecreaseEvery' + str(
+                LABEL = 'BE2far_fromfile_sameradiusdecrate' + str(starting_radius) + 'DecreaseEvery' + str(
                     decrease_every) + 'Block' + str(ppl_in_block) + "ppl" + str(LIMIT) + "_"
                 filename = "simulations/" + LABEL + ".csv"
                 if os.path.isfile(filename):

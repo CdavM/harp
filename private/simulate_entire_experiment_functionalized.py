@@ -79,7 +79,14 @@ def radius_fn(num_previous, radius_parameters):
 	elif radius_parameters['radius_type'] == 'decreasing':
 		return float(radius_parameters['starting']) / (num_previous + 1);
 	elif radius_parameters['radius_type'] == 'decreasing_slow':
-		return float(radius_parameters['starting']) / (math.floor(num_previous / float(radius_parameters['decrease_every'])) + 1)
+		return float(radius_parameters['starting']) / (math.floor(num_previous/float(radius_parameters['decrease_every'])) + 1)
+	elif radius_parameters['radius_type'] == 'decreasing_slow_increasing':
+		summ = radius_parameters['decrease_every'];
+		groupnum = 0;
+		while num_previous > summ:
+			groupnum += 1;
+			summ += max(4,radius_parameters['decrease_every'] - groupnum)
+		return float(radius_parameters['starting']) / (float(groupnum) + 1)
 
 
 def get_turker_times(num_turkers, window_length, max_turkers_per_window):
