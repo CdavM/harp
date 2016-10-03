@@ -449,6 +449,68 @@ Template.answer1.onRendered(function () {
         }
         update_deficit(well_idx);
     };
+    update_slider_mechinf1 = function (ev, val, update_slider_flag) {
+        // the vars below are global and declared once the page is rendered!
+        var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
+        var radius = curr_experiment.radius;
+        var current_question = Questions.findOne({"question_ID": curr_experiment.current_question});
+        if (!update_slider_flag)
+            update_slider_flag = false;
+        var radius_max = 0;
+        var well_idx = ev.target.id[ev.target.id.length-1];
+        var slider_idx_counter = 0;
+        while (slider_idx_counter < 4){
+            var curr_slider = "slider"+slider_idx_counter.toString() + well_idx.toString();
+            var curr_slider_value = Session.get(curr_slider);
+            if (isNaN(curr_slider_value)){
+                sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
+                return;
+            }
+            slider_idx_counter ++;
+        }
+        //linf constraint
+        radius_used = Math.abs(val-current_question[ev.target.id]);
+        if (radius_used > radius) {
+            //decrease the val until we can do it
+            if (val > current_question[ev.target.id]){
+                val = current_question[ev.target.id] + radius;
+            } else {
+                val = current_question[ev.target.id] - radius;
+            }
+            update_slider_flag = true;
+            $("div").mouseup(); //release the mouse
+        }
+        if (isNaN(val)){
+            sliders[ev.target.id].val(round(Session.get(ev.target.id), 2));
+            return;
+        }
+        ev.target.value = round(val, 2); // updates the textbox
+        Session.set(ev.target.id, Number(val));
+
+        if (update_slider_flag){
+            sliders[ev.target.id].val(round(val, 2));
+        }
+        var percent_difference = compute_averages(Number(ev.target.id[ev.target.id.length-2]), val);
+        if (percent_difference < 0){
+            //red background
+            $("#"+ev.target.id+"comp").css('color','red');
+            // set value
+            $("#"+ev.target.id+"comp").text(round(percent_difference, 2)+"%");
+        } else {
+            //green background
+            $("#"+ev.target.id+"comp").css('color','green');
+            // set value
+            $("#"+ev.target.id+"comp").text("+"+round(percent_difference, 2)+"%");
+        }
+        var total_money_spent = 0;
+        slider_idx_counter = 0;
+        while (slider_idx_counter < 4){
+            total_money_spent += Session.get("slider"+slider_idx_counter+well_idx);
+            slider_idx_counter++;
+        }
+        update_deficit(well_idx);
+    };
+
     update_slider_mech31 = function (ev, val, update_slider_flag) {
         // the vars below are global and declared once the page is rendered!
         var curr_experiment = Answers.findOne({worker_ID: worker_ID_value});
@@ -608,7 +670,7 @@ Template.answer1.onRendered(function () {
     update_weight_slider = _.throttle(update_weight_slider1, 100);
     update_slider_mech3 = _.throttle(update_slider_mech31, 100);
     update_slider_mech2 = _.throttle(update_slider_mech21, 100);
-
+    update_slider_mechlinf = _.throttle(update_slider_mechinf1, 100);
 
     var find_max_deviation = function(well_idx){
         if (typeof(well_idx) == "undefined")
@@ -729,7 +791,61 @@ Template.answer1.onRendered(function () {
         //initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
 
-    } else if ([0].indexOf(curr_experiment.current_question) > -1){
+    }
+    else if([7, 8, 9].indexOf(curr_experiment.current_question) > -1){
+      // Linf sliders
+      sliders = {};
+      for (var well_idx = 0; well_idx < 2; well_idx++) {
+          var max_slider_dev = find_max_deviation(well_idx);
+          for (var slider_idx = 0; slider_idx < 4; slider_idx++) {
+              var slider_current = 0;
+              if (current_question['slider' + slider_idx + well_idx]) {
+                  slider_current = Math.max(0.01, Number(current_question['slider' + slider_idx + well_idx]));
+                  var slider_2016_val = current_question['slider_2016_' + slider_idx + well_idx];
+                  var slider_min = Math.max(0.01, slider_2016_val - max_slider_dev - (radius) * 1.25);
+                  var slider_max = slider_2016_val + max_slider_dev + (radius) * 1.25;
+                  Session.set('slider' + slider_idx + well_idx, slider_current);
+                  sliders['slider' + slider_idx+well_idx] = this.$("div#slider" + slider_idx + well_idx).noUiSlider({
+                      start: slider_current,
+                      connect: "lower",
+                      range: {
+                          'min': slider_min,
+                          'max': slider_max
+                      }
+                  }).noUiSlider_pips({
+                      mode: 'positions',
+                      values: [0, 50, 100]
+                  }).noUiSlider_pips({
+                      mode: 'values',
+                      values: [slider_current],
+                      density: 9999
+                  }).on('slide', function (ev, val) {
+                      // set real values on 'slide' event
+                      try {
+                          update_slider_mechlinf(ev, val);
+                      } catch (TypeError) {
+                      }
+                  }).on('change', function (ev, val) {
+                      // round off values on 'change' event
+                      try {
+                          update_slider_mechlinf(ev, val);
+                      } catch (TypeError) {
+                      }
+                  });
+              }
+          }
+      }
+      for (var well_idx = 0; well_idx < 2; well_idx++){
+          //update comparisons
+          update_comps(well_idx);
+          //update the deficit text
+          update_deficit(well_idx);
+      }
+      //initialize tooltips
+      $('[data-toggle="tooltip"]').tooltip();
+
+    }
+    else if ([0].indexOf(curr_experiment.current_question) > -1){
         // full elicitation
 
         sliders = {};
@@ -808,6 +924,11 @@ Template.answer1.onRendered(function () {
 Template.L2_mechanism.events({
     'change textarea': function(event){
         update_slider(event, event.target.value, true);
+    }
+});
+Template.Linf_mechanism.events({
+    'change textarea': function(event){
+        update_slider_mechlinf(event, event.target.value, true);
     }
 });
 Template.full_elicitation_mechanism.events({

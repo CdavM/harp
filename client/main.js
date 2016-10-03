@@ -1,4 +1,3 @@
-
 // This code only runs on the client
 Meteor.subscribe("answers");
 Meteor.subscribe("questions"); // get questionbank
