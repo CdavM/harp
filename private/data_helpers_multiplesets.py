@@ -130,14 +130,10 @@ def load_data_experiment_linf(answerdata, restofdata, numsets, deficit_additive=
         answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(
             restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
 
-        answer['slider0' + setstr + '_creditsused'] = float(
-            restofdata['answer1.slider0' + setstr + '_credits'])
-        answer['slider1' + setstr + '_creditsused'] = float(
-            restofdata['answer1.slider1' + setstr + '_credits'])
-        answer['slider2' + setstr + '_creditsused'] = float(
-            restofdata['answer1.slider2' + setstr + '_credits'])
-        answer['slider3' + setstr + '_creditsused'] = float(
-            restofdata['answer1.slider3' + setstr + '_credits'])
+        answer['slider0' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][0] - answer['slider0' + setstr + '_loc'])/float(restofdata['radius'])
+        answer['slider1' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][1] - answer['slider1' + setstr + '_loc'])/float(restofdata['radius'])
+        answer['slider2' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][2] - answer['slider2' + setstr + '_loc'])/float(restofdata['radius'])
+        answer['slider3' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][3] - answer['slider3' + setstr + '_loc'])/float(restofdata['radius'])
 
     return answer
 

@@ -68,6 +68,8 @@ def calculate_full_elicitation_average(data, deficit_offset, dataname='question_
 	weightedaverages_l1 = {}
 	weightedaverages_l2 = {}
 
+	print data
+
 	for slider in sliders:
 		for d in data:
 			if d.has_key(dataname) and d[dataname].has_key(sliderprepend + 'slider' + str(slider) + '0_loc'):

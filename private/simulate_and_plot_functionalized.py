@@ -30,33 +30,29 @@ def plotHistogramFromFile():
 
 
 def actual_experiment_analysis():
-    filename = 'export-20160906041734_BIGEXPERIMENT_FINAL.csv'
-    LABEL = 'BigExperiment_FINAL'
-    alreadyPaidFiles = ['BIGEXPERIMENT_Day35_BonustoUpload.csv']
+    filename = 'export-20161003230534.csv'
+    LABEL = 'Experiment2Testing'
+    alreadyPaidFiles = ['']
     deficit_offset = 228
     # , [0, 1], [0, 4]]#, [0, 7, 8, 9], [0, 7]]
-    lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6]]
-    labels = ['L2', 'L1', 'L2Single', 'L1Single',
+    lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6], [0, 7, 8, 9]]
+    labels = ['L2', 'L1','Linf', 'L2Single', 'L1Single',
               'Comparisons', 'ComparisonsSingle']
 
-    mechanism_super_dictionary_real_ = {0: {'type': 'full', 'name': 'Full Elicitation', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[425, 1200, 350, 1450, 753]]},
-                                       1: {'name': 'Group 1 L2', 'type': 'l2', 'do_full_as_well': True, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
-                                       2: {'name': 'Group 2 L2', 'type': 'l2', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
-                                       3: {'name': 'Group 3 L2', 'type': 'l2', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]},
-                                       4: {'name': 'Group 1 L1', 'type': 'l1', 'do_full_as_well': True, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
-                                       5: {'name': 'Group 2 L1', 'type': 'l1', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
-                                       6: {'name': 'Group 3 L1', 'type': 'l1', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]}
-                                       # 7: {'name': 'Group 1 Comparisons', 'type': 'comparisons', 'numsets': 2, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
-                                       # 8: {'name': 'Group 2 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]},
-                                       # 9: {'name': 'Group 3 Comparisons',
-                                       # 'type': 'comparisons', 'numsets': 1,
-                                       # 'num_to_average_per_step' :
-                                       # 1,'initial_values': [[450, 1200, 350,
-                                       # 1400, 828]]}
+    mechanism_super_dictionary_real = {0: {'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'do_full_as_well' : False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
+                                       1: {'name': 'Group 1 l2 Constrainted Movement', 'do_full_as_well': True, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000,200, 1300, 828], [200, 800, 300, 1400, 828]]},
+                                       2: {'name': 'Group 2 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       3: {'name': 'Group 3 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
+                                       4: {'name': 'Group 1 l1 Constrainted Movement', 'do_full_as_well': True,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                       5: {'name': 'Group 2 l1 Constrainted Movement', 'do_full_as_well': False,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       6: {'name': 'Group 3 l1 Constrainted Movement', 'do_full_as_well': False,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
+                                       7: {'name': 'Group 1 linf Constrained Movement', 'do_full_as_well': True,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                       8: {'name': 'Group 2 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       9: {'name': 'Group 3 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
                                        }
 
     analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_real), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset,
-                                              lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=True, plotAllOverTime=False, organizePayment=False, analyzeExtraFull=False)
+                                              lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=True, plotAllOverTime=True, organizePayment=False, analyzeExtraFull=False)
 
 
 def main():
@@ -232,7 +228,7 @@ def main():
 
 
 if __name__ == "__main__":
-    # actual_experiment_analysis()
-    main()
+    actual_experiment_analysis()
+    #main()
     # plotHistogramFromFile()
     print 'done'
