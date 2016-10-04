@@ -10,3 +10,4 @@ export*
 *.pyc
 *.docx
 *.xlsx
+private/consoledump.txt

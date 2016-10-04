@@ -1,9 +1,5 @@
-import time
 import pymongo
 from pymongo import MongoClient
-import datetime
-import numpy as np
-import sys
 
 client = MongoClient('localhost', 81)
 db = client['meteor']
