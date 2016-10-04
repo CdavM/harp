@@ -14,13 +14,17 @@ Router.route('/', function(){
   var asg_val = $.urlParam('assignmentId');
   var hit_val = $.urlParam('hitId');
 
-  if (wid == null || wid.length < 10){
+  if (wid == null || wid.length < 5){
       // Router.go('/hitId='+makeid()+'&workerId='+makeid()+'&assignmentId='+makeid());
       Router.go('/end');// Uncomment this when not debugging anymore
   }
 
   var curr_experiment = Answers.findOne({worker_ID: wid});
   Session.set('worker_ID_value', wid);
+  Session.set('initial_time_value', initial_time_val);
+  Session.set('asg_ID_value', asg_ID);
+  Session.set('asg_ID_value', asg_ID);
+  Session.set('hit_ID_value', hit_val)
   if ((curr_experiment && curr_experiment.experiment_finished))
   {
     //Meteor.setTimeout(function(){Session.set('experiment_finished', false);}, 150);

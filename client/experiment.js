@@ -113,9 +113,13 @@ update_deficit = function(well_idx, prepend){
 Template.experiment.events({
     'click #begin_experiment': function (event) {
         worker_ID_value = Session.get("worker_ID_value");
+        initial_time_value = Session.get('initial_time_value');
+        asg_ID_value = Session.get('asg_ID_value');
+        hit_ID_value = Session.get('hit_ID_value')
+
         Session.set('initialized', true);
         Session.set('waiting', true);
-        Meteor.call('initialPost', {worker_ID: worker_ID_value}, 'begin', function(error, result){
+        Meteor.call('initialPost', {worker_ID: worker_ID_value, initial_time: initial_time_value, asg_ID: asg_ID_value, hit_ID: hit_ID_value}, 'begin', function(error, result){
             if (error){
                 console.log("error "+error);
             } else {

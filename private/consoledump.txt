@@ -1,0 +1,1921 @@
+I20161004-08:07:58.185(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-08:07:58.185(0)?     at [object Object]._.extend.apply (livedata_server.js:1610:45)
+I20161004-08:07:58.185(0)?     at [object Object]._.extend.call (livedata_server.js:1553:17)
+I20161004-08:07:58.185(0)?     at [object Object].Meteor.methods.initialPost (server/main.js:201:20)
+I20161004-08:07:58.186(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-08:07:58.186(0)?     at livedata_server.js:708:19
+I20161004-08:07:58.186(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-08:08:00.009(0)? Averaging array: DONE,DONE,DONE,BUSY,DONE,DONE,BUSY,FREE,FREE,FREE
+I20161004-08:08:01.263(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,BUSY,DONE,FREE,BUSY,FREE
+I20161004-08:08:04.229(0)? setting busy flag to 1
+I20161004-08:08:05.207(0)? setting busy flag to 5
+I20161004-08:08:05.426(0)? setting busy flag to 3
+I20161004-08:08:07.129(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,BUSY,DONE,BUSY,BUSY,FREE
+I20161004-08:08:09.611(0)? Averaging array: DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-08:08:10.382(0)? before the start entry
+I20161004-08:08:10.382(0)? scheduling init timer is true
+I20161004-08:08:10.382(0)? scheduling init counter is 1
+I20161004-08:08:10.382(0)? thresh is [object Object]
+I20161004-08:08:10.383(0)? starting
+I20161004-08:08:12.473(0)? before the start entry
+I20161004-08:08:12.474(0)? scheduling init timer is true
+I20161004-08:08:12.474(0)? scheduling init counter is 1
+I20161004-08:08:12.490(0)? thresh is [object Object]
+I20161004-08:08:12.510(0)? starting
+I20161004-08:08:16.069(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE
+I20161004-08:08:19.543(0)? question for experiment 142 changed to 9
+I20161004-08:08:19.731(0)? selected question 8
+I20161004-08:08:19.768(0)? question for experiment 145 changed to 5
+I20161004-08:08:19.890(0)? before the start entry
+I20161004-08:08:19.891(0)? scheduling init timer is true
+I20161004-08:08:19.891(0)? scheduling init counter is 1
+I20161004-08:08:19.891(0)? thresh is [object Object]
+I20161004-08:08:19.891(0)? starting
+I20161004-08:08:25.362(0)? experiment_id 151 not found in the database
+I20161004-08:08:25.859(0)? question for experiment 141 changed to 4
+I20161004-08:08:26.018(0)? selected question 8
+I20161004-08:08:27.206(0)? question for experiment 141 changed to 5
+I20161004-08:08:28.037(0)? setting busy flag to 8
+I20161004-08:08:28.313(0)? Exception while invoking method 'initialPost' TypeError: Cannot read property 'current_answer' of undefined
+I20161004-08:08:28.313(0)?     at [object Object].Meteor.methods.beginQuestionScheduler (server/main.js:767:77)
+I20161004-08:08:28.313(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-08:08:28.313(0)?     at livedata_server.js:1611:18
+I20161004-08:08:28.313(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-08:08:28.313(0)?     at [object Object]._.extend.apply (livedata_server.js:1610:45)
+I20161004-08:08:28.314(0)?     at [object Object]._.extend.call (livedata_server.js:1553:17)
+I20161004-08:08:28.314(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-08:08:28.314(0)?     at livedata_server.js:708:19
+I20161004-08:08:28.314(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-08:08:28.314(0)?     at [object Object].Meteor.methods.initialPost (server/main.js:201:20)
+I20161004-08:08:28.679(0)? question for experiment 146 changed to 3
+I20161004-08:08:30.076(0)? before the start entry
+I20161004-08:08:30.076(0)? scheduling init timer is true
+I20161004-08:08:30.077(0)? scheduling init counter is 1
+I20161004-08:08:30.077(0)? thresh is [object Object]
+I20161004-08:08:30.077(0)? starting
+I20161004-08:08:30.419(0)? before the start entry
+I20161004-08:08:30.439(0)? scheduling init timer is true
+I20161004-08:08:30.441(0)? scheduling init counter is 1
+I20161004-08:08:30.442(0)? thresh is [object Object]
+I20161004-08:08:30.442(0)? starting
+I20161004-08:08:32.841(0)? question for experiment 144 changed to 1
+I20161004-08:08:32.911(0)? selected question 5
+I20161004-08:08:33.326(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY,DONE,BUSY
+I20161004-08:08:33.456(0)? setting busy flag to 8
+I20161004-08:08:33.484(0)? selected question 9
+I20161004-08:08:33.590(0)? setting busy flag to 5
+I20161004-08:08:33.660(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,BUSY,DONE,BUSY,BUSY,BUSY
+I20161004-08:08:33.662(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY,DONE,BUSY
+I20161004-08:08:33.748(0)? question for experiment 147 changed to 8
+I20161004-08:08:33.763(0)? selected question 9
+W20161004-08:08:33.777(0)? (STDERR) Running job not found XM4R5YbTGm5HQYvhW jGptF3mi8nazzYK8y
+I20161004-08:08:33.833(0)? selected question 7
+I20161004-08:08:33.887(0)? all questions passed for experiment 152
+I20161004-08:08:33.966(0)? Exception while invoking method 'initialPost' TypeError: Cannot read property 'timer' of undefined
+I20161004-08:08:33.966(0)?     at [object Object].Meteor.methods.beginQuestionScheduler (server/main.js:767:93)
+I20161004-08:08:33.967(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-08:08:33.967(0)?     at livedata_server.js:1611:18
+I20161004-08:08:33.967(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-08:08:33.967(0)?     at [object Object]._.extend.apply (livedata_server.js:1610:45)
+I20161004-08:08:33.967(0)?     at [object Object]._.extend.call (livedata_server.js:1553:17)
+I20161004-08:08:33.967(0)?     at [object Object].Meteor.methods.initialPost (server/main.js:201:20)
+I20161004-08:08:33.967(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-08:08:33.968(0)?     at livedata_server.js:708:19
+I20161004-08:08:33.968(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-08:08:34.042(0)? question for experiment 151 changed to 8
+I20161004-08:08:34.094(0)? question for experiment 152 changed to 5
+I20161004-08:08:34.126(0)? setting busy flag to 9
+I20161004-08:08:34.164(0)? selected question 9
+I20161004-08:08:34.185(0)? all questions passed for experiment 155
+I20161004-08:08:34.242(0)? Averaging array: DONE,DONE,DONE,BUSY,DONE,DONE,BUSY,BUSY,FREE,FREE
+I20161004-08:08:34.353(0)? Exception while invoking method 'initialPost' TypeError: Cannot read property 'timer' of undefined
+I20161004-08:08:34.354(0)?     at [object Object].Meteor.methods.beginQuestionScheduler (server/main.js:767:93)
+I20161004-08:08:34.354(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-08:08:34.354(0)?     at livedata_server.js:1611:18
+I20161004-08:08:34.354(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-08:08:34.354(0)?     at [object Object]._.extend.apply (livedata_server.js:1610:45)
+I20161004-08:08:34.354(0)?     at [object Object]._.extend.call (livedata_server.js:1553:17)
+I20161004-08:08:34.355(0)?     at [object Object].Meteor.methods.initialPost (server/main.js:201:20)
+I20161004-08:08:34.355(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-08:08:34.355(0)?     at livedata_server.js:708:19
+I20161004-08:08:34.355(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-08:08:34.391(0)? setting busy flag to 9
+I20161004-08:08:34.459(0)? Averaging array: DONE,DONE,DONE,BUSY,DONE,DONE,BUSY,BUSY,BUSY,FREE
+I20161004-08:08:34.526(0)? question for experiment 155 changed to 9
+W20161004-08:08:34.559(0)? (STDERR) Running job not found 97tRbEHzRECZPPcAS oq9BwcyrNRJDFj36w
+I20161004-08:08:34.647(0)? question for experiment 153 changed to 9
+I20161004-08:08:35.031(0)? removing busy flag from 8
+W20161004-08:08:35.123(0)? (STDERR) Running job not found 5kA8ysEifE3wcDaCN 84hJkBMY8owRn5SWY
+I20161004-08:08:35.423(0)? removing busy flag from 5
+W20161004-08:08:35.488(0)? (STDERR) Running job not found fCXPkffwQt5i3BqGo BxdoJDepyLwJo4e7t
+I20161004-08:08:35.683(0)? removing busy flag from 8
+W20161004-08:08:35.756(0)? (STDERR) Running job not found qDLxqhRpnzZNkYeJR CrsfyNac7GAcRn5bG
+I20161004-08:08:35.950(0)? removing busy flag from 6
+W20161004-08:08:35.996(0)? (STDERR) Running job not found PQAiMpYzX7KCKGAe6 ANHRqgDRXw7CSEqZg
+I20161004-08:08:41.685(0)? before the start entry
+I20161004-08:08:41.685(0)? scheduling init timer is true
+I20161004-08:08:41.685(0)? scheduling init counter is 1
+I20161004-08:08:41.685(0)? thresh is [object Object]
+I20161004-08:08:41.685(0)? starting
+I20161004-08:08:41.849(0)? selected question 8
+I20161004-08:08:41.869(0)? setting busy flag to 8
+I20161004-08:08:41.929(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE,DONE,BUSY
+I20161004-08:08:42.033(0)? question for experiment 158 changed to 8
+I20161004-08:10:53.801(0)? removing busy flag from 8
+I20161004-08:11:33.408(0)? before the start entry
+I20161004-08:11:33.408(0)? scheduling init timer is true
+I20161004-08:11:33.408(0)? scheduling init counter is 1
+I20161004-08:11:33.408(0)? thresh is [object Object]
+I20161004-08:11:33.409(0)? starting
+I20161004-08:11:33.828(0)? selected question 8
+I20161004-08:11:33.949(0)? setting busy flag to 8
+I20161004-08:11:33.998(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,DONE,BUSY
+I20161004-08:11:34.249(0)? question for experiment 159 changed to 8
+I20161004-08:11:34.582(0)? selected question 6
+I20161004-08:11:34.813(0)? all questions passed for experiment 158
+I20161004-08:12:30.810(0)? before the start entry
+I20161004-08:12:30.810(0)? scheduling init timer is true
+I20161004-08:12:30.810(0)? scheduling init counter is 1
+I20161004-08:12:30.810(0)? thresh is [object Object]
+I20161004-08:12:30.811(0)? starting
+I20161004-08:12:31.156(0)? selected question 3
+I20161004-08:12:31.264(0)? setting busy flag to 3
+I20161004-08:12:31.303(0)? Averaging array: DONE,BUSY,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-08:12:31.494(0)? question for experiment 160 changed to 3
+I20161004-08:13:30.108(0)? before the start entry
+I20161004-08:13:30.108(0)? scheduling init timer is true
+I20161004-08:13:30.109(0)? scheduling init counter is 1
+I20161004-08:13:30.109(0)? thresh is [object Object]
+I20161004-08:13:30.109(0)? starting
+I20161004-08:13:30.415(0)? selected question 2
+I20161004-08:13:30.540(0)? setting busy flag to 2
+I20161004-08:13:30.603(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,BUSY,FREE,FREE,FREE,FREE
+I20161004-08:13:30.771(0)? question for experiment 161 changed to 2
+W20161004-08:13:34.358(0)? (STDERR) Running job not found se4nEnLRtyTTbkNwz kGhwTNedhF8RdGwNn
+W20161004-08:13:34.889(0)? (STDERR) Running job not found Qnczi78zAdZW8j6Yt 2fCZZLAgbWjwe2Mhe
+W20161004-08:13:35.951(0)? (STDERR) Running job not found n9Q7Em3xfHwtNf4rQ Ymwn8mN9K5WHF6Tqn
+W20161004-08:13:36.797(0)? (STDERR) Running job not found gzQRcRTPwwDhvxGA5 FiFmWK2magdLhSG5E
+W20161004-08:13:37.332(0)? (STDERR) Running job not found RoiwTNPwzw5Qw5oqv EcvEpo74vw6mkY5Y8
+W20161004-08:13:38.020(0)? (STDERR) Running job not found axeHNSRcTd58sx6rR DamsnfZtmF29WgEZF
+I20161004-08:14:21.650(0)? before the start entry
+I20161004-08:14:21.650(0)? scheduling init timer is true
+I20161004-08:14:21.651(0)? scheduling init counter is 1
+I20161004-08:14:21.651(0)? thresh is [object Object]
+I20161004-08:14:21.651(0)? starting
+I20161004-08:14:21.919(0)? selected question 1
+I20161004-08:14:22.014(0)? setting busy flag to 1
+I20161004-08:14:22.065(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,BUSY,BUSY,FREE,FREE,FREE
+I20161004-08:14:22.232(0)? question for experiment 162 changed to 1
+I20161004-08:15:07.775(0)? before the start entry
+I20161004-08:15:07.775(0)? scheduling init timer is true
+I20161004-08:15:07.775(0)? scheduling init counter is 1
+I20161004-08:15:07.775(0)? thresh is [object Object]
+I20161004-08:15:07.776(0)? starting
+I20161004-08:15:08.083(0)? selected question 4
+I20161004-08:15:08.149(0)? setting busy flag to 4
+I20161004-08:15:08.186(0)? Averaging array: BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-08:15:08.347(0)? question for experiment 163 changed to 4
+I20161004-08:15:37.738(0)? removing busy flag from 8
+I20161004-08:16:05.974(0)? selected question 3
+I20161004-08:16:06.159(0)? all questions passed for experiment 159
+I20161004-08:17:34.606(0)? removing busy flag from 4
+I20161004-08:18:09.689(0)? before the start entry
+I20161004-08:18:09.690(0)? scheduling init timer is true
+I20161004-08:18:09.690(0)? scheduling init counter is 1
+I20161004-08:18:09.690(0)? thresh is [object Object]
+I20161004-08:18:09.690(0)? starting
+I20161004-08:18:09.957(0)? removing busy flag from 1
+I20161004-08:18:51.720(0)? removing busy flag from 2
+I20161004-08:20:40.928(0)? selected question 6
+I20161004-08:20:45.445(0)? all questions passed for experiment 161
+I20161004-08:20:46.140(0)? before the start entry
+I20161004-08:20:46.140(0)? scheduling init timer is true
+I20161004-08:20:46.141(0)? scheduling init counter is 1
+I20161004-08:20:46.141(0)? thresh is [object Object]
+I20161004-08:20:46.141(0)? starting
+I20161004-08:20:46.449(0)? selected question 7
+I20161004-08:20:46.638(0)? setting busy flag to 7
+I20161004-08:20:46.702(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,BUSY,FREE,DONE,DONE,DONE
+I20161004-08:20:47.121(0)? question for experiment 165 changed to 7
+I20161004-08:20:54.627(0)? before the start entry
+I20161004-08:20:54.628(0)? scheduling init timer is true
+I20161004-08:20:54.628(0)? scheduling init counter is 1
+I20161004-08:20:54.628(0)? thresh is [object Object]
+I20161004-08:20:54.629(0)? starting
+I20161004-08:20:54.949(0)? selected question 7
+I20161004-08:20:55.076(0)? setting busy flag to 7
+I20161004-08:20:55.160(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,BUSY,BUSY,DONE,DONE,DONE
+I20161004-08:20:55.388(0)? question for experiment 166 changed to 7
+I20161004-08:21:32.931(0)? before the start entry
+I20161004-08:21:32.931(0)? scheduling init timer is true
+I20161004-08:21:32.931(0)? scheduling init counter is 1
+I20161004-08:21:32.931(0)? thresh is [object Object]
+I20161004-08:21:32.931(0)? starting
+I20161004-08:21:33.438(0)? selected question 3
+I20161004-08:21:33.579(0)? setting busy flag to 3
+I20161004-08:21:33.624(0)? Averaging array: DONE,BUSY,BUSY,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE
+I20161004-08:21:33.834(0)? question for experiment 167 changed to 3
+I20161004-08:24:51.537(0)? before the start entry
+I20161004-08:24:51.578(0)? scheduling init timer is true
+I20161004-08:24:51.578(0)? scheduling init counter is 1
+I20161004-08:24:51.578(0)? thresh is [object Object]
+I20161004-08:24:51.579(0)? starting
+I20161004-08:25:07.614(0)? selected question 3
+I20161004-08:26:15.076(0)? removing busy flag from 7
+I20161004-08:26:22.689(0)? setting busy flag to 3
+I20161004-08:26:52.482(0)? Averaging array: DONE,BUSY,BUSY,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE
+I20161004-08:27:39.733(0)? removing busy flag from 7
+I20161004-08:28:08.247(0)? removing busy flag from 3
+I20161004-08:28:13.402(0)? question for experiment 164 changed to 3
+I20161004-08:28:14.941(0)? before the start entry
+I20161004-08:28:14.941(0)? scheduling init timer is true
+I20161004-08:28:14.942(0)? scheduling init counter is 1
+I20161004-08:28:14.942(0)? thresh is [object Object]
+I20161004-08:28:14.943(0)? starting
+I20161004-08:29:10.978(0)? selected question 5
+I20161004-08:29:12.634(0)? selected question 7
+I20161004-08:29:20.586(0)? experiment_id 169 not found in the database
+I20161004-08:29:26.469(0)? Exception while invoking method 'initialPost' TypeError: Cannot read property 'current_answer' of undefined
+I20161004-08:29:26.469(0)?     at [object Object].Meteor.methods.beginQuestionScheduler (server/main.js:767:77)
+I20161004-08:29:26.469(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-08:29:26.469(0)?     at livedata_server.js:1611:18
+I20161004-08:29:26.501(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-08:29:26.502(0)?     at [object Object]._.extend.apply (livedata_server.js:1610:45)
+I20161004-08:29:26.502(0)?     at [object Object]._.extend.call (livedata_server.js:1553:17)
+I20161004-08:29:26.502(0)?     at [object Object].Meteor.methods.initialPost (server/main.js:201:20)
+I20161004-08:29:26.518(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-08:29:26.518(0)?     at livedata_server.js:708:19
+I20161004-08:29:26.519(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-08:29:43.189(0)? before the start entry
+I20161004-08:29:43.190(0)? scheduling init timer is true
+I20161004-08:29:43.190(0)? scheduling init counter is 1
+I20161004-08:29:43.191(0)? thresh is [object Object]
+I20161004-08:29:43.191(0)? starting
+I20161004-08:29:54.072(0)? all questions passed for experiment 163
+I20161004-08:29:57.587(0)? all questions passed for experiment 164
+I20161004-08:30:54.681(0)? removing busy flag from 3
+I20161004-08:31:02.183(0)? removing busy flag from 3
+I20161004-08:31:09.005(0)? selected question 1
+I20161004-08:31:29.591(0)? setting busy flag to 1
+I20161004-08:31:29.932(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,BUSY,BUSY,BUSY,FREE,FREE
+I20161004-08:31:31.708(0)? before the start entry
+I20161004-08:31:31.709(0)? scheduling init timer is true
+I20161004-08:31:31.709(0)? scheduling init counter is 1
+I20161004-08:31:31.709(0)? thresh is [object Object]
+I20161004-08:31:31.709(0)? starting
+I20161004-08:31:46.975(0)? question for experiment 170 changed to 1
+I20161004-08:32:00.279(0)? selected question 4
+I20161004-08:32:21.578(0)? setting busy flag to 4
+I20161004-08:32:25.821(0)? Averaging array: BUSY,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-08:32:45.224(0)? question for experiment 171 changed to 4
+I20161004-08:32:50.698(0)? removing busy flag from 5
+W20161004-08:32:54.298(0)? (STDERR) Running job not found CyybLKjBZgiocE5JT ok58JofWzFL6Y6ygn
+I20161004-08:32:57.214(0)? removing busy flag from 3
+W20161004-08:32:57.374(0)? (STDERR) Running job not found yhJAec62g4zdPxSpv nDXnDyWjxZ3qtni7H
+I20161004-08:32:57.772(0)? removing busy flag from 1
+W20161004-08:32:57.983(0)? (STDERR) Running job not found pm5bfztu56BbjNKPg HABa2Bar8zLEqdh3s
+I20161004-08:32:58.350(0)? removing busy flag from 8
+W20161004-08:32:58.443(0)? (STDERR) Running job not found 9jd2k9SkW9reyPSh7 QSiRD8WHHCEKam8zG
+I20161004-08:32:58.756(0)? removing busy flag from 8
+W20161004-08:32:58.831(0)? (STDERR) Running job not found 8tWm6gZH9hpdc2eLg AS88knc3isosAX5au
+I20161004-08:32:59.126(0)? removing busy flag from 9
+W20161004-08:32:59.186(0)? (STDERR) Running job not found 6ZrhyMqfgNeC8qWaD sJ8NfL9nFGhpJfY4j
+W20161004-08:32:59.348(0)? (STDERR) Running job not found qCMcZNyS7SnDDeevG ghw8ZWCXbPGaMA3bX
+I20161004-08:33:26.321(0)? before the start entry
+I20161004-08:33:26.321(0)? scheduling init timer is true
+I20161004-08:33:26.321(0)? scheduling init counter is 1
+I20161004-08:33:26.321(0)? thresh is [object Object]
+I20161004-08:33:26.321(0)? starting
+I20161004-08:33:26.550(0)? selected question 6
+I20161004-08:33:26.677(0)? setting busy flag to 6
+I20161004-08:33:26.735(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY
+I20161004-08:33:26.937(0)? question for experiment 172 changed to 6
+I20161004-08:34:33.876(0)? before the start entry
+I20161004-08:34:33.876(0)? scheduling init timer is true
+I20161004-08:34:33.876(0)? scheduling init counter is 1
+I20161004-08:34:33.876(0)? thresh is [object Object]
+I20161004-08:34:33.876(0)? starting
+I20161004-08:34:34.129(0)? selected question 9
+I20161004-08:34:34.243(0)? setting busy flag to 9
+I20161004-08:34:34.297(0)? Averaging array: DONE,DONE,DONE,BUSY,DONE,DONE,BUSY,BUSY,BUSY,FREE
+I20161004-08:34:34.552(0)? question for experiment 173 changed to 9
+W20161004-08:34:40.091(0)? (STDERR) Running job not found h6awdLJgJzpHZvu5u RFzQhv6MZcWLdL8X7
+I20161004-08:35:08.704(0)? removing busy flag from 9
+I20161004-08:35:20.983(0)? selected question 8
+I20161004-08:35:21.170(0)? all questions passed for experiment 173
+I20161004-08:36:00.415(0)? before the start entry
+I20161004-08:36:00.416(0)? scheduling init timer is true
+I20161004-08:36:00.417(0)? scheduling init counter is 1
+I20161004-08:36:00.417(0)? thresh is [object Object]
+I20161004-08:36:00.417(0)? starting
+I20161004-08:36:00.767(0)? selected question 1
+I20161004-08:36:00.883(0)? setting busy flag to 1
+I20161004-08:36:00.979(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,BUSY,BUSY,BUSY,FREE,FREE
+I20161004-08:36:01.273(0)? question for experiment 174 changed to 1
+W20161004-08:36:24.706(0)? (STDERR) Running job not found q3DpdJhz9na4D5iRG FMAiNY28PJwnhbRZs
+I20161004-08:36:46.950(0)? before the start entry
+I20161004-08:36:46.950(0)? scheduling init timer is true
+I20161004-08:36:46.951(0)? scheduling init counter is 1
+I20161004-08:36:46.951(0)? thresh is [object Object]
+I20161004-08:36:46.951(0)? starting
+I20161004-08:36:47.267(0)? selected question 3
+I20161004-08:36:47.407(0)? setting busy flag to 3
+I20161004-08:36:47.476(0)? Averaging array: DONE,BUSY,BUSY,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE
+I20161004-08:36:47.695(0)? question for experiment 175 changed to 3
+W20161004-08:36:56.767(0)? (STDERR) Running job not found SR2PznXBmnmGb4o5W HG4mBFmRXSEtzGcEv
+I20161004-08:37:27.392(0)? removing busy flag from 6
+W20161004-08:37:51.743(0)? (STDERR) Running job not found PR96fxKGMbJ4Y3KrK pnM74P4to6KKaiP46
+W20161004-08:37:52.654(0)? (STDERR) Running job not found Smp3hRbFhPMMZCuND geywWML7dBu8FLfQa
+I20161004-08:38:07.113(0)? selected question 4
+I20161004-08:38:07.267(0)? all questions passed for experiment 172
+W20161004-08:38:57.875(0)? (STDERR) Running job not found AamX86qqJKfPRHEg7 vhpmJoGCKSp2pemHb
+I20161004-08:41:12.017(0)? removing busy flag from 1
+I20161004-08:41:49.746(0)? removing busy flag from 3
+W20161004-08:42:58.709(0)? (STDERR) Running job not found vEDkRdmkyuLxCZsYe MWBp8ookyQqYjKFS6
+I20161004-08:43:16.715(0)? selected question 6
+I20161004-08:43:16.823(0)? all questions passed for experiment 174
+I20161004-08:43:28.539(0)? selected question 5
+I20161004-08:43:28.718(0)? all questions passed for experiment 175
+I20161004-08:46:57.232(0)? removing busy flag from 1
+W20161004-08:46:57.357(0)? (STDERR) Running job not found R2r9uu3QygawZ4yBn uMYhvWDj7mb5ywxjh
+I20161004-08:47:53.086(0)? removing busy flag from 4
+W20161004-08:47:53.200(0)? (STDERR) Running job not found L9PcGDu2ofp7uTeC8 3vx6u2mPc7deTHeGM
+I20161004-08:50:39.873(0)? before the start entry
+I20161004-08:50:39.873(0)? scheduling init timer is true
+I20161004-08:50:39.873(0)? scheduling init counter is 1
+I20161004-08:50:39.873(0)? thresh is [object Object]
+I20161004-08:50:39.873(0)? starting
+I20161004-08:50:40.009(0)? selected question 3
+I20161004-08:50:40.044(0)? setting busy flag to 3
+I20161004-08:50:40.080(0)? Averaging array: DONE,BUSY,DONE,DONE,BUSY,BUSY,BUSY,FREE,FREE,FREE
+I20161004-08:50:40.145(0)? question for experiment 176 changed to 3
+I20161004-08:56:16.455(0)? removing busy flag from 3
+I20161004-08:56:47.258(0)? before the start entry
+I20161004-08:56:47.259(0)? scheduling init timer is true
+I20161004-08:56:47.259(0)? scheduling init counter is 1
+I20161004-08:56:47.259(0)? thresh is [object Object]
+I20161004-08:56:47.259(0)? starting
+I20161004-08:56:47.456(0)? selected question 8
+I20161004-08:56:47.648(0)? setting busy flag to 8
+I20161004-08:56:47.744(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY
+I20161004-08:56:47.912(0)? question for experiment 177 changed to 8
+I20161004-08:56:48.678(0)? selected question 3
+I20161004-08:56:48.806(0)? all questions passed for experiment 176
+W20161004-08:56:57.829(0)? (STDERR) Running job not found PgQbyek3xa8rBEhq9 iXbCaFWHNJuXCbmCG
+I20161004-08:57:22.399(0)? before the start entry
+I20161004-08:57:22.400(0)? scheduling init timer is true
+I20161004-08:57:22.400(0)? scheduling init counter is 1
+I20161004-08:57:22.400(0)? thresh is [object Object]
+I20161004-08:57:22.400(0)? starting
+I20161004-08:57:22.567(0)? selected question 3
+I20161004-08:57:22.683(0)? setting busy flag to 3
+I20161004-08:57:22.740(0)? Averaging array: DONE,BUSY,DONE,DONE,BUSY,BUSY,DONE,BUSY,FREE,FREE
+I20161004-08:57:22.859(0)? question for experiment 178 changed to 3
+W20161004-08:57:53.662(0)? (STDERR) Running job not found 6LK6sbY72Lr4zdX27 EbbpYG9CZf7dJ967a
+I20161004-08:59:14.681(0)? removing busy flag from 8
+I20161004-08:59:51.691(0)? selected question 8
+I20161004-08:59:51.769(0)? all questions passed for experiment 177
+I20161004-09:00:34.396(0)? before the start entry
+I20161004-09:00:34.396(0)? scheduling init timer is true
+I20161004-09:00:34.397(0)? scheduling init counter is 1
+I20161004-09:00:34.397(0)? thresh is [object Object]
+I20161004-09:00:34.397(0)? starting
+I20161004-09:00:34.476(0)? selected question 7
+I20161004-09:00:34.524(0)? setting busy flag to 7
+I20161004-09:00:34.528(0)? Averaging array: BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:00:34.613(0)? question for experiment 179 changed to 7
+I20161004-09:02:02.659(0)? removing busy flag from 7
+I20161004-09:02:31.195(0)? removing busy flag from 3
+I20161004-09:03:44.891(0)? selected question 5
+I20161004-09:03:45.034(0)? all questions passed for experiment 178
+I20161004-09:03:51.488(0)? before the start entry
+I20161004-09:03:51.489(0)? scheduling init timer is true
+I20161004-09:03:51.489(0)? scheduling init counter is 1
+I20161004-09:03:51.489(0)? thresh is [object Object]
+I20161004-09:03:51.489(0)? starting
+I20161004-09:03:51.639(0)? selected question 5
+I20161004-09:03:51.732(0)? setting busy flag to 5
+I20161004-09:03:51.772(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,BUSY,DONE,BUSY,BUSY,BUSY
+I20161004-09:03:51.845(0)? question for experiment 180 changed to 5
+I20161004-09:05:15.696(0)? before the start entry
+I20161004-09:05:15.696(0)? scheduling init timer is true
+I20161004-09:05:15.696(0)? scheduling init counter is 1
+I20161004-09:05:15.697(0)? thresh is [object Object]
+I20161004-09:05:15.697(0)? starting
+I20161004-09:05:15.825(0)? selected question 8
+I20161004-09:05:15.861(0)? setting busy flag to 8
+I20161004-09:05:15.907(0)? Averaging array: BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:05:16.011(0)? question for experiment 181 changed to 8
+I20161004-09:05:24.255(0)? selected question 9
+I20161004-09:05:24.356(0)? all questions passed for experiment 179
+I20161004-09:07:18.743(0)? before the start entry
+I20161004-09:07:18.743(0)? scheduling init timer is true
+I20161004-09:07:18.743(0)? scheduling init counter is 1
+I20161004-09:07:18.743(0)? thresh is [object Object]
+I20161004-09:07:18.743(0)? starting
+I20161004-09:07:18.888(0)? selected question 9
+I20161004-09:07:18.959(0)? setting busy flag to 9
+I20161004-09:07:18.996(0)? Averaging array: DONE,DONE,DONE,BUSY,DONE,DONE,BUSY,BUSY,DONE,BUSY
+I20161004-09:07:19.115(0)? question for experiment 182 changed to 9
+I20161004-09:07:20.057(0)? removing busy flag from 5
+I20161004-09:07:51.726(0)? removing busy flag from 8
+I20161004-09:08:00.350(0)? selected question 2
+I20161004-09:08:00.411(0)? all questions passed for experiment 180
+I20161004-09:09:09.750(0)? selected question 3
+I20161004-09:09:09.818(0)? all questions passed for experiment 181
+I20161004-09:10:06.692(0)? removing busy flag from 9
+I20161004-09:10:38.502(0)? before the start entry
+I20161004-09:10:38.502(0)? scheduling init timer is true
+I20161004-09:10:38.502(0)? scheduling init counter is 1
+I20161004-09:10:38.526(0)? thresh is [object Object]
+I20161004-09:10:38.526(0)? starting
+I20161004-09:10:38.591(0)? selected question 8
+I20161004-09:10:38.633(0)? setting busy flag to 8
+I20161004-09:10:38.660(0)? Averaging array: DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:10:38.722(0)? question for experiment 183 changed to 8
+I20161004-09:11:10.250(0)? selected question 6
+I20161004-09:11:10.327(0)? all questions passed for experiment 182
+W20161004-09:15:39.181(0)? (STDERR) Running job not found 5saYt4wF7byoL2Rrk G6rz3NvXCptnzBtxK
+I20161004-09:17:05.609(0)? before the start entry
+I20161004-09:17:05.610(0)? scheduling init timer is true
+I20161004-09:17:05.610(0)? scheduling init counter is 1
+I20161004-09:17:05.610(0)? thresh is [object Object]
+I20161004-09:17:05.610(0)? starting
+I20161004-09:17:05.735(0)? selected question 7
+I20161004-09:17:05.779(0)? setting busy flag to 7
+I20161004-09:17:05.795(0)? Averaging array: DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:17:05.903(0)? question for experiment 184 changed to 7
+I20161004-09:18:43.313(0)? removing busy flag from 7
+I20161004-09:21:29.407(0)? selected question 3
+I20161004-09:21:29.522(0)? all questions passed for experiment 184
+I20161004-09:25:39.472(0)? removing busy flag from 8
+W20161004-09:25:39.510(0)? (STDERR) Running job not found wvFow4fXM8e7Gh4eM anKToJHk4zZtrGGbs
+I20161004-09:47:13.851(0)? before the start entry
+I20161004-09:47:13.852(0)? scheduling init timer is true
+I20161004-09:47:13.852(0)? scheduling init counter is 1
+I20161004-09:47:13.852(0)? thresh is [object Object]
+I20161004-09:47:13.852(0)? starting
+I20161004-09:47:13.955(0)? selected question 3
+I20161004-09:47:13.999(0)? setting busy flag to 3
+I20161004-09:47:14.022(0)? Averaging array: DONE,BUSY,DONE,DONE,BUSY,BUSY,DONE,DONE,BUSY,FREE
+I20161004-09:47:14.102(0)? question for experiment 185 changed to 3
+I20161004-09:49:20.622(0)? removing busy flag from 3
+I20161004-09:49:31.988(0)? selected question 2
+I20161004-09:49:32.043(0)? all questions passed for experiment 185
+I20161004-09:51:29.064(0)? before the start entry
+I20161004-09:51:29.064(0)? scheduling init timer is true
+I20161004-09:51:29.064(0)? scheduling init counter is 1
+I20161004-09:51:29.064(0)? thresh is [object Object]
+I20161004-09:51:29.064(0)? starting
+I20161004-09:51:29.143(0)? selected question 7
+I20161004-09:51:29.163(0)? setting busy flag to 7
+I20161004-09:51:29.184(0)? Averaging array: DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:51:29.265(0)? question for experiment 186 changed to 7
+I20161004-09:51:43.164(0)? before the start entry
+I20161004-09:51:43.164(0)? scheduling init timer is true
+I20161004-09:51:43.164(0)? scheduling init counter is 1
+I20161004-09:51:43.165(0)? thresh is [object Object]
+I20161004-09:51:43.165(0)? starting
+I20161004-09:51:43.291(0)? selected question 6
+I20161004-09:51:43.331(0)? setting busy flag to 6
+I20161004-09:51:43.372(0)? Averaging array: BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:51:43.483(0)? question for experiment 187 changed to 6
+I20161004-09:52:52.502(0)? before the start entry
+I20161004-09:52:52.502(0)? scheduling init timer is true
+I20161004-09:52:52.502(0)? scheduling init counter is 1
+I20161004-09:52:52.503(0)? thresh is [object Object]
+I20161004-09:52:52.503(0)? starting
+I20161004-09:52:52.627(0)? selected question 6
+I20161004-09:52:52.714(0)? setting busy flag to 6
+I20161004-09:52:52.750(0)? Averaging array: BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:52:52.854(0)? question for experiment 188 changed to 6
+I20161004-09:53:29.807(0)? removing busy flag from 6
+I20161004-09:53:37.790(0)? before the start entry
+I20161004-09:53:37.791(0)? scheduling init timer is true
+I20161004-09:53:37.791(0)? scheduling init counter is 1
+I20161004-09:53:37.791(0)? thresh is [object Object]
+I20161004-09:53:37.791(0)? starting
+I20161004-09:53:38.047(0)? selected question 6
+I20161004-09:53:38.195(0)? setting busy flag to 6
+I20161004-09:53:38.257(0)? Averaging array: DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:53:38.818(0)? question for experiment 189 changed to 6
+I20161004-09:53:49.499(0)? before the start entry
+I20161004-09:53:49.499(0)? scheduling init timer is true
+I20161004-09:53:49.499(0)? scheduling init counter is 1
+I20161004-09:53:49.499(0)? thresh is [object Object]
+I20161004-09:53:49.500(0)? starting
+I20161004-09:53:49.607(0)? selected question 4
+I20161004-09:53:49.669(0)? setting busy flag to 4
+I20161004-09:53:49.690(0)? Averaging array: BUSY,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:53:49.819(0)? question for experiment 190 changed to 4
+I20161004-09:53:51.722(0)? before the start entry
+I20161004-09:53:51.722(0)? scheduling init timer is true
+I20161004-09:53:51.722(0)? scheduling init counter is 1
+I20161004-09:53:51.722(0)? thresh is [object Object]
+I20161004-09:53:51.722(0)? starting
+I20161004-09:53:51.934(0)? selected question 7
+I20161004-09:53:52.080(0)? setting busy flag to 7
+I20161004-09:53:52.135(0)? Averaging array: DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:53:52.241(0)? question for experiment 191 changed to 7
+I20161004-09:53:53.208(0)? before the start entry
+I20161004-09:53:53.208(0)? scheduling init timer is true
+I20161004-09:53:53.208(0)? scheduling init counter is 1
+I20161004-09:53:53.208(0)? thresh is [object Object]
+I20161004-09:53:53.208(0)? starting
+I20161004-09:53:53.361(0)? selected question 6
+I20161004-09:53:53.451(0)? setting busy flag to 6
+I20161004-09:53:53.503(0)? Averaging array: DONE,BUSY,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:53:53.666(0)? question for experiment 192 changed to 6
+I20161004-09:54:20.450(0)? selected question 1
+I20161004-09:54:20.594(0)? all questions passed for experiment 187
+I20161004-09:55:20.589(0)? removing busy flag from 4
+I20161004-09:55:43.425(0)? removing busy flag from 7
+I20161004-09:56:01.571(0)? removing busy flag from 6
+I20161004-09:56:50.237(0)? selected question 4
+I20161004-09:56:50.375(0)? all questions passed for experiment 190
+I20161004-09:57:06.139(0)? selected question 6
+I20161004-09:57:06.300(0)? all questions passed for experiment 188
+I20161004-09:58:13.287(0)? removing busy flag from 7
+I20161004-09:58:19.171(0)? selected question 7
+I20161004-09:58:19.411(0)? all questions passed for experiment 186
+I20161004-09:59:04.057(0)? before the start entry
+I20161004-09:59:04.058(0)? scheduling init timer is true
+I20161004-09:59:04.058(0)? scheduling init counter is 1
+I20161004-09:59:04.058(0)? thresh is [object Object]
+I20161004-09:59:04.059(0)? starting
+I20161004-09:59:04.305(0)? selected question 4
+I20161004-09:59:04.459(0)? setting busy flag to 4
+I20161004-09:59:04.491(0)? Averaging array: BUSY,DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-09:59:04.641(0)? question for experiment 193 changed to 4
+I20161004-09:59:20.261(0)? before the start entry
+I20161004-09:59:20.262(0)? scheduling init timer is true
+I20161004-09:59:20.262(0)? scheduling init counter is 1
+I20161004-09:59:20.262(0)? thresh is [object Object]
+I20161004-09:59:20.262(0)? starting
+I20161004-09:59:20.408(0)? selected question 3
+I20161004-09:59:20.507(0)? setting busy flag to 3
+I20161004-09:59:20.526(0)? Averaging array: DONE,BUSY,DONE,DONE,BUSY,BUSY,DONE,DONE,DONE,BUSY
+I20161004-09:59:20.701(0)? question for experiment 194 changed to 3
+I20161004-10:00:03.194(0)? removing busy flag from 6
+I20161004-10:00:50.626(0)? selected question 2
+I20161004-10:00:50.823(0)? all questions passed for experiment 189
+I20161004-10:03:10.049(0)? before the start entry
+I20161004-10:03:10.050(0)? scheduling init timer is true
+I20161004-10:03:10.050(0)? scheduling init counter is 1
+I20161004-10:03:10.050(0)? thresh is [object Object]
+I20161004-10:03:10.050(0)? starting
+I20161004-10:03:10.521(0)? selected question 7
+I20161004-10:03:10.652(0)? setting busy flag to 7
+I20161004-10:03:10.699(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE
+I20161004-10:03:10.820(0)? question for experiment 195 changed to 7
+I20161004-10:03:16.420(0)? before the start entry
+I20161004-10:03:16.420(0)? scheduling init timer is true
+I20161004-10:03:16.420(0)? scheduling init counter is 1
+I20161004-10:03:16.420(0)? thresh is [object Object]
+I20161004-10:03:16.420(0)? starting
+I20161004-10:03:16.789(0)? selected question 7
+I20161004-10:03:16.887(0)? setting busy flag to 7
+I20161004-10:03:16.957(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE
+I20161004-10:03:17.108(0)? question for experiment 196 changed to 7
+I20161004-10:04:36.567(0)? removing busy flag from 6
+W20161004-10:04:36.651(0)? (STDERR) Running job not found h2EAkQYnkv5ofrKpE xAcw9uGGfuHcF9uDh
+I20161004-10:11:02.998(0)? before the start entry
+I20161004-10:11:02.998(0)? scheduling init timer is true
+I20161004-10:11:02.999(0)? scheduling init counter is 1
+I20161004-10:11:02.999(0)? thresh is [object Object]
+I20161004-10:11:03.000(0)? starting
+I20161004-10:12:00.706(0)? removing busy flag from 7
+I20161004-10:13:21.076(0)? before the start entry
+I20161004-10:13:21.077(0)? scheduling init timer is true
+I20161004-10:13:21.077(0)? scheduling init counter is 1
+I20161004-10:13:21.078(0)? thresh is [object Object]
+I20161004-10:13:21.078(0)? starting
+I20161004-10:13:41.372(0)? removing busy flag from 7
+I20161004-10:17:17.088(0)? selected question 7
+I20161004-10:17:42.595(0)? before the start entry
+I20161004-10:17:42.596(0)? scheduling init timer is true
+I20161004-10:17:42.596(0)? scheduling init counter is 1
+I20161004-10:17:42.596(0)? thresh is [object Object]
+I20161004-10:17:42.596(0)? starting
+I20161004-10:18:52.494(0)? setting busy flag to 7
+I20161004-10:18:53.284(0)? before the start entry
+I20161004-10:18:53.284(0)? scheduling init timer is true
+I20161004-10:18:53.284(0)? starting
+I20161004-10:18:53.284(0)? scheduling init counter is 2
+I20161004-10:18:53.284(0)? thresh is [object Object]
+I20161004-10:19:30.869(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,BUSY,FREE,FREE,FREE
+I20161004-10:20:06.419(0)? question for experiment 198 changed to 7
+I20161004-10:20:09.664(0)? selected question 8
+W20161004-10:20:11.273(0)? (STDERR) Running job not found icL7Kn22TvZPZuaR2 zMS8WwKZDkZnqGJyn
+I20161004-10:20:11.483(0)? setting busy flag to 8
+I20161004-10:20:11.669(0)? Averaging array: DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-10:20:11.748(0)? selected question 1
+I20161004-10:20:11.829(0)? question for experiment 199 changed to 8
+I20161004-10:20:12.044(0)? all questions passed for experiment 199
+I20161004-10:20:12.467(0)? removing busy flag from 4
+I20161004-10:20:12.468(0)? selected question 6
+I20161004-10:20:12.547(0)? setting busy flag to 6
+I20161004-10:20:12.580(0)? Averaging array: DONE,DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+W20161004-10:20:12.726(0)? (STDERR) Running job not found C2gMjXCARqEBEgj8F XvL5YZcsrQYKZACmr
+I20161004-10:20:12.772(0)? question for experiment 197 changed to 6
+I20161004-10:20:13.249(0)? removing busy flag from 3
+W20161004-10:20:13.335(0)? (STDERR) Running job not found 3gBxya6gWCW28ARfK NTtLijshgmr7XSP4P
+I20161004-10:20:13.804(0)? removing busy flag from 7
+W20161004-10:20:13.938(0)? (STDERR) Running job not found RHBSnNpo6mjEAGoLb FemxeL32X9dccnvAx
+I20161004-10:21:17.294(0)? before the start entry
+I20161004-10:21:17.294(0)? scheduling init timer is true
+I20161004-10:21:17.294(0)? scheduling init counter is 1
+I20161004-10:21:17.295(0)? thresh is [object Object]
+I20161004-10:21:17.295(0)? starting
+I20161004-10:21:17.642(0)? selected question 8
+I20161004-10:21:17.779(0)? setting busy flag to 8
+I20161004-10:21:17.834(0)? Averaging array: DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-10:21:17.997(0)? question for experiment 201 changed to 8
+W20161004-10:23:51.721(0)? (STDERR) Running job not found g6xsKRr6H5KLasMe2 B4iQNeyq7TYQoRn97
+W20161004-10:25:10.440(0)? (STDERR) Running job not found LHQPhpfCBQkyuHPH4 waREYusw9Fz5RgiGP
+W20161004-10:25:12.753(0)? (STDERR) Running job not found 6K9d5QK6v9gqpgtcy xdgEPjtaPTrRYwKQN
+I20161004-10:25:50.007(0)? removing busy flag from 8
+I20161004-10:26:26.538(0)? removing busy flag from 6
+I20161004-10:26:37.415(0)? selected question 2
+I20161004-10:26:37.568(0)? all questions passed for experiment 201
+I20161004-10:27:41.885(0)? selected question 6
+I20161004-10:27:42.094(0)? all questions passed for experiment 197
+W20161004-10:30:13.531(0)? (STDERR) Running job not found dS3CPx5aSvLjteCwR b49fkZC6XFTmXsL72
+W20161004-10:30:14.565(0)? (STDERR) Running job not found HB4oHB3fnn7MBxHHJ DMSBRLcT5uPFzCtdf
+I20161004-10:35:10.833(0)? removing busy flag from 7
+W20161004-10:35:10.997(0)? (STDERR) Running job not found ETj9n8cvcZdFDSSZK 5igMsixYTfJ85KfXi
+I20161004-10:42:35.836(0)? before the start entry
+I20161004-10:42:35.837(0)? scheduling init timer is true
+I20161004-10:42:35.837(0)? scheduling init counter is 1
+I20161004-10:42:35.849(0)? thresh is [object Object]
+I20161004-10:42:35.849(0)? starting
+I20161004-10:42:36.015(0)? selected question 1
+I20161004-10:42:36.074(0)? setting busy flag to 1
+I20161004-10:42:36.123(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,BUSY,BUSY,FREE,FREE
+I20161004-10:42:36.238(0)? question for experiment 202 changed to 1
+I20161004-10:43:26.273(0)? before the start entry
+I20161004-10:43:26.273(0)? scheduling init timer is true
+I20161004-10:43:26.273(0)? scheduling init counter is 1
+I20161004-10:43:26.273(0)? thresh is [object Object]
+I20161004-10:43:26.273(0)? starting
+I20161004-10:43:26.499(0)? selected question 2
+I20161004-10:43:26.609(0)? setting busy flag to 2
+I20161004-10:43:26.646(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE,FREE,FREE
+I20161004-10:43:26.736(0)? question for experiment 203 changed to 2
+I20161004-10:43:49.920(0)? before the start entry
+I20161004-10:43:49.920(0)? scheduling init timer is true
+I20161004-10:43:49.920(0)? scheduling init counter is 1
+I20161004-10:43:49.920(0)? thresh is [object Object]
+I20161004-10:43:49.920(0)? starting
+I20161004-10:43:50.207(0)? selected question 6
+I20161004-10:43:50.326(0)? setting busy flag to 6
+I20161004-10:43:50.420(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE
+I20161004-10:43:50.512(0)? question for experiment 204 changed to 6
+W20161004-10:45:11.554(0)? (STDERR) Running job not found iZroDeYZzSdxWK9Rz XckDqkZ5dzzi8ej8j
+I20161004-10:45:44.429(0)? before the start entry
+I20161004-10:45:44.429(0)? scheduling init timer is true
+I20161004-10:45:44.430(0)? scheduling init counter is 1
+I20161004-10:45:44.430(0)? thresh is [object Object]
+I20161004-10:45:44.430(0)? starting
+I20161004-10:45:44.573(0)? selected question 3
+I20161004-10:45:44.635(0)? setting busy flag to 3
+I20161004-10:45:44.665(0)? Averaging array: DONE,BUSY,DONE,DONE,BUSY,BUSY,DONE,DONE,DONE,BUSY
+I20161004-10:45:44.802(0)? question for experiment 205 changed to 3
+I20161004-10:46:36.688(0)? before the start entry
+I20161004-10:46:36.688(0)? scheduling init timer is true
+I20161004-10:46:36.688(0)? scheduling init counter is 1
+I20161004-10:46:36.688(0)? thresh is [object Object]
+I20161004-10:46:36.688(0)? starting
+I20161004-10:46:36.909(0)? selected question 4
+I20161004-10:46:37.048(0)? setting busy flag to 4
+I20161004-10:46:37.111(0)? Averaging array: BUSY,DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-10:46:37.293(0)? question for experiment 206 changed to 4
+I20161004-10:46:45.281(0)? before the start entry
+I20161004-10:46:45.283(0)? scheduling init timer is true
+I20161004-10:46:45.283(0)? scheduling init counter is 1
+I20161004-10:46:45.283(0)? thresh is [object Object]
+I20161004-10:46:45.283(0)? starting
+I20161004-10:46:45.548(0)? selected question 8
+I20161004-10:46:45.660(0)? setting busy flag to 8
+I20161004-10:46:45.680(0)? Averaging array: DONE,BUSY,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-10:46:45.875(0)? question for experiment 207 changed to 8
+I20161004-10:47:02.761(0)? before the start entry
+I20161004-10:47:02.761(0)? scheduling init timer is true
+I20161004-10:47:02.761(0)? scheduling init counter is 1
+I20161004-10:47:02.761(0)? thresh is [object Object]
+I20161004-10:47:02.761(0)? starting
+I20161004-10:47:03.111(0)? selected question 8
+I20161004-10:47:03.190(0)? setting busy flag to 8
+I20161004-10:47:03.253(0)? Averaging array: DONE,BUSY,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE
+I20161004-10:47:03.499(0)? question for experiment 208 changed to 8
+I20161004-10:47:28.722(0)? removing busy flag from 6
+W20161004-10:47:37.432(0)? (STDERR) Running job not found 8ZBbfP4E5AD8GC5Sx qTTrGrmQdMyv2MF7Y
+I20161004-10:47:56.378(0)? selected question 8
+I20161004-10:47:56.595(0)? all questions passed for experiment 204
+I20161004-10:48:44.676(0)? before the start entry
+I20161004-10:48:44.676(0)? scheduling init timer is true
+I20161004-10:48:44.676(0)? scheduling init counter is 1
+I20161004-10:48:44.696(0)? thresh is [object Object]
+I20161004-10:48:44.697(0)? starting
+I20161004-10:48:45.043(0)? selected question 4
+I20161004-10:48:45.234(0)? setting busy flag to 4
+I20161004-10:48:45.285(0)? Averaging array: BUSY,DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE
+I20161004-10:48:45.507(0)? question for experiment 209 changed to 4
+W20161004-10:49:08.064(0)? (STDERR) jobDone failed
+I20161004-10:49:08.242(0)? removing busy flag from 4
+I20161004-10:49:36.948(0)? removing busy flag from 3
+I20161004-10:49:43.315(0)? before the start entry
+I20161004-10:49:43.316(0)? scheduling init timer is true
+I20161004-10:49:43.316(0)? scheduling init counter is 1
+I20161004-10:49:43.316(0)? thresh is [object Object]
+I20161004-10:49:43.316(0)? starting
+I20161004-10:49:43.627(0)? selected question 2
+I20161004-10:49:43.781(0)? setting busy flag to 2
+I20161004-10:49:43.828(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY,FREE,FREE
+I20161004-10:49:43.993(0)? question for experiment 210 changed to 2
+I20161004-10:50:25.683(0)? selected question 4
+I20161004-10:50:25.881(0)? all questions passed for experiment 205
+I20161004-10:51:13.414(0)? removing busy flag from 8
+I20161004-10:51:38.838(0)? removing busy flag from 8
+I20161004-10:51:46.523(0)? selected question 7
+I20161004-10:51:46.658(0)? all questions passed for experiment 207
+I20161004-10:51:53.594(0)? selected question 4
+I20161004-10:51:53.732(0)? all questions passed for experiment 206
+I20161004-10:52:03.518(0)? selected question 2
+I20161004-10:52:03.716(0)? all questions passed for experiment 208
+I20161004-10:52:04.124(0)? selected question 8
+I20161004-10:52:04.276(0)? all questions passed for experiment 208
+I20161004-10:52:54.838(0)? removing busy flag from 2
+I20161004-10:54:03.842(0)? before the start entry
+I20161004-10:54:03.843(0)? scheduling init timer is true
+I20161004-10:54:03.843(0)? scheduling init counter is 1
+I20161004-10:54:03.843(0)? thresh is [object Object]
+I20161004-10:54:03.843(0)? starting
+I20161004-10:54:04.084(0)? selected question 8
+I20161004-10:54:04.197(0)? setting busy flag to 8
+I20161004-10:54:04.234(0)? Averaging array: DONE,BUSY,DONE,DONE,DONE,BUSY,FREE,FREE,FREE,FREE
+I20161004-10:54:04.417(0)? question for experiment 211 changed to 8
+I20161004-10:54:34.838(0)? selected question 6
+I20161004-10:54:35.009(0)? all questions passed for experiment 203
+I20161004-10:55:14.404(0)? removing busy flag from 4
+I20161004-10:57:30.622(0)? removing busy flag from 2
+I20161004-10:57:37.689(0)? removing busy flag from 1
+W20161004-10:57:37.818(0)? (STDERR) Running job not found 3ifNd4SqTgXYsXnmb h9FFhkbm64NAsMYXc
+I20161004-10:58:22.255(0)? selected question 2
+I20161004-10:58:22.339(0)? all questions passed for experiment 210
+I20161004-11:00:31.760(0)? before the start entry
+I20161004-11:00:31.761(0)? scheduling init timer is true
+I20161004-11:00:31.773(0)? scheduling init counter is 1
+I20161004-11:00:31.774(0)? thresh is [object Object]
+I20161004-11:00:31.774(0)? starting
+I20161004-11:00:32.041(0)? selected question 1
+I20161004-11:00:32.147(0)? setting busy flag to 1
+I20161004-11:00:32.195(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,BUSY,BUSY,FREE,FREE
+I20161004-11:00:32.343(0)? question for experiment 212 changed to 1
+I20161004-11:01:04.783(0)? removing busy flag from 8
+I20161004-11:01:52.164(0)? selected question 8
+I20161004-11:01:52.275(0)? all questions passed for experiment 211
+I20161004-11:04:37.162(0)? removing busy flag from 1
+W20161004-11:05:15.079(0)? (STDERR) Running job not found NnCjNRrMaQGSx6xSc swKo4QvnMpo8AEauD
+I20161004-11:06:28.463(0)? selected question 2
+I20161004-11:06:28.597(0)? all questions passed for experiment 212
+W20161004-11:07:38.109(0)? (STDERR) Running job not found 7KrY7PiiNXQWQ25md WyWSyAh6AERWaQrPa
+I20161004-11:19:53.568(0)? before the start entry
+I20161004-11:19:53.568(0)? scheduling init timer is true
+I20161004-11:19:53.568(0)? scheduling init counter is 1
+I20161004-11:19:53.568(0)? thresh is [object Object]
+I20161004-11:19:53.569(0)? starting
+I20161004-11:19:53.853(0)? selected question 8
+I20161004-11:19:53.950(0)? setting busy flag to 8
+I20161004-11:19:53.999(0)? Averaging array: DONE,BUSY,DONE,DONE,DONE,DONE,BUSY,FREE,FREE,FREE
+I20161004-11:19:54.179(0)? question for experiment 213 changed to 8
+I20161004-11:19:55.954(0)? before the start entry
+I20161004-11:19:55.954(0)? scheduling init timer is true
+I20161004-11:19:55.954(0)? scheduling init counter is 1
+I20161004-11:19:55.955(0)? thresh is [object Object]
+I20161004-11:19:55.955(0)? starting
+I20161004-11:19:56.112(0)? selected question 8
+I20161004-11:19:56.181(0)? setting busy flag to 8
+I20161004-11:19:56.201(0)? Averaging array: DONE,BUSY,DONE,DONE,DONE,DONE,BUSY,BUSY,FREE,FREE
+I20161004-11:19:56.291(0)? question for experiment 214 changed to 8
+I20161004-11:20:04.010(0)? before the start entry
+I20161004-11:20:04.011(0)? scheduling init timer is true
+I20161004-11:20:04.011(0)? scheduling init counter is 1
+I20161004-11:20:04.011(0)? thresh is [object Object]
+I20161004-11:20:04.012(0)? starting
+I20161004-11:20:04.135(0)? selected question 1
+I20161004-11:20:04.217(0)? setting busy flag to 1
+I20161004-11:20:04.259(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,BUSY,DONE,BUSY,FREE
+I20161004-11:20:04.370(0)? question for experiment 215 changed to 1
+I20161004-11:20:07.391(0)? before the start entry
+I20161004-11:20:07.391(0)? scheduling init timer is true
+I20161004-11:20:07.391(0)? scheduling init counter is 1
+I20161004-11:20:07.392(0)? thresh is [object Object]
+I20161004-11:20:07.392(0)? starting
+I20161004-11:20:07.614(0)? selected question 4
+I20161004-11:20:07.675(0)? setting busy flag to 4
+I20161004-11:20:07.713(0)? Averaging array: BUSY,DONE,DONE,DONE,DONE,BUSY,FREE,FREE,FREE,FREE
+I20161004-11:20:07.819(0)? question for experiment 216 changed to 4
+I20161004-11:20:09.536(0)? before the start entry
+I20161004-11:20:09.536(0)? scheduling init timer is true
+I20161004-11:20:09.537(0)? scheduling init counter is 1
+I20161004-11:20:09.537(0)? thresh is [object Object]
+I20161004-11:20:09.537(0)? starting
+I20161004-11:20:09.716(0)? selected question 4
+I20161004-11:20:09.752(0)? setting busy flag to 4
+I20161004-11:20:09.807(0)? Averaging array: BUSY,DONE,DONE,DONE,DONE,BUSY,BUSY,FREE,FREE,FREE
+I20161004-11:20:09.918(0)? question for experiment 217 changed to 4
+I20161004-11:20:30.552(0)? before the start entry
+I20161004-11:20:30.552(0)? scheduling init timer is true
+I20161004-11:20:30.553(0)? scheduling init counter is 1
+I20161004-11:20:30.553(0)? thresh is [object Object]
+I20161004-11:20:30.553(0)? starting
+I20161004-11:20:30.772(0)? selected question 1
+I20161004-11:20:30.836(0)? setting busy flag to 1
+I20161004-11:20:30.868(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,BUSY,DONE,BUSY,BUSY
+I20161004-11:20:30.947(0)? question for experiment 218 changed to 1
+I20161004-11:20:50.828(0)? removing busy flag from 8
+I20161004-11:21:05.795(0)? selected question 4
+I20161004-11:21:05.974(0)? all questions passed for experiment 214
+I20161004-11:21:17.919(0)? before the start entry
+I20161004-11:21:17.919(0)? scheduling init timer is true
+I20161004-11:21:17.919(0)? scheduling init counter is 1
+I20161004-11:21:17.931(0)? thresh is [object Object]
+I20161004-11:21:17.931(0)? starting
+I20161004-11:21:18.251(0)? selected question 4
+I20161004-11:21:18.392(0)? setting busy flag to 4
+I20161004-11:21:18.459(0)? Averaging array: BUSY,DONE,DONE,DONE,DONE,BUSY,BUSY,BUSY,FREE,FREE
+I20161004-11:21:18.604(0)? question for experiment 219 changed to 4
+I20161004-11:21:27.461(0)? before the start entry
+I20161004-11:21:27.462(0)? scheduling init timer is true
+I20161004-11:21:27.462(0)? scheduling init counter is 1
+I20161004-11:21:27.462(0)? thresh is [object Object]
+I20161004-11:21:27.462(0)? starting
+I20161004-11:21:27.876(0)? selected question 7
+I20161004-11:21:28.066(0)? setting busy flag to 7
+I20161004-11:21:28.116(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,FREE,FREE,FREE,FREE
+I20161004-11:21:28.264(0)? question for experiment 220 changed to 7
+I20161004-11:23:25.393(0)? removing busy flag from 4
+I20161004-11:25:02.472(0)? removing busy flag from 1
+I20161004-11:25:31.846(0)? before the start entry
+I20161004-11:25:31.846(0)? scheduling init timer is true
+I20161004-11:25:31.846(0)? scheduling init counter is 1
+I20161004-11:25:31.846(0)? thresh is [object Object]
+I20161004-11:25:31.846(0)? starting
+I20161004-11:25:32.265(0)? selected question 6
+I20161004-11:25:32.402(0)? setting busy flag to 6
+I20161004-11:25:32.477(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,BUSY,FREE,FREE,FREE,FREE
+I20161004-11:25:32.690(0)? question for experiment 221 changed to 6
+I20161004-11:25:43.386(0)? removing busy flag from 4
+I20161004-11:25:57.613(0)? removing busy flag from 1
+I20161004-11:25:58.124(0)? removing busy flag from 4
+I20161004-11:27:58.242(0)? before the start entry
+I20161004-11:27:58.242(0)? scheduling init timer is true
+I20161004-11:27:58.242(0)? scheduling init counter is 1
+I20161004-11:27:58.242(0)? starting
+I20161004-11:27:58.242(0)? thresh is [object Object]
+I20161004-11:27:58.670(0)? selected question 4
+I20161004-11:27:58.838(0)? setting busy flag to 4
+I20161004-11:27:58.885(0)? Averaging array: BUSY,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE
+I20161004-11:27:59.054(0)? question for experiment 222 changed to 4
+I20161004-11:29:07.073(0)? selected question 4
+I20161004-11:29:07.261(0)? all questions passed for experiment 215
+W20161004-11:29:27.548(0)? (STDERR) jobDone failed
+I20161004-11:29:48.942(0)? selected question 0
+I20161004-11:29:49.121(0)? all questions passed for experiment 218
+I20161004-11:30:11.383(0)? removing busy flag from 8
+W20161004-11:30:11.434(0)? (STDERR) Running job not found yJrGu6KzJLyp46Zvg pqpHwModcKuWygkTL
+I20161004-11:30:51.432(0)? before the start entry
+I20161004-11:30:51.433(0)? scheduling init timer is true
+I20161004-11:30:51.433(0)? scheduling init counter is 1
+I20161004-11:30:51.433(0)? thresh is [object Object]
+I20161004-11:30:51.433(0)? starting
+I20161004-11:30:51.536(0)? selected question 0
+I20161004-11:30:51.758(0)? all questions passed for experiment 219
+I20161004-11:30:51.829(0)? selected question 8
+I20161004-11:30:51.951(0)? setting busy flag to 8
+I20161004-11:30:52.021(0)? Averaging array: DONE,BUSY,DONE,DONE,DONE,DONE,BUSY,DONE,FREE,FREE
+I20161004-11:30:52.230(0)? question for experiment 223 changed to 8
+I20161004-11:31:22.085(0)? selected question 6
+I20161004-11:31:22.268(0)? all questions passed for experiment 216
+I20161004-11:31:44.260(0)? removing busy flag from 7
+W20161004-11:31:44.470(0)? (STDERR) Running job not found GuMsBZvdYRo8wSLir BxmgTmehkPDqRLrWJ
+W20161004-11:33:26.224(0)? (STDERR) Running job not found Mm3Hsy8NZa4rkJNAP cySq4bERN3xNKQvKg
+I20161004-11:34:46.942(0)? removing busy flag from 8
+I20161004-11:35:25.019(0)? selected question 8
+I20161004-11:35:25.168(0)? all questions passed for experiment 223
+I20161004-11:36:44.851(0)? removing busy flag from 6
+W20161004-11:36:44.936(0)? (STDERR) Running job not found Hc9EEaoD4gQMtmSPL rW6WawiBeYyFfk4yX
+I20161004-11:36:48.123(0)? selected question 6
+I20161004-11:36:48.241(0)? all questions passed for experiment 221
+I20161004-11:40:08.503(0)? removing busy flag from 4
+W20161004-11:40:08.649(0)? (STDERR) Running job not found k6Cf2v3SdngxXAWYT 6auvn2fD5yRArTyxZ
+W20161004-11:41:44.870(0)? (STDERR) Running job not found ZcXvvwDivYdq3nAgs BCRWRnazAwJDjc4Nv
+I20161004-11:44:42.901(0)? before the start entry
+I20161004-11:44:42.901(0)? scheduling init timer is true
+I20161004-11:44:42.902(0)? scheduling init counter is 1
+I20161004-11:44:42.902(0)? thresh is [object Object]
+I20161004-11:44:42.902(0)? starting
+I20161004-11:44:43.071(0)? selected question 6
+I20161004-11:44:43.135(0)? setting busy flag to 6
+I20161004-11:44:43.194(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE,FREE,FREE
+I20161004-11:44:43.297(0)? question for experiment 224 changed to 6
+I20161004-11:49:51.864(0)? removing busy flag from 6
+W20161004-11:50:09.000(0)? (STDERR) Running job not found nvWXxjhZwXmLnofTE jXiyC5icZhMkLYEq6
+I20161004-11:51:50.625(0)? selected question 6
+I20161004-11:51:50.716(0)? all questions passed for experiment 224
+I20161004-12:01:07.886(0)? before the start entry
+I20161004-12:01:07.886(0)? scheduling init timer is true
+I20161004-12:01:07.887(0)? scheduling init counter is 1
+I20161004-12:01:07.887(0)? thresh is [object Object]
+I20161004-12:01:07.887(0)? starting
+I20161004-12:01:08.012(0)? selected question 7
+I20161004-12:01:08.073(0)? setting busy flag to 7
+I20161004-12:01:08.108(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,FREE,FREE,FREE,FREE
+I20161004-12:01:08.239(0)? question for experiment 225 changed to 7
+I20161004-12:01:36.814(0)? before the start entry
+I20161004-12:01:36.814(0)? scheduling init timer is true
+I20161004-12:01:36.814(0)? scheduling init counter is 1
+I20161004-12:01:36.814(0)? thresh is [object Object]
+I20161004-12:01:36.814(0)? starting
+I20161004-12:01:36.940(0)? selected question 7
+I20161004-12:01:37.000(0)? setting busy flag to 7
+I20161004-12:01:37.040(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,BUSY,FREE,FREE,FREE
+I20161004-12:01:37.145(0)? question for experiment 226 changed to 7
+I20161004-12:02:22.146(0)? before the start entry
+I20161004-12:02:22.147(0)? scheduling init timer is true
+I20161004-12:02:22.147(0)? scheduling init counter is 1
+I20161004-12:02:22.147(0)? thresh is [object Object]
+I20161004-12:02:22.147(0)? starting
+I20161004-12:02:22.429(0)? selected question 2
+I20161004-12:02:22.604(0)? setting busy flag to 2
+I20161004-12:02:22.633(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE
+I20161004-12:02:22.858(0)? question for experiment 227 changed to 2
+I20161004-12:02:57.982(0)? before the start entry
+I20161004-12:02:57.982(0)? scheduling init timer is true
+I20161004-12:02:57.982(0)? scheduling init counter is 1
+I20161004-12:02:57.982(0)? thresh is [object Object]
+I20161004-12:02:57.983(0)? starting
+I20161004-12:02:58.235(0)? selected question 2
+I20161004-12:02:58.368(0)? setting busy flag to 2
+I20161004-12:02:58.402(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY
+I20161004-12:02:58.562(0)? question for experiment 228 changed to 2
+I20161004-12:03:03.494(0)? removing busy flag from 7
+I20161004-12:03:14.968(0)? before the start entry
+I20161004-12:03:14.968(0)? scheduling init timer is true
+I20161004-12:03:14.969(0)? scheduling init counter is 1
+I20161004-12:03:14.969(0)? thresh is [object Object]
+I20161004-12:03:14.969(0)? starting
+I20161004-12:03:15.203(0)? selected question 7
+I20161004-12:03:15.287(0)? setting busy flag to 7
+I20161004-12:03:15.321(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,DONE,BUSY,FREE,FREE
+I20161004-12:03:15.425(0)? question for experiment 229 changed to 7
+I20161004-12:04:41.200(0)? selected question 7
+I20161004-12:04:41.343(0)? all questions passed for experiment 226
+I20161004-12:05:01.175(0)? before the start entry
+I20161004-12:05:01.176(0)? scheduling init timer is true
+I20161004-12:05:01.176(0)? scheduling init counter is 1
+I20161004-12:05:01.176(0)? thresh is [object Object]
+I20161004-12:05:01.176(0)? starting
+I20161004-12:05:01.495(0)? selected question 7
+I20161004-12:05:01.632(0)? setting busy flag to 7
+I20161004-12:05:01.647(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,DONE,BUSY,BUSY,FREE
+I20161004-12:05:01.822(0)? question for experiment 230 changed to 7
+I20161004-12:07:43.158(0)? before the start entry
+I20161004-12:07:43.158(0)? scheduling init timer is true
+I20161004-12:07:43.159(0)? scheduling init counter is 1
+I20161004-12:07:43.159(0)? thresh is [object Object]
+I20161004-12:07:43.159(0)? starting
+I20161004-12:07:43.661(0)? selected question 6
+I20161004-12:07:43.837(0)? setting busy flag to 6
+I20161004-12:07:43.893(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE,FREE
+I20161004-12:07:44.083(0)? question for experiment 231 changed to 6
+I20161004-12:08:49.866(0)? removing busy flag from 7
+I20161004-12:08:54.637(0)? before the start entry
+I20161004-12:08:54.638(0)? scheduling init timer is true
+I20161004-12:08:54.638(0)? scheduling init counter is 1
+I20161004-12:08:54.638(0)? thresh is [object Object]
+I20161004-12:08:54.638(0)? starting
+I20161004-12:08:55.051(0)? selected question 7
+I20161004-12:08:55.212(0)? setting busy flag to 7
+I20161004-12:08:55.304(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,DONE,DONE,BUSY,BUSY
+I20161004-12:08:55.495(0)? question for experiment 232 changed to 7
+W20161004-12:09:07.113(0)? (STDERR) Running job not found yT9x5CdgJ58wLrDXw emfK5g3Zj7iLo4sZZ
+I20161004-12:09:07.241(0)? removing busy flag from 7
+I20161004-12:09:24.041(0)? before the start entry
+I20161004-12:09:24.041(0)? scheduling init timer is true
+I20161004-12:09:24.041(0)? scheduling init counter is 1
+I20161004-12:09:24.041(0)? thresh is [object Object]
+I20161004-12:09:24.042(0)? starting
+I20161004-12:09:24.376(0)? selected question 0
+I20161004-12:09:24.476(0)? setting busy flag to 0
+I20161004-12:09:24.533(0)? question for experiment 233 changed to 0
+I20161004-12:09:26.987(0)? before the start entry
+I20161004-12:09:26.987(0)? scheduling init timer is true
+I20161004-12:09:26.987(0)? scheduling init counter is 1
+I20161004-12:09:26.988(0)? thresh is [object Object]
+I20161004-12:09:26.988(0)? starting
+I20161004-12:09:27.435(0)? selected question 4
+I20161004-12:09:27.593(0)? setting busy flag to 4
+I20161004-12:09:27.648(0)? Averaging array: BUSY,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE
+I20161004-12:09:27.847(0)? question for experiment 234 changed to 4
+I20161004-12:11:38.298(0)? removing busy flag from 6
+I20161004-12:11:46.202(0)? removing busy flag from 7
+W20161004-12:11:46.430(0)? (STDERR) Running job not found A9D6bHn6ckTW6LAZ7 hJzJTncfrZYqnuKbF
+I20161004-12:12:13.283(0)? before the start entry
+I20161004-12:12:13.283(0)? scheduling init timer is true
+I20161004-12:12:13.283(0)? scheduling init counter is 1
+I20161004-12:12:13.283(0)? thresh is [object Object]
+I20161004-12:12:13.283(0)? starting
+I20161004-12:12:13.627(0)? selected question 4
+I20161004-12:12:13.765(0)? setting busy flag to 4
+I20161004-12:12:13.830(0)? Averaging array: BUSY,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY
+I20161004-12:12:14.098(0)? question for experiment 235 changed to 4
+I20161004-12:12:19.286(0)? selected question 7
+I20161004-12:12:19.524(0)? all questions passed for experiment 231
+I20161004-12:12:54.701(0)? removing busy flag from 2
+W20161004-12:12:54.796(0)? (STDERR) Running job not found L3C62qWCvGsyjEs5s CDy8RMaD5fxxpNnuZ
+I20161004-12:12:55.893(0)? selected question 8
+I20161004-12:12:56.121(0)? all questions passed for experiment 227
+I20161004-12:13:32.013(0)? removing busy flag from 2
+W20161004-12:13:32.093(0)? (STDERR) Running job not found mcYinyBpmrNZZXiBM 5A9jAFGdqzoEJhaH8
+I20161004-12:14:15.662(0)? removing busy flag from 4
+I20161004-12:14:16.851(0)? selected question 7
+I20161004-12:14:16.968(0)? all questions passed for experiment 230
+I20161004-12:14:55.821(0)? before the start entry
+I20161004-12:14:55.821(0)? scheduling init timer is true
+I20161004-12:14:55.821(0)? scheduling init counter is 1
+I20161004-12:14:55.821(0)? thresh is [object Object]
+I20161004-12:14:55.821(0)? starting
+I20161004-12:14:56.210(0)? selected question 2
+I20161004-12:14:56.363(0)? setting busy flag to 2
+I20161004-12:14:56.427(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY
+I20161004-12:14:56.669(0)? question for experiment 236 changed to 2
+I20161004-12:15:25.789(0)? selected question 7
+I20161004-12:15:25.981(0)? all questions passed for experiment 235
+I20161004-12:15:50.528(0)? before the start entry
+I20161004-12:15:50.528(0)? scheduling init timer is true
+I20161004-12:15:50.528(0)? scheduling init counter is 1
+I20161004-12:15:50.529(0)? thresh is [object Object]
+I20161004-12:15:50.529(0)? starting
+I20161004-12:15:51.017(0)? selected question 8
+I20161004-12:15:51.100(0)? setting busy flag to 8
+I20161004-12:15:51.174(0)? Averaging array: DONE,BUSY,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE
+I20161004-12:15:51.305(0)? question for experiment 237 changed to 8
+I20161004-12:16:14.397(0)? before the start entry
+I20161004-12:16:14.443(0)? scheduling init timer is true
+I20161004-12:16:14.443(0)? scheduling init counter is 1
+I20161004-12:16:14.443(0)? thresh is [object Object]
+I20161004-12:16:14.443(0)? starting
+I20161004-12:17:38.310(0)? removing busy flag from 4
+I20161004-12:17:51.949(0)? removing busy flag from 2
+I20161004-12:17:54.820(0)? removing busy flag from 7
+I20161004-12:18:23.371(0)? selected question 2
+I20161004-12:18:23.599(0)? all questions passed for experiment 236
+I20161004-12:18:43.361(0)? before the start entry
+I20161004-12:18:43.362(0)? scheduling init timer is true
+I20161004-12:18:43.362(0)? scheduling init counter is 1
+I20161004-12:18:43.362(0)? thresh is [object Object]
+I20161004-12:18:43.363(0)? starting
+I20161004-12:18:43.698(0)? selected question 7
+I20161004-12:18:43.850(0)? setting busy flag to 7
+I20161004-12:18:43.903(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,DONE,DONE,DONE,DONE,DONE
+I20161004-12:18:44.098(0)? question for experiment 239 changed to 7
+I20161004-12:19:02.840(0)? before the start entry
+I20161004-12:19:02.840(0)? scheduling init timer is true
+I20161004-12:19:02.840(0)? scheduling init counter is 1
+I20161004-12:19:02.840(0)? thresh is [object Object]
+I20161004-12:19:02.840(0)? starting
+I20161004-12:19:03.479(0)? selected question 8
+I20161004-12:19:03.593(0)? setting busy flag to 8
+I20161004-12:19:03.641(0)? Averaging array: DONE,BUSY,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY
+I20161004-12:19:03.822(0)? question for experiment 240 changed to 8
+I20161004-12:19:46.461(0)? removing busy flag from 0
+W20161004-12:19:46.548(0)? (STDERR) Running job not found cpQdyhyj8jwEbKPxD Dc55ubQgDpRPtduCR
+I20161004-12:20:39.041(0)? removing busy flag from 7
+W20161004-12:20:52.334(0)? (STDERR) Running job not found wTeZi86WfQX4APAcr 2ePdk3mxXQcoHuNP9
+W20161004-12:21:47.341(0)? (STDERR) Running job not found mYsvcTZeGQaeXpe5A 49jYDm32qBNnFdG6F
+I20161004-12:22:23.675(0)? selected question 6
+I20161004-12:22:23.861(0)? all questions passed for experiment 229
+W20161004-12:24:04.731(0)? (STDERR) Running job not found RZc54eSdbAj3eYxkD NzJm3yLXGWWA5N3wo
+I20161004-12:25:37.445(0)? selected question 2
+I20161004-12:25:37.636(0)? all questions passed for experiment 234
+I20161004-12:26:15.604(0)? removing busy flag from 8
+W20161004-12:26:15.668(0)? (STDERR) Running job not found gHTCFEXmKFn29wi7b Lu8BxrScNhuy5Qqxu
+I20161004-12:28:29.652(0)? selected question 2
+I20161004-12:28:29.800(0)? all questions passed for experiment 232
+W20161004-12:30:40.014(0)? (STDERR) Running job not found RCy7kSyoF8r9RZnm8 37FwWACaZnJJGY8sm
+I20161004-12:34:05.081(0)? removing busy flag from 8
+W20161004-12:34:05.145(0)? (STDERR) Running job not found Phvx8sHevPHdjueug vJ99dezyybwFnZhJk
+I20161004-12:36:14.166(0)? before the start entry
+I20161004-12:36:14.167(0)? scheduling init timer is true
+I20161004-12:36:14.167(0)? scheduling init counter is 1
+I20161004-12:36:14.167(0)? thresh is [object Object]
+I20161004-12:36:14.167(0)? starting
+I20161004-12:36:14.264(0)? selected question 2
+I20161004-12:36:14.323(0)? setting busy flag to 2
+I20161004-12:36:14.343(0)? Averaging array: BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-12:36:14.435(0)? question for experiment 241 changed to 2
+I20161004-12:43:45.287(0)? before the start entry
+I20161004-12:43:45.287(0)? scheduling init timer is true
+I20161004-12:43:45.287(0)? scheduling init counter is 1
+I20161004-12:43:45.287(0)? thresh is [object Object]
+I20161004-12:43:45.287(0)? starting
+I20161004-12:43:45.441(0)? selected question 2
+I20161004-12:43:45.520(0)? setting busy flag to 2
+I20161004-12:43:45.527(0)? Averaging array: BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-12:43:45.635(0)? question for experiment 242 changed to 2
+I20161004-12:47:43.280(0)? removing busy flag from 2
+I20161004-12:48:25.947(0)? removing busy flag from 2
+I20161004-12:49:35.089(0)? selected question 6
+I20161004-12:49:35.191(0)? all questions passed for experiment 242
+I20161004-12:50:38.136(0)? selected question 2
+I20161004-12:50:38.244(0)? all questions passed for experiment 241
+I20161004-12:52:18.154(0)? before the start entry
+I20161004-12:52:18.154(0)? scheduling init timer is true
+I20161004-12:52:18.154(0)? scheduling init counter is 1
+I20161004-12:52:18.154(0)? thresh is [object Object]
+I20161004-12:52:18.154(0)? starting
+I20161004-12:52:18.404(0)? selected question 8
+I20161004-12:52:18.459(0)? setting busy flag to 8
+I20161004-12:52:18.505(0)? Averaging array: DONE,BUSY,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE
+I20161004-12:52:18.651(0)? question for experiment 243 changed to 8
+I20161004-12:52:37.869(0)? before the start entry
+I20161004-12:52:37.870(0)? scheduling init timer is true
+I20161004-12:52:37.870(0)? scheduling init counter is 1
+I20161004-12:52:37.870(0)? thresh is [object Object]
+I20161004-12:52:37.870(0)? starting
+I20161004-12:52:37.990(0)? selected question 8
+I20161004-12:52:38.042(0)? setting busy flag to 8
+I20161004-12:52:38.064(0)? Averaging array: DONE,BUSY,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY
+I20161004-12:52:38.184(0)? question for experiment 244 changed to 8
+I20161004-12:52:42.593(0)? before the start entry
+I20161004-12:52:42.593(0)? scheduling init timer is true
+I20161004-12:52:42.593(0)? scheduling init counter is 1
+I20161004-12:52:42.593(0)? thresh is [object Object]
+I20161004-12:52:42.594(0)? starting
+I20161004-12:52:42.953(0)? selected question 2
+I20161004-12:52:43.111(0)? setting busy flag to 2
+I20161004-12:52:43.173(0)? Averaging array: DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-12:52:43.387(0)? question for experiment 245 changed to 2
+I20161004-12:52:46.567(0)? before the start entry
+I20161004-12:52:46.567(0)? scheduling init timer is true
+I20161004-12:52:46.567(0)? scheduling init counter is 1
+I20161004-12:52:46.567(0)? thresh is [object Object]
+I20161004-12:52:46.568(0)? starting
+I20161004-12:52:46.963(0)? before the start entry
+I20161004-12:52:46.964(0)? scheduling init timer is true
+I20161004-12:52:46.964(0)? scheduling init counter is 1
+I20161004-12:52:46.964(0)? thresh is [object Object]
+I20161004-12:52:46.965(0)? starting
+I20161004-12:52:47.051(0)? selected question 7
+I20161004-12:52:47.164(0)? setting busy flag to 7
+I20161004-12:52:47.216(0)? Averaging array: BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-12:52:47.417(0)? question for experiment 246 changed to 7
+I20161004-12:52:47.523(0)? selected question 2
+I20161004-12:52:47.679(0)? setting busy flag to 2
+I20161004-12:52:47.767(0)? Averaging array: DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-12:52:48.001(0)? question for experiment 247 changed to 2
+I20161004-12:52:53.066(0)? before the start entry
+I20161004-12:52:53.067(0)? scheduling init timer is true
+I20161004-12:52:53.067(0)? scheduling init counter is 1
+I20161004-12:52:53.067(0)? thresh is [object Object]
+I20161004-12:52:53.067(0)? starting
+I20161004-12:52:53.295(0)? selected question 6
+I20161004-12:52:53.428(0)? setting busy flag to 6
+I20161004-12:52:53.472(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE
+I20161004-12:52:53.596(0)? question for experiment 248 changed to 6
+I20161004-12:52:57.373(0)? before the start entry
+I20161004-12:52:57.374(0)? scheduling init timer is true
+I20161004-12:52:57.374(0)? scheduling init counter is 1
+I20161004-12:52:57.374(0)? thresh is [object Object]
+I20161004-12:52:57.374(0)? starting
+I20161004-12:52:57.689(0)? selected question 7
+I20161004-12:52:57.783(0)? setting busy flag to 7
+I20161004-12:52:57.846(0)? Averaging array: BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-12:52:57.986(0)? question for experiment 249 changed to 7
+I20161004-12:53:03.512(0)? before the start entry
+I20161004-12:53:03.512(0)? scheduling init timer is true
+I20161004-12:53:03.512(0)? scheduling init counter is 1
+I20161004-12:53:03.512(0)? thresh is [object Object]
+I20161004-12:53:03.513(0)? starting
+I20161004-12:53:03.808(0)? selected question 6
+I20161004-12:53:03.944(0)? setting busy flag to 6
+I20161004-12:53:04.034(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY
+I20161004-12:53:04.223(0)? question for experiment 250 changed to 6
+I20161004-12:54:34.912(0)? removing busy flag from 8
+I20161004-12:54:48.733(0)? removing busy flag from 8
+I20161004-12:54:51.499(0)? removing busy flag from 2
+I20161004-12:55:02.940(0)? selected question 0
+I20161004-12:55:03.225(0)? all questions passed for experiment 244
+I20161004-12:55:11.369(0)? selected question 0
+I20161004-12:55:11.500(0)? all questions passed for experiment 243
+I20161004-12:55:14.149(0)? selected question 0
+I20161004-12:55:14.351(0)? all questions passed for experiment 247
+I20161004-12:56:36.628(0)? removing busy flag from 6
+I20161004-12:56:57.763(0)? removing busy flag from 7
+I20161004-12:57:05.375(0)? removing busy flag from 2
+I20161004-12:57:13.904(0)? before the start entry
+I20161004-12:57:13.905(0)? scheduling init timer is true
+I20161004-12:57:13.918(0)? scheduling init counter is 1
+I20161004-12:57:13.918(0)? thresh is [object Object]
+I20161004-12:57:13.918(0)? starting
+I20161004-12:57:14.063(0)? selected question 0
+I20161004-12:57:14.184(0)? setting busy flag to 0
+I20161004-12:57:14.223(0)? question for experiment 251 changed to 0
+I20161004-12:57:42.067(0)? selected question 0
+I20161004-12:57:42.286(0)? all questions passed for experiment 248
+I20161004-12:57:42.454(0)? before the start entry
+I20161004-12:57:42.455(0)? scheduling init timer is true
+I20161004-12:57:42.455(0)? scheduling init counter is 1
+I20161004-12:57:42.455(0)? thresh is [object Object]
+I20161004-12:57:42.455(0)? starting
+I20161004-12:57:42.619(0)? selected question 0
+I20161004-12:57:42.702(0)? setting busy flag to 0
+I20161004-12:57:42.744(0)? question for experiment 252 changed to 0
+I20161004-12:58:10.891(0)? removing busy flag from 7
+I20161004-13:00:16.432(0)? selected question 0
+I20161004-13:00:16.575(0)? all questions passed for experiment 246
+I20161004-13:01:07.836(0)? removing busy flag from 6
+I20161004-13:01:59.039(0)? selected question 7
+I20161004-13:01:59.255(0)? all questions passed for experiment 250
+I20161004-13:02:00.825(0)? selected question 2
+I20161004-13:02:01.032(0)? all questions passed for experiment 249
+I20161004-13:02:20.801(0)? removing busy flag from 0
+I20161004-13:03:21.525(0)? selected question 7
+I20161004-13:03:21.661(0)? all questions passed for experiment 252
+I20161004-13:03:56.796(0)? removing busy flag from 0
+I20161004-13:05:19.041(0)? selected question 2
+I20161004-13:05:19.156(0)? all questions passed for experiment 251
+I20161004-13:30:31.771(0)? before the start entry
+I20161004-13:30:31.771(0)? scheduling init timer is true
+I20161004-13:30:31.771(0)? scheduling init counter is 1
+I20161004-13:30:31.771(0)? thresh is [object Object]
+I20161004-13:30:31.771(0)? starting
+I20161004-13:30:31.862(0)? selected question 6
+I20161004-13:30:31.924(0)? setting busy flag to 6
+I20161004-13:30:31.959(0)? Averaging array: BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-13:30:32.046(0)? question for experiment 253 changed to 6
+I20161004-13:31:21.737(0)? before the start entry
+I20161004-13:31:21.738(0)? scheduling init timer is true
+I20161004-13:31:21.738(0)? scheduling init counter is 1
+I20161004-13:31:21.738(0)? thresh is [object Object]
+I20161004-13:31:21.738(0)? starting
+I20161004-13:31:21.951(0)? selected question 7
+I20161004-13:31:22.035(0)? setting busy flag to 7
+I20161004-13:31:22.074(0)? Averaging array: DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-13:31:22.172(0)? question for experiment 254 changed to 7
+I20161004-13:31:29.430(0)? before the start entry
+I20161004-13:31:29.430(0)? scheduling init timer is true
+I20161004-13:31:29.431(0)? scheduling init counter is 1
+I20161004-13:31:29.431(0)? thresh is [object Object]
+I20161004-13:31:29.431(0)? starting
+I20161004-13:31:29.588(0)? selected question 2
+I20161004-13:31:29.664(0)? setting busy flag to 2
+I20161004-13:31:29.699(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE
+I20161004-13:31:29.843(0)? question for experiment 255 changed to 2
+I20161004-13:31:48.938(0)? before the start entry
+I20161004-13:31:48.939(0)? scheduling init timer is true
+I20161004-13:31:48.939(0)? scheduling init counter is 1
+I20161004-13:31:48.939(0)? thresh is [object Object]
+I20161004-13:31:48.939(0)? starting
+I20161004-13:31:49.087(0)? selected question 6
+I20161004-13:31:49.144(0)? setting busy flag to 6
+I20161004-13:31:49.177(0)? Averaging array: BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-13:31:49.289(0)? question for experiment 256 changed to 6
+I20161004-13:32:20.352(0)? before the start entry
+I20161004-13:32:20.352(0)? scheduling init timer is true
+I20161004-13:32:20.353(0)? scheduling init counter is 1
+I20161004-13:32:20.353(0)? thresh is [object Object]
+I20161004-13:32:20.353(0)? starting
+I20161004-13:32:20.569(0)? selected question 6
+I20161004-13:32:20.658(0)? setting busy flag to 6
+I20161004-13:32:20.701(0)? Averaging array: BUSY,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-13:32:20.910(0)? question for experiment 257 changed to 6
+I20161004-13:32:55.304(0)? before the start entry
+I20161004-13:32:55.305(0)? scheduling init timer is true
+I20161004-13:32:55.305(0)? scheduling init counter is 1
+I20161004-13:32:55.305(0)? thresh is [object Object]
+I20161004-13:32:55.305(0)? starting
+I20161004-13:32:55.456(0)? selected question 2
+I20161004-13:32:55.586(0)? setting busy flag to 2
+I20161004-13:32:55.632(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE
+I20161004-13:32:55.763(0)? question for experiment 258 changed to 2
+I20161004-13:33:35.750(0)? before the start entry
+I20161004-13:33:35.750(0)? scheduling init timer is true
+I20161004-13:33:35.750(0)? scheduling init counter is 1
+I20161004-13:33:35.750(0)? thresh is [object Object]
+I20161004-13:33:35.750(0)? starting
+I20161004-13:33:35.988(0)? selected question 7
+I20161004-13:33:36.080(0)? setting busy flag to 7
+I20161004-13:33:36.138(0)? Averaging array: DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-13:33:36.309(0)? question for experiment 259 changed to 7
+I20161004-13:34:30.960(0)? removing busy flag from 7
+I20161004-13:35:28.200(0)? before the start entry
+I20161004-13:35:28.200(0)? scheduling init timer is true
+I20161004-13:35:28.200(0)? scheduling init counter is 1
+I20161004-13:35:28.201(0)? thresh is [object Object]
+I20161004-13:35:28.201(0)? starting
+I20161004-13:35:28.567(0)? selected question 7
+I20161004-13:35:28.664(0)? setting busy flag to 7
+I20161004-13:35:28.716(0)? Averaging array: DONE,DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE
+I20161004-13:35:28.886(0)? question for experiment 260 changed to 7
+I20161004-13:35:58.110(0)? before the start entry
+I20161004-13:35:58.110(0)? scheduling init timer is true
+I20161004-13:35:58.110(0)? scheduling init counter is 1
+I20161004-13:35:58.110(0)? thresh is [object Object]
+I20161004-13:35:58.110(0)? starting
+I20161004-13:35:58.353(0)? removing busy flag from 6
+W20161004-13:36:14.041(0)? (STDERR) jobDone failed
+I20161004-13:36:27.298(0)? removing busy flag from 2
+I20161004-13:36:41.475(0)? removing busy flag from 7
+W20161004-13:36:50.250(0)? (STDERR) Running job not found otxZ3ubNfjgiudmyR 5dzdRzsLJgEvp65ye
+I20161004-13:37:47.884(0)? selected question 2
+I20161004-13:37:48.074(0)? all questions passed for experiment 255
+I20161004-13:38:05.061(0)? before the start entry
+I20161004-13:38:05.062(0)? scheduling init timer is true
+I20161004-13:38:05.062(0)? scheduling init counter is 1
+I20161004-13:38:05.124(0)? thresh is [object Object]
+I20161004-13:38:05.124(0)? starting
+I20161004-13:38:05.419(0)? selected question 7
+I20161004-13:38:05.581(0)? setting busy flag to 7
+I20161004-13:38:05.661(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE
+I20161004-13:38:05.896(0)? question for experiment 262 changed to 7
+I20161004-13:38:06.796(0)? selected question 2
+I20161004-13:38:06.962(0)? all questions passed for experiment 254
+I20161004-13:38:17.012(0)? removing busy flag from 2
+I20161004-13:38:31.897(0)? before the start entry
+I20161004-13:38:31.897(0)? scheduling init timer is true
+I20161004-13:38:31.897(0)? scheduling init counter is 1
+I20161004-13:38:31.897(0)? thresh is [object Object]
+I20161004-13:38:31.898(0)? starting
+I20161004-13:38:32.222(0)? selected question 7
+I20161004-13:38:32.380(0)? setting busy flag to 7
+I20161004-13:38:32.431(0)? Averaging array: DONE,DONE,DONE,DONE,BUSY,BUSY,BUSY,FREE,FREE,FREE
+I20161004-13:38:32.655(0)? question for experiment 263 changed to 7
+I20161004-13:39:27.242(0)? before the start entry
+I20161004-13:39:27.243(0)? scheduling init timer is true
+I20161004-13:39:27.243(0)? scheduling init counter is 1
+I20161004-13:39:27.243(0)? thresh is [object Object]
+I20161004-13:39:27.243(0)? starting
+I20161004-13:39:34.799(0)? removing busy flag from 7
+I20161004-13:39:48.667(0)? selected question 2
+I20161004-13:39:48.856(0)? all questions passed for experiment 259
+I20161004-13:39:58.376(0)? selected question 2
+I20161004-13:39:58.577(0)? all questions passed for experiment 258
+I20161004-13:40:01.464(0)? removing busy flag from 7
+I20161004-13:40:01.797(0)? before the start entry
+I20161004-13:40:01.798(0)? scheduling init counter is 1
+I20161004-13:40:01.798(0)? thresh is [object Object]
+I20161004-13:40:01.798(0)? starting
+I20161004-13:40:01.797(0)? scheduling init timer is true
+I20161004-13:40:02.153(0)? selected question 7
+I20161004-13:40:02.319(0)? setting busy flag to 7
+I20161004-13:40:02.339(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY,FREE,FREE
+I20161004-13:40:02.541(0)? question for experiment 265 changed to 7
+I20161004-13:40:31.600(0)? removing busy flag from 7
+I20161004-13:40:48.385(0)? removing busy flag from 6
+W20161004-13:40:48.456(0)? (STDERR) Running job not found mKW6z8zC9Eyp9a7y4 uAoAWuDR6WbTvAC79
+I20161004-13:41:33.247(0)? selected question 6
+I20161004-13:41:33.415(0)? all questions passed for experiment 262
+I20161004-13:42:07.712(0)? selected question 7
+I20161004-13:42:07.829(0)? setting busy flag to 7
+I20161004-13:42:07.864(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY,FREE
+I20161004-13:42:07.985(0)? question for experiment 264 changed to 7
+W20161004-13:43:02.879(0)? (STDERR) Running job not found bz7PwCBADKJXsc2su HCn2dRd277MWsMer5
+I20161004-13:43:07.145(0)? removing busy flag from 6
+W20161004-13:43:33.176(0)? (STDERR) Running job not found 7e2EuDkFNAY2gByHw ZLQK6QbSzxfw87Guf
+I20161004-13:43:57.806(0)? before the start entry
+I20161004-13:43:57.806(0)? scheduling init timer is true
+I20161004-13:43:57.807(0)? scheduling init counter is 1
+I20161004-13:43:57.807(0)? thresh is [object Object]
+I20161004-13:43:57.807(0)? starting
+I20161004-13:43:58.163(0)? selected question 7
+I20161004-13:43:58.232(0)? setting busy flag to 7
+I20161004-13:43:58.266(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY,BUSY
+I20161004-13:43:58.381(0)? question for experiment 266 changed to 7
+I20161004-13:44:05.504(0)? selected question 0
+I20161004-13:44:05.654(0)? all questions passed for experiment 256
+I20161004-13:44:07.984(0)? selected question 0
+I20161004-13:44:08.195(0)? all questions passed for experiment 260
+I20161004-13:45:08.151(0)? removing busy flag from 7
+I20161004-13:46:50.014(0)? selected question 0
+I20161004-13:46:50.158(0)? all questions passed for experiment 266
+I20161004-13:51:24.607(0)? removing busy flag from 7
+W20161004-13:51:24.754(0)? (STDERR) Running job not found dLtKzEmz9ZrM29iXq Se9AyoSkuAjDmuXvZ
+I20161004-13:52:12.082(0)? removing busy flag from 7
+W20161004-13:52:12.206(0)? (STDERR) Running job not found FzPqBmQ7uFeDMgLgw W65eeEnnCRFAD4AZK
+I20161004-14:00:52.561(0)? before the start entry
+I20161004-14:00:52.562(0)? scheduling init timer is true
+I20161004-14:00:52.563(0)? scheduling init counter is 1
+I20161004-14:00:52.564(0)? thresh is [object Object]
+I20161004-14:00:52.564(0)? starting
+I20161004-14:00:52.898(0)? selected question 2
+I20161004-14:00:53.044(0)? setting busy flag to 2
+I20161004-14:00:53.096(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE,FREE,FREE
+I20161004-14:00:53.261(0)? question for experiment 267 changed to 2
+I20161004-14:01:09.733(0)? before the start entry
+I20161004-14:01:09.733(0)? scheduling init timer is true
+I20161004-14:01:09.734(0)? scheduling init counter is 1
+I20161004-14:01:09.734(0)? thresh is [object Object]
+I20161004-14:01:09.735(0)? starting
+I20161004-14:01:10.025(0)? selected question 6
+I20161004-14:01:10.135(0)? setting busy flag to 6
+I20161004-14:01:10.170(0)? Averaging array: BUSY,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-14:01:10.313(0)? question for experiment 268 changed to 6
+W20161004-14:01:25.314(0)? (STDERR) Running job not found c7urGdpyqFqPTuNMn CXpRGPoGANHPWC7EN
+W20161004-14:02:12.826(0)? (STDERR) Running job not found yKgHpyehCS7qWzZmb uPnd5n7QF5KCLpvrz
+I20161004-14:05:11.405(0)? removing busy flag from 2
+I20161004-14:06:27.624(0)? selected question 0
+I20161004-14:06:27.747(0)? all questions passed for experiment 267
+I20161004-14:06:55.238(0)? removing busy flag from 6
+I20161004-14:07:40.161(0)? selected question 6
+I20161004-14:07:40.233(0)? all questions passed for experiment 268
+I20161004-14:10:32.335(0)? before the start entry
+I20161004-14:10:32.335(0)? scheduling init timer is true
+I20161004-14:10:32.335(0)? scheduling init counter is 1
+I20161004-14:10:32.335(0)? thresh is [object Object]
+I20161004-14:10:32.335(0)? starting
+I20161004-14:10:32.492(0)? selected question 2
+I20161004-14:10:32.601(0)? setting busy flag to 2
+I20161004-14:10:32.621(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE,FREE
+I20161004-14:10:32.725(0)? question for experiment 269 changed to 2
+I20161004-14:10:45.147(0)? before the start entry
+I20161004-14:10:45.147(0)? scheduling init timer is true
+I20161004-14:10:45.147(0)? scheduling init counter is 1
+I20161004-14:10:45.148(0)? thresh is [object Object]
+I20161004-14:10:45.148(0)? starting
+I20161004-14:10:45.253(0)? selected question 7
+I20161004-14:10:45.297(0)? setting busy flag to 7
+I20161004-14:10:45.327(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE,DONE
+I20161004-14:10:45.425(0)? question for experiment 270 changed to 7
+I20161004-14:10:59.747(0)? before the start entry
+I20161004-14:10:59.747(0)? scheduling init timer is true
+I20161004-14:10:59.747(0)? scheduling init counter is 1
+I20161004-14:10:59.748(0)? thresh is [object Object]
+I20161004-14:10:59.748(0)? starting
+I20161004-14:10:59.912(0)? selected question 6
+I20161004-14:10:59.968(0)? setting busy flag to 6
+I20161004-14:10:59.987(0)? Averaging array: DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-14:11:00.087(0)? question for experiment 271 changed to 6
+I20161004-14:11:02.708(0)? before the start entry
+I20161004-14:11:02.731(0)? scheduling init timer is true
+I20161004-14:11:02.731(0)? scheduling init counter is 1
+I20161004-14:11:02.732(0)? thresh is [object Object]
+I20161004-14:11:02.732(0)? starting
+I20161004-14:11:02.880(0)? selected question 2
+I20161004-14:11:02.974(0)? setting busy flag to 2
+I20161004-14:11:02.981(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY,FREE
+I20161004-14:11:03.132(0)? question for experiment 272 changed to 2
+I20161004-14:13:12.313(0)? removing busy flag from 2
+I20161004-14:13:38.949(0)? before the start entry
+I20161004-14:13:38.949(0)? scheduling init timer is true
+I20161004-14:13:38.949(0)? scheduling init counter is 1
+I20161004-14:13:38.950(0)? thresh is [object Object]
+I20161004-14:13:38.950(0)? starting
+I20161004-14:13:39.233(0)? selected question 7
+I20161004-14:13:39.325(0)? setting busy flag to 7
+I20161004-14:13:39.358(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY,DONE
+I20161004-14:13:39.459(0)? question for experiment 273 changed to 7
+I20161004-14:14:03.183(0)? selected question 0
+I20161004-14:14:03.328(0)? all questions passed for experiment 269
+I20161004-14:15:34.527(0)? before the start entry
+I20161004-14:15:34.528(0)? scheduling init timer is true
+I20161004-14:15:34.528(0)? scheduling init counter is 1
+I20161004-14:15:34.528(0)? thresh is [object Object]
+I20161004-14:15:34.528(0)? starting
+I20161004-14:15:34.768(0)? selected question 0
+I20161004-14:15:34.882(0)? setting busy flag to 0
+I20161004-14:15:34.970(0)? question for experiment 274 changed to 0
+I20161004-14:15:37.953(0)? removing busy flag from 7
+I20161004-14:16:02.366(0)? before the start entry
+I20161004-14:16:02.366(0)? scheduling init timer is true
+I20161004-14:16:02.366(0)? scheduling init counter is 1
+I20161004-14:16:02.366(0)? thresh is [object Object]
+I20161004-14:16:02.367(0)? starting
+I20161004-14:16:02.562(0)? selected question 0
+I20161004-14:16:02.672(0)? setting busy flag to 0
+I20161004-14:16:02.715(0)? question for experiment 275 changed to 0
+I20161004-14:16:28.095(0)? removing busy flag from 7
+I20161004-14:16:40.228(0)? before the start entry
+I20161004-14:16:40.229(0)? scheduling init timer is true
+I20161004-14:16:40.229(0)? scheduling init counter is 1
+I20161004-14:16:40.229(0)? thresh is [object Object]
+I20161004-14:16:40.229(0)? starting
+I20161004-14:16:40.741(0)? selected question 7
+I20161004-14:16:40.930(0)? setting busy flag to 7
+I20161004-14:16:40.969(0)? Averaging array: BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-14:16:41.236(0)? question for experiment 276 changed to 7
+I20161004-14:16:55.549(0)? before the start entry
+I20161004-14:16:55.550(0)? scheduling init timer is true
+I20161004-14:16:55.550(0)? scheduling init counter is 1
+I20161004-14:16:55.550(0)? thresh is [object Object]
+I20161004-14:16:55.550(0)? starting
+I20161004-14:16:55.970(0)? selected question 6
+I20161004-14:16:56.113(0)? setting busy flag to 6
+I20161004-14:16:56.162(0)? Averaging array: DONE,DONE,BUSY,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE
+I20161004-14:16:56.358(0)? question for experiment 277 changed to 6
+I20161004-14:17:48.332(0)? selected question 6
+I20161004-14:17:48.534(0)? all questions passed for experiment 273
+I20161004-14:19:47.218(0)? removing busy flag from 7
+I20161004-14:20:30.183(0)? removing busy flag from 0
+I20161004-14:21:52.418(0)? selected question 0
+I20161004-14:21:52.693(0)? all questions passed for experiment 274
+I20161004-14:22:01.131(0)? before the start entry
+I20161004-14:22:01.131(0)? scheduling init timer is true
+I20161004-14:22:01.132(0)? scheduling init counter is 1
+I20161004-14:22:01.132(0)? thresh is [object Object]
+I20161004-14:22:01.132(0)? starting
+I20161004-14:22:01.469(0)? selected question 6
+I20161004-14:22:01.563(0)? setting busy flag to 6
+I20161004-14:22:01.597(0)? Averaging array: DONE,DONE,BUSY,BUSY,BUSY,BUSY,FREE,FREE,FREE,FREE
+I20161004-14:22:01.792(0)? question for experiment 278 changed to 6
+I20161004-14:22:08.244(0)? removing busy flag from 2
+W20161004-14:22:08.336(0)? (STDERR) Running job not found KRcB7kDHNHEGpsvCo kSohbNPcxnQ6EasaB
+I20161004-14:22:09.913(0)? removing busy flag from 6
+W20161004-14:22:09.957(0)? (STDERR) Running job not found zZHmWbQEu25XqsPGD fu7tqzYZkH6upJPKx
+I20161004-14:22:27.510(0)? removing busy flag from 6
+I20161004-14:22:30.387(0)? selected question 2
+I20161004-14:22:30.575(0)? all questions passed for experiment 270
+I20161004-14:23:16.775(0)? selected question 6
+I20161004-14:23:16.911(0)? all questions passed for experiment 276
+I20161004-14:24:39.770(0)? selected question 7
+I20161004-14:24:39.958(0)? all questions passed for experiment 277
+I20161004-14:26:08.840(0)? before the start entry
+I20161004-14:26:08.840(0)? scheduling init timer is true
+I20161004-14:26:08.841(0)? scheduling init counter is 1
+I20161004-14:26:08.841(0)? thresh is [object Object]
+I20161004-14:26:08.841(0)? starting
+I20161004-14:26:09.094(0)? selected question 2
+I20161004-14:26:09.229(0)? setting busy flag to 2
+I20161004-14:26:09.281(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,FREE
+I20161004-14:26:09.434(0)? question for experiment 279 changed to 2
+I20161004-14:26:16.927(0)? removing busy flag from 0
+W20161004-14:26:16.971(0)? (STDERR) Running job not found N9x2na9bKJbC6zPzj wBLA4S3W8chigiFad
+I20161004-14:29:43.696(0)? before the start entry
+I20161004-14:29:43.696(0)? scheduling init timer is true
+I20161004-14:29:43.696(0)? scheduling init counter is 1
+I20161004-14:29:43.696(0)? thresh is [object Object]
+I20161004-14:29:43.697(0)? starting
+I20161004-14:29:43.838(0)? selected question 0
+I20161004-14:29:43.940(0)? setting busy flag to 0
+I20161004-14:29:43.977(0)? question for experiment 280 changed to 0
+I20161004-14:30:08.199(0)? before the start entry
+I20161004-14:30:08.199(0)? scheduling init timer is true
+I20161004-14:30:08.200(0)? scheduling init counter is 1
+I20161004-14:30:08.200(0)? thresh is [object Object]
+I20161004-14:30:08.200(0)? starting
+I20161004-14:30:08.394(0)? selected question 2
+I20161004-14:30:08.468(0)? setting busy flag to 2
+I20161004-14:30:08.502(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,BUSY
+I20161004-14:30:08.637(0)? question for experiment 281 changed to 2
+I20161004-14:31:46.586(0)? before the start entry
+I20161004-14:31:46.587(0)? scheduling init timer is true
+I20161004-14:31:46.587(0)? scheduling init counter is 1
+I20161004-14:31:46.587(0)? thresh is [object Object]
+I20161004-14:31:46.587(0)? starting
+I20161004-14:31:46.807(0)? selected question 0
+I20161004-14:31:46.917(0)? setting busy flag to 0
+I20161004-14:31:46.966(0)? question for experiment 282 changed to 0
+I20161004-14:32:57.415(0)? removing busy flag from 6
+W20161004-14:32:57.500(0)? (STDERR) Running job not found Gx45R7T8rYToLWjeP EuG2eeW3uu2XzMGQh
+I20161004-14:33:42.430(0)? removing busy flag from 0
+I20161004-14:34:55.493(0)? selected question 0
+I20161004-14:34:55.647(0)? all questions passed for experiment 280
+I20161004-14:36:14.087(0)? removing busy flag from 2
+W20161004-14:36:14.166(0)? (STDERR) Running job not found Njshq6j6PRGYqkHq2 ZrbDERa3S2TPEFHJ8
+I20161004-14:36:50.117(0)? removing busy flag from 2
+I20161004-14:37:58.988(0)? selected question 2
+I20161004-14:37:59.128(0)? all questions passed for experiment 281
+I20161004-14:40:13.665(0)? removing busy flag from 0
+I20161004-14:41:14.016(0)? selected question 0
+I20161004-14:41:14.101(0)? all questions passed for experiment 282
+I20161004-14:49:05.832(0)? before the start entry
+I20161004-14:49:05.832(0)? scheduling init timer is true
+I20161004-14:49:05.832(0)? scheduling init counter is 1
+I20161004-14:49:05.832(0)? thresh is [object Object]
+I20161004-14:49:05.833(0)? starting
+I20161004-14:49:06.182(0)? selected question 7
+I20161004-14:49:06.302(0)? setting busy flag to 7
+I20161004-14:49:06.384(0)? Averaging array: DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-14:49:06.466(0)? question for experiment 283 changed to 7
+I20161004-14:49:06.692(0)? before the start entry
+I20161004-14:49:06.692(0)? scheduling init timer is true
+I20161004-14:49:06.692(0)? scheduling init counter is 1
+I20161004-14:49:06.692(0)? thresh is [object Object]
+I20161004-14:49:06.693(0)? starting
+I20161004-14:49:06.913(0)? selected question 2
+I20161004-14:49:06.982(0)? setting busy flag to 2
+I20161004-14:49:07.009(0)? Averaging array: DONE,DONE,DONE,DONE,DONE,DONE,DONE,DONE,BUSY,DONE
+I20161004-14:49:07.466(0)? question for experiment 284 changed to 2
+I20161004-14:49:10.659(0)? before the start entry
+I20161004-14:49:10.659(0)? scheduling init timer is true
+I20161004-14:49:10.659(0)? scheduling init counter is 1
+I20161004-14:49:10.660(0)? thresh is [object Object]
+I20161004-14:49:10.660(0)? starting
+I20161004-14:49:10.862(0)? selected question 0
+I20161004-14:49:11.028(0)? setting busy flag to 0
+I20161004-14:49:11.113(0)? question for experiment 285 changed to 0
+I20161004-14:49:18.833(0)? before the start entry
+I20161004-14:49:18.834(0)? scheduling init timer is true
+I20161004-14:49:18.834(0)? scheduling init counter is 1
+I20161004-14:49:18.834(0)? thresh is [object Object]
+I20161004-14:49:18.834(0)? starting
+I20161004-14:49:18.956(0)? selected question 0
+I20161004-14:49:19.046(0)? setting busy flag to 0
+I20161004-14:49:19.087(0)? question for experiment 286 changed to 0
+I20161004-14:49:21.298(0)? before the start entry
+I20161004-14:49:21.298(0)? scheduling init timer is true
+I20161004-14:49:21.298(0)? scheduling init counter is 1
+I20161004-14:49:21.298(0)? thresh is [object Object]
+I20161004-14:49:21.299(0)? starting
+I20161004-14:49:21.463(0)? selected question 0
+I20161004-14:49:21.572(0)? setting busy flag to 0
+I20161004-14:49:21.633(0)? question for experiment 287 changed to 0
+I20161004-14:50:26.268(0)? removing busy flag from 2
+I20161004-14:50:55.320(0)? selected question 6
+I20161004-14:50:55.455(0)? all questions passed for experiment 284
+I20161004-14:51:10.508(0)? removing busy flag from 7
+I20161004-14:52:14.011(0)? removing busy flag from 0
+I20161004-14:52:49.628(0)? removing busy flag from 0
+I20161004-14:53:30.583(0)? selected question 2
+I20161004-14:53:30.721(0)? all questions passed for experiment 287
+I20161004-14:53:48.493(0)? before the start entry
+I20161004-14:53:48.493(0)? scheduling init timer is true
+I20161004-14:53:48.494(0)? scheduling init counter is 1
+I20161004-14:53:48.494(0)? thresh is [object Object]
+I20161004-14:53:48.494(0)? starting
+I20161004-14:53:48.887(0)? selected question 6
+I20161004-14:53:48.985(0)? setting busy flag to 6
+I20161004-14:53:49.035(0)? Averaging array: DONE,DONE,BUSY,BUSY,DONE,FREE,FREE,FREE,FREE,FREE
+I20161004-14:53:49.223(0)? question for experiment 288 changed to 6
+W20161004-14:54:11.346(0)? (STDERR) jobDone failed
+I20161004-14:54:11.632(0)? selected question 2
+I20161004-14:54:11.848(0)? all questions passed for experiment 285
+I20161004-14:55:45.988(0)? removing busy flag from 0
+I20161004-14:56:02.918(0)? selected question 7
+I20161004-14:56:03.044(0)? all questions passed for experiment 283
+I20161004-14:56:33.441(0)? before the start entry
+I20161004-14:56:33.441(0)? scheduling init timer is true
+I20161004-14:56:33.441(0)? scheduling init counter is 1
+I20161004-14:56:33.441(0)? thresh is [object Object]
+I20161004-14:56:33.441(0)? starting
+I20161004-14:56:33.586(0)? selected question 2
+I20161004-14:56:33.648(0)? setting busy flag to 2
+I20161004-14:56:33.693(0)? Averaging array: BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-14:56:33.805(0)? question for experiment 289 changed to 2
+I20161004-14:57:58.721(0)? selected question 7
+I20161004-14:57:58.824(0)? all questions passed for experiment 286
+I20161004-14:59:26.364(0)? removing busy flag from 6
+I20161004-14:59:29.073(0)? removing busy flag from 2
+I20161004-14:59:57.793(0)? selected question 2
+I20161004-14:59:57.881(0)? all questions passed for experiment 288
+I20161004-15:00:11.071(0)? selected question 6
+I20161004-15:00:11.165(0)? all questions passed for experiment 289
+I20161004-15:10:56.512(0)? before the start entry
+I20161004-15:10:56.513(0)? scheduling init timer is true
+I20161004-15:10:56.513(0)? scheduling init counter is 1
+I20161004-15:10:56.513(0)? thresh is [object Object]
+I20161004-15:10:56.513(0)? starting
+I20161004-15:10:56.611(0)? selected question 6
+I20161004-15:10:56.654(0)? setting busy flag to 6
+I20161004-15:10:56.677(0)? Averaging array: DONE,DONE,BUSY,DONE,DONE,BUSY,FREE,FREE,FREE,FREE
+I20161004-15:10:56.786(0)? question for experiment 290 changed to 6
+I20161004-15:12:36.198(0)? before the start entry
+I20161004-15:12:36.198(0)? scheduling init timer is true
+I20161004-15:12:36.198(0)? scheduling init counter is 1
+I20161004-15:12:36.198(0)? thresh is [object Object]
+I20161004-15:12:36.199(0)? starting
+I20161004-15:12:36.369(0)? selected question 7
+I20161004-15:12:36.465(0)? setting busy flag to 7
+I20161004-15:12:36.500(0)? Averaging array: DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-15:12:36.724(0)? question for experiment 291 changed to 7
+I20161004-15:14:20.615(0)? removing busy flag from 6
+I20161004-15:15:49.626(0)? selected question 6
+I20161004-15:15:49.728(0)? all questions passed for experiment 290
+I20161004-15:20:45.891(0)? before the start entry
+I20161004-15:20:45.892(0)? scheduling init timer is true
+I20161004-15:20:45.892(0)? scheduling init counter is 1
+I20161004-15:20:45.892(0)? thresh is [object Object]
+I20161004-15:20:45.892(0)? starting
+I20161004-15:20:46.037(0)? selected question 0
+I20161004-15:20:46.082(0)? setting busy flag to 0
+I20161004-15:20:46.119(0)? question for experiment 292 changed to 0
+I20161004-15:23:31.158(0)? removing busy flag from 0
+I20161004-15:24:37.795(0)? selected question 6
+I20161004-15:24:37.957(0)? all questions passed for experiment 292
+I20161004-15:25:35.558(0)? removing busy flag from 7
+W20161004-15:25:35.661(0)? (STDERR) Running job not found NgD4gwCFun54fgX47 dXDLxGFoR5oQiyxr6
+I20161004-15:27:58.141(0)? before the start entry
+I20161004-15:27:58.141(0)? scheduling init timer is true
+I20161004-15:27:58.141(0)? scheduling init counter is 1
+I20161004-15:27:58.142(0)? thresh is [object Object]
+I20161004-15:27:58.142(0)? starting
+I20161004-15:27:58.354(0)? selected question 7
+I20161004-15:27:58.374(0)? setting busy flag to 7
+I20161004-15:27:58.425(0)? Averaging array: DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-15:27:58.490(0)? question for experiment 293 changed to 7
+I20161004-15:28:01.304(0)? before the start entry
+I20161004-15:28:01.304(0)? scheduling init timer is true
+I20161004-15:28:01.304(0)? scheduling init counter is 1
+I20161004-15:28:01.305(0)? thresh is [object Object]
+I20161004-15:28:01.305(0)? starting
+I20161004-15:28:01.417(0)? selected question 2
+I20161004-15:28:01.492(0)? setting busy flag to 2
+I20161004-15:28:01.508(0)? Averaging array: DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-15:28:01.605(0)? question for experiment 294 changed to 2
+I20161004-15:28:19.464(0)? before the start entry
+I20161004-15:28:19.465(0)? scheduling init timer is true
+I20161004-15:28:19.465(0)? scheduling init counter is 1
+I20161004-15:28:19.465(0)? thresh is [object Object]
+I20161004-15:28:19.465(0)? starting
+I20161004-15:28:19.689(0)? selected question 2
+I20161004-15:28:19.797(0)? setting busy flag to 2
+I20161004-15:28:19.846(0)? Averaging array: DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-15:28:19.989(0)? question for experiment 295 changed to 2
+I20161004-15:29:20.164(0)? before the start entry
+I20161004-15:29:20.164(0)? scheduling init timer is true
+I20161004-15:29:20.165(0)? scheduling init counter is 1
+I20161004-15:29:20.165(0)? thresh is [object Object]
+I20161004-15:29:20.165(0)? starting
+I20161004-15:29:20.804(0)? selected question 6
+I20161004-15:29:20.936(0)? setting busy flag to 6
+I20161004-15:29:20.993(0)? Averaging array: DONE,DONE,BUSY,DONE,DONE,DONE,BUSY,FREE,FREE,FREE
+I20161004-15:29:21.203(0)? question for experiment 296 changed to 6
+I20161004-15:29:59.972(0)? removing busy flag from 2
+I20161004-15:30:53.273(0)? selected question 7
+I20161004-15:30:53.464(0)? all questions passed for experiment 294
+I20161004-15:31:04.850(0)? removing busy flag from 6
+I20161004-15:32:25.127(0)? selected question 7
+I20161004-15:32:25.269(0)? all questions passed for experiment 296
+I20161004-15:32:46.786(0)? removing busy flag from 2
+I20161004-15:33:08.964(0)? removing busy flag from 7
+I20161004-15:35:09.105(0)? selected question 2
+I20161004-15:35:09.221(0)? all questions passed for experiment 295
+W20161004-15:35:36.233(0)? (STDERR) Running job not found XjvKNxqRoQwbaTBqZ YpAdA7qzyDGKNBsYZ
+I20161004-15:36:22.310(0)? before the start entry
+I20161004-15:36:22.311(0)? scheduling init timer is true
+I20161004-15:36:22.311(0)? scheduling init counter is 1
+I20161004-15:36:22.311(0)? thresh is [object Object]
+I20161004-15:36:22.311(0)? starting
+I20161004-15:36:22.525(0)? selected question 2
+I20161004-15:36:22.627(0)? setting busy flag to 2
+I20161004-15:36:22.656(0)? Averaging array: DONE,DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-15:36:22.797(0)? question for experiment 297 changed to 2
+I20161004-15:37:42.349(0)? selected question 2
+I20161004-15:37:42.467(0)? all questions passed for experiment 293
+I20161004-15:37:46.082(0)? before the start entry
+I20161004-15:37:46.082(0)? scheduling init timer is true
+I20161004-15:37:46.083(0)? scheduling init counter is 1
+I20161004-15:37:46.083(0)? thresh is [object Object]
+I20161004-15:37:46.083(0)? starting
+I20161004-15:37:46.223(0)? selected question 2
+I20161004-15:37:46.281(0)? setting busy flag to 2
+I20161004-15:37:46.315(0)? Averaging array: DONE,DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE
+I20161004-15:37:46.421(0)? question for experiment 298 changed to 2
+I20161004-15:39:56.565(0)? before the start entry
+I20161004-15:39:56.565(0)? scheduling init timer is true
+I20161004-15:39:56.565(0)? scheduling init counter is 1
+I20161004-15:39:56.565(0)? thresh is [object Object]
+I20161004-15:39:56.565(0)? starting
+I20161004-15:39:56.872(0)? selected question 6
+I20161004-15:39:56.944(0)? setting busy flag to 6
+I20161004-15:39:57.000(0)? Averaging array: DONE,DONE,BUSY,DONE,DONE,DONE,DONE,BUSY,FREE,FREE
+I20161004-15:39:57.109(0)? question for experiment 299 changed to 6
+W20161004-15:41:23.251(0)? (STDERR) Running job not found eup2QvgAuv44s9FMN qNDh4NMkqXpjjpDqG
+I20161004-15:42:14.373(0)? before the start entry
+I20161004-15:42:14.373(0)? scheduling init timer is true
+I20161004-15:42:14.373(0)? scheduling init counter is 1
+I20161004-15:42:14.373(0)? thresh is [object Object]
+I20161004-15:42:14.374(0)? starting
+I20161004-15:42:14.605(0)? selected question 0
+I20161004-15:42:14.704(0)? setting busy flag to 0
+I20161004-15:42:14.754(0)? question for experiment 300 changed to 0
+W20161004-15:42:47.181(0)? (STDERR) Running job not found GdZ3djiHDxmM6wPXD hgANhX39M3Zx2LqEn
+I20161004-15:50:26.533(0)? before the start entry
+I20161004-15:50:26.534(0)? scheduling init timer is true
+I20161004-15:50:26.534(0)? scheduling init counter is 1
+I20161004-15:50:26.535(0)? thresh is [object Object]
+I20161004-15:50:26.535(0)? starting
+I20161004-15:53:17.314(0)? selected question 6
+I20161004-15:53:24.153(0)? before the start entry
+I20161004-15:53:24.153(0)? scheduling init timer is true
+I20161004-15:53:24.153(0)? scheduling init counter is 1
+I20161004-15:53:24.153(0)? thresh is [object Object]
+I20161004-15:53:24.153(0)? starting
+I20161004-15:54:25.197(0)? before the start entry
+I20161004-15:54:25.198(0)? scheduling init timer is true
+I20161004-15:54:25.199(0)? scheduling init counter is 2
+I20161004-15:54:25.199(0)? thresh is [object Object]
+I20161004-15:54:25.200(0)? starting
+I20161004-15:54:30.296(0)? before the start entry
+I20161004-15:54:30.296(0)? scheduling init timer is true
+I20161004-15:54:30.296(0)? scheduling init counter is 2
+I20161004-15:54:30.297(0)? thresh is [object Object]
+I20161004-15:54:30.297(0)? starting
+I20161004-15:55:36.146(0)? before the start entry
+I20161004-15:55:36.146(0)? scheduling init timer is true
+I20161004-15:55:36.167(0)? scheduling init counter is 1
+I20161004-15:55:36.167(0)? thresh is [object Object]
+I20161004-15:55:36.167(0)? starting
+I20161004-15:55:44.696(0)? setting busy flag to 6
+I20161004-15:56:39.515(0)? Exception while invoking method 'initialPost' TypeError: Cannot read property 'current_answer' of undefined
+I20161004-15:56:39.515(0)?     at [object Object].Meteor.methods.beginQuestionScheduler (server/main.js:612:47)
+I20161004-15:56:39.515(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-15:56:39.515(0)?     at livedata_server.js:1611:18
+I20161004-15:56:39.516(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-15:56:39.516(0)?     at [object Object]._.extend.apply (livedata_server.js:1610:45)
+I20161004-15:56:39.516(0)?     at [object Object]._.extend.call (livedata_server.js:1553:17)
+I20161004-15:56:39.516(0)?     at [object Object].Meteor.methods.initialPost (server/main.js:201:20)
+I20161004-15:56:39.516(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-15:56:39.516(0)?     at livedata_server.js:708:19
+I20161004-15:56:39.516(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-15:56:41.191(0)? before the start entry
+I20161004-15:56:41.192(0)? scheduling init timer is true
+I20161004-15:56:41.192(0)? scheduling init counter is 1
+I20161004-15:56:41.193(0)? thresh is [object Object]
+I20161004-15:56:41.209(0)? starting
+I20161004-15:56:45.292(0)? Averaging array: DONE,DONE,BUSY,DONE,DONE,DONE,DONE,BUSY,BUSY,FREE
+I20161004-15:59:15.253(0)? before the start entry
+I20161004-15:59:15.254(0)? scheduling init timer is true
+I20161004-15:59:15.254(0)? scheduling init counter is 1
+I20161004-15:59:15.255(0)? thresh is [object Object]
+I20161004-15:59:15.255(0)? starting
+I20161004-15:59:16.430(0)? selected question 6
+I20161004-16:00:10.801(0)? question for experiment 301 changed to 6
+I20161004-16:01:01.180(0)? before the start entry
+I20161004-16:01:01.181(0)? scheduling init timer is true
+I20161004-16:01:01.181(0)? scheduling init counter is 1
+I20161004-16:01:01.181(0)? thresh is [object Object]
+I20161004-16:01:01.181(0)? starting
+I20161004-16:01:06.183(0)? selected question 6
+I20161004-16:02:21.639(0)? setting busy flag to 6
+I20161004-16:02:31.737(0)? selected question 7
+I20161004-16:03:21.752(0)? Averaging array: DONE,DONE,BUSY,DONE,DONE,DONE,DONE,BUSY,BUSY,BUSY
+I20161004-16:03:53.877(0)? all questions passed for experiment 302
+I20161004-16:04:24.917(0)? Exception while invoking method 'initialPost' TypeError: Cannot read property 'timer' of undefined
+I20161004-16:04:24.917(0)?     at [object Object].Meteor.methods.beginQuestionScheduler (server/main.js:767:93)
+I20161004-16:04:24.918(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-16:04:24.918(0)?     at livedata_server.js:1611:18
+I20161004-16:04:24.918(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-16:04:24.918(0)?     at [object Object]._.extend.apply (livedata_server.js:1610:45)
+I20161004-16:04:24.918(0)?     at [object Object]._.extend.call (livedata_server.js:1553:17)
+I20161004-16:04:24.918(0)?     at [object Object].Meteor.methods.initialPost (server/main.js:201:20)
+I20161004-16:04:24.918(0)?     at maybeAuditArgumentChecks (livedata_server.js:1698:12)
+I20161004-16:04:24.919(0)?     at livedata_server.js:708:19
+I20161004-16:04:24.919(0)?     at [object Object]._.extend.withValue (packages/meteor/dynamics_nodejs.js:56:1)
+I20161004-16:04:28.405(0)? selected question 0
+I20161004-16:05:12.667(0)? setting busy flag to 7
+I20161004-16:05:40.957(0)? selected question 0
+I20161004-16:06:09.375(0)? Averaging array: DONE,DONE,DONE,BUSY,FREE,FREE,FREE,FREE,FREE,FREE
+I20161004-16:06:18.276(0)? question for experiment 302 changed to 6
+I20161004-16:06:50.600(0)? setting busy flag to 0
+I20161004-16:07:00.838(0)? selected question 7
+I20161004-16:07:04.959(0)? before the start entry
+I20161004-16:07:04.959(0)? scheduling init timer is true
+I20161004-16:07:04.960(0)? scheduling init counter is 1
+I20161004-16:07:04.961(0)? thresh is [object Object]
+I20161004-16:07:04.974(0)? starting
+I20161004-16:07:14.336(0)? setting busy flag to 0
+I20161004-16:07:23.608(0)? question for experiment 306 changed to 0
+I20161004-16:07:24.812(0)? question for experiment 303 changed to 7
+I20161004-16:07:24.850(0)? question for experiment 307 changed to 0
+I20161004-16:07:38.995(0)? removing busy flag from 6
+W20161004-16:07:47.324(0)? (STDERR) Running job not found KidgAdwqiNnZxZku7 TfpHbFftDcwDpEhuW
+I20161004-16:07:47.830(0)? setting busy flag to 7
+I20161004-16:07:53.846(0)? Averaging array: DONE,DONE,DONE,BUSY,BUSY,FREE,FREE,FREE,FREE,FREE
+I20161004-16:07:56.737(0)? question for experiment 304 changed to 7
+I20161004-16:07:56.868(0)? selected question 2
+I20161004-16:07:57.039(0)? setting busy flag to 2
+I20161004-16:07:57.111(0)? Averaging array: DONE,DONE,DONE,BUSY,BUSY,BUSY,FREE,FREE,FREE,FREE
+I20161004-16:07:57.509(0)? question for experiment 309 changed to 2
+I20161004-16:07:57.569(0)? removing busy flag from 2
+W20161004-16:07:57.718(0)? (STDERR) Running job not found vi6pENE2A9YjCZsKG 8kgT7CzfKNQ2EKSFb
+I20161004-16:07:58.275(0)? removing busy flag from 2
+W20161004-16:07:58.350(0)? (STDERR) Running job not found XsWHLKqsjWAWwJPwh 7qWYTosSeTj6ruPhj
+I20161004-16:07:58.831(0)? removing busy flag from 0
+W20161004-16:07:58.919(0)? (STDERR) Running job not found 4wypq7zTh2NxW8PNE QQBaeo5gBtKqS3NWX
+W20161004-16:07:59.317(0)? (STDERR) Running job not found BnhxLkEJPkrvDZgaS a74bcqWepne9KCa3Y
+W20161004-16:12:41.625(0)? (STDERR) Running job not found pdWmbsBazBeFRYHzw SBwWPEacA8hARuLcg
+W20161004-16:12:48.027(0)? (STDERR) Running job not found ydwaDkWHm2EMbvzCe qG6NMDPgu8EzM27C2
+W20161004-16:12:52.189(0)? (STDERR) Running job not found RDmZBrus3c4mzFmrq m3wYc2xpspWuNrZ3P
+W20161004-16:12:58.022(0)? (STDERR) Running job not found m6ZjZcMFi3ozbr9ws LjCXtG4ATWueijAH4
+W20161004-16:12:58.832(0)? (STDERR) Running job not found HzgMQ35dZT3zQJcJW na8T74yjus4WqrjQZ
+I20161004-16:15:24.006(0)? before the start entry
+I20161004-16:15:24.006(0)? scheduling init timer is true
+I20161004-16:15:24.006(0)? scheduling init counter is 1
+I20161004-16:15:24.006(0)? thresh is [object Object]
+I20161004-16:15:24.006(0)? starting
+I20161004-16:15:24.275(0)? removing busy flag from 2
+I20161004-16:16:15.869(0)? before the start entry
+I20161004-16:16:15.869(0)? scheduling init timer is true
+I20161004-16:16:15.869(0)? scheduling init counter is 1
+I20161004-16:16:15.870(0)? thresh is [object Object]
+I20161004-16:16:15.870(0)? starting
+I20161004-16:16:16.218(0)? selected question 2
+I20161004-16:16:16.349(0)? setting busy flag to 2
+I20161004-16:16:16.432(0)? Averaging array: DONE,DONE,DONE,BUSY,FREE,BUSY,FREE,FREE,FREE,FREE
+I20161004-16:16:16.596(0)? question for experiment 311 changed to 2
+I20161004-16:18:00.334(0)? removing busy flag from 6
+W20161004-16:18:00.415(0)? (STDERR) Running job not found TB3GhAdS4iygnD4k8 Nd96h96c4o2SoJb3P
+

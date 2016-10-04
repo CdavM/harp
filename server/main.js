@@ -139,19 +139,23 @@ Meteor.methods({
             });
             return;
         }
-        var experiment_id_value = experiment_id_counter;
+        var experiment_id_value = post.worker_ID;//experiment_id_counter;
         var begin_time_val = new Date().getTime();
         Answers.update({
             worker_ID: post.worker_ID
         }, {
             $set: {
+                worker_ID: post.worker_ID,
+                asg_ID: post.asg_ID,
+                hit_ID: post.hit_ID,
+                initial_time: post.initial_time,
                 begin_time: begin_time_val,
                 experiment_id: experiment_id_value,
                 avg_payment: 0,
                 experiment_finished: false,
                 latest_time: begin_time_val
             }
-        });
+        },{upsert: true});
 
         var scheduling_entry = Scheduling.findOne({'experiment_ID': experiment_id_value});
         if (scheduling_entry) {
@@ -181,13 +185,13 @@ Meteor.methods({
         console.log("before the start entry");
         console.log("scheduling init timer is " + scheduling_entry.initial_timer);
         console.log("scheduling init counter is " + scheduling_entry.initial_counter);
-        console.log("thresh is " + Meteor.settings);
+        // console.log("thresh is " + threshold);
 
 
         if (scheduling_entry.initial_timer && scheduling_entry.initial_counter >= threshold) {
             //call this when we get threshold entries
             experiment_id_counter++;
-            console.log("starting");
+            console.log("starting experiment " + experiment_id_counter);
             Answers.update({
                 experiment_id: experiment_id_value
             }, {
@@ -609,6 +613,14 @@ Meteor.methods({
             JobsWorker.collection.remove({"type": "TimeoutJob", "data.experiment_ID": experiment_id_value});
         }
         //always update timer
+        if (!curr_experiment){
+          curr_experiment = Answers.findOne({
+              experiment_id: experiment_id_value
+          });
+          if (!curr_experiment){
+            console.log('experiment id is missing from database: ' + experiment_id_value)
+          }
+        }
         var curr_answer_form = curr_experiment.current_answer;
         if (curr_answer_form < Meteor.settings.public.answer_forms.length - 1) {
             //question not done yet
@@ -764,7 +776,14 @@ Meteor.methods({
         curr_experiment = Answers.findOne({
             experiment_id: experiment_id_value
         });
-        var time_value = Meteor.settings.public.answer_forms[curr_experiment.current_answer].timer;
+        var time_value;
+        if (!curr_experiment){
+          console.log('experiment id not found immediately before setting timer: ' + experiment_id);
+          time_value = 600;
+        }
+        else{
+          time_value = Meteor.settings.public.answer_forms[curr_experiment.current_answer].timer;
+        }
         if (time_value > 0 && !curr_experiment.experiment_finished) {
             //initiate a countdown
             Answers.update({
