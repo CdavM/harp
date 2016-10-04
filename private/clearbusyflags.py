@@ -7,6 +7,8 @@ questions = db['questions']
 
 for q in questions.find():
     q['busy'] = False
+    if q['question_ID'] == 0:
+        continue
     ar = q['averaging_status_array']
     for ind in range(len(ar)):
         if ar[ind] == 'BUSY':
