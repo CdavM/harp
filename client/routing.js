@@ -20,9 +20,10 @@ Router.route('/', function(){
   }
 
   var curr_experiment = Answers.findOne({worker_ID: wid});
+  initial_time_val = new Date().getTime();
+
   Session.set('worker_ID_value', wid);
   Session.set('initial_time_value', initial_time_val);
-  Session.set('asg_ID_value', asg_ID);
   Session.set('asg_ID_value', asg_ID);
   Session.set('hit_ID_value', hit_val)
   if ((curr_experiment && curr_experiment.experiment_finished))
@@ -30,7 +31,6 @@ Router.route('/', function(){
     //Meteor.setTimeout(function(){Session.set('experiment_finished', false);}, 150);
     Router.go('/end');  //send them to end, entry participated already.
   } else {
-    initial_time_val = new Date().getTime();
     Meteor.call('initialPost', {worker_ID: wid, initial_time: initial_time_val, asg_ID: asg_val, hit_ID: hit_val}, 'startup');
     this.render('experiment');
   }

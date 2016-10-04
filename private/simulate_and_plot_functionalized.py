@@ -30,9 +30,9 @@ def plotHistogramFromFile():
 
 
 def actual_experiment_analysis():
-    filename = 'export-20161003230534.csv'
-    LABEL = 'Experiment2Testing'
-    alreadyPaidFiles = ['']
+    filename = 'export-20161004211248.csv'
+    LABEL = 'Experiment2Day1'
+    alreadyPaidFiles = []
     deficit_offset = 228
     # , [0, 1], [0, 4]]#, [0, 7, 8, 9], [0, 7]]
     lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6], [0, 7, 8, 9]]
@@ -50,9 +50,12 @@ def actual_experiment_analysis():
                                        8: {'name': 'Group 2 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
                                        9: {'name': 'Group 3 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
                                        }
+    analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_real), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset,
+                                              lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=False, plotAllOverTime=False, organizePayment=True, analyzeExtraFull=False)
+
 
     analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_real), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset,
-                                              lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=True, plotAllOverTime=True, organizePayment=False, analyzeExtraFull=False)
+                                              lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=True, plotAllOverTime=True, organizePayment=True, analyzeExtraFull=False)
 
 
 def main():
