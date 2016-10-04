@@ -24,7 +24,7 @@ Router.route('/', function(){
 
   Session.set('worker_ID_value', wid);
   Session.set('initial_time_value', initial_time_val);
-  Session.set('asg_ID_value', asg_ID);
+  Session.set('asg_ID_value', asg_val);
   Session.set('hit_ID_value', hit_val)
   if ((curr_experiment && curr_experiment.experiment_finished))
   {
