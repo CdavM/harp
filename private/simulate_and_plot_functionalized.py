@@ -30,8 +30,8 @@ def plotHistogramFromFile():
 
 
 def actual_experiment_analysis():
-    filename = 'export-20161004211248.csv'
-    LABEL = 'Experiment2Day1'
+    filename = 'export-20161005105747.csv'
+    LABEL = 'Experiment2Day2'
     alreadyPaidFiles = []
     deficit_offset = 228
     # , [0, 1], [0, 4]]#, [0, 7, 8, 9], [0, 7]]

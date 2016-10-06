@@ -247,7 +247,7 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
         copy_over = ['worker_ID', 'asg_ID']
         for ide in copy_over:
             d[ide] = row[ide]
-        d['experiment_id'] = int(row['experiment_id'])
+        d['experiment_id'] = row['experiment_id']
         d['question_num'] = int(row['current_question'])
         d['begin_time'] = float(row['begin_time'])
         d['initial_time'] = float(row['initial_time'])
@@ -306,7 +306,7 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
         clean.append(d)
         organized_data[d['question_num']].append(d)
     for key in organized_data:
-        organized_data[key] = sorted(organized_data[key], key=itemgetter('experiment_id'))
+        organized_data[key] = sorted(organized_data[key], key=itemgetter('begin_time'))
     return clean, organized_data
 
 

@@ -401,7 +401,7 @@ Meteor.methods({
                     // if all mechanisms are busy
                     if (Questions.find({
                             "busy": true
-                        }).count() == 7) {
+                        }).count() == 10) {
                         rnd_sample = Math.random();
                         question_selected = 0;
                     } else {
