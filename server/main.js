@@ -203,7 +203,7 @@ Meteor.methods({
         if (scheduling_entry.initial_timer && scheduling_entry.initial_counter >= threshold) {
             //call this when we get threshold entries
             experiment_id_counter++;
-            console.log("starting experiment " + experiment_id_counter);
+            // console.log("starting experiment " + experiment_id_counter);
             Answers.update({
                 experiment_id: experiment_id_value
             }, {
@@ -409,35 +409,55 @@ Meteor.methods({
                             'experiment_ID': experiment_id_value
                         });
                         var random_counter_entry = scheduling_entry.random_counter;
+                        //code to help balance
+                        prev_parts = Questions.find({}, {fields : {"question_ID" : 1, "previous_participants" : 1}}).fetch()
+                        var lowest = [];
+                        var lowest_val = 10000;
+                        for (var i = 0; i < prev_parts.length; i++) {
+                           if (prev_parts[i]['question_ID'] != 0 && prev_parts[i]['previous_participants'] < lowest_val){
+                             lowest = [prev_parts[i]['question_ID']];
+                             lowest_val = prev_parts[i]['previous_participants']
+                           }
+                           else if (prev_parts[i]['question_ID'] != 0 && prev_parts[i]['previous_participants'] == lowest_val){
+                             lowest.push(prev_parts[i]['question_ID'])
+                           }
+                        }
+                        console.log('least prev parts ' + lowest);
                         do {
                             rnd_sample = Math.random();
-                            if (rnd_sample < (0.1077777778 * 1))
-                                question_selected = 1;
-                            else if (rnd_sample < (0.1077777778 * 2))
-                                question_selected = 2;
-                            else if (rnd_sample < (0.1077777778 * 3))
-                                question_selected = 3;
-                            else if (rnd_sample < (0.1077777778 * 4))
-                                question_selected = 4;
-                            else if (rnd_sample < (0.1077777778 * 5))
-                                question_selected = 5
-                            else if (rnd_sample < (0.1077777778 * 6))
-                                question_selected = 6;
-                            else if (rnd_sample < (0.1077777778 * 7))
-                                question_selected = 7;
-                            else if (rnd_sample < (0.1077777778 * 8))
-                                question_selected = 8;
-                            else if (rnd_sample < (0.1077777778 * 9))
-                                question_selected = 9;
-                            else
-                                question_selected = 0;
+
+                            //with 1/2 probability, pick one of the lowest prev_parts indices
+                            if (rnd_sample <= .5){
+                              question_selected = lowest[Math.floor(rnd_sample*2*lowest.length)];
+                            }
+                            else{
+                                rnd_sample = (rnd_sample - 0.5)*2;
+                                if (rnd_sample < (0.1* 1))
+                                    question_selected = 1;
+                                else if (rnd_sample < (0.1 * 2))
+                                    question_selected = 2;
+                                else if (rnd_sample < (0.1 * 3))
+                                    question_selected = 3;
+                                else if (rnd_sample < (0.1 * 4))
+                                    question_selected = 4;
+                                else if (rnd_sample < (0.1 * 5))
+                                    question_selected = 5
+                                else if (rnd_sample < (0.1 * 6))
+                                    question_selected = 6;
+                                else if (rnd_sample < (0.1 * 7))
+                                    question_selected = 7;
+                                else if (rnd_sample < (0.1 * 8))
+                                    question_selected = 8;
+                                else if (rnd_sample < (0.1 * 9))
+                                    question_selected = 9;
+                                else
+                                    question_selected = 0;
+                              }
                         } while ((random_counter_entry.indexOf(question_selected) != -1 &&
                                 random_counter_entry.length < selection_size) ||
                             Questions.findOne({
                                 "question_ID": question_selected
-                            }).busy == true || Questions.findOne({
-                                "question_ID": question_selected
-                            }).previous_participants >= 19);
+                            }).busy == true);
                     }
                     return question_selected;
                 };
