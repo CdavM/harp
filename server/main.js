@@ -605,13 +605,13 @@ Meteor.methods({
                     groupnum = 0;
                     while (previous_participants >= summrad) {
                         groupnum = groupnum + 1;
-                        summrad += Math.max(4, 7 - groupnum);
+                        summrad += Math.max(4, 7 - 2*groupnum);
                     }
                     //smaller radius for Linf
                     if ([7, 8, 9].indexOf(questionnum) > -1) {
                         rad = 100.0 / Math.max(1.0, groupnum + 1.0);
                     } else {
-                        rad = 200.0 / Math.max(1.0, groupnum + 1.0);
+                        rad = 300.0 / Math.max(1.0, groupnum + 1.0);
                     }
                     return rad;
                 };
@@ -863,6 +863,7 @@ Meteor.methods({
             console.log('err caught: ' + err)
             try{
               console.log('current answer out of length ' + curr_experiment.current_answer)
+              console.log('current experiment undefined ' + experiment_id)
             }
             catch(err2){
               console.log(err2)
