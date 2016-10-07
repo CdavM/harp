@@ -423,6 +423,7 @@ Meteor.methods({
                            }
                         }
                         console.log('least prev parts ' + lowest);
+                        question_selected = 0;
                         do {
                             rnd_sample = Math.random();
 
@@ -604,7 +605,7 @@ Meteor.methods({
                     groupnum = 0;
                     while (previous_participants >= summrad) {
                         groupnum = groupnum + 1;
-                        summrad += Math.max(4, 7 - groupnum);
+                        summrad += Math.max(4, 7 + groupnum);
                     }
                     //smaller radius for Linf
                     if ([7, 8, 9].indexOf(questionnum) > -1) {
