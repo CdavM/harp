@@ -2,6 +2,8 @@ import csv
 import ast
 import seaborn as sns
 import matplotlib
+# matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import operator as o
@@ -382,4 +384,5 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, 
         mng = plt.get_current_fig_manager()
         mng.window.showMaximized()
         plt.savefig(label + '.png')
-        plt.show()
+        plt.close()
+        #plt.show()

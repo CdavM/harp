@@ -2,6 +2,7 @@ import csv
 import ast
 import seaborn as sns
 import matplotlib
+# matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import operator as o
@@ -10,6 +11,7 @@ import math
 import numpy as np
 from data_helpers_multiplesets import *
 import cvxpy
+import weightedstats as ws
 
 slider_order = ['Defense', 'Health',
 	'Transportation', 'Income Tax', 'Deficit'];
@@ -31,7 +33,11 @@ def plot_sliders_over_time(data, title, prepend=""):
 	plt.title(title + " " + prepend, fontsize=18)
 	plt.ylabel('$ (Billions)', fontsize=18)
 	plt.xlabel('Iteration', fontsize=18)
-	plt.show()
+	plt.savefig(LABEL + '_' + title + prepend + '.png')
+	#plt.show()
+	plt.close()
+
+	# plt.show()
 
 
 def calculate_full_elicitation_euclideanpoint(data, deficit_offset, dataname='question_data', sliderprepend=''):
@@ -67,7 +73,8 @@ def calculate_full_elicitation_average(data, deficit_offset, dataname='question_
 	rawaverages = {}
 	weightedaverages_l1 = {}
 	weightedaverages_l2 = {}
-
+	median = {}
+	weighted_median = {}
 	print data
 
 	for slider in sliders:
@@ -91,9 +98,11 @@ def calculate_full_elicitation_average(data, deficit_offset, dataname='question_
 			sliders[slider], weights=weights[slider])
 		weightedaverages_l2[slider] = np.average(
 			sliders[slider], weights=[math.pow(x, 2) for x in weights[slider]])
+		median[slider] = np.median(sliders[slider])
+		weighted_median[slider] = ws.weighted_median(sliders[slider], weights = weights[slider])
 
 	return rawaverages, weightedaverages_l2, weightedaverages_l1, calculate_full_elicitation_euclideanpoint(
-		data, deficit_offset, dataname, sliderprepend)
+		data, deficit_offset, dataname, sliderprepend), median, weighted_median
 
 
 def plot_allmechansisms_together(
@@ -109,10 +118,10 @@ def plot_allmechansisms_together(
 		full_elicitation_averages = {}
 		for mech in mechanism_super_dictionary:
 			if mechanism_super_dictionary[mech]['type'] == 'full':
-				rawaverages, weightedaverages_l2, weightedaverages_l1, euclideanprefs = calculate_full_elicitation_average(
+				rawaverages, weightedaverages_l2, weightedaverages_l1, euclideanprefs, median, weightedmedian = calculate_full_elicitation_average(
 					organized_data[mech], deficit_offset)
 				full_elicitation_averages[mech] = {'rawaverages': rawaverages, 'weightedaverages_l2': weightedaverages_l2,
-					'weightedaverages_l1': weightedaverages_l1, 'euclideanprefs': euclideanprefs}
+					'weightedaverages_l1': weightedaverages_l1, 'euclideanprefs': euclideanprefs, 'median' : median, 'weightedmedian' : weightedmedian}
 
 		maxn = 0
 		for mechanism in mechanism_super_dictionary:
@@ -158,11 +167,31 @@ def plot_allmechansisms_together(
 					vals = [full_elicitation_averages[mechanism]
 						['euclideanprefs'][slider] for _ in n]
 					l = axarr[slider].plot(n, vals, label=mechanism_super_dictionary[
-										   mechanism]['name'], linestyle='--', marker='+')
+										   mechanism]['name'] + '--maximization solution', linestyle='--', marker='+')
 
 					if slider == 0:
 						lines.append(l[0])
-						legend_names.append(mechanism_super_dictionary[mechanism]['name'])
+						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' maximization solution')
+
+					vals = [full_elicitation_averages[mechanism]
+						['median'][slider] for _ in n]
+					l = axarr[slider].plot(n, vals, label=mechanism_super_dictionary[
+										   mechanism]['name'] + '--median', linestyle='--', marker='+')
+
+					if slider == 0:
+						lines.append(l[0])
+						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' median')
+
+
+					vals = [full_elicitation_averages[mechanism]
+						['weightedmedian'][slider] for _ in n]
+					l = axarr[slider].plot(n, vals, label=mechanism_super_dictionary[
+										   mechanism]['name'] + '--weighted median', linestyle='--', marker='+')
+
+					if slider == 0:
+						lines.append(l[0])
+						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' weighted median')
+
 
 			axarr[slider].set_title(slider_order[slider], fontsize=18)
 			axarr[slider].set_ylabel('$ (Billions)', fontsize=18)
@@ -186,7 +215,10 @@ def analyze_data_experiment_l2(data):  # constrained movement
 	for exp in data:
 		creditsused.append(calc_credits_used(exp))
 	plt.hist(creditsused, bins=10, range=[0, 1])
-	plt.show()
+	# plt.show()
+	plt.savefig("" + LABEL + "_l2credits used" + '.png')
+	plt.close();
+
 	return None
 
 
@@ -214,7 +246,9 @@ def analyze_data_experiment_full(data):  # ideal points and elicitation
 		if max(weights) > 10:
 			print weights
 
-	plt.show()
+	plt.savefig(LABEL + '_fullelicitationanalysis plot' + '.png')
+	#plt.show()
+	plt.close()
 	return None
 
 
@@ -224,7 +258,10 @@ def analyze_data_experiment_l1(data):  # constrained movement
 	for exp in data:
 		creditsused.append(calc_credits_used(exp))
 	plt.hist(creditsused, bins=10, range=[0, 1])
-	plt.show()
+	plt.savefig("" + LABEL + "_l1credits used hist" + '.png')
+	plt.close();
+
+	# plt.show()
 
 
 def calc_credits_used(experiment):
@@ -335,7 +372,10 @@ def plot_percent_movements_over_time(organized_data, LABEL, mechanism_super_dict
 	f.legend(lines, labelnames, loc='upper left',
 			 borderaxespad=0., ncol=4, fontsize=18)
 	print lines
-	plt.show()
+	plt.savefig("" + LABEL + "_Percent Movements over time" + '.png')
+	plt.close();
+
+	# plt.show()
 
 
 def analyze_movement_and_weights(organized_data, LABEL, mechanism_super_dictionary):
@@ -448,7 +488,10 @@ def TwoSetComparisonsAnalysis(comparisonsdata):
 	plt.ylabel('Percent difference', fontsize=18)
 	plt.xlabel('Iteration', fontsize=18)
 	plt.legend(loc='upper left', borderaxespad=0., ncol=4, fontsize=18)
-	plt.show()
+	plt.savefig("" + LABEL + "_2 set comparison diff over time" + '.png')
+	plt.close();
+
+	# plt.show()
 
 	# for each budget item, sort the options from least to highest. See which
 	# option they picked for each, how it different per person.
@@ -496,7 +539,10 @@ def TwoSetComparisonsAnalysis(comparisonsdata):
 	plt.ylabel('Option difference', fontsize=18)
 	plt.xlabel('Iteration', fontsize=18)
 	plt.legend(loc='upper left', borderaxespad=0., ncol=4, fontsize=18)
-	plt.show()
+	plt.savefig("" + LABEL + "_2set comparison analysis ordered difference over time" + '.png')
+	plt.close();
+
+	# plt.show()
 
 	return 0
 
@@ -586,15 +632,15 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 		# see who increased & decreased, and what we can learn about them.
 
 
-	bysign_fullaswellconditioning = {'l2' : {'Ideal point above both' : {}, 'Ideal point between' : {}, 'Ideal point below both' : {}}, 'l1' : {'Ideal point above both' : {}, 'Ideal point between' : {}, 'Ideal point below both' : {}}}
+	bysign_fullaswellconditioning = {'linf' : {'Ideal point above both' : {}, 'Ideal point between' : {}, 'Ideal point below both' : {}},'l2' : {'Ideal point above both' : {}, 'Ideal point between' : {}, 'Ideal point below both' : {}}, 'l1' : {'Ideal point above both' : {}, 'Ideal point between' : {}, 'Ideal point below both' : {}}}
 
 	bysign = {}
 	differences = {}
-	differences_fullaswellconditioning = {'l2' : {'Ideal point above both' : {}, 'Ideal point between' : {}, 'Ideal point below both' : {}}, 'l1' : {'Ideal point above both' : {}, 'Ideal point between' : {}, 'Ideal point below both' : {}}}
+	differences_fullaswellconditioning = {'linf' : {'Ideal point above both' : {}, 'Ideal point between' : {}, 'Ideal point below both' : {}},'l2' : {'Ideal point above both' : {}, 'Ideal point between' : {}, 'Ideal point below both' : {}}, 'l1' : {'Ideal point above both' : {}, 'Ideal point between' : {}, 'Ideal point below both' : {}}}
 
 	# get signs and differences separated by item and mechanism
 	for key in organized_data:
-		if not (mechanism_super_dictionary[key]['type'] == 'l2' or mechanism_super_dictionary[key]['type'] == 'l1'):
+		if not (mechanism_super_dictionary[key]['type'] == 'l2' or mechanism_super_dictionary[key]['type'] == 'l1' or mechanism_super_dictionary[key]['type'] == 'l1' or mechanism_super_dictionary[key]['type'] == 'linf'):
 			continue
 		if key not in bysign:
 			bysign[key] = {}
@@ -700,6 +746,8 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 
 	alll1 = {0:[], 1:[], 2:[], 3:[]}
 	alll2 = {0:[], 1:[], 2:[], 3:[]}
+	alllinf = {0:[], 1:[], 2:[], 3:[]}
+
 	for key in mechanism_super_dictionary:
 		if key not in differences:
 			continue
@@ -712,6 +760,9 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 				alll1[item] = np.append(alll1[item], differences[key][item])
 			elif mechanism_super_dictionary[key]['type'] is 'l2':
 				alll2[item] = np.append(alll2[item], differences[key][item])
+			elif mechanism_super_dictionary[key]['type'] is 'linf':
+				alllinf[item] = np.append(alll2[item], differences[key][item])
+
 		mng = plt.get_current_fig_manager()
 		mng.window.showMaximized()
 
@@ -732,11 +783,11 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 	mng.window.showMaximized()
 
 	plt.savefig(LABEL + 'Combined Differences in percent movement'+'.png')
-	plt.show()
+	plt.close()
 
 
 	#for the mechanisms in which also did full elicitation, plot the signs histogram
-	for keyl2orl1 in bysign_fullaswellconditioning:
+	for keylinfl2orl1 in bysign_fullaswellconditioning:
 		labelnames_signs = []
 		signorder = []
 		f, axarr = plt.subplots(4, sharex=True)
@@ -744,27 +795,27 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 		for item in range(4):
 			ind = -1
 			dpoints_signs = []
-			for key in bysign_fullaswellconditioning[keyl2orl1]:
+			for key in bysign_fullaswellconditioning[keylinfl2orl1]:
 				ind+=1
 				if key not in labelnames_signs:
 					labelnames_signs.append(key)
 
-				for signkey in bysign_fullaswellconditioning[keyl2orl1][key][item]:
+				for signkey in bysign_fullaswellconditioning[keylinfl2orl1][key][item]:
 					if signkey not in signorder:
 						signorder.append(signkey)
 					dpoints_signs.append(
-						[labelnames_signs[ind], signkey, bysign_fullaswellconditioning[keyl2orl1][key][item][signkey]])
+						[labelnames_signs[ind], signkey, bysign_fullaswellconditioning[keylinfl2orl1][key][item][signkey]])
 			print dpoints_signs
-			barplot(np.array(dpoints_signs), LABEL + ' Direction of Movement Conditioned on Full,' + keyl2orl1, 'Number',
+			barplot(np.array(dpoints_signs), LABEL + ' Direction of Movement Conditioned on Full,' + keylinfl2orl1, 'Number',
 					'Directions', signorder, labelnames_signs, axarr[item], item == 3, item == 0)
 			axarr[item].set_title(slider_order[item])
 
 	#for those same mechanisms, plot the differences histogram
-	for keyl2orl1 in differences_fullaswellconditioning:
+	for keylinfl2orl1 in differences_fullaswellconditioning:
 		f, axarr = plt.subplots(4, sharex=True)
-		for key in differences_fullaswellconditioning[keyl2orl1]:
+		for key in differences_fullaswellconditioning[keylinfl2orl1]:
 			for item in range(4):
-				axarr[item].hist(differences_fullaswellconditioning[keyl2orl1][key][item], alpha = .5, range = (0, 2), bins = 30, label = key)
+				axarr[item].hist(differences_fullaswellconditioning[keylinfl2orl1][key][item], alpha = .5, range = (0, 2), bins = 30, label = key)
 				axarr[item].set_title(slider_order[item])
 				if item is 0:
 					axarr[item].legend(loc='upper right')
@@ -772,8 +823,8 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 		mng = plt.get_current_fig_manager()
 		mng.window.showMaximized()
 
-		plt.suptitle('Differences in percent movement per budget item, Conditioned on full, ' + str(keyl2orl1))
-		plt.savefig(LABEL + 'Differences in percent movement, Conditioned on full, ' + str(keyl2orl1) + '.png')
+		plt.suptitle('Differences in percent movement per budget item, Conditioned on full, ' + str(keylinfl2orl1))
+		plt.savefig(LABEL + 'Differences in percent movement, Conditioned on full, ' + str(keylinfl2orl1) + '.png')
 		#plt.show()
 		plt.close()
 
@@ -862,8 +913,8 @@ def analyze_extra_full_elicitation(data, mechanism_super_dictionary_value, mech_
 	legend_names = []
 	f, axarr = plt.subplots(5, sharex=True)
 	lines = []
-	rawaverages, weightedaverages_l2, weightedaverages_l1, euclideanprefs = calculate_full_elicitation_average(data, deficit_offset, dataname = 'extra_full_elicitation_data', sliderprepend = '')
-	full_elicitation_averages = {'rawaverages': rawaverages, 'weightedaverages_l2': weightedaverages_l2, 'weightedaverages_l1': weightedaverages_l1, 'euclideanprefs': euclideanprefs}
+	rawaverages, weightedaverages_l2, weightedaverages_l1, euclideanprefs, median, weightedmedian = calculate_full_elicitation_average(data, deficit_offset, dataname = 'extra_full_elicitation_data', sliderprepend = '')
+	full_elicitation_averages = {'rawaverages': rawaverages, 'weightedaverages_l2': weightedaverages_l2, 'weightedaverages_l1': weightedaverages_l1, 'euclideanprefs': euclideanprefs, 'median' : median, 'weightedmedian' : weightedmedian}
 
 	maxn = 25
 	for slider in xrange(0, len(slider_order)):
@@ -878,11 +929,28 @@ def analyze_extra_full_elicitation(data, mechanism_super_dictionary_value, mech_
 
 		n = range(maxn)
 		vals = [full_elicitation_averages['euclideanprefs'][slider] for _ in n]
-		l = axarr[slider].plot(n, vals, label = 'Mechanism specific full elicitation', linestyle = '--', marker = '+')
+		l = axarr[slider].plot(n, vals, label = 'Mechanism specific full maximization', linestyle = '--', marker = '+')
 
 		if slider == 0:
 			lines.append(l[0])
-			legend_names.append('Mechanism specific full elicitation')
+			legend_names.append('Mechanism specific full maximization')
+
+
+		n = range(maxn)
+		vals = [full_elicitation_averages['median'][slider] for _ in n]
+		l = axarr[slider].plot(n, vals, label = 'Mechanism specific full median', linestyle = '--', marker = '+')
+
+		if slider == 0:
+			lines.append(l[0])
+			legend_names.append('Mechanism specific full median')
+
+		n = range(maxn)
+		vals = [full_elicitation_averages['weightedmedian'][slider] for _ in n]
+		l = axarr[slider].plot(n, vals, label = 'Mechanism specific full weighted median', linestyle = '--', marker = '+')
+
+		if slider == 0:
+			lines.append(l[0])
+			legend_names.append('Mechanism specific full weighted median')
 
 		axarr[slider].set_title(slider_order[slider], fontsize = 18)
 		axarr[slider].set_ylabel('$ (Billions)', fontsize = 18)

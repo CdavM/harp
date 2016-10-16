@@ -10,13 +10,14 @@ mechanism_super_dictionary_forloading_from_old_experiments = {2: {'type': 'full'
                                                               }
 
 mechanism_super_dictionary_real_BIGEXPERIMENT1 = {0: {'type': 'full', 'name': 'Full Elicitation', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[425, 1200, 350, 1450, 753]]},
-                                   1: {'name': 'Group 1 L2', 'type': 'l2', 'do_full_as_well': True, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
-                                   2: {'name': 'Group 2 L2', 'type': 'l2', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
-                                   3: {'name': 'Group 3 L2', 'type': 'l2', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]},
-                                   4: {'name': 'Group 1 L1', 'type': 'l1', 'do_full_as_well': True, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
-                                   5: {'name': 'Group 2 L1', 'type': 'l1', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
-                                   6: {'name': 'Group 3 L1', 'type': 'l1', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]}
-                                   }
+                                                  1: {'name': 'Group 1 L2', 'type': 'l2', 'do_full_as_well': True, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                                  2: {'name': 'Group 2 L2', 'type': 'l2', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                                  3: {'name': 'Group 3 L2', 'type': 'l2', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]},
+                                                  4: {'name': 'Group 1 L1', 'type': 'l1', 'do_full_as_well': True, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[440, 1050, 350, 1500, 828], [541, 1004, 303, 1460, 753]]},
+                                                  5: {'name': 'Group 2 L1', 'type': 'l1', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[541, 1004, 303, 1460, 753], [500, 1100, 350, 1540, 828]]},
+                                                  6: {'name': 'Group 3 L1', 'type': 'l1', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]}
+                                                  }
+
 
 def plotHistogramFromFile():
     filename = "simulations/REAL_fullelicitation_withouteducation.csv"
@@ -30,32 +31,32 @@ def plotHistogramFromFile():
 
 
 def actual_experiment_analysis():
-    filename = 'export-20161007160942.csv'
-    LABEL = 'Experiment2Day4'
-    alreadyPaidFiles = []
+    filename = 'export-20161015205653.csv'
+    LABEL = 'Experiment2Day11'
+    alreadyPaidFiles = ['BIGEXPERIMENT2_bonus_to_upload_ALLCOMBINED_DONE.csv', 'new_bonus_upload_that_missed.csv', 'BIGEXPERIMENT2_bonus_to_upload.csv', 'Experiment2Day8_bonusinfo_uploaded.csv']
     deficit_offset = 228
     # , [0, 1], [0, 4]]#, [0, 7, 8, 9], [0, 7]]
     lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6], [0, 7, 8, 9]]
-    labels = ['L2', 'L1','Linf', 'L2Single', 'L1Single',
+    labels = ['L2', 'L1', 'Linf', 'L2Single', 'L1Single',
               'Comparisons', 'ComparisonsSingle']
 
-    mechanism_super_dictionary_real = {0: {'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'do_full_as_well' : False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
-                                       1: {'name': 'Group 1 l2 Constrainted Movement', 'do_full_as_well': True, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000,200, 1300, 828], [200, 800, 300, 1400, 828]]},
-                                       2: {'name': 'Group 2 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
-                                       3: {'name': 'Group 3 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
-                                       4: {'name': 'Group 1 l1 Constrainted Movement', 'do_full_as_well': True,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
-                                       5: {'name': 'Group 2 l1 Constrainted Movement', 'do_full_as_well': False,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
-                                       6: {'name': 'Group 3 l1 Constrainted Movement', 'do_full_as_well': False,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
-                                       7: {'name': 'Group 1 linf Constrained Movement', 'do_full_as_well': True,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
-                                       8: {'name': 'Group 2 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
-                                       9: {'name': 'Group 3 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
+    mechanism_super_dictionary_real = {0: {'type': 'full', 'name': 'Group 1 Full', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
+                                       1: {'name': 'Group 1 l2', 'do_full_as_well': True, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 200, 1300, 828], [200, 800, 300, 1400, 828]]},
+                                       2: {'name': 'Group 2 l2', 'do_full_as_well': False, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       3: {'name': 'Group 3 l2', 'do_full_as_well': False, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
+                                       4: {'name': 'Group 4 l1', 'do_full_as_well': True, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                       5: {'name': 'Group 5 l1', 'do_full_as_well': False, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       6: {'name': 'Group 6 l1', 'do_full_as_well': False, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
+                                       7: {'name': 'Group 7 linf', 'do_full_as_well': True, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                       8: {'name': 'Group 8 linf', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       9: {'name': 'Group 9 linf', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
                                        }
-    analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_real), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset,
-                                              lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=False, plotAllOverTime=False, organizePayment=True, analyzeExtraFull=False)
+    # analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_real), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset,
+    #                                           lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=False, plotAllOverTime=False, organizePayment=True, analyzeExtraFull=False)
 
-
     analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechanism_super_dictionary_real), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset,
-                                              lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=True, plotAllOverTime=True, organizePayment=True, analyzeExtraFull=False)
+                                              lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=True,
+                                              plotAllOverTime=True, organizePayment=False, analyzeExtraFull=True)
 
 
 def main():
@@ -64,7 +65,7 @@ def main():
 
     # , [0, 7, 8, 9], [0, 7]]
     lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6], [0, 7, 8, 9]]
-    labels = ['L2', 'L1','Linf', 'L2Single', 'L1Single',
+    labels = ['L2', 'L1', 'Linf', 'L2Single', 'L1Single',
               'Comparisons', 'ComparisonsSingle']
     radius_parameters_1 = {
         'radius_type': 'decreasing_slow', 'starting': 50, 'decrease_every': 5}
@@ -106,30 +107,29 @@ def main():
     #                               # 9: {'name': 'Group 3 Comparisons', 'type': 'comparisons', 'numsets': 1, 'num_to_average_per_step' : 1,'initial_values': [[450, 1200, 350, 1400, 828]]}
     #                               }
 
-    mechanism_super_dictionary_BIG2 = {0: {'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'do_full_as_well' : False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[450, 1100, 350, 1500, 828]]},
+    mechanism_super_dictionary_BIG2 = {0: {'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[450, 1100, 350, 1500, 828]]},
                                        1: {'name': 'Group 1 l2 Constrainted Movement', 'do_full_as_well': True, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
-                                       2: {'name': 'Group 2 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 1, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828]]},
-                                       3: {'name': 'Group 3 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 1, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828]]},
-                                       4: {'name': 'Group 1 l1 Constrainted Movement', 'do_full_as_well': True,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
-                                       5: {'name': 'Group 2 l1 Constrainted Movement', 'do_full_as_well': False,'type': 'l1', 'numsets': 1, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828]]},
-                                       6: {'name': 'Group 3 l1 Constrainted Movement', 'do_full_as_well': False,'type': 'l1', 'numsets': 1, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828]]},
-                                       7: {'name': 'Group 1 linf Constrained Movement', 'do_full_as_well': True,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 1, 'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
-                                       8: {'name': 'Group 2 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[450, 1200, 350, 1400, 828]]},
-                                       9: {'name': 'Group 3 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[450, 1200, 350, 1400, 828]]}
+                                       2: {'name': 'Group 2 l2 Constrainted Movement', 'do_full_as_well': False, 'type': 'l2', 'numsets': 1, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828]]},
+                                       3: {'name': 'Group 3 l2 Constrainted Movement', 'do_full_as_well': False, 'type': 'l2', 'numsets': 1, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828]]},
+                                       4: {'name': 'Group 1 l1 Constrainted Movement', 'do_full_as_well': True, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
+                                       5: {'name': 'Group 2 l1 Constrainted Movement', 'do_full_as_well': False, 'type': 'l1', 'numsets': 1, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828]]},
+                                       6: {'name': 'Group 3 l1 Constrainted Movement', 'do_full_as_well': False, 'type': 'l1', 'numsets': 1, 'num_to_average_per_step': 10, 'initial_values': [[450, 1200, 350, 1400, 828]]},
+                                       7: {'name': 'Group 1 linf Constrained Movement', 'do_full_as_well': True, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 1, 'initial_values': [[450, 1200, 350, 1400, 828], [600, 950, 300, 1300, 828]]},
+                                       8: {'name': 'Group 2 linf Constrained Movement', 'do_full_as_well': False, 'type': 'linf', 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[450, 1200, 350, 1400, 828]]},
+                                       9: {'name': 'Group 3 linf Constrained Movement', 'do_full_as_well': False, 'type': 'linf', 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[450, 1200, 350, 1400, 828]]}
                                        }
 
-    mechanism_super_dictionary_BIG2_farapart = {0: {'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'do_full_as_well' : False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
-                                       1: {'name': 'Group 1 l2 Constrainted Movement', 'do_full_as_well': True, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000,200, 1300, 828], [200, 800, 300, 1400, 828]]},
-                                       2: {'name': 'Group 2 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
-                                       3: {'name': 'Group 3 l2 Constrainted Movement', 'do_full_as_well': False,'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
-                                       4: {'name': 'Group 1 l1 Constrainted Movement', 'do_full_as_well': True,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
-                                       5: {'name': 'Group 2 l1 Constrainted Movement', 'do_full_as_well': False,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
-                                       6: {'name': 'Group 3 l1 Constrainted Movement', 'do_full_as_well': False,'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
-                                       7: {'name': 'Group 1 linf Constrained Movement', 'do_full_as_well': True,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
-                                       8: {'name': 'Group 2 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
-                                       9: {'name': 'Group 3 linf Constrained Movement', 'do_full_as_well': False,'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
-                                       }
-
+    mechanism_super_dictionary_BIG2_farapart = {0: {'type': 'full', 'name': 'Group 1 Full Elicitation -- Euclidean', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
+                                                1: {'name': 'Group 1 l2 Constrainted Movement', 'do_full_as_well': True, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 200, 1300, 828], [200, 800, 300, 1400, 828]]},
+                                                2: {'name': 'Group 2 l2 Constrainted Movement', 'do_full_as_well': False, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                                3: {'name': 'Group 3 l2 Constrainted Movement', 'do_full_as_well': False, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
+                                                4: {'name': 'Group 1 l1 Constrainted Movement', 'do_full_as_well': True, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                                5: {'name': 'Group 2 l1 Constrainted Movement', 'do_full_as_well': False, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                                6: {'name': 'Group 3 l1 Constrainted Movement', 'do_full_as_well': False, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
+                                                7: {'name': 'Group 1 linf Constrained Movement', 'do_full_as_well': True, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                                8: {'name': 'Group 2 linf Constrained Movement', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                                9: {'name': 'Group 3 linf Constrained Movement', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
+                                                }
 
     load_people_from_file = True
     filename_forloadingpeople = "C:\\Users\\Nikhil\\Dropbox\\src\\harp\\private\\resultssofar\\FinalDatas\\export-20160722200126_SECONDRUN_FINAL_sampleforsimulation.csv"
@@ -160,9 +160,10 @@ def main():
                             'num_to_average_per_step'] = ppl_in_block
                 # try:
                 simulate_entire_experiment_functionalized.simulate_experiment_functionalized(
-                        filename, LABEL, copy.deepcopy(mechanism_super_dictionary_BIG2_farapart), deficit_offset=deficit_offset, LIMIT=LIMIT, radius_parameters=radius_parameters_loop, load_people_from_file=load_people_from_file, filename_forloadingpeople=filename_forloadingpeople, superdictionary_forloadingpeople=superdictionary_forloadingpeople, deficit_offset_forloadingpeople=deficit_offset_forloadingpeople)
+                    filename, LABEL, copy.deepcopy(mechanism_super_dictionary_BIG2_farapart), deficit_offset=deficit_offset, LIMIT=LIMIT, radius_parameters=radius_parameters_loop, load_people_from_file=load_people_from_file, filename_forloadingpeople=filename_forloadingpeople, superdictionary_forloadingpeople=superdictionary_forloadingpeople, deficit_offset_forloadingpeople=deficit_offset_forloadingpeople)
                 # except:
-                #print "exception on simulated", starting_radius, decrease_every, ppl_in_block
+                # print "exception on simulated", starting_radius,
+                # decrease_every, ppl_in_block
 
                 # try:
                 analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(
@@ -232,6 +233,6 @@ def main():
 
 if __name__ == "__main__":
     actual_experiment_analysis()
-    #main()
+    # main()
     # plotHistogramFromFile()
     print 'done'
