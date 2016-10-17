@@ -70,8 +70,11 @@ def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive=0)
             '_loc'] = float(answerdata['slider2' + setstr][0])
         answer['slider3' + setstr +
             '_loc'] = float(answerdata['slider3' + setstr][0])
-        answer['slider4' + setstr +
-            '_loc'] = float(answerdata['deficit' + setstr])
+        # answer['slider4' + setstr +
+        #     '_loc'] = float(answerdata['deficit' + setstr])
+        # answer['explanation'] = answerdata['text_explanation']
+        answer['slider4' + setstr + '_loc']  = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
+                        'slider2' + setstr + '_loc'] - answer['slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
 
         answer['initial_slider0' + setstr +
             '_loc'] = float(restofdata['initial_slider0' + setstr])
@@ -114,9 +117,11 @@ def load_data_experiment_linf(answerdata, restofdata, numsets, deficit_additive=
             '_loc'] = float(answerdata['slider2' + setstr][0])
         answer['slider3' + setstr +
             '_loc'] = float(answerdata['slider3' + setstr][0])
-        answer['slider4' + setstr +
-            '_loc'] = float(answerdata['deficit' + setstr])
-        answer['explanation'] = answerdata['text_explanation']
+        # answer['slider4' + setstr +
+        #     '_loc'] = float(answerdata['deficit' + setstr])
+        # answer['explanation'] = answerdata['text_explanation']
+        answer['slider4' + setstr + '_loc']  = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
+                        'slider2' + setstr + '_loc'] - answer['slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
 
         answer['initial_slider0' + setstr +
             '_loc'] = float(restofdata['initial_slider0' + setstr])
@@ -153,9 +158,12 @@ def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive=0)
             '_loc'] = float(answerdata['slider2' + setstr][0])
         answer['slider3' + setstr +
             '_loc'] = float(answerdata['slider3' + setstr][0])
-        answer['slider4' + setstr +
-            '_loc'] = float(answerdata['deficit' + setstr])
-        answer['explanation'] = answerdata['text_explanation']
+        # answer['slider4' + setstr +
+        #     '_loc'] = float(answerdata['deficit' + setstr])
+        # answer['explanation'] = answerdata['text_explanation']
+        answer['slider4' + setstr + '_loc']  = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
+                        'slider2' + setstr + '_loc'] - answer['slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
+
 
         answer['initial_slider0' + setstr +
             '_loc'] = float(restofdata['initial_slider0' + setstr])

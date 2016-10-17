@@ -11,3 +11,4 @@ export*
 *.docx
 *.xlsx
 private/consoledump.txt
+private/BIGEXPERIMENT2DUMP/*
