@@ -232,6 +232,11 @@ def plot_whether_mechanisms_converged(
 						b = np.array(vals).cumsum()
 						b[windowlen:] = b[windowlen:] - np.array(vals).cumsum()[:-windowlen] #running sum of windowlen
 						b = [abs(b[tt])/min(tt+1, windowlen) for tt in range(len(b))]
+
+						# raw_vals = [d['question_data']['slider' + str(slider) + str(set_num) + '_loc'] for d in organized_data[mechanism]]
+						# averages_after_point = [np.average(raw_vals[t:]) for t in range(len(raw_vals))]
+						# averages_after_point_differences = [(averages_after_point[tt] - averages_after_point[tt-1])*(len(averages_after_point) - tt + 1) for tt in range(1, len(averages_after_point))]
+
 						# b = [b[tt]/min(tt+1, windowlen) for tt in range(len(b))]
 
 
@@ -244,6 +249,13 @@ def plot_whether_mechanisms_converged(
 							lines.append(l[0])
 							legend_names.append(mechanism_super_dictionary[mechanism][
 												'name'] + ", Set " + str(set_num))
+
+						# l = axarr[slider].plot(range(len(averages_after_point_differences)), averages_after_point_differences, label=mechanism_super_dictionary[
+						# 					   mechanism]['name'] + ", Set " + str(set_num) + ", moving average")
+						# if slider == 0:
+						# 	lines.append(l[0])
+						# 	legend_names.append(mechanism_super_dictionary[mechanism][
+						# 						'name'] + ", Set " + str(set_num))
 
 						# if slider is 4:
 						# 	print vals, b
@@ -313,7 +325,7 @@ def plot_whether_mechanisms_converged(
 		mng.window.showMaximized()
 
 		# plt.show()
-		plt.savefig("" + LABEL + "_movementcumsum_" + labels[ltd] + '.png')
+		plt.savefig("" + LABEL + "_movementcumsum_len" + str(windowlen) + "_"+ labels[ltd] + '.png')
 		plt.close();
 
 def plot_allmechansisms_together(
@@ -555,6 +567,36 @@ def analyze_data_experiment_full(all_data, LABEL, lines_to_do_fullhist, labels_f
 
 	return None
 
+def plot_histogram_of_credits_used(all_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary):  # ideal points and elicitation
+
+	# plot distribution of credits used by mechanism type
+	for en,ltd in enumerate(lines_to_do_creditshist):
+		f_credits, axarr_credits = plt.subplots(4, sharex=False)
+		lines_credits = {0:[], 1:[],2:[],3:[]}
+		mechnames = []
+		for mech in ltd:
+			if mechanism_super_dictionary[mech]['type'] == 'full':
+				continue
+			mechnames.append(mechanism_super_dictionary[mech]['name'])
+			mechvals = []
+			for setnum in range(mechanism_super_dictionary[mech]['numsets']):
+				mechvals.extend([get_credit_percentage(row, setnum) for row in all_data[mech]])
+			for slider in range(4):
+				lines_credits[slider].append([mv[slider] for mv in mechvals])
+
+		for slider in range(4):
+			axarr_credits[slider].set_title(slider_order[slider])
+			axarr_credits[slider].hist(lines_credits[slider], 10, label = mechnames)
+		axarr_credits[0].legend(loc='upper left',
+				 borderaxespad=0., ncol=4, fontsize=18)
+
+		plt.figure(f_credits.number)
+		mng = plt.get_current_fig_manager()
+		mng.window.showMaximized()
+		plt.savefig(LABEL + '_HistogramOfCreditsUsed_' + labels_creditshist[en]  + '.png')
+		plt.close()
+
+	return None
 
 def analyze_data_experiment_l1(data):  # constrained movement
 	plot_sliders_over_time(data, 'l1 Constrained Movement Mechanism')
@@ -1305,7 +1347,8 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, alreadyPaidFiles 
  lines_to_do_fullhist = None, labels_fullhist = None, plotAllOverTime = False, \
  do2SetComparisonsAnalysis = False, plotPercentMovementOverTime = False, organizePayment = False, \
  slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', 'Deficit'], \
- deficit_offset = 0, average_iteratively = True, plotConvergenceAnalysis = False):
+ deficit_offset = 0, average_iteratively = True, plotConvergenceAnalysis = False, \
+ lines_to_do_creditshist = None, labels_creditshist = None):
 	data, organized_data = clean_data(load_data(filename), mechanism_super_dictionary, deficit_offset);
 
 	if do2SetComparisonsAnalysis:
@@ -1319,6 +1362,7 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, alreadyPaidFiles 
 
 	if analyzeUtilityFunctions:
 		# plot_percent_movements_over_time(organized_data, LABEL, mechanism_super_dictionary)
+		plot_histogram_of_credits_used(organized_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary)
 		analyze_movement_and_weights (organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
 		analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary);
 

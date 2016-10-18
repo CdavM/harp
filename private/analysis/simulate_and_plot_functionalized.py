@@ -62,18 +62,19 @@ def plotHistogramFromFile():
 
 
 def actual_experiment_analysis():
-    alreadyPaidFiles = ['BIGEXPERIMENT2_bonus_to_upload_ALLCOMBINED_DONE.csv', 'new_bonus_upload_that_missed.csv', 'BIGEXPERIMENT2_bonus_to_upload.csv', 'Experiment2Day8_bonusinfo_uploaded.csv']
+    alreadyPaidFiles = ['Experiment2Day10_bonusinfo_uploaded.csv','BIGEXPERIMENT2_bonus_to_upload_ALLCOMBINED_DONE.csv', 'new_bonus_upload_that_missed.csv', 'BIGEXPERIMENT2_bonus_to_upload.csv', 'Experiment2Day8_bonusinfo_uploaded.csv']
     deficit_offset = 228
     labels = ['L2', 'L1', 'Linf', 'Full', 'L2Single', 'L1Single',
               'Comparisons', 'ComparisonsSingle']
 
     filename = 'export-20161016202931_BIGEXPERIMENT2FINAL.csv'
-    LABEL = 'Experiment2FINAL'
+    LABEL = 'Experiment2FINAL_testingmovavg'
     lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6], [0, 7, 8, 9]]
     mechdict_to_use = mechanism_super_dictionary_real_BIGEXPERIMENT2
     lines_to_do_fullhist = [[0,1,4,7]]#[0], [1], [4], [7], [0,1,4,7]]
     labels_fullhist = ['All']#'Full Only', 'With L2', 'With L1', 'With Linf', 'All']
-
+    lines_to_do_creditshist = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    labels_creditshist = ['L2', 'L1', 'Linf']
     # filename = 'experiments_BOTHLARGECOMBINED.csv'
     # LABEL = "BIGEXPERIMENTSCOMBINED"
     # lines_to_do = [[0, 10, 1, 2, 3, 11, 12, 13], [0, 10, 4, 5, 6, 14, 15, 16], [0, 10, 7, 8, 9], [0, 10]]
@@ -84,9 +85,16 @@ def actual_experiment_analysis():
     # analyze_data_functionalized.analysis_call(
     #         filename, LABEL, copy.deepcopy(mechdict_to_use), plotHistogramOfFull=False, plotConvergenceAnalysis = True, lines_to_do=lines_to_do, labels=labels, \
     #         deficit_offset=deficit_offset, lines_to_do_fullhist = lines_to_do_fullhist, labels_fullhist = labels_fullhist)
-    analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechdict_to_use), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset,
-                                              lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=True,
-                                              plotAllOverTime=True, organizePayment=False, analyzeExtraFull=True, average_iteratively = True,plotConvergenceAnalysis = True)
+    # analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechdict_to_use), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset, \
+    #  lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=True, lines_to_do_fullhist = lines_to_do_fullhist, labels_fullhist = labels_fullhist, \
+    #  plotAllOverTime=True, organizePayment=False, analyzeExtraFull=True, average_iteratively = True,plotConvergenceAnalysis = True,\
+    #  lines_to_do_creditshist = lines_to_do_creditshist, labels_creditshist = labels_creditshist, plotHistogramOfFull=True)
+
+    analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechdict_to_use), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset, \
+     lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=False, lines_to_do_fullhist = lines_to_do_fullhist, labels_fullhist = labels_fullhist, \
+     plotAllOverTime=False, organizePayment=False, analyzeExtraFull=False, average_iteratively =False,plotConvergenceAnalysis =True,\
+     lines_to_do_creditshist = lines_to_do_creditshist, labels_creditshist = labels_creditshist, plotHistogramOfFull=False)
+
 
 def main():
     deficit_offset = 228

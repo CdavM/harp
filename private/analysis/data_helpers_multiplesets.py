@@ -10,7 +10,7 @@ import operator as o
 from operator import itemgetter
 
 import numpy as np
-
+import os
 
 def load_data(filename):
     with open(filename, mode='rb') as file:
@@ -72,7 +72,7 @@ def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive=0)
             '_loc'] = float(answerdata['slider3' + setstr][0])
         # answer['slider4' + setstr +
         #     '_loc'] = float(answerdata['deficit' + setstr])
-        # answer['explanation'] = answerdata['text_explanation']
+        answer['explanation'] = answerdata['text_explanation']
         answer['slider4' + setstr + '_loc']  = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
                         'slider2' + setstr + '_loc'] - answer['slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
 
@@ -119,7 +119,7 @@ def load_data_experiment_linf(answerdata, restofdata, numsets, deficit_additive=
             '_loc'] = float(answerdata['slider3' + setstr][0])
         # answer['slider4' + setstr +
         #     '_loc'] = float(answerdata['deficit' + setstr])
-        # answer['explanation'] = answerdata['text_explanation']
+        answer['explanation'] = answerdata['text_explanation']
         answer['slider4' + setstr + '_loc']  = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
                         'slider2' + setstr + '_loc'] - answer['slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
 
@@ -160,7 +160,7 @@ def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive=0)
             '_loc'] = float(answerdata['slider3' + setstr][0])
         # answer['slider4' + setstr +
         #     '_loc'] = float(answerdata['deficit' + setstr])
-        # answer['explanation'] = answerdata['text_explanation']
+        answer['explanation'] = answerdata['text_explanation']
         answer['slider4' + setstr + '_loc']  = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
                         'slider2' + setstr + '_loc'] - answer['slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
 
@@ -331,66 +331,96 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, 
     @param ax: The plotting axes from matplotlib.
     @param dpoints: The data set as an (n, 3) numpy array
     '''
+    with suppress_stdout_stderr():
+        wasNone = False
+        if ax is None:
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            wasNone = True
 
-    wasNone = False
-    if ax is None:
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        wasNone = True
+        # Aggregate the conditions and the categories according to their
+        # mean values
+        conditions = [(c, np.mean(dpoints[dpoints[:,0] == c][:,2].astype(float)))
+                      for c in np.unique(dpoints[:,0])]
+        categories = [(c, np.mean(dpoints[dpoints[:,1] == c][:,2].astype(float)))
+                      for c in np.unique(dpoints[:,1])]
 
-    # Aggregate the conditions and the categories according to their
-    # mean values
-    conditions = [(c, np.mean(dpoints[dpoints[:,0] == c][:,2].astype(float)))
-                  for c in np.unique(dpoints[:,0])]
-    categories = [(c, np.mean(dpoints[dpoints[:,1] == c][:,2].astype(float)))
-                  for c in np.unique(dpoints[:,1])]
+        # sort the conditions, categories and data so that the bars in
+        # the plot will be ordered by category and condition
+        conditions = [c[0] for c in sorted(conditions, key=o.itemgetter(1))]
+        categories = [c[0] for c in sorted(categories, key=o.itemgetter(1))]
+        categories = categories_order
+        conditions = conditions_order
 
-    # sort the conditions, categories and data so that the bars in
-    # the plot will be ordered by category and condition
-    conditions = [c[0] for c in sorted(conditions, key=o.itemgetter(1))]
-    categories = [c[0] for c in sorted(categories, key=o.itemgetter(1))]
-    categories = categories_order
-    conditions = conditions_order
+        dpoints = np.array(sorted(dpoints, key=lambda x: categories.index(x[1])))
 
-    dpoints = np.array(sorted(dpoints, key=lambda x: categories.index(x[1])))
+        # the space between each set of bars
+        space = 0.3
+        n = len(conditions)
+        width = (1 - space) / (len(conditions))
+        current_palette = sns.color_palette()
 
-    # the space between each set of bars
-    space = 0.3
-    n = len(conditions)
-    width = (1 - space) / (len(conditions))
-    current_palette = sns.color_palette()
+        # Create a set of bars at each position
+        for i,cond in enumerate(conditions):
+            indeces = range(1, len(categories)+1)
+            vals = dpoints[dpoints[:,0] == cond][:,2].astype(np.float)
+            pos = [j - (1 - space) / 2. + i * width for j in indeces]
+            ax.bar(pos, vals, width=width, label=cond,
+                   color=current_palette[i%len(current_palette)]
+                   )
 
-    # Create a set of bars at each position
-    for i,cond in enumerate(conditions):
-        indeces = range(1, len(categories)+1)
-        vals = dpoints[dpoints[:,0] == cond][:,2].astype(np.float)
-        pos = [j - (1 - space) / 2. + i * width for j in indeces]
-        ax.bar(pos, vals, width=width, label=cond,
-               color=current_palette[i%len(current_palette)]
-               )
+        # Set the x-axis tick labels to be equal to the categories
+        ax.set_xticks(indeces)
+        ax.set_xticklabels(categories)
+        ax.tick_params(axis='both', which='major', labelsize=18)
 
-    # Set the x-axis tick labels to be equal to the categories
-    ax.set_xticks(indeces)
-    ax.set_xticklabels(categories)
-    ax.tick_params(axis='both', which='major', labelsize=18)
+        plt.setp(plt.xticks()[1])#, rotation=90)
 
-    plt.setp(plt.xticks()[1])#, rotation=90)
+        # Add the axis labels
+        ax.set_ylabel(ylabel, fontsize = 18)
+        # ax.set_xlabel(xlabel, fontsize = 18)
 
-    # Add the axis labels
-    ax.set_ylabel(ylabel, fontsize = 18)
-    # ax.set_xlabel(xlabel, fontsize = 18)
+        # Add a legend
+        handles, labels = ax.get_legend_handles_labels()
+        # ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize = 18)
 
-    # Add a legend
-    handles, labels = ax.get_legend_handles_labels()
-    # ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize = 18)
+        if createlegend:
+            ax.legend(handles, labels,bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+               ncol=min(len(conditions), 4), mode="expand", borderaxespad=0., fontsize = 18)
 
-    if createlegend:
-        ax.legend(handles, labels,bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
-           ncol=min(len(conditions), 4), mode="expand", borderaxespad=0., fontsize = 18)
+        if showplot:
+            mng = plt.get_current_fig_manager()
+            mng.window.showMaximized()
+            plt.savefig(label + '.png')
+            plt.close()
+            #plt.show()
 
-    if showplot:
-        mng = plt.get_current_fig_manager()
-        mng.window.showMaximized()
-        plt.savefig(label + '.png')
-        plt.close()
-        #plt.show()
+# Define a context manager to suppress stdout and stderr.
+class suppress_stdout_stderr(object):
+    '''
+    A context manager for doing a "deep suppression" of stdout and stderr in
+    Python, i.e. will suppress all print, even if the print originates in a
+    compiled C/Fortran sub-function.
+       This will not suppress raised exceptions, since exceptions are printed
+    to stderr just before a script exits, and after the context manager has
+    exited (at least, I think that is why it lets exceptions through).
+
+    '''
+    def __init__(self):
+        # Open a pair of null files
+        self.null_fds =  [os.open(os.devnull,os.O_RDWR) for x in range(2)]
+        # Save the actual stdout (1) and stderr (2) file descriptors.
+        self.save_fds = (os.dup(1), os.dup(2))
+
+    def __enter__(self):
+        # Assign the null pointers to stdout and stderr.
+        os.dup2(self.null_fds[0],1)
+        os.dup2(self.null_fds[1],2)
+
+    def __exit__(self, *_):
+        # Re-assign the real stdout/stderr back to (1) and (2)
+        os.dup2(self.save_fds[0],1)
+        os.dup2(self.save_fds[1],2)
+        # Close the null files
+        os.close(self.null_fds[0])
+        os.close(self.null_fds[1])
