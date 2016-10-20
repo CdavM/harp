@@ -18,16 +18,16 @@ mechanism_super_dictionary_real_BIGEXPERIMENT1 = {0: {'type': 'full', 'name': 'F
                                                   6: {'name': 'Group 3 L1', 'type': 'l1', 'do_full_as_well': False, 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1100, 350, 1540, 828], [440, 1050, 350, 1500, 828]]}
                                                   }
 
-mechanism_super_dictionary_real_BIGEXPERIMENT2 = {0: {'type': 'full', 'name': 'Group 1 Full', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
-                                       1: {'name': 'Group 1 l2', 'do_full_as_well': True, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 200, 1300, 828], [200, 800, 300, 1400, 828]]},
-                                       2: {'name': 'Group 2 l2', 'do_full_as_well': False, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
-                                       3: {'name': 'Group 3 l2', 'do_full_as_well': False, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
-                                       4: {'name': 'Group 4 l1', 'do_full_as_well': True, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
-                                       5: {'name': 'Group 5 l1', 'do_full_as_well': False, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
-                                       6: {'name': 'Group 6 l1', 'do_full_as_well': False, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
-                                       7: {'name': 'Group 7 linf', 'do_full_as_well': True, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
-                                       8: {'name': 'Group 8 linf', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
-                                       9: {'name': 'Group 9 linf', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
+mechanism_super_dictionary_real_BIGEXPERIMENT2 = {0: {'type': 'full', 'name': 'Ideal Pts.', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
+                                       1: {'name': '$\mathcal{L}^2$ Group 1', 'do_full_as_well': True, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 200, 1300, 828], [200, 800, 300, 1400, 828]]},
+                                       2: {'name': '$\mathcal{L}^2$ Group 2', 'do_full_as_well': False, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       3: {'name': '$\mathcal{L}^2$ Group 3', 'do_full_as_well': False, 'type': 'l2', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
+                                       4: {'name': '$\mathcal{L}^1$ Group 1', 'do_full_as_well': True, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                       5: {'name': '$\mathcal{L}^1$ Group 2', 'do_full_as_well': False, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       6: {'name': '$\mathcal{L}^1$ Group 3 ', 'do_full_as_well': False, 'type': 'l1', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]},
+                                       7: {'name': '$\mathcal{L}^\infty$ Group 1', 'do_full_as_well': True, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                       8: {'name': '$\mathcal{L}^\infty$ Group 2', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       9: {'name': '$\mathcal{L}^\infty$ Group 3', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
                                        }
 
 mechanism_super_dictionary_BIGsCOMBINED = {0: {'type': 'full', 'name': 'Exp2 Group0 Full', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
@@ -68,8 +68,8 @@ def actual_experiment_analysis():
               'Comparisons', 'ComparisonsSingle']
 
     filename = 'export-20161016202931_BIGEXPERIMENT2FINAL.csv'
-    LABEL = 'Experiment2FINAL_testingmovavg'
-    lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6], [0, 7, 8, 9]]
+    LABEL = 'Exp2FINALclean_'
+    lines_to_do = [[1, 2, 3, 0], [4, 5, 6, 0], [7, 8, 9, 0]]
     mechdict_to_use = mechanism_super_dictionary_real_BIGEXPERIMENT2
     lines_to_do_fullhist = [[0,1,4,7]]#[0], [1], [4], [7], [0,1,4,7]]
     labels_fullhist = ['All']#'Full Only', 'With L2', 'With L1', 'With Linf', 'All']
@@ -91,14 +91,14 @@ def actual_experiment_analysis():
     #  lines_to_do_creditshist = lines_to_do_creditshist, labels_creditshist = labels_creditshist, plotHistogramOfFull=True)
 
     analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechdict_to_use), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset, \
-     lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=False, lines_to_do_fullhist = lines_to_do_fullhist, labels_fullhist = labels_fullhist, \
-     plotAllOverTime=False, organizePayment=False, analyzeExtraFull=False, average_iteratively =False,plotConvergenceAnalysis =True,\
-     lines_to_do_creditshist = lines_to_do_creditshist, labels_creditshist = labels_creditshist, plotHistogramOfFull=False)
+     lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=True, lines_to_do_fullhist = lines_to_do_fullhist, labels_fullhist = labels_fullhist, \
+     plotAllOverTime=True, organizePayment=False, analyzeExtraFull=True, average_iteratively =False,plotConvergenceAnalysis =True,\
+     lines_to_do_creditshist = lines_to_do_creditshist, labels_creditshist = labels_creditshist, plotHistogramOfFull=True)
 
 mechanism_super_dictionary_linfonly= {0: {'type': 'full', 'name': 'Group 1 Full', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
-                                       1: {'name': 'Group 1 linf', 'do_full_as_well': True, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
-                                       2: {'name': 'Group 2 linf', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
-                                       3: {'name': 'Group 3 linf', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
+                                       1: {'name': 'Group 1 $l_\infty$', 'do_full_as_well': True, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                       2: {'name': 'Group 2 $l_\infty$', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       3: {'name': 'Group 3 $l_\infty$', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
                                        }
 
 def simulateLinfWithSpecialUtility():
@@ -220,8 +220,8 @@ def main():
                     mechanism_super_dictionary_BIG2_farapart), deficit_offset=deficit_offset, lines_to_do=lines_to_do, labels=labels, plotAllOverTime=True)
 
 if __name__ == "__main__":
-    simulateLinfWithSpecialUtility()
-    # actual_experiment_analysis()
+    #simulateLinfWithSpecialUtility()
+    actual_experiment_analysis()
     # main()
     # plotHistogramFromFile()
     print 'done'

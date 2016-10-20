@@ -15,7 +15,7 @@ import weightedstats as ws
 import operator
 slider_order = ['Defense', 'Health',
 	'Transportation', 'Income Tax', 'Deficit'];
-
+import latexify
 
 def plot_sliders_over_time(data, title, prepend=""):
 	n = range(0, len(data) + 1)
@@ -25,15 +25,15 @@ def plot_sliders_over_time(data, title, prepend=""):
 			str(slider) + '_loc'] for d in data]
 		vals.insert(0, initial_values[slider])  # prepend initial values
 		plt.plot(n, vals, label=slider_order[slider])
-	plt.legend(loc='upper left', fontsize=18)
+	plt.legend(loc='upper left')
 
-	plt.tick_params(axis='both', which='major', labelsize=18)
+	plt.tick_params(axis='both', which='major')
 
 	# Add the axis labels
-	plt.title(title + " " + prepend, fontsize=18)
-	plt.ylabel('$ (Billions)', fontsize=18)
-	plt.xlabel('Iteration', fontsize=18)
-	plt.savefig(LABEL + '_' + title + prepend + '.png')
+	plt.title(title + " " + prepend)
+	plt.ylabel('\$ (Billions)')
+	plt.xlabel('Iteration')
+	plt.savefig(LABEL + '_' + title + prepend + '.pdf', format='pdf', dpi=1000)
 	plt.close()
 
 
@@ -175,8 +175,8 @@ def calculate_full_elicitation_average_iterative(data, deficit_offset, dataname=
 		median[slider] = [np.median(sliders[slider][0:t])  for t in range(1, len(sliders[slider][0:t]))]
 		weighted_median[slider] = [ws.weighted_median(sliders[slider][0:t], weights = weights[slider][0:t])  for t in range(1, len(sliders[slider]))]
 
-	return rawaverages, weightedaverages_l2, weightedaverages_l1, calculate_full_elicitation_euclideanpoint_iterative(
-		data, deficit_offset, dataname, sliderprepend), median, weighted_median
+	return rawaverages, weightedaverages_l2, weightedaverages_l1, [], #calculate_full_elicitation_euclideanpoint_iterative(
+		#data, deficit_offset, dataname, sliderprepend), median, weighted_median
 
 sliderranges = {
 0: [199, 801], 1: [699, 1301], 2: [99,701], 3:[1199,1801], 4:[100, 1300]
@@ -309,23 +309,23 @@ def plot_whether_mechanisms_converged(
 						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' weighted median')
 
 
-			axarr[slider].set_title(slider_order[slider], fontsize=18)
+			axarr[slider].set_title(slider_order[slider])
 			axarr[slider].set_ylabel('Norm of movement in window', fontsize=12)
-			axarr[slider].tick_params(axis='both', which='major', labelsize=18)
+			axarr[slider].tick_params(axis='both', which='major')
 
-		axarr[len(slider_order) - 1].set_xlabel('Iteration', fontsize=18)
+		axarr[len(slider_order) - 1].set_xlabel('Iteration')
 
 		fs = 10
 		if len(legend_names) <= 10:
 			fs = 18
 		f.legend(lines, legend_names, loc='upper center',
-				 borderaxespad=0., ncol=3, fontsize=fs)
+				 borderaxespad=0., ncol=3)#, fontsize=fs)
 
-		mng = plt.get_current_fig_manager()
-		mng.window.showMaximized()
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
 
 		# plt.show()
-		plt.savefig("" + LABEL + "_movementcumsum_len" + str(windowlen) + "_"+ labels[ltd] + '.png')
+		plt.savefig("" + LABEL + "_movementcumsum_len" + str(windowlen) + "_"+ labels[ltd] + '.pdf', format='pdf', dpi=1000)
 		plt.close();
 
 def plot_allmechansisms_together(
@@ -350,7 +350,7 @@ def plot_allmechansisms_together(
 		lines = []
 
 		maxn = 0
-		for mechanism in mechanism_super_dictionary:
+		for mechanism in lines_to_do[ltd]:
 			if mechanism not in lines_to_do[ltd]:
 				continue
 			n = range(0, len(organized_data[mechanism]))
@@ -358,7 +358,7 @@ def plot_allmechansisms_together(
 
 		for slider in xrange(0, len(slider_order)):
 			axarr[slider].set_ylim(sliderranges[slider])
-			for mechanism in mechanism_super_dictionary:
+			for mechanism in lines_to_do[ltd]:
 				if mechanism not in lines_to_do[ltd]:
 					continue
 				if mechanism_super_dictionary[mechanism]['type'] == 'l1' or mechanism_super_dictionary[mechanism]['type'] == 'l2' or mechanism_super_dictionary[mechanism]['type'] == 'linf':
@@ -391,21 +391,20 @@ def plot_allmechansisms_together(
 
 				n = range(maxn)
 				if mechanism_super_dictionary[mechanism]['type'] == 'full':
-					if average_iteratively == False:
-						vals = [full_elicitation_averages[mechanism]
-							['euclideanprefs'][slider] for _ in n]
-					else:
-						vals = full_elicitation_averages[mechanism]['euclideanprefs'][slider]
-						n = range(len(vals))
-					l = axarr[slider].plot(n, vals, label=mechanism_super_dictionary[
-										   mechanism]['name'] + '--maximization solution', linestyle='--', marker='+')
-
-					if slider == 1:
-						print vals[-1],
-					if slider == 0:
-						lines.append(l[0])
-						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' maximization solution')
-
+					# if average_iteratively == False:
+					# 	vals = [full_elicitation_averages[mechanism]
+					# 		['euclideanprefs'][slider] for _ in n]
+					# else:
+					# 	vals = full_elicitation_averages[mechanism]['euclideanprefs'][slider]
+					# 	n = range(len(vals))
+					# l = axarr[slider].plot(n, vals, label=mechanism_super_dictionary[
+					# 					   mechanism]['name'] + '--maximization solution', linestyle='--', marker='+')
+					#
+					# if slider == 1:
+					# 	print vals[-1],
+					# if slider == 0:
+					# 	lines.append(l[0])
+					# 	legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' maximization solution')
 					if average_iteratively == False:
 						vals = [full_elicitation_averages[mechanism]
 							['median'][slider] for _ in n]
@@ -413,46 +412,58 @@ def plot_allmechansisms_together(
 						vals = full_elicitation_averages[mechanism]['median'][slider]
 						n = range(len(vals))
 					l = axarr[slider].plot(n, vals, label=mechanism_super_dictionary[
-										   mechanism]['name'] + '--median', linestyle='--', marker='+')
+										   mechanism]['name'] + '--median', linestyle='None', marker='.', color = 'k')
 					if slider == 1:
 						print vals[-1],
 					if slider == 0:
 						lines.append(l[0])
 						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' median')
 
-					if average_iteratively == False:
-						vals = [full_elicitation_averages[mechanism]
-							['weightedmedian'][slider] for _ in n]
-					else:
-						vals = full_elicitation_averages[mechanism]['weightedmedian'][slider]
-						n = range(len(vals))
-					l = axarr[slider].plot(n, vals, label=mechanism_super_dictionary[
-										   mechanism]['name'] + '--weighted median', linestyle='--', marker='+')
+					# if average_iteratively == False:
+					# 	vals = [full_elicitation_averages[mechanism]
+					# 		['weightedmedian'][slider] for _ in n]
+					# else:
+					# 	vals = full_elicitation_averages[mechanism]['weightedmedian'][slider]
+					# 	n = range(len(vals))
+					# l = axarr[slider].plot(n, vals, label=mechanism_super_dictionary[
+					# 					   mechanism]['name'] + '--weighted median', linestyle='--', marker='+')
+					#
+					# if slider == 1:
+					# 	print vals[-1]
+					# if slider == 0:
+					# 	lines.append(l[0])
+					# 	legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' weighted median')
 
-					if slider == 1:
-						print vals[-1]
-					if slider == 0:
-						lines.append(l[0])
-						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' weighted median')
 
+			# axarr[slider].set_title(slider_order[slider])
+			# axarr[slider].set_ylabel('\$ (Billions)')
+			# axarr[slider].tick_params(axis='both')
 
-			axarr[slider].set_title(slider_order[slider], fontsize=18)
-			axarr[slider].set_ylabel('$ (Billions)', fontsize=18)
-			axarr[slider].tick_params(axis='both', which='major', labelsize=18)
-
-		axarr[len(slider_order) - 1].set_xlabel('Iteration', fontsize=18)
+		# axarr[len(slider_order) - 1].set_xlabel('Iteration')
 
 		fs = 10
 		if len(legend_names) <= 10:
 			fs = 18
+		# f.legend(lines, legend_names)
 		f.legend(lines, legend_names, loc='upper center',
-				 borderaxespad=0., ncol=3, fontsize=fs)
+				 borderaxespad=.5, ncol=4)#, fontsize=fs)
+		# # plt.xlabel('n')
+		plt.xlim([0, 220])
+		f.text(0.5, 0.25, 'Deficit', ha='center', va='center', fontsize = 5)
+		f.text(0.5, 0.41, 'Income Tax', ha='center', va='center', fontsize = 5)
+		f.text(0.5, 0.58, 'Transportation, Science, \& Education', ha='center', va='center', fontsize = 5)
+		f.text(0.5, 0.74, 'Healthcare', ha='center', va='center', fontsize = 5)
+		f.text(0.5, 0.91, 'Defense', ha='center', va='center', fontsize = 5)
+		f.text(.5, 0.05, 'Iteration', ha='center', va='center', fontsize = 5)
 
-		mng = plt.get_current_fig_manager()
-		mng.window.showMaximized()
+		f.text(0.08, 0.5, '\$ (Billions)', ha='center', va='center', rotation='vertical', fontsize = 5)
+
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
 
 		# plt.show()
-		plt.savefig("" + LABEL + labels[ltd] + '.png')
+		# plt.tight_layout()
+		plt.savefig("" + LABEL + labels[ltd] + '.pdf',bbox_inches='tight', format='pdf', dpi=1000)
 		plt.close();
 
 
@@ -463,7 +474,7 @@ def analyze_data_experiment_l2(data):  # constrained movement
 		creditsused.append(calc_credits_used(exp))
 	plt.hist(creditsused, bins=10, range=[0, 1])
 	# plt.show()
-	plt.savefig("" + LABEL + "_l2credits used" + '.png')
+	plt.savefig("" + LABEL + "_l2credits used" + '.pdf', format='pdf', dpi=1000)
 	plt.close();
 
 	return None
@@ -483,8 +494,8 @@ def analyze_data_experiment_full(all_data, LABEL, lines_to_do_fullhist, labels_f
 		f_weights_defminusmin = plt.figure('minusmin')
 		f_weights_defminusmax = plt.figure('minusmax')
 
-		f_weights, axarr_weights = plt.subplots(5, sharex=False)
-		f_values, axarr_values = plt.subplots(5, sharex=False)
+		f_weights, axarr_weights = plt.subplots(5, sharex=True)
+		f_values, axarr_values = plt.subplots(5, sharex=True)
 		lines_values = {0:[], 1:[],2:[],3:[],4:[]}
 		lines_weights = {0:[], 1:[],2:[],3:[],4:[]}
 		lines_weights_minusmin = []
@@ -519,10 +530,14 @@ def analyze_data_experiment_full(all_data, LABEL, lines_to_do_fullhist, labels_f
 			axarr_weights[slider].set_title(slider_order[slider])
 			axarr_values[slider].hist(lines_values[slider], 30, label = mechnames)
 			axarr_weights[slider].hist(lines_weights[slider], 30, label = mechnames)
+			latexify.format_axes(axarr_weights[slider])
+			latexify.format_axes(axarr_values[slider])
+
+
 		axarr_values[0].legend(loc='upper left',
-				 borderaxespad=0., ncol=4, fontsize=18)
+				 borderaxespad=0., ncol=4)
 		axarr_weights[0].legend(loc='upper left',
-				 borderaxespad=0., ncol=4, fontsize=18)
+				 borderaxespad=0., ncol=4)
 
 		if max(lines_weights) > 10:
 			print weights
@@ -532,37 +547,42 @@ def analyze_data_experiment_full(all_data, LABEL, lines_to_do_fullhist, labels_f
 		plt.title('Deficit Weight - Health Weight')
 		plt.hist(lines_weights_minushealth, 30, label = mechnames)
 		plt.legend(loc='upper left',
-				 borderaxespad=0., ncol=4, fontsize=18)
-		mng = plt.get_current_fig_manager()
-		mng.window.showMaximized()
-		plt.savefig(LABEL + '_FullElicitWeights_DeficitMinusHealth' + labels_fullhist[en]  + '.png')
+				 borderaxespad=0., ncol=4)
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
+		plt.tight_layout()
+		plt.savefig(LABEL + '_FullElicitWeights_DeficitMinusHealth' + labels_fullhist[en]  + '.pdf', format='pdf', dpi=1000)
 
 		plt.figure('minusmin')
 		plt.title('Deficit Weights - Min(other Weights)')
 		plt.hist(lines_weights_minusmin, 30, label = mechnames)
 		plt.legend(loc='upper left',
-				 borderaxespad=0., ncol=4, fontsize=18)
-		mng = plt.get_current_fig_manager()
-		mng.window.showMaximized()
-		plt.savefig(LABEL + '_FullElicitWeights_DeficitMinusMins' + labels_fullhist[en]  + '.png')
+				 borderaxespad=0., ncol=4)
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
+		plt.tight_layout()
+		plt.savefig(LABEL + '_FullElicitWeights_DeficitMinusMins' + labels_fullhist[en]  + '.pdf', format='pdf', dpi=1000)
 
 		plt.figure('minusmax')
 		plt.title('Deficit Weights - Max(other Weights)')
 		plt.hist(lines_weights_minusmax, 30, label = mechnames)
 		plt.legend(loc='upper left',
-				 borderaxespad=0., ncol=4, fontsize=18)
-		mng = plt.get_current_fig_manager()
-		mng.window.showMaximized()
-		plt.savefig(LABEL + '_FullElicitWeights_DeficitMinusMaxes' + labels_fullhist[en]  + '.png')
+				 borderaxespad=0., ncol=4)
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
+		plt.tight_layout()
+		plt.savefig(LABEL + '_FullElicitWeights_DeficitMinusMaxes' + labels_fullhist[en]  + '.pdf', format='pdf', dpi=1000)
 
 		plt.figure(f_weights.number)
-		mng = plt.get_current_fig_manager()
-		mng.window.showMaximized()
-		plt.savefig(LABEL + '_FullElicitWeights_' + labels_fullhist[en]  + '.png')
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
+		# plt.tight_layout()
+		plt.savefig(LABEL + '_FullElicitWeights_' + labels_fullhist[en]  + '.pdf', format='pdf', dpi=1000)
 		plt.figure(f_values.number)
-		mng = plt.get_current_fig_manager()
-		mng.window.showMaximized()
-		plt.savefig(LABEL + '_FullElicitValues_' + labels_fullhist[en]  + '.png')
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
+		# plt.tight_layout()
+		plt.savefig(LABEL + '_FullElicitValues_' + labels_fullhist[en]  + '.pdf', format='pdf', dpi=1000)
 		plt.close()
 
 	return None
@@ -571,7 +591,7 @@ def plot_histogram_of_credits_used(all_data, LABEL, lines_to_do_creditshist, lab
 
 	# plot distribution of credits used by mechanism type
 	for en,ltd in enumerate(lines_to_do_creditshist):
-		f_credits, axarr_credits = plt.subplots(4, sharex=False)
+		f_credits, axarr_credits = plt.subplots(4, sharex=True)
 		lines_credits = {0:[], 1:[],2:[],3:[]}
 		mechnames = []
 		for mech in ltd:
@@ -588,12 +608,12 @@ def plot_histogram_of_credits_used(all_data, LABEL, lines_to_do_creditshist, lab
 			axarr_credits[slider].set_title(slider_order[slider])
 			axarr_credits[slider].hist(lines_credits[slider], 10, label = mechnames)
 		axarr_credits[0].legend(loc='upper left',
-				 borderaxespad=0., ncol=4, fontsize=18)
+				 borderaxespad=0., ncol=4)
 
 		plt.figure(f_credits.number)
-		mng = plt.get_current_fig_manager()
-		mng.window.showMaximized()
-		plt.savefig(LABEL + '_HistogramOfCreditsUsed_' + labels_creditshist[en]  + '.png')
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
+		plt.savefig(LABEL + '_HistogramOfCreditsUsed_' + labels_creditshist[en]  + '.pdf', format='pdf', dpi=1000)
 		plt.close()
 
 	return None
@@ -604,7 +624,7 @@ def analyze_data_experiment_l1(data):  # constrained movement
 	for exp in data:
 		creditsused.append(calc_credits_used(exp))
 	plt.hist(creditsused, bins=10, range=[0, 1])
-	plt.savefig("" + LABEL + "_l1credits used hist" + '.png')
+	plt.savefig("" + LABEL + "_l1credits used hist" + '.pdf', format='pdf', dpi=1000)
 	plt.close();
 
 	# plt.show()
@@ -615,7 +635,7 @@ def analyze_data_experiment_linf(data):  # constrained movement
 	for exp in data:
 		creditsused.append(calc_credits_used(exp))
 	plt.hist(creditsused, bins=10, range=[0, 1])
-	plt.savefig("" + LABEL + "_l1credits used hist" + '.png')
+	plt.savefig("" + LABEL + "_l1credits used hist" + '.pdf', format='pdf', dpi=1000)
 	plt.close();
 
 	# plt.show()
@@ -720,16 +740,16 @@ def plot_percent_movements_over_time(organized_data, LABEL, mechanism_super_dict
 
 				if slider == 0:
 					lines.append(l[0])
-		axarr[slider].set_title(slider_order[slider], fontsize=18)
-		axarr[slider].set_ylabel('Percent movement', fontsize=18)
+		axarr[slider].set_title(slider_order[slider])
+		axarr[slider].set_ylabel('Percent movement')
 		axarr[slider].set_ylim([0.1, .4])
-		axarr[slider].tick_params(axis='both', which='major', labelsize=18)
+		axarr[slider].tick_params(axis='both', which='major')
 
-	axarr[3].set_xlabel('Iteration', fontsize=18)
+	axarr[3].set_xlabel('Iteration')
 	f.legend(lines, labelnames, loc='upper left',
-			 borderaxespad=0., ncol=4, fontsize=18)
+			 borderaxespad=0., ncol=4)
 	# print lines
-	plt.savefig("" + LABEL + "_Percent Movements over time" + '.png')
+	plt.savefig("" + LABEL + "_Percent Movements over time" + '.pdf', format='pdf', dpi=1000)
 	plt.close();
 
 	# plt.show()
@@ -842,11 +862,11 @@ def TwoSetComparisonsAnalysis(comparisonsdata):
 		plt.plot(range(n), np.poly1d(np.polyfit(range(n), vals, 1))
 				 (range(n)), label=slider_order[slider])
 
-	plt.title('Comparisons set differences over time', fontsize=18)
-	plt.ylabel('Percent difference', fontsize=18)
-	plt.xlabel('Iteration', fontsize=18)
-	plt.legend(loc='upper left', borderaxespad=0., ncol=4, fontsize=18)
-	plt.savefig("" + LABEL + "_2 set comparison diff over time" + '.png')
+	plt.title('Comparisons set differences over time')
+	plt.ylabel('Percent difference')
+	plt.xlabel('Iteration')
+	plt.legend(loc='upper left', borderaxespad=0., ncol=4)
+	plt.savefig("" + LABEL + "_2 set comparison diff over time" + '.pdf', format='pdf', dpi=1000)
 	plt.close();
 
 	# plt.show()
@@ -893,11 +913,11 @@ def TwoSetComparisonsAnalysis(comparisonsdata):
 		movav = movingaverage(vals, len(vals) - 1)
 		plt.plot(range(len(movav)), movav, label=slider_order[slider])
 
-	plt.title('Comparisons options (ordered) differences over time', fontsize=18)
-	plt.ylabel('Option difference', fontsize=18)
-	plt.xlabel('Iteration', fontsize=18)
-	plt.legend(loc='upper left', borderaxespad=0., ncol=4, fontsize=18)
-	plt.savefig("" + LABEL + "_2set comparison analysis ordered difference over time" + '.png')
+	plt.title('Comparisons options (ordered) differences over time')
+	plt.ylabel('Option difference')
+	plt.xlabel('Iteration')
+	plt.legend(loc='upper left', borderaxespad=0., ncol=4)
+	plt.savefig("" + LABEL + "_2set comparison analysis ordered difference over time" + '.pdf', format='pdf', dpi=1000)
 	plt.close();
 
 	# plt.show()
@@ -1121,11 +1141,11 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 			elif mechanism_super_dictionary[key]['type'] is 'linf':
 				alllinf[item] = np.append(alll2[item], differences[key][item])
 
-		mng = plt.get_current_fig_manager()
-		mng.window.showMaximized()
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
 
 		plt.suptitle('Differences in percent movement per budget item, ' + mechanism_super_dictionary[key]['name'])
-		plt.savefig(LABEL + 'Differences in percent movement' + mechanism_super_dictionary[key]['name'] +'.png')
+		plt.savefig(LABEL + 'Differences in percent movement' + mechanism_super_dictionary[key]['name'] +'.pdf', format='pdf', dpi=1000)
 		#plt.show()
 		plt.close()
 
@@ -1137,10 +1157,10 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 		if item is 0:
 			axarr[item].legend(loc='upper right')
 	plt.suptitle('Differences in percent movement per budget item')
-	mng = plt.get_current_fig_manager()
-	mng.window.showMaximized()
+	# mng = plt.get_current_fig_manager()
+	# mng.window.showMaximized()
 
-	plt.savefig(LABEL + 'Combined Differences in percent movement'+'.png')
+	plt.savefig(LABEL + 'Combined Differences in percent movement'+'.pdf', format='pdf', dpi=1000)
 	plt.close()
 
 
@@ -1178,11 +1198,11 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 				if item is 0:
 					axarr[item].legend(loc='upper right')
 
-		mng = plt.get_current_fig_manager()
-		mng.window.showMaximized()
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
 
 		plt.suptitle('Differences in percent movement per budget item, Conditioned on full, ' + str(keylinfl2orl1))
-		plt.savefig(LABEL + 'Differences in percent movement, Conditioned on full, ' + str(keylinfl2orl1) + '.png')
+		plt.savefig(LABEL + 'Differences in percent movement, Conditioned on full, ' + str(keylinfl2orl1) + '.pdf', format='pdf', dpi=1000)
 		#plt.show()
 		plt.close()
 
@@ -1328,18 +1348,18 @@ def analyze_extra_full_elicitation(data, mechanism_super_dictionary_value, mech_
 			legend_names.append('Mechanism specific full weighted median')
 
 		axarr[slider].set_title(slider_order[slider], fontsize = 18)
-		axarr[slider].set_ylabel('$ (Billions)', fontsize = 18)
-		axarr[slider].tick_params(axis='both', which='major', labelsize=18)
+		axarr[slider].set_ylabel('\$ (Billions)', fontsize = 18)
+		axarr[slider].tick_params(axis='both', which='major')
 
 	axarr[len(slider_order)-1].set_xlabel('Iteration', fontsize = 18)
 	f.legend(lines,legend_names , loc='upper center', borderaxespad=0., ncol = 3, fontsize = 18)
 
 
-	mng = plt.get_current_fig_manager()
-	mng.window.showMaximized()
+	# mng = plt.get_current_fig_manager()
+	# mng.window.showMaximized()
 
 	# plt.show()
-	plt.savefig("" + LABEL + '_FullElicitation Extra, Group ' + str(mech_key)  + '.png')
+	plt.savefig("" + LABEL + '_FullElicitation Extra, Group ' + str(mech_key)  + '.pdf', format='pdf', dpi=1000)
 	plt.close();
 
 def analysis_call(filename, LABEL, mechanism_super_dictionary, alreadyPaidFiles = None, lines_to_do = None, labels = [''], \
@@ -1349,7 +1369,10 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, alreadyPaidFiles 
  slider_order = ['Defense', 'Health', 'Transportation', 'Income Tax', 'Deficit'], \
  deficit_offset = 0, average_iteratively = True, plotConvergenceAnalysis = False, \
  lines_to_do_creditshist = None, labels_creditshist = None):
+
 	data, organized_data = clean_data(load_data(filename), mechanism_super_dictionary, deficit_offset);
+
+	latexify.latexify()
 
 	if do2SetComparisonsAnalysis:
 		TwoSetComparisonsAnalysis(organized_data[1])
