@@ -12,3 +12,5 @@ export*
 *.xlsx
 private/consoledump.txt
 private/BIGEXPERIMENT2DUMP/*
+*.eps
+*.pdf
