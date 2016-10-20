@@ -195,7 +195,7 @@ def find_normalized_movement(slidernum, setnum, d):
 	vals = [x/radius for x in mapped]
 
 	#because a few bugs where movement is more than radius. Problem is not that bad though (only a few people, and no more than 1.5 the radius)
-	if abs(vals[slidernum]) > 1.001 and slidernum !=4:
+	if abs(vals[slidernum]) > 1.1 and slidernum !=4:
 		vals[slidernum] = vals[slidernum]/abs(vals[slidernum])
 		print "somehow moved more than radius ", vals, radius, initialvals, movedtovals
 	# if slidernum is 4:
@@ -998,7 +998,7 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 
 	# get signs and differences separated by item and mechanism
 	for key in organized_data:
-		if not (mechanism_super_dictionary[key]['type'] == 'l2' or mechanism_super_dictionary[key]['type'] == 'l1' or mechanism_super_dictionary[key]['type'] == 'l1' or mechanism_super_dictionary[key]['type'] == 'linf'):
+		if not (mechanism_super_dictionary[key]['type'] == 'l2' or mechanism_super_dictionary[key]['type'] == 'l1'  or mechanism_super_dictionary[key]['type'] == 'linf'):
 			continue
 		if key not in bysign:
 			bysign[key] = {}
@@ -1364,7 +1364,7 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, alreadyPaidFiles 
 		# plot_percent_movements_over_time(organized_data, LABEL, mechanism_super_dictionary)
 		plot_histogram_of_credits_used(organized_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary)
 		analyze_movement_and_weights (organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
-		analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary);
+		# analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary);
 
 	if plotAllOverTime:
 		plot_allmechansisms_together(organized_data, mechanism_super_dictionary, slider_order = slider_order, deficit_offset = deficit_offset, labels = labels, lines_to_do = lines_to_do, LABEL = LABEL, average_iteratively = average_iteratively)

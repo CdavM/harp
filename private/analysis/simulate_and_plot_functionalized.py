@@ -95,6 +95,72 @@ def actual_experiment_analysis():
      plotAllOverTime=False, organizePayment=False, analyzeExtraFull=False, average_iteratively =False,plotConvergenceAnalysis =True,\
      lines_to_do_creditshist = lines_to_do_creditshist, labels_creditshist = labels_creditshist, plotHistogramOfFull=False)
 
+mechanism_super_dictionary_linfonly= {0: {'type': 'full', 'name': 'Group 1 Full', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
+                                       1: {'name': 'Group 1 linf', 'do_full_as_well': True, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [200, 800, 200, 1400, 828]]},
+                                       2: {'name': 'Group 2 linf', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[500, 1000, 300, 1300, 828], [800, 1250, 400, 1500, 828]]},
+                                       3: {'name': 'Group 3 linf', 'do_full_as_well': False, 'type': 'linf', 'numsets': 2, 'num_to_average_per_step': 10, 'initial_values': [[800, 1250, 400, 1500, 828], [200, 800, 200, 1400, 828]]}
+                                       }
+
+def simulateLinfWithSpecialUtility():
+    deficit_offset = 228
+
+    LIMIT = 1200
+    mechdict_to_use = mechanism_super_dictionary_linfonly
+    lines_to_do = [[0, 1, 2, 3]]
+    labels = ['Linf']
+    lines_to_do_fullhist = [[0,1]]#[0], [1], [4], [7], [0,1,4,7]]
+    labels_fullhist = ['Linf']#'Full Only', 'With L2', 'With L1', 'With Linf', 'All']
+    lines_to_do_creditshist = [[1, 2, 3]]
+    labels_creditshist = ['Linf']
+
+    # LIMIT = 2500
+    # lines_to_do = [[0, 1, 2, 3], [0, 4, 5, 6], [0, 7, 8, 9]]
+    # mechdict_to_use = mechanism_super_dictionary_real_BIGEXPERIMENT2
+    # lines_to_do_fullhist = [[0,1,4,7]]#[0], [1], [4], [7], [0,1,4,7]]
+    # labels_fullhist = ['All']#'Full Only', 'With L2', 'With L1', 'With Linf', 'All']
+    # lines_to_do_creditshist = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    # labels_creditshist = ['L2', 'L1', 'Linf']
+    # labels = ['L2', 'L1', 'Linf', 'Full', 'L2Single', 'L1Single',
+    #           'Comparisons', 'ComparisonsSingle']
+
+
+    radius_parameters = {
+        'radius_type': 'decreasing_slow_increasing', 'starting': 100, 'decrease_every': 7}
+
+    load_people_from_file = True
+    filename_forloadingpeople = "C:\\Users\\Nikhil\\Dropbox\\src\\harp\\private\\analysis\\export-20161016202931_BIGEXPERIMENT2FINAL.csv"
+
+    superdictionary_forloadingpeople = mechanism_super_dictionary_real_BIGEXPERIMENT2
+    deficit_offset_forloadingpeople = 228
+
+    LABEL = 'Simulate_fixed' + "_"
+    filename = "simulations/" + LABEL + ".csv"
+
+
+
+    # simulate_entire_experiment_functionalized.simulate_experiment_functionalized(
+    #     filename, LABEL, copy.deepcopy(mechanism_super_dictionary_linfonly), deficit_offset=deficit_offset, \
+    #      LIMIT=LIMIT, radius_parameters=radius_parameters, load_people_from_file=load_people_from_file, \
+    #       filename_forloadingpeople=filename_forloadingpeople, superdictionary_forloadingpeople=superdictionary_forloadingpeople, \
+    #        deficit_offset_forloadingpeople=deficit_offset_forloadingpeople,make_deficit_ideal_neg_infin = False, addeducationoffset = False, onesided = False, quadratic = True)
+    #
+    # analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(
+    #     mechanism_super_dictionary_linfonly), deficit_offset=deficit_offset, lines_to_do=lines_to_do, labels=labels, plotAllOverTime=True, \
+    #     analyzeUtilityFunctions=True, lines_to_do_fullhist = lines_to_do_fullhist, labels_fullhist = labels_fullhist, \
+    #     organizePayment=False, analyzeExtraFull=True, average_iteratively = True, plotConvergenceAnalysis = True,\
+    #     lines_to_do_creditshist = lines_to_do_creditshist, labels_creditshist = labels_creditshist, plotHistogramOfFull=True)
+
+    simulate_entire_experiment_functionalized.simulate_experiment_functionalized(
+        filename, LABEL, copy.deepcopy(mechdict_to_use), deficit_offset=deficit_offset, \
+         LIMIT=LIMIT, radius_parameters=radius_parameters, load_people_from_file=load_people_from_file, \
+          filename_forloadingpeople=filename_forloadingpeople, superdictionary_forloadingpeople=superdictionary_forloadingpeople, \
+           deficit_offset_forloadingpeople=deficit_offset_forloadingpeople,make_deficit_ideal_neg_infin = False, addeducationoffset = False, onesided = True, quadratic = False)
+
+    analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(
+        mechdict_to_use), deficit_offset=deficit_offset, lines_to_do=lines_to_do, labels=labels, plotAllOverTime=True, \
+        analyzeUtilityFunctions=True, lines_to_do_fullhist = lines_to_do_fullhist, labels_fullhist = labels_fullhist, \
+        organizePayment=False, analyzeExtraFull=True, average_iteratively = False, plotConvergenceAnalysis = True,\
+        lines_to_do_creditshist = lines_to_do_creditshist, labels_creditshist = labels_creditshist, plotHistogramOfFull=True)
 
 def main():
     deficit_offset = 228
@@ -154,7 +220,8 @@ def main():
                     mechanism_super_dictionary_BIG2_farapart), deficit_offset=deficit_offset, lines_to_do=lines_to_do, labels=labels, plotAllOverTime=True)
 
 if __name__ == "__main__":
-    actual_experiment_analysis()
+    simulateLinfWithSpecialUtility()
+    # actual_experiment_analysis()
     # main()
     # plotHistogramFromFile()
     print 'done'
