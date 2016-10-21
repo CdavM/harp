@@ -498,6 +498,81 @@ def analyze_data_experiment_comparisons(data):  # comparisons
 		plot_sliders_over_time(data, 'Comparison Mechanism', 'set' + str(setnum))
 	return None
 
+def analyze_data_experiment_full_allcombined(all_data, LABEL, lines_to_do_fullhist, labels_fullhist, mechanism_super_dictionary):  # ideal points and elicitation
+
+	# plot distribution of points, weights, combining the data for mechanisms in current line to do
+	#also plot distribution of deficit - max(others), deficit - min(others)
+
+	f_weights, axarr_weights = plt.subplots(5, sharex=True)
+	f_values, axarr_values = plt.subplots(5, sharex=True)
+	lines_values = {0:[], 1:[],2:[],3:[],4:[]}
+	lines_weights = {0:[], 1:[],2:[],3:[],4:[]}
+
+	mechnames = []
+	for mech in [0, 1, 4, 7]:
+		mechnames.append(mechanism_super_dictionary[mech]['name'])
+		if mechanism_super_dictionary[mech]['type'] == 'full':
+			dataname = 'question_data'
+		else:
+			dataname = 'extra_full_elicitation_data'
+		for slider in range(5):
+			lines_values[slider].extend([row[dataname]['slider' +
+				str(slider) + '0_loc'] for row in all_data[mech] if dataname in row])
+			lines_weights[slider].extend([min(10, row[dataname]['slider' +
+						   str(slider) + '0_weight']) for row in all_data[mech] if dataname in row])
+	for slider in range(5):
+		# axarr_values[slider].set_title(slider_order[slider])
+		# axarr_weights[slider].set_title(slider_order[slider])
+		axarr_values[slider].hist(lines_values[slider], 50, range =[-500, 2500])
+		axarr_weights[slider].hist(lines_weights[slider], 30)
+		latexify.format_axes(axarr_weights[slider])
+		latexify.format_axes(axarr_values[slider])
+
+
+	axarr_values[0].legend(loc='upper left',
+			 borderaxespad=0., ncol=4)
+	axarr_weights[0].legend(loc='upper left',
+			 borderaxespad=0., ncol=4)
+
+	if max(lines_weights) > 10:
+		print weights
+
+
+
+	plt.figure(f_weights.number)
+	# f_weights.text(0.5, 0.21, 'Deficit', ha='center', va='center', fontsize = 5)
+	# f_weights.text(0.5, 0.39, 'Income Tax', ha='center', va='center', fontsize = 5)
+	# f_weights.text(0.5, 0.575, 'Transportation, Science, \& Education', ha='center', va='center', fontsize = 5)
+	# f_weights.text(0.5, 0.76, 'Healthcare', ha='center', va='center', fontsize = 5)
+	# f_weights.text(0.5, 0.94, 'Defense', ha='center', va='center', fontsize = 5)
+	# f_weights.text(.5, 0.045, 'Full Elicitation Weight', ha='center', va='center', fontsize = 5)
+	# f_weights.text(0.025, 0.5, 'Number of Voters', ha='center', va='center', rotation='vertical', fontsize = 5)
+	# plt.tight_layout()
+	# plt.savefig(LABEL + '_FullElicitWeights_Alltogether_tight' '.pdf',bbox_inches='tight', format='pdf', dpi=1000)
+
+	f_weights.text(0.5, 0.245, 'Deficit', ha='center', va='center', fontsize = 5)
+	f_weights.text(0.5, 0.41, 'Income Tax', ha='center', va='center', fontsize = 5)
+	f_weights.text(0.5, 0.575, 'Transportation, Science, \& Education', ha='center', va='center', fontsize = 5)
+	f_weights.text(0.5, 0.74, 'Healthcare', ha='center', va='center', fontsize = 5)
+	f_weights.text(0.5, 0.91, 'Defense', ha='center', va='center', fontsize = 5)
+	f_weights.text(.5, 0.04, 'Full Elicitation Weight', ha='center', va='center', fontsize = 5)
+	f_weights.text(0.08, 0.5, 'Number of Voters', ha='center', va='center', rotation='vertical', fontsize = 5)
+	plt.savefig(LABEL + '_FullElicitWeights_Alltogether' '.pdf',bbox_inches='tight', format='pdf', dpi=1000)
+
+	plt.figure(f_values.number)
+	plt.xlim([-500, 2500])
+	f_values.text(0.5, 0.245, 'Deficit', ha='center', va='center', fontsize = 5)
+	f_values.text(0.5, 0.41, 'Income Tax', ha='center', va='center', fontsize = 5)
+	f_values.text(0.5, 0.575, 'Transportation, Science, \& Education', ha='center', va='center', fontsize = 5)
+	f_values.text(0.5, 0.74, 'Healthcare', ha='center', va='center', fontsize = 5)
+	f_values.text(0.5, 0.91, 'Defense', ha='center', va='center', fontsize = 5)
+	f_values.text(.5, 0.04, 'Full Elicitation Value', ha='center', va='center', fontsize = 5)
+	f_values.text(0.08, 0.5, 'Number of Voters', ha='center', va='center', rotation='vertical', fontsize = 5)
+	plt.savefig(LABEL + '_FullElicitValues_Alltogether' +'.pdf',bbox_inches='tight', format='pdf', dpi=1000)
+	plt.close()
+
+	return None
+
 
 def analyze_data_experiment_full(all_data, LABEL, lines_to_do_fullhist, labels_fullhist, mechanism_super_dictionary):  # ideal points and elicitation
 
@@ -1468,7 +1543,8 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, alreadyPaidFiles 
 		plot_percent_movements_over_time(organized_data, LABEL, mechanism_super_dictionary)
 
 	if plotHistogramOfFull:
-		analyze_data_experiment_full(organized_data, LABEL, lines_to_do_fullhist, labels_fullhist, mechanism_super_dictionary)
+		analyze_data_experiment_full_allcombined(organized_data, LABEL, lines_to_do_fullhist, labels_fullhist, mechanism_super_dictionary)
+		# analyze_data_experiment_full(organized_data, LABEL, lines_to_do_fullhist, labels_fullhist, mechanism_super_dictionary)
 
 	if analyzeUtilityFunctions:
 		# plot_percent_movements_over_time(organized_data, LABEL, mechanism_super_dictionary)
