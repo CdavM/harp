@@ -675,6 +675,112 @@ def analyze_data_experiment_full(all_data, LABEL, lines_to_do_fullhist, labels_f
 
 	return None
 
+def whether_with_ideal_point(row, setnum):
+	whether = [(abs(row['question_data']['slider' + str(slider) + str(setnum) + '_loc'] - row['extra_full_elicitation_data']['slider' + str(slider) + str(0) + '_loc']) < row['radius']) for slider in range(4)]
+	print whether, row['radius']
+	print [row['question_data']['slider' + str(slider) + str(setnum) + '_loc'] for slider in range(4)]
+	print [row['extra_full_elicitation_data']['slider' + str(slider) + str(0) + '_loc'] for slider in range(4)]
+
+	return whether
+
+def plot_histogram_of_credits_used_pretty_conditioning_collapsemechanddimensions(all_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary):  # ideal points and elicitation
+
+	# plot distribution of credits used by mechanism type
+	# f_credits, axarr_credits = plt.subplots(4, sharex=True)
+	lines_credits = []
+	lines_credits_conditiononbeingwithinidealpoint = []
+	lines_credits_conditiononNOTbeingwithinidealpoint = []
+
+	for mech in [7, 8, 9]: #only care about linf because things decouple
+		mechvals = []
+		mechvals_eligibleforwithinidealpoint = []
+		whetherwithinidealpoint = []
+		for setnum in range(mechanism_super_dictionary[mech]['numsets']):
+			mechvals.extend([get_credit_percentage(row, setnum) for row in all_data[mech]])
+			if mechanism_super_dictionary[mech]['do_full_as_well']:
+				mechvals_eligibleforwithinidealpoint.extend([get_credit_percentage(row, setnum) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+				whetherwithinidealpoint.extend([whether_with_ideal_point(row, setnum) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+
+		for slider in range(4):
+			lines_credits.extend([mv[slider] for mv in mechvals])
+			if mechanism_super_dictionary[mech]['do_full_as_well']:
+				lines_credits_conditiononbeingwithinidealpoint.extend([mv[slider] for tt,mv in enumerate(mechvals_eligibleforwithinidealpoint) if whetherwithinidealpoint[tt][slider]])
+				lines_credits_conditiononNOTbeingwithinidealpoint.extend([mv[slider] for tt,mv in enumerate(mechvals_eligibleforwithinidealpoint) if not whetherwithinidealpoint[tt][slider]])
+
+		# axarr_credits[slider].hist(lines_credits[slider], 10, label = mechnames)
+		# axarr_credits[slider].hist(lines_credits_conditiononbeingwithinidealpoint[slider], 10, alpha = .5, label = mechnames)
+		# axarr_credits[slider].hist(lines_credits_conditiononNOTbeingwithinidealpoint[slider], 10, alpha = .5, label = mechnames)
+	# lines_credits = [val/len(lines_credits) for val in lines_credits]
+	# lines_credits_conditiononbeingwithinidealpoint = [val/len(lines_credits_conditiononbeingwithinidealpoint) for val in lines_credits_conditiononbeingwithinidealpoint]
+	# lines_credits_conditiononNOTbeingwithinidealpoint = [val/len(lines_credits_conditiononNOTbeingwithinidealpoint) for val in lines_credits_conditiononNOTbeingwithinidealpoint]
+
+	plt.hist([lines_credits, lines_credits_conditiononbeingwithinidealpoint, lines_credits_conditiononNOTbeingwithinidealpoint], \
+	10, weights =[ np.ones_like(lines_credits) / len(lines_credits),np.ones_like(lines_credits_conditiononbeingwithinidealpoint) / len(lines_credits_conditiononbeingwithinidealpoint),np.ones_like(lines_credits_conditiononNOTbeingwithinidealpoint) / len(lines_credits_conditiononNOTbeingwithinidealpoint) ] ,\
+	label = ['All', 'Near Ideal Pt', 'Far from Ideal Pt'])
+
+	plt.legend(borderaxespad=0.5, ncol=3, fontsize=5)
+	plt.xlabel('Movement as fraction of possible movement', fontsize = 6.5)
+	plt.ylabel('Histogram pdf', fontsize = 6.5)
+	# plt.text(.5, 0.0, 'Movement as fraction of possible movement', ha='center', va='center', fontsize = 5)
+	# plt.text(0.2, 0.5, 'Histogram pdf', ha='center', va='center', rotation='vertical', fontsize = 5)
+	plt.tight_layout()
+	plt.savefig(LABEL + '_HistogramOfCreditsUsed_collapsed' + '_linf'   + '.pdf', format='pdf', dpi=1000)
+	plt.close()
+
+	return None
+
+
+def plot_histogram_of_credits_used_pretty_conditioning(all_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary):  # ideal points and elicitation
+
+	# plot distribution of credits used by mechanism type
+	for en,ltd in enumerate(lines_to_do_creditshist):
+		f_credits, axarr_credits = plt.subplots(4, sharex=True)
+		lines_credits = {0:[], 1:[],2:[],3:[]}
+		lines_credits_conditiononbeingwithinidealpoint = {0:[], 1:[],2:[],3:[]}
+		lines_credits_conditiononNOTbeingwithinidealpoint = {0:[], 1:[],2:[],3:[]}
+
+		mechnames = []
+		for mech in ltd:
+			if mechanism_super_dictionary[mech]['type'] == 'full':
+				continue
+			mechnames.append(mechanism_super_dictionary[mech]['name'])
+			mechvals = []
+			mechvals_eligibleforwithinidealpoint = []
+			whetherwithinidealpoint = []
+			for setnum in range(mechanism_super_dictionary[mech]['numsets']):
+				mechvals.extend([get_credit_percentage(row, setnum) for row in all_data[mech]])
+				if mechanism_super_dictionary[mech]['do_full_as_well']:
+					mechvals_eligibleforwithinidealpoint.extend([get_credit_percentage(row, setnum) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+					whetherwithinidealpoint.extend([whether_with_ideal_point(row, setnum) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+
+			for slider in range(4):
+				lines_credits[slider].append([mv[slider] for mv in mechvals])
+				if mechanism_super_dictionary[mech]['do_full_as_well']:
+					lines_credits_conditiononbeingwithinidealpoint[slider].append([mv[slider] for tt,mv in enumerate(mechvals_eligibleforwithinidealpoint) if whetherwithinidealpoint[tt][slider]])
+					lines_credits_conditiononNOTbeingwithinidealpoint[slider].append([mv[slider] for tt,mv in enumerate(mechvals_eligibleforwithinidealpoint) if not whetherwithinidealpoint[tt][slider]])
+		# print lines_credits_conditiononbeingwithinidealpoint
+		# print lines_credits_conditiononNOTbeingwithinidealpoint
+		print len(lines_credits[0][0]),
+		print len(lines_credits_conditiononbeingwithinidealpoint[0][0]),
+		print len(lines_credits_conditiononNOTbeingwithinidealpoint[0][0]),
+
+		for slider in range(4):
+			axarr_credits[slider].set_title(slider_order[slider])
+			# axarr_credits[slider].hist(lines_credits[slider], 10, label = mechnames)
+			axarr_credits[slider].hist(lines_credits_conditiononbeingwithinidealpoint[slider], 10, alpha = .5, label = mechnames)
+			axarr_credits[slider].hist(lines_credits_conditiononNOTbeingwithinidealpoint[slider], 10, alpha = .5, label = mechnames)
+
+		axarr_credits[0].legend(loc='upper left',
+				 borderaxespad=0., ncol=4)
+
+		plt.figure(f_credits.number)
+		# mng = plt.get_current_fig_manager()
+		# mng.window.showMaximized()
+		plt.savefig(LABEL + '_HistogramOfCreditsUsed_' + labels_creditshist[en]  + '.pdf', format='pdf', dpi=1000)
+		plt.close()
+
+	return None
+
 def plot_histogram_of_credits_used(all_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary):  # ideal points and elicitation
 
 	# plot distribution of credits used by mechanism type
@@ -1150,9 +1256,7 @@ def calculate_time_spent(organized_data, LABEL):
 	barplot(np.array(dpoints), LABEL, 'Time (Seconds)',
 			'Page', pagenames, mechanism_names_fixed)
 
-
-def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary):
-
+def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary, collapse_dimensions = False):
 # 			i. % of people that decreased/increased/constant both, or different things for each
 # 					a) Split by mechanism
 # 					b) Split by budget item as well
@@ -1280,7 +1384,7 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 					[labelnames_signs[ind], signkey, bysign[key][item][signkey]])
 		# print dpoints_signs
 		barplot(np.array(dpoints_signs), LABEL + ' Direction of Movement', 'Number',
-				'Directions', signorder, labelnames_signs, axarr[item], item == 3, item == 0)
+				'Directions', signorder, labelnames_signs, f, axarr[item], item == 3, item == 0)
 		axarr[item].set_title(slider_order[item])
 
 
@@ -1288,85 +1392,117 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary)
 	alll2 = {0:[], 1:[], 2:[], 3:[]}
 	alllinf = {0:[], 1:[], 2:[], 3:[]}
 
-	for key in mechanism_super_dictionary:
-		if key not in differences:
-			continue
-		f, axarr = plt.subplots(4, sharex=True)
+	# for key in mechanism_super_dictionary:
+	# 	if key not in differences:
+	# 		continue
+	# 	f, axarr = plt.subplots(4, sharex=True)
+	#
+	# 	for item in range(4):
+	# 		axarr[item].hist(differences[key][item], range = (0, 2), bins = 30)
+	# 		axarr[item].set_title(slider_order[item])
+	# 		if mechanism_super_dictionary[key]['type'] is 'l1':
+	# 			alll1[item] = np.append(alll1[item], differences[key][item])
+	# 		elif mechanism_super_dictionary[key]['type'] is 'l2':
+	# 			alll2[item] = np.append(alll2[item], differences[key][item])
+	# 		elif mechanism_super_dictionary[key]['type'] is 'linf':
+	# 			alllinf[item] = np.append(alll2[item], differences[key][item])
+	#
+	# 	# mng = plt.get_current_fig_manager()
+	# 	# mng.window.showMaximized()
+	#
+	# 	plt.suptitle('Differences in percent movement per budget item, ' + mechanism_super_dictionary[key]['name'])
+	# 	plt.savefig(LABEL + 'Differences in percent movement' + mechanism_super_dictionary[key]['name'] +'.pdf', format='pdf', dpi=1000)
+	# 	#plt.show()
+	# 	plt.close()
 
-		for item in range(4):
-			axarr[item].hist(differences[key][item], range = (0, 2), bins = 30)
-			axarr[item].set_title(slider_order[item])
-			if mechanism_super_dictionary[key]['type'] is 'l1':
-				alll1[item] = np.append(alll1[item], differences[key][item])
-			elif mechanism_super_dictionary[key]['type'] is 'l2':
-				alll2[item] = np.append(alll2[item], differences[key][item])
-			elif mechanism_super_dictionary[key]['type'] is 'linf':
-				alllinf[item] = np.append(alll2[item], differences[key][item])
-
-		# mng = plt.get_current_fig_manager()
-		# mng.window.showMaximized()
-
-		plt.suptitle('Differences in percent movement per budget item, ' + mechanism_super_dictionary[key]['name'])
-		plt.savefig(LABEL + 'Differences in percent movement' + mechanism_super_dictionary[key]['name'] +'.pdf', format='pdf', dpi=1000)
-		#plt.show()
-		plt.close()
-
-	f, axarr = plt.subplots(4, sharex=True)
-	for item in range(4):
-		axarr[item].set_title(slider_order[item])
-		axarr[item].hist(alll1[item],alpha = .5, range = (0, 2), bins = 30, label = 'l1')
-		axarr[item].hist(alll2[item],alpha = .5, range = (0, 2), bins = 30, label = 'l2')
-		if item is 0:
-			axarr[item].legend(loc='upper right')
-	plt.suptitle('Differences in percent movement per budget item')
-	# mng = plt.get_current_fig_manager()
-	# mng.window.showMaximized()
-
-	plt.savefig(LABEL + 'Combined Differences in percent movement'+'.pdf', format='pdf', dpi=1000)
-	plt.close()
+	# f, axarr = plt.subplots(4, sharex=True)
+	# for item in range(4):
+	# 	axarr[item].set_title(slider_order[item])
+	# 	axarr[item].hist(alll1[item],alpha = .5, range = (0, 2), bins = 30, label = 'l1')
+	# 	axarr[item].hist(alll2[item],alpha = .5, range = (0, 2), bins = 30, label = 'l2')
+	# 	if item is 0:
+	# 		axarr[item].legend(loc='upper right')
+	# plt.suptitle('Differences in percent movement per budget item')
+	# # mng = plt.get_current_fig_manager()
+	# # mng.window.showMaximized()
+	#
+	# plt.savefig(LABEL + 'Combined Differences in percent movement'+'.pdf', format='pdf', dpi=1000)
+	# plt.close()
 
 
 	#for the mechanisms in which also did full elicitation, plot the signs histogram
-	for keylinfl2orl1 in bysign_fullaswellconditioning:
+	print bysign_fullaswellconditioning
+	bysign_fullaswellconditioning_collapsed = {}
+	for key in bysign_fullaswellconditioning: #collapse dimensions
+		bysign_fullaswellconditioning_collapsed[key] = {}
+		for key2 in bysign_fullaswellconditioning[key]:
+			d = {}
+			for collapsekey in bysign_fullaswellconditioning[key][key2]:
+				for key3 in bysign_fullaswellconditioning[key][key2][collapsekey]:
+					d[key3] = d.get(key3,0) + bysign_fullaswellconditioning[key][key2][collapsekey][key3]
+			bysign_fullaswellconditioning_collapsed[key][key2] = d
+	print bysign_fullaswellconditioning_collapsed
+	# for keylinfl2orl1 in bysign_fullaswellconditioning:
+	# 	labelnames_signs = []
+	# 	signorder = []
+	# 	f, axarr = plt.subplots(4, sharex=True)
+	# 	lines = []
+	# 	for item in range(4):
+	# 		ind = -1
+	# 		dpoints_signs = []
+	# 		for key in bysign_fullaswellconditioning[keylinfl2orl1]:
+	# 			ind+=1
+	# 			if key not in labelnames_signs:
+	# 				labelnames_signs.append(key)
+	#
+	# 			for signkey in bysign_fullaswellconditioning[keylinfl2orl1][key][item]:
+	# 				if signkey not in signorder:
+	# 					signorder.append(signkey)
+	# 				dpoints_signs.append(
+	# 					[labelnames_signs[ind], signkey, bysign_fullaswellconditioning[keylinfl2orl1][key][item][signkey]])
+	# 		print dpoints_signs
+	# 		barplot(np.array(dpoints_signs), LABEL + ' Direction of Movement Conditioned on Full,' + keylinfl2orl1, 'Number',
+	# 				'Directions', signorder, labelnames_signs, f, axarr[item], item == 3, item == 0)
+	# 		axarr[item].set_title(slider_order[item])
+
+	for keylinfl2orl1 in bysign_fullaswellconditioning_collapsed:
 		labelnames_signs = []
 		signorder = []
 		f, axarr = plt.subplots(4, sharex=True)
 		lines = []
-		for item in range(4):
-			ind = -1
-			dpoints_signs = []
-			for key in bysign_fullaswellconditioning[keylinfl2orl1]:
-				ind+=1
-				if key not in labelnames_signs:
-					labelnames_signs.append(key)
+		ind = -1
+		dpoints_signs = []
+		for key in bysign_fullaswellconditioning_collapsed[keylinfl2orl1]:
+			ind+=1
+			if key not in labelnames_signs:
+				labelnames_signs.append(key)
 
-				for signkey in bysign_fullaswellconditioning[keylinfl2orl1][key][item]:
-					if signkey not in signorder:
-						signorder.append(signkey)
-					dpoints_signs.append(
-						[labelnames_signs[ind], signkey, bysign_fullaswellconditioning[keylinfl2orl1][key][item][signkey]])
-			# print dpoints_signs
-			barplot(np.array(dpoints_signs), LABEL + ' Direction of Movement Conditioned on Full,' + keylinfl2orl1, 'Number',
-					'Directions', signorder, labelnames_signs, axarr[item], item == 3, item == 0)
-			axarr[item].set_title(slider_order[item])
+			for signkey in bysign_fullaswellconditioning_collapsed[keylinfl2orl1][key]:
+				if signkey not in signorder:
+					signorder.append(signkey)
+				dpoints_signs.append(
+					[labelnames_signs[ind], signkey, bysign_fullaswellconditioning_collapsed[keylinfl2orl1][key][signkey]])
+		print dpoints_signs
+		barplot(np.array(dpoints_signs), LABEL + ' Direction of Movement Conditioned on Full_collapsed_' + keylinfl2orl1, 'Number',
+				'Directions', signorder, labelnames_signs)
 
-	#for those same mechanisms, plot the differences histogram
-	for keylinfl2orl1 in differences_fullaswellconditioning:
-		f, axarr = plt.subplots(4, sharex=True)
-		for key in differences_fullaswellconditioning[keylinfl2orl1]:
-			for item in range(4):
-				axarr[item].hist(differences_fullaswellconditioning[keylinfl2orl1][key][item], alpha = .5, range = (0, 2), bins = 30, label = key)
-				axarr[item].set_title(slider_order[item])
-				if item is 0:
-					axarr[item].legend(loc='upper right')
-
-		# mng = plt.get_current_fig_manager()
-		# mng.window.showMaximized()
-
-		plt.suptitle('Differences in percent movement per budget item, Conditioned on full, ' + str(keylinfl2orl1))
-		plt.savefig(LABEL + 'Differences in percent movement, Conditioned on full, ' + str(keylinfl2orl1) + '.pdf', format='pdf', dpi=1000)
-		#plt.show()
-		plt.close()
+	# #for those same mechanisms, plot the differences histogram
+	# for keylinfl2orl1 in differences_fullaswellconditioning:
+	# 	f, axarr = plt.subplots(4, sharex=True)
+	# 	for key in differences_fullaswellconditioning[keylinfl2orl1]:
+	# 		for item in range(4):
+	# 			axarr[item].hist(differences_fullaswellconditioning[keylinfl2orl1][key][item], alpha = .5, range = (0, 2), bins = 30, label = key)
+	# 			axarr[item].set_title(slider_order[item])
+	# 			if item is 0:
+	# 				axarr[item].legend(loc='upper right')
+	#
+	# 	# mng = plt.get_current_fig_manager()
+	# 	# mng.window.showMaximized()
+	#
+	# 	plt.suptitle('Differences in percent movement per budget item, Conditioned on full, ' + str(keylinfl2orl1))
+	# 	plt.savefig(LABEL + 'Differences in percent movement, Conditioned on full, ' + str(keylinfl2orl1) + '.pdf', format='pdf', dpi=1000)
+	# 	#plt.show()
+	# 	plt.close()
 
 def organize_payment(organized_data, LABEL, mechanism_super_dictionary, alreadyPaidFiles = None):
 	alreadyPaid = []
@@ -1549,9 +1685,10 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, alreadyPaidFiles 
 	if analyzeUtilityFunctions:
 		# plot_percent_movements_over_time(organized_data, LABEL, mechanism_super_dictionary)
 		# plot_histogram_of_credits_used(organized_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary)
-		plot_percent_movements_combined_by_type(organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
-		# analyze_movement_and_weights (organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
-		# analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary);
+		#plot_histogram_of_credits_used_pretty_conditioning_collapsemechanddimensions(organized_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary)
+		# plot_percent_movements_combined_by_type(organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
+		#analyze_movement_and_weights (organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
+		analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary);
 
 	if plotAllOverTime:
 		plot_allmechansisms_together(organized_data, mechanism_super_dictionary, slider_order = slider_order, deficit_offset = deficit_offset, labels = labels, lines_to_do = lines_to_do, LABEL = LABEL, average_iteratively = average_iteratively)

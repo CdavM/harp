@@ -330,7 +330,7 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
     return clean, organized_data
 
 
-def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, ax=None, showplot=True, createlegend=True):
+def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, fig = None, ax=None, showplot=True, createlegend=True):
     '''
     copied from http://emptypipes.org/2013/11/09/matplotlib-multicategory-barchart/ on 6/27/2016
         modified to take in the matrix already rather than calculating mean values
