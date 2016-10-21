@@ -175,8 +175,8 @@ def calculate_full_elicitation_average_iterative(data, deficit_offset, dataname=
 		median[slider] = [np.median(sliders[slider][0:t])  for t in range(1, len(sliders[slider][0:t]))]
 		weighted_median[slider] = [ws.weighted_median(sliders[slider][0:t], weights = weights[slider][0:t])  for t in range(1, len(sliders[slider]))]
 
-	return rawaverages, weightedaverages_l2, weightedaverages_l1, [], #calculate_full_elicitation_euclideanpoint_iterative(
-		#data, deficit_offset, dataname, sliderprepend), median, weighted_median
+	return rawaverages, weightedaverages_l2, weightedaverages_l1, calculate_full_elicitation_euclideanpoint_iterative(
+		data, deficit_offset, dataname, sliderprepend), median, weighted_median
 
 sliderranges = {
 0: [199, 801], 1: [699, 1301], 2: [99,701], 3:[1199,1801], 4:[100, 1300]
@@ -210,10 +210,11 @@ def plot_whether_mechanisms_converged(
 	full_elicitation_averages = {}
 	for mech in mechanism_super_dictionary:
 		if mechanism_super_dictionary[mech]['type'] == 'full':
-			rawaverages, weightedaverages_l2, weightedaverages_l1, euclideanprefs, median, weightedmedian = calculate_full_elicitation_average_iterative(
-					organized_data[mech], deficit_offset)
-			full_elicitation_averages[mech] = {'rawaverages': rawaverages, 'weightedaverages_l2': weightedaverages_l2,
-				'weightedaverages_l1': weightedaverages_l1, 'euclideanprefs': euclideanprefs, 'median' : median, 'weightedmedian' : weightedmedian}
+			pass
+			# rawaverages, weightedaverages_l2, weightedaverages_l1, euclideanprefs, median, weightedmedian = calculate_full_elicitation_average_iterative(
+			# 		organized_data[mech], deficit_offset)
+			# full_elicitation_averages[mech] = {'rawaverages': rawaverages, 'weightedaverages_l2': weightedaverages_l2,
+			# 	'weightedaverages_l1': weightedaverages_l1, 'euclideanprefs': euclideanprefs, 'median' : median, 'weightedmedian' : weightedmedian}
 	for ltd in range(len(lines_to_do)):
 		legend_names = []
 		f, axarr = plt.subplots(5, sharex=True)
@@ -221,9 +222,7 @@ def plot_whether_mechanisms_converged(
 
 		for slider in xrange(0, len(slider_order)):
 			axarr[slider].set_ylim([0, 1.001])
-			for mechanism in mechanism_super_dictionary:
-				if mechanism not in lines_to_do[ltd]:
-					continue
+			for mechanism in lines_to_do[ltd]:
 				if mechanism_super_dictionary[mechanism]['type'] == 'l1' or mechanism_super_dictionary[mechanism]['type'] == 'l2' or mechanism_super_dictionary[mechanism]['type'] == 'linf':
 					for set_num in range(mechanism_super_dictionary[mechanism]['numsets']):
 						n = range(0, len(organized_data[mechanism]))
@@ -232,7 +231,9 @@ def plot_whether_mechanisms_converged(
 						b = np.array(vals).cumsum()
 						b[windowlen:] = b[windowlen:] - np.array(vals).cumsum()[:-windowlen] #running sum of windowlen
 						b = [abs(b[tt])/min(tt+1, windowlen) for tt in range(len(b))]
-
+						if slider == 4 and mechanism_super_dictionary[mechanism]['type'] == 'linf':
+							axarr[slider].set_ylim([0, 2.001])
+							# b = [b[tt]/4 for tt in range(len(b))]
 						# raw_vals = [d['question_data']['slider' + str(slider) + str(set_num) + '_loc'] for d in organized_data[mechanism]]
 						# averages_after_point = [np.average(raw_vals[t:]) for t in range(len(raw_vals))]
 						# averages_after_point_differences = [(averages_after_point[tt] - averages_after_point[tt-1])*(len(averages_after_point) - tt + 1) for tt in range(1, len(averages_after_point))]
@@ -261,71 +262,83 @@ def plot_whether_mechanisms_converged(
 						# 	print vals, b
 
 				if mechanism_super_dictionary[mechanism]['type'] == 'full':
-					vals = full_elicitation_averages[mechanism]['euclideanprefs'][slider]
-					vals = [(vals[tt] - vals[tt-1]) for tt in range(1, len(vals))]
-					b = np.array(vals).cumsum()
-					b[windowlen:] = b[windowlen:] - np.array(vals).cumsum()[:-windowlen] #running sum of windowlen
-					b = [abs(b[tt])/min(tt+1, windowlen) for tt in range(len(b))]
-					# b = [b[tt]/min(tt+1, windowlen) for tt in range(len(b))]
+					pass
+					# vals = full_elicitation_averages[mechanism]['euclideanprefs'][slider]
+					# vals = [(vals[tt] - vals[tt-1]) for tt in range(1, len(vals))]
+					# b = np.array(vals).cumsum()
+					# b[windowlen:] = b[windowlen:] - np.array(vals).cumsum()[:-windowlen] #running sum of windowlen
+					# b = [abs(b[tt])/min(tt+1, windowlen) for tt in range(len(b))]
+					# # b = [b[tt]/min(tt+1, windowlen) for tt in range(len(b))]
+					#
+					# n = range(len(b))
+					# l = axarr[slider].plot(n, b, label=mechanism_super_dictionary[
+					# 					   mechanism]['name'] + '--maximization solution', linestyle='--', marker='+')
+					#
+					# if slider == 0:
+					# 	lines.append(l[0])
+					# 	legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' maximization solution')
 
-					n = range(len(b))
-					l = axarr[slider].plot(n, b, label=mechanism_super_dictionary[
-										   mechanism]['name'] + '--maximization solution', linestyle='--', marker='+')
+					# vals = full_elicitation_averages[mechanism]['median'][slider]
+					# vals = [(vals[tt] - vals[tt-1]) for tt in range(1, len(vals))]
+					# b = np.array(vals).cumsum()
+					# b[windowlen:] = b[windowlen:] - np.array(vals).cumsum()[:-windowlen] #running sum of windowlen
+					# b = [abs(b[tt])/min(tt+1, windowlen) for tt in range(len(b))]
+					# # b = [b[tt]/min(tt+1, windowlen) for tt in range(len(b))]
+					#
+					# # print vals
+					# # print b
+					# n = range(len(vals))
+					# l = axarr[slider].plot(n, b, label=mechanism_super_dictionary[
+					# 					   mechanism]['name'] + '--median', linestyle='--', marker='+')
+					#
+					# if slider == 0:
+					# 	lines.append(l[0])
+					# 	legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' median')
 
-					if slider == 0:
-						lines.append(l[0])
-						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' maximization solution')
+					# vals = full_elicitation_averages[mechanism]['weightedmedian'][slider]
+					# vals = [(vals[tt] - vals[tt-1]) for tt in range(1, len(vals))]
+					# b = np.array(vals).cumsum()
+					# b[windowlen:] = b[windowlen:] - np.array(vals).cumsum()[:-windowlen] #running sum of windowlen
+					# b = [abs(b[tt])/min(tt+1, windowlen) for tt in range(len(b))]
+					# # b = [b[tt]/min(tt+1, windowlen) for tt in range(len(b))]
+					#
+					# n = range(len(vals))
+					# l = axarr[slider].plot(n, b, label=mechanism_super_dictionary[
+					# 					   mechanism]['name'] + '--weighted median', linestyle='--', marker='+')
 
-					vals = full_elicitation_averages[mechanism]['median'][slider]
-					vals = [(vals[tt] - vals[tt-1]) for tt in range(1, len(vals))]
-					b = np.array(vals).cumsum()
-					b[windowlen:] = b[windowlen:] - np.array(vals).cumsum()[:-windowlen] #running sum of windowlen
-					b = [abs(b[tt])/min(tt+1, windowlen) for tt in range(len(b))]
-					# b = [b[tt]/min(tt+1, windowlen) for tt in range(len(b))]
-
-					# print vals
-					# print b
-					n = range(len(vals))
-					l = axarr[slider].plot(n, b, label=mechanism_super_dictionary[
-										   mechanism]['name'] + '--median', linestyle='--', marker='+')
-
-					if slider == 0:
-						lines.append(l[0])
-						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' median')
-
-					vals = full_elicitation_averages[mechanism]['weightedmedian'][slider]
-					vals = [(vals[tt] - vals[tt-1]) for tt in range(1, len(vals))]
-					b = np.array(vals).cumsum()
-					b[windowlen:] = b[windowlen:] - np.array(vals).cumsum()[:-windowlen] #running sum of windowlen
-					b = [abs(b[tt])/min(tt+1, windowlen) for tt in range(len(b))]
-					# b = [b[tt]/min(tt+1, windowlen) for tt in range(len(b))]
-
-					n = range(len(vals))
-					l = axarr[slider].plot(n, b, label=mechanism_super_dictionary[
-										   mechanism]['name'] + '--weighted median', linestyle='--', marker='+')
-
-					if slider == 0:
-						lines.append(l[0])
-						legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' weighted median')
+					# if slider == 0:
+					# 	lines.append(l[0])
+					# 	legend_names.append(mechanism_super_dictionary[mechanism]['name'] + ' weighted median')
 
 
-			axarr[slider].set_title(slider_order[slider])
-			axarr[slider].set_ylabel('Norm of movement in window', fontsize=12)
-			axarr[slider].tick_params(axis='both', which='major')
+			# axarr[slider].set_title(slider_order[slider])
+			# axarr[slider].set_ylabel('Norm of movement in window', fontsize=12)
+			# axarr[slider].tick_params(axis='both', which='major')
 
-		axarr[len(slider_order) - 1].set_xlabel('Iteration')
+		# axarr[len(slider_order) - 1].set_xlabel('Iteration')
 
 		fs = 10
 		if len(legend_names) <= 10:
 			fs = 18
 		f.legend(lines, legend_names, loc='upper center',
-				 borderaxespad=0., ncol=3)#, fontsize=fs)
+				 borderaxespad=.5, ncol=3)#, fontsize=fs)
+		# # plt.xlabel('n')
+		plt.xlim([0, 220])
+		f.text(0.5, 0.25, 'Deficit', ha='center', va='center', fontsize = 5)
+		f.text(0.5, 0.41, 'Income Tax', ha='center', va='center', fontsize = 5)
+		f.text(0.5, 0.58, 'Transportation, Science, \& Education', ha='center', va='center', fontsize = 5)
+		f.text(0.5, 0.74, 'Healthcare', ha='center', va='center', fontsize = 5)
+		f.text(0.5, 0.91, 'Defense', ha='center', va='center', fontsize = 5)
+		f.text(.5, 0.05, 'Iteration', ha='center', va='center', fontsize = 5)
+
+		f.text(0.06, 0.5, '$\\big|\\big| \\frac{1}{N}\sum_{v_t}\\frac{[x_t | x_{t-1} = x] - x}{r_t}\\big|\\big|$', ha='center', va='center', rotation='vertical', fontsize = 5)
 
 		# mng = plt.get_current_fig_manager()
 		# mng.window.showMaximized()
 
 		# plt.show()
-		plt.savefig("" + LABEL + "_movementcumsum_len" + str(windowlen) + "_"+ labels[ltd] + '.pdf', format='pdf', dpi=1000)
+		# plt.tight_layout()
+		plt.savefig("" + LABEL + 'movementcumsum_' + labels[ltd] + '.pdf',bbox_inches='tight', format='pdf', dpi=1000)
 		plt.close();
 
 def plot_allmechansisms_together(
