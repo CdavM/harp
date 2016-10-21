@@ -767,6 +767,61 @@ def plot_percent_movements_over_time(organized_data, LABEL, mechanism_super_dict
 
 	# plt.show()
 
+def plot_percent_movements_combined_by_type(organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do):
+	averages_bymostmovement = {}
+	averages_creditpercentage_bymost = {}
+	num_key_positive = {}
+	for key in mechanism_super_dictionary:
+		numsets = mechanism_super_dictionary[key]['numsets']
+		typekey = mechanism_super_dictionary[key]['type']#str(key) + 'set' + str(setnum)
+		for experiment in organized_data[key]:
+			for setnum in range(numsets):
+				num_key_positive[typekey] = num_key_positive.get(typekey, 0) + 1
+				if typekey not in averages_bymostmovement:
+					averages_bymostmovement[typekey] = np.zeros(4)
+					averages_creditpercentage_bymost[typekey] = np.zeros(4)
+
+				percentages = get_movement_percentages(
+					experiment, setnum, mechanism_super_dictionary[key])
+				if percentages is None:
+					print "Did not move at all", experiment['experiment_id']
+					continue
+				averages_bymostmovement[
+					typekey] += sorted(percentages, reverse=True)
+
+				if mechanism_super_dictionary[key]['type'] == 'l1' or mechanism_super_dictionary[key]['type'] == 'l2'or mechanism_super_dictionary[key]['type'] == 'linf':
+					credit_percentages = get_credit_percentage(
+						experiment, setnum)
+					if credit_percentages is not None:
+						averages_creditpercentage_bymost[
+							typekey] += sorted(credit_percentages, reverse=True)
+
+	for key in averages_bymostmovement:
+		averages_bymostmovement[key] /= num_key_positive[key]
+		if key == 'l1' or key == 'l2' or key == 'linf':
+			averages_creditpercentage_bymost[
+				key] /= num_key_positive[key]
+
+	dpoints_bymost = []
+	dpoints_credits_bymost = []
+	labelnames = []
+	labelnames_credit = []
+	labelnamesbykey = {'linf' : '$L^\infty$', 'l2' : '$L^2$', 'l1' : '$L^1$', 'full' : 'Full Elicitation Weights'}
+	xnames = ['First', 'Second', 'Third', 'Fourth']
+	for key in ['full', 'l1', 'l2', 'linf']:#averages_bymostmovement:
+		labelnames.append(labelnamesbykey[key])
+		for idx in xrange(4):
+			dpoints_bymost.append(
+				[labelnames[-1], xnames[idx], averages_bymostmovement[key][idx]])
+			if key == 'l1' or key == 'l2' or key == 'linf':
+				if labelnames[-1] not in labelnames_credit:
+					labelnames_credit.append(labelnames[-1])
+				dpoints_credits_bymost.append(
+					[labelnames[-1], xnames[idx], averages_creditpercentage_bymost[key][idx]])
+	barplot(np.array(dpoints_bymost), LABEL+"PercentOfMovement_by_order_all", 'Movement as fraction of radius',
+			'Ranking of dimensions by movement for each voter', xnames, labelnames)
+	barplot(np.array(dpoints_credits_bymost), LABEL+"PercentOfCredits_by_order_all", 'Percent of credits used',
+			'Order by movement', xnames, labelnames_credit)
 
 def analyze_movement_and_weights(organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do):
 	for ltd in range(len(lines_to_do)):
@@ -960,6 +1015,25 @@ def get_movement_values_comparisons_sets(single_experiment_data):
 
 	return movement_set0, movement_set1
 
+
+def get_movement_percentages_ofradius(single_experiment_data, setnum, mechanism_super_dictionary_specificmech, getsignsaswell=False):
+	signs = None
+	if mechanism_super_dictionary_specificmech['type'] == 'full':
+		movement = [single_experiment_data['question_data']['slider00_weight'], single_experiment_data['question_data'][
+			'slider10_weight'], single_experiment_data['question_data']['slider20_weight'], single_experiment_data['question_data']['slider30_weight']]
+		radius = 10.0
+	else:
+		new_vals = [single_experiment_data['question_data']['slider0' + str(setnum) + '_loc'], single_experiment_data['question_data']['slider1' + str(
+			setnum) + '_loc'], single_experiment_data['question_data']['slider2' + str(setnum) + '_loc'], single_experiment_data['question_data']['slider3' + str(setnum) + '_loc']]
+		previous_vals = single_experiment_data['question_data'][
+			'previous_slider_values' + str(setnum)][0:4]
+		movement = np.abs(np.subtract(new_vals, previous_vals))
+		signs = np.sign(np.subtract(new_vals, previous_vals))
+		radius = float(single_experiment_data['radius'])
+	if getsignsaswell:
+		return [m / radius for m in movement], signs
+	else:
+		return [m / radius for m in movement]
 
 def get_movement_percentages(single_experiment_data, setnum, mechanism_super_dictionary_specificmech, getsignsaswell=False):
 	signs = None
@@ -1398,8 +1472,9 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, alreadyPaidFiles 
 
 	if analyzeUtilityFunctions:
 		# plot_percent_movements_over_time(organized_data, LABEL, mechanism_super_dictionary)
-		plot_histogram_of_credits_used(organized_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary)
-		analyze_movement_and_weights (organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
+		# plot_histogram_of_credits_used(organized_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary)
+		plot_percent_movements_combined_by_type(organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
+		# analyze_movement_and_weights (organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
 		# analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary);
 
 	if plotAllOverTime:

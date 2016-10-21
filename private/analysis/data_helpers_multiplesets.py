@@ -12,6 +12,7 @@ from operator import itemgetter
 import numpy as np
 import os
 
+
 def load_data(filename):
     with open(filename, mode='rb') as file:
         reader = csv.DictReader(file)
@@ -73,7 +74,7 @@ def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive=0)
         # answer['slider4' + setstr +
         #     '_loc'] = float(answerdata['deficit' + setstr])
         answer['explanation'] = answerdata['text_explanation']
-        answer['slider4' + setstr + '_loc']  = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
+        answer['slider4' + setstr + '_loc'] = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
                         'slider2' + setstr + '_loc'] - answer['slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
 
         answer['initial_slider0' + setstr +
@@ -104,6 +105,8 @@ def load_data_experiment_l2(answerdata, restofdata, numsets, deficit_additive=0)
     return answer
 
 # linf constrained movement
+
+
 def load_data_experiment_linf(answerdata, restofdata, numsets, deficit_additive=0):
     answer = {}
 
@@ -120,7 +123,7 @@ def load_data_experiment_linf(answerdata, restofdata, numsets, deficit_additive=
         # answer['slider4' + setstr +
         #     '_loc'] = float(answerdata['deficit' + setstr])
         answer['explanation'] = answerdata['text_explanation']
-        answer['slider4' + setstr + '_loc']  = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
+        answer['slider4' + setstr + '_loc'] = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
                         'slider2' + setstr + '_loc'] - answer['slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
 
         answer['initial_slider0' + setstr +
@@ -137,14 +140,20 @@ def load_data_experiment_linf(answerdata, restofdata, numsets, deficit_additive=
         answer['previous_slider_values' + setstr] = [float(restofdata['initial_slider0' + setstr]), float(restofdata['initial_slider1' + setstr]), float(
             restofdata['initial_slider2' + setstr]), float(restofdata['initial_slider3' + setstr]), float(restofdata['initial_deficit' + setstr])]
 
-        answer['slider0' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][0] - answer['slider0' + setstr + '_loc'])/float(restofdata['radius'])
-        answer['slider1' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][1] - answer['slider1' + setstr + '_loc'])/float(restofdata['radius'])
-        answer['slider2' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][2] - answer['slider2' + setstr + '_loc'])/float(restofdata['radius'])
-        answer['slider3' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][3] - answer['slider3' + setstr + '_loc'])/float(restofdata['radius'])
+        answer['slider0' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][
+                                                          0] - answer['slider0' + setstr + '_loc']) / float(restofdata['radius'])
+        answer['slider1' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][
+                                                          1] - answer['slider1' + setstr + '_loc']) / float(restofdata['radius'])
+        answer['slider2' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][
+                                                          2] - answer['slider2' + setstr + '_loc']) / float(restofdata['radius'])
+        answer['slider3' + setstr + '_creditsused'] = abs(answer['previous_slider_values' + setstr][
+                                                          3] - answer['slider3' + setstr + '_loc']) / float(restofdata['radius'])
 
     return answer
 
 # l1 constrained movement
+
+
 def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive=0):
     answer = {}
 
@@ -161,9 +170,8 @@ def load_data_experiment_l1(answerdata, restofdata, numsets, deficit_additive=0)
         # answer['slider4' + setstr +
         #     '_loc'] = float(answerdata['deficit' + setstr])
         answer['explanation'] = answerdata['text_explanation']
-        answer['slider4' + setstr + '_loc']  = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
+        answer['slider4' + setstr + '_loc'] = answer['slider0' + setstr + '_loc'] + answer['slider1' + setstr + '_loc'] + answer[
                         'slider2' + setstr + '_loc'] - answer['slider3' + setstr + '_loc'] + deficit_additive  # float(restofdata['initial_deficit' + setstr])
-
 
         answer['initial_slider0' + setstr +
             '_loc'] = float(restofdata['initial_slider0' + setstr])
@@ -234,7 +242,7 @@ switcher_load_data = {
     'full': load_data_experiment_full,
     'l2': load_data_experiment_l2,
     'l1': load_data_experiment_l1,
-    'linf' : load_data_experiment_linf,
+    'linf': load_data_experiment_linf,
     'comparisons': load_data_experiment_comparisons,
 }
 
@@ -267,7 +275,7 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
         d['participant_number'] = int(row['num_of_previous_participants']) + 1
         d['finished'] = row['experiment_finished']
         # print d['question_num'], d['experiment_id']
-        if len (row['answer1.' + str(d['question_num']) + '.1']) == 0:
+        if len(row['answer1.' + str(d['question_num']) + '.1']) == 0:
             continue
         answerdict = ast.literal_eval(
             row['answer1.' + str(d['question_num']) + '.1'])
@@ -299,29 +307,30 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
                 d['time_page3'] = extrafull_dict['time'] / 1000.0
                 d['time_page4'] = 300
         else:
-            feedbackdict = {'feedback' : ['']}
+            feedbackdict = {'feedback': ['']}
             d['time_page3'] = 0;
             d['time_page4'] = 300
 
-        if len(row['answer1.' + str(d['question_num']) + '.3']) > 0: #last page
-            feedbackdict = ast.literal_eval(row['answer1.' + str(d['question_num']) + '.3'])
-            d['time_page4'] = feedbackdict['time']/1000.0
+        if len(row['answer1.' + str(d['question_num']) + '.3']) > 0:  # last page
+            feedbackdict = ast.literal_eval(
+                row['answer1.' + str(d['question_num']) + '.3'])
+            d['time_page4'] = feedbackdict['time'] / 1000.0
 
         d['feedback_data'] = load_feedback(feedbackdict, row)
 
-
         # print d['experiment_id'], d['question_num'], answerdict, row
-        d['question_data'] = switcher_load_data[mechanism_super_dictionary[d['question_num']]['type']](answerdict, row, mechanism_super_dictionary[d['question_num']]['numsets'], deficit_offset)
+        d['question_data'] = switcher_load_data[mechanism_super_dictionary[d['question_num']]['type']](
+            answerdict, row, mechanism_super_dictionary[d['question_num']]['numsets'], deficit_offset)
 
         clean.append(d)
         organized_data[d['question_num']].append(d)
     for key in organized_data:
-        organized_data[key] = sorted(organized_data[key], key=itemgetter('begin_time'))
+        organized_data[key] = sorted(
+            organized_data[key], key=itemgetter('begin_time'))
     return clean, organized_data
 
 
-
-def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, ax = None, showplot = True, createlegend = True):
+def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, ax=None, showplot=True, createlegend=True):
     '''
     copied from http://emptypipes.org/2013/11/09/matplotlib-multicategory-barchart/ on 6/27/2016
         modified to take in the matrix already rather than calculating mean values
@@ -340,10 +349,10 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, 
 
         # Aggregate the conditions and the categories according to their
         # mean values
-        conditions = [(c, np.mean(dpoints[dpoints[:,0] == c][:,2].astype(float)))
-                      for c in np.unique(dpoints[:,0])]
-        categories = [(c, np.mean(dpoints[dpoints[:,1] == c][:,2].astype(float)))
-                      for c in np.unique(dpoints[:,1])]
+        conditions = [(c, np.mean(dpoints[dpoints[:, 0] == c][:, 2].astype(float)))
+                      for c in np.unique(dpoints[:, 0])]
+        categories = [(c, np.mean(dpoints[dpoints[:, 1] == c][:, 2].astype(float)))
+                      for c in np.unique(dpoints[:, 1])]
 
         # sort the conditions, categories and data so that the bars in
         # the plot will be ordered by category and condition
@@ -352,7 +361,8 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, 
         categories = categories_order
         conditions = conditions_order
 
-        dpoints = np.array(sorted(dpoints, key=lambda x: categories.index(x[1])))
+        dpoints = np.array(
+            sorted(dpoints, key=lambda x: categories.index(x[1])))
 
         # the space between each set of bars
         space = 0.3
@@ -361,39 +371,46 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, 
         current_palette = sns.color_palette()
 
         # Create a set of bars at each position
-        for i,cond in enumerate(conditions):
-            indeces = range(1, len(categories)+1)
-            vals = dpoints[dpoints[:,0] == cond][:,2].astype(np.float)
+        for i, cond in enumerate(conditions):
+            indeces = range(1, len(categories) + 1)
+            vals = dpoints[dpoints[:, 0] == cond][:, 2].astype(np.float)
             pos = [j - (1 - space) / 2. + i * width for j in indeces]
             ax.bar(pos, vals, width=width, label=cond,
-                   color=current_palette[i%len(current_palette)]
+                   color=current_palette[i % len(current_palette)]
                    )
 
         # Set the x-axis tick labels to be equal to the categories
         ax.set_xticks(indeces)
         ax.set_xticklabels(categories)
-        ax.tick_params(axis='both', which='major', labelsize=18)
+        # ax.tick_params(axis='both', which='major', labelsize=18)
 
-        plt.setp(plt.xticks()[1])#, rotation=90)
+        plt.setp(plt.xticks()[1])  # , rotation=90)
 
         # Add the axis labels
-        ax.set_ylabel(ylabel, fontsize = 18)
+        # ax.set_ylabel(ylabel)  # , fontsize = 18)
         # ax.set_xlabel(xlabel, fontsize = 18)
 
         # Add a legend
         handles, labels = ax.get_legend_handles_labels()
-        # ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize = 18)
+        # ax.legend(handles[::-1], labels[::-1], loc='upper left', fontsize =
+        # 18)
 
         if createlegend:
-            ax.legend(handles, labels,bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
-               ncol=min(len(conditions), 4), mode="expand", borderaxespad=0., fontsize = 18)
-
+            ax.legend(handles, labels, loc='upper center',
+            				 borderaxespad=.0, ncol=4, fontsize = 5)
+            # ax.legend(handles, labels,bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+            # ncol=min(len(conditions), 4), mode="expand", borderaxespad=0.,
+            # fontsize = 18)
         if showplot:
-            mng = plt.get_current_fig_manager()
-            mng.window.showMaximized()
-            plt.savefig(label + '.png')
-            plt.close()
-            #plt.show()
+    		fig.text(.5, 0.03, xlabel, ha='center', va='center', fontsize=7)
+    		fig.text(0.02, 0.5, ylabel, ha='center', va='center',
+    		       rotation='vertical', fontsize=7)
+            # mng = plt.get_current_fig_manager()
+            # mng.window.showMaximized()
+    		plt.tight_layout()
+    		plt.savefig(label + '.pdf', format='pdf', dpi=1000)
+    		plt.close()
+            # plt.show()
 
 # Define a context manager to suppress stdout and stderr.
 class suppress_stdout_stderr(object):
