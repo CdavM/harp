@@ -53,7 +53,7 @@ def latexify(fig_width=None, fig_height=None, columns=1):
               'text.fontsize': 8,  # was 10
               'legend.fontsize': 4,  # was 10
               'xtick.labelsize': 5,#4,
-              'ytick.labelsize': 5,#3,
+              'ytick.labelsize': 3,
               'text.usetex': True,
               'figure.figsize': [fig_width, fig_height],
               'font.family': 'serif',

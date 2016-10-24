@@ -16,6 +16,11 @@ import operator
 slider_order = ['Defense', 'Health',
 	'Transportation', 'Income Tax', 'Deficit'];
 import latexify
+import copy
+from matplotlib.colors import LogNorm
+# from __future__ import print_function
+import statsmodels.api as sm
+from scipy import stats
 
 def plot_sliders_over_time(data, title, prepend=""):
 	n = range(0, len(data) + 1)
@@ -331,14 +336,14 @@ def plot_whether_mechanisms_converged(
 		f.text(0.5, 0.91, 'Defense', ha='center', va='center', fontsize = 5)
 		f.text(.5, 0.05, 'Iteration', ha='center', va='center', fontsize = 5)
 
-		f.text(0.06, 0.5, '$\\big|\\big| \\frac{1}{N}\sum_{v_t}\\frac{[x_t | x_{t-1} = x] - x}{r_t}\\big|\\big|$', ha='center', va='center', rotation='vertical', fontsize = 5)
+		f.text(0.06, 0.5, '$\\big| \\frac{1}{\min(t, N)}\sum_{s=\max(0,t-N)}^t\\frac{x_s - x_{s-1}}{r_t}\\big|$', ha='center', va='center', rotation='vertical', fontsize = 5)
 
 		# mng = plt.get_current_fig_manager()
 		# mng.window.showMaximized()
 
 		# plt.show()
 		# plt.tight_layout()
-		plt.savefig("" + LABEL + 'movementcumsum_' + labels[ltd] + '.pdf',bbox_inches='tight', format='pdf', dpi=1000)
+		plt.savefig("" + LABEL + 'movementcumsum_' + labels[ltd] + 'windowlen_'+str(windowlen) + '.pdf',bbox_inches='tight', format='pdf', dpi=1000)
 		plt.close();
 
 def plot_allmechansisms_together(
@@ -524,6 +529,7 @@ def analyze_data_experiment_full_allcombined(all_data, LABEL, lines_to_do_fullhi
 		# axarr_values[slider].set_title(slider_order[slider])
 		# axarr_weights[slider].set_title(slider_order[slider])
 		axarr_values[slider].hist(lines_values[slider], 50, range =[-500, 2500])
+		print stats.mode(lines_values[slider])
 		axarr_weights[slider].hist(lines_weights[slider], 30)
 		latexify.format_axes(axarr_weights[slider])
 		latexify.format_axes(axarr_values[slider])
@@ -566,7 +572,7 @@ def analyze_data_experiment_full_allcombined(all_data, LABEL, lines_to_do_fullhi
 	f_values.text(0.5, 0.575, 'Transportation, Science, \& Education', ha='center', va='center', fontsize = 5)
 	f_values.text(0.5, 0.74, 'Healthcare', ha='center', va='center', fontsize = 5)
 	f_values.text(0.5, 0.91, 'Defense', ha='center', va='center', fontsize = 5)
-	f_values.text(.5, 0.04, 'Full Elicitation Value', ha='center', va='center', fontsize = 5)
+	f_values.text(.5, 0.04, 'Full Elicitation Value (Billions of \$)', ha='center', va='center', fontsize = 5)
 	f_values.text(0.08, 0.5, 'Number of Voters', ha='center', va='center', rotation='vertical', fontsize = 5)
 	plt.savefig(LABEL + '_FullElicitValues_Alltogether' +'.pdf',bbox_inches='tight', format='pdf', dpi=1000)
 	plt.close()
@@ -675,37 +681,129 @@ def analyze_data_experiment_full(all_data, LABEL, lines_to_do_fullhist, labels_f
 
 	return None
 
-def whether_with_ideal_point(row, setnum):
-	whether = [(abs(row['question_data']['slider' + str(slider) + str(setnum) + '_loc'] - row['extra_full_elicitation_data']['slider' + str(slider) + str(0) + '_loc']) < row['radius']) for slider in range(4)]
-	print whether, row['radius']
-	print [row['question_data']['slider' + str(slider) + str(setnum) + '_loc'] for slider in range(4)]
-	print [row['extra_full_elicitation_data']['slider' + str(slider) + str(0) + '_loc'] for slider in range(4)]
+def whether_with_ideal_point(row, setnum, dist = None):
+	if dist is None:
+		compareto = row['radius']
+	else:
+		compareto = dist
+	whether = [(abs(row['question_data']['slider' + str(slider) + str(setnum) + '_loc'] - row['extra_full_elicitation_data']['slider' + str(slider) + str(0) + '_loc']) < compareto) for slider in range(4)]
+	# print whether, row['radius'], compareto
+	# print [row['question_data']['slider' + str(slider) + str(setnum) + '_loc'] for slider in range(4)]
+	# print [row['extra_full_elicitation_data']['slider' + str(slider) + str(0) + '_loc'] for slider in range(4)]
 
 	return whether
 
-def plot_histogram_of_credits_used_pretty_conditioning_collapsemechanddimensions(all_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary):  # ideal points and elicitation
+#gives rank of values in array, with duplicates given same rank. Found online at https://stackoverflow.com/questions/14671013/ranking-of-numpy-array-with-possible-duplicates
+def argsortdup(a1):
+	print a1
+	sorted = np.sort(a1)[::-1]
+	ranked = []
+	for item in a1:
+		ranked.append(sorted.searchsorted(item, side = 'left'))
+
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+
+def plot_scatterplot_percentmovedVSHowFarAway(all_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary):
+	# f_credits, axarr_credits = plt.subplots(4, sharex=True)
+	lines_credits = []
+	lines_howfaraway = []
+	for mech in [7, 8, 9]: #only care about linf because things decouple
+		mechvals_eligibleforwithinidealpoint = []
+		mechvals_howfaraway = []
+		for setnum in range(mechanism_super_dictionary[mech]['numsets']):
+			if mechanism_super_dictionary[mech]['do_full_as_well']:
+				mechvals_eligibleforwithinidealpoint.extend([get_credit_percentage(row, setnum) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+				mechvals_howfaraway.extend([how_far_from_ideal_pt_fraction_radius(row, setnum) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+
+		for slider in range(4):
+			if mechanism_super_dictionary[mech]['do_full_as_well']:
+				lines_credits.extend([mv[slider] for tt,mv in enumerate(mechvals_eligibleforwithinidealpoint) if mechvals_howfaraway[tt][slider]>=1])
+				lines_howfaraway.extend([abs(mv[slider]) for tt,mv in enumerate(mechvals_howfaraway) if mechvals_howfaraway[tt][slider]>=1])
+
+
+	# print lines_credits
+	# print lines_howfaraway
+	plt.scatter(lines_howfaraway, lines_credits)
+	plt.plot(np.unique(lines_howfaraway), np.poly1d(np.polyfit(lines_howfaraway, lines_credits, 2))(np.unique(lines_howfaraway)))
+	# print len(lines_credits), len(lines_howfaraway)
+	clf = linear_model.LogisticRegression(C=1e5)
+	t = np.ravel(np.asarray(lines_howfaraway))
+	t = t.reshape(-1, 1)
+	y = np.asarray([x for x in np.ravel(np.asarray(lines_credits).reshape(-1))]).reshape(-1, 1)
+	yrounded = np.asarray([np.round(x) for x in np.ravel(np.asarray(lines_credits).reshape(-1))])
+	# print y, t
+	# clf.fit(t, yrounded)
+	#
+	# # and plot the result
+	# # plt.figure(1, figsize=(4, 3))
+	# plt.clf()
+	#plt.scatter(X.ravel(), y, color='black', zorder=20)
+	ols = linear_model.LinearRegression()
+	ols.fit(t, y)
+	plt.plot(t, ols.coef_ * t + ols.intercept_, linewidth=1)
+	plt.axhline(.5, color='.5')
+
+	# plt.ylabel('y')
+	# plt.xlabel('X')
+	# plt.xticks(())
+	# plt.yticks(())
+
+	# plt.legend(borderaxespad=0.5, ncol=3, fontsize=5)
+	# plt.xscale('log')
+	plt.xlim(0, 10)
+	plt.ylim(0, 1)
+	plt.ylabel('Movement as fraction of possible movement', fontsize = 6.5)
+	plt.xlabel('Distance to ideal point as fraction of radius', fontsize = 6.5)
+
+	# plt.text(.5, 0.0, 'Movement as fraction of possible movement', ha='center', va='center', fontsize = 5)
+	# plt.text(0.2, 0.5, 'Histogram pdf', ha='center', va='center', rotation='vertical', fontsize = 5)
+	plt.tight_layout()
+	plt.savefig(LABEL + '_ScatterplotOfCreditsUsedVsDistance' + '_linf'   + '.pdf', format='pdf', dpi=1000)
+	# plt.show()
+	plt.close()
+
+	glm_binom = sm.GLM(lines_howfaraway, lines_credits, family=sm.families.Binomial())
+	res = glm_binom.fit()
+	print(res.summary())
+
+from scipy import stats
+
+def plot_histogram_of_credits_used_pretty_conditioning_collapsemechanddimensions(all_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary, radiustobefar = None, Nbins = 10):  # ideal points and elicitation
 
 	# plot distribution of credits used by mechanism type
 	# f_credits, axarr_credits = plt.subplots(4, sharex=True)
 	lines_credits = []
 	lines_credits_conditiononbeingwithinidealpoint = []
 	lines_credits_conditiononNOTbeingwithinidealpoint = []
+	lines_weights_conditionNOTbeingwithinidealpoint = []
+	lines_weights_order_conditionNOTbeingwithinidealpoint = [] #order of most important, not actual weights value
 
 	for mech in [7, 8, 9]: #only care about linf because things decouple
 		mechvals = []
 		mechvals_eligibleforwithinidealpoint = []
 		whetherwithinidealpoint = []
+		weights_for_full_as_well = []
+		weights_for_full_as_well_order = []
+
 		for setnum in range(mechanism_super_dictionary[mech]['numsets']):
 			mechvals.extend([get_credit_percentage(row, setnum) for row in all_data[mech]])
 			if mechanism_super_dictionary[mech]['do_full_as_well']:
 				mechvals_eligibleforwithinidealpoint.extend([get_credit_percentage(row, setnum) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
-				whetherwithinidealpoint.extend([whether_with_ideal_point(row, setnum) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
-
+				whetherwithinidealpoint.extend([whether_with_ideal_point(row, setnum, radiustobefar) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+				weights_for_full_as_well.extend([[row['extra_full_elicitation_data']['slider' + str(s) + '0_weight'] for s in range(4)] for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+		for weightsbyperson in weights_for_full_as_well:
+			weights_for_full_as_well_order.append([3 - val for val in np.argsort(np.argsort(weightsbyperson))]) #calling argsort twice gives me the position of each weight value in the rankingo of that person
+			#weights_for_full_as_well_order.append([val for val in argsortdup(weightsbyperson)])
+		print weights_for_full_as_well[0:3]
+		print weights_for_full_as_well_order[0:3]
 		for slider in range(4):
 			lines_credits.extend([mv[slider] for mv in mechvals])
 			if mechanism_super_dictionary[mech]['do_full_as_well']:
 				lines_credits_conditiononbeingwithinidealpoint.extend([mv[slider] for tt,mv in enumerate(mechvals_eligibleforwithinidealpoint) if whetherwithinidealpoint[tt][slider]])
 				lines_credits_conditiononNOTbeingwithinidealpoint.extend([mv[slider] for tt,mv in enumerate(mechvals_eligibleforwithinidealpoint) if not whetherwithinidealpoint[tt][slider]])
+				lines_weights_conditionNOTbeingwithinidealpoint.extend([mv[slider] for tt,mv in enumerate(weights_for_full_as_well) if not whetherwithinidealpoint[tt][slider]])
+				lines_weights_order_conditionNOTbeingwithinidealpoint.extend([mv[slider] for tt,mv in enumerate(weights_for_full_as_well_order) if not whetherwithinidealpoint[tt][slider]])
 
 		# axarr_credits[slider].hist(lines_credits[slider], 10, label = mechnames)
 		# axarr_credits[slider].hist(lines_credits_conditiononbeingwithinidealpoint[slider], 10, alpha = .5, label = mechnames)
@@ -724,8 +822,152 @@ def plot_histogram_of_credits_used_pretty_conditioning_collapsemechanddimensions
 	# plt.text(.5, 0.0, 'Movement as fraction of possible movement', ha='center', va='center', fontsize = 5)
 	# plt.text(0.2, 0.5, 'Histogram pdf', ha='center', va='center', rotation='vertical', fontsize = 5)
 	plt.tight_layout()
-	plt.savefig(LABEL + '_HistogramOfCreditsUsed_collapsed' + '_linf'   + '.pdf', format='pdf', dpi=1000)
+	plt.savefig(LABEL + '_HistogramOfCreditsUsed_collapsed' + '_radiustobefar' + str(radiustobefar) + '_linf'   + '.pdf', format='pdf', dpi=1000)
 	plt.close()
+
+
+	plt.hist2d(lines_weights_conditionNOTbeingwithinidealpoint, lines_credits_conditiononNOTbeingwithinidealpoint, bins=Nbins, norm=LogNorm())
+	plt.colorbar()
+	plt.tight_layout()
+	plt.savefig(LABEL + '_2dHistOfCreditsUsedByWeight' + '_linf' + '_radiustobefar' + str(radiustobefar) + '_nbins' + str(Nbins)  + '.pdf', format='pdf', dpi=1000)
+	plt.close()
+
+	#create conditional line plots with the 2d data (full weights vs % of radius moved for far away from ideal)
+		#create Nbins number of arrays, 1 with each type of data
+		#plot each as a histogram, normalizing by the number of observations.
+	ranges = [int(x) for x in range(0, 10, int(10.0/Nbins))] #min value for each range, nbins has to be either 2, 5, or 10
+	binarrays = {}
+	for x in ranges:
+		binarrays[x] = []
+	for i in range(len(lines_weights_conditionNOTbeingwithinidealpoint)):
+		for x in ranges:
+			if lines_weights_conditionNOTbeingwithinidealpoint[i] < x + 10.0/Nbins:
+				binarrays[x].append(lines_credits_conditiononNOTbeingwithinidealpoint[i])
+	for x in ranges:
+		# binarrays[x] = [xx/len(binarrays[x]) for xx in binarrays[x]]
+		y,binEdges=np.histogram(binarrays[x],bins=10)
+		y = [yy/float(len(binarrays[x])) for yy in y]
+		bincenters = 0.5*(binEdges[1:]+binEdges[:-1])
+		plt.plot(bincenters,y,'-', label = x)
+	plt.tight_layout()
+	plt.legend()
+	plt.savefig(LABEL + '_2dLineHistofCreditsByWeight' + '_linf' + '_radiustobefar' + str(radiustobefar) + '_nbins' + str(Nbins)  + '.pdf', format='pdf', dpi=1000)
+	plt.close()
+
+	print [np.mean(binarrays[x]) for x in range(4)]
+	for i1 in range(4):
+		for i2 in range(i1+1, 4):
+			print i1, i2
+			print stats.ttest_ind(binarrays[i1], binarrays[i2], equal_var=True)
+			print "\n"
+	first2 = binarrays[0]
+	first2.extend(binarrays[1])
+
+	last2 = binarrays[2]
+	last2.extend(binarrays[3])
+
+	print  np.mean(first2), np.mean(last2)
+	print stats.ttest_ind(first2, last2, equal_var=False)
+	# print stats.ttest_rel(first2, last2)
+
+	#create conditional based on order in rank
+	binarrays = {}
+	for x in range(4):
+		binarrays[x] = []
+	for i in range(len(lines_weights_order_conditionNOTbeingwithinidealpoint)):
+		binarrays[lines_weights_order_conditionNOTbeingwithinidealpoint[i]].append(lines_credits_conditiononNOTbeingwithinidealpoint[i])
+	for x in range(4):
+		# binarrays[x] = [xx/len(binarrays[x]) for xx in binarrays[x]]
+		y,binEdges=np.histogram(binarrays[x],bins=5)
+		y = [yy/float(len(binarrays[x])) for yy in y]
+		bincenters = 0.5*(binEdges[1:]+binEdges[:-1])
+		plt.plot(bincenters,y,'-', label = x)
+	plt.tight_layout()
+	plt.legend()
+	plt.savefig(LABEL + '_2dLineHistofCreditsByRankofWeight' + '_linf' + '_radiustobefar' + str(radiustobefar) + '_nbins' + str(5)  + '.pdf', format='pdf', dpi=1000)
+	plt.close()
+
+########################################################## L2
+	lines_credits = []
+	lines_credits_conditiononbeingwithinidealpoint = []
+	lines_credits_conditiononNOTbeingwithinidealpoint = []
+	lines_weights_conditionNOTbeingwithinidealpoint = []
+	lines_weights_order_conditionNOTbeingwithinidealpoint = [] #order of most important, not actual weights value
+
+	for mech in [1, 2, 3]: #try l2
+		mechvals = []
+		mechvals_eligibleforwithinidealpoint = []
+		whetherwithinidealpoint = []
+		weights_for_full_as_well = []
+		weights_for_full_as_well_order = []
+		for setnum in range(mechanism_super_dictionary[mech]['numsets']):
+			mechvals.extend([get_credit_percentage(row, setnum) for row in all_data[mech]])
+			if mechanism_super_dictionary[mech]['do_full_as_well']:
+				mechvals_eligibleforwithinidealpoint.extend([get_credit_percentage(row, setnum) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+				whetherwithinidealpoint.extend([whether_with_ideal_point(row, setnum, radiustobefar) for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+				weights_for_full_as_well.extend([[row['extra_full_elicitation_data']['slider' + str(s) + '0_weight'] for s in range(4)] for row in all_data[mech] if 'extra_full_elicitation_data' in row])
+		for weightsbyperson in weights_for_full_as_well:
+			weights_for_full_as_well_order.append([3 - val for val in np.argsort(np.argsort(weightsbyperson))]) #calling argsort twice gives me the position of each weight value in the rankingo of that person
+		print weights_for_full_as_well[0:3]
+		print weights_for_full_as_well_order[0:3]
+		for slider in range(4):
+			lines_credits.extend([mv[slider] for mv in mechvals])
+			if mechanism_super_dictionary[mech]['do_full_as_well']:
+				lines_credits_conditiononbeingwithinidealpoint.extend([mv[slider] for tt,mv in enumerate(mechvals_eligibleforwithinidealpoint) if whetherwithinidealpoint[tt][slider]])
+				lines_credits_conditiononNOTbeingwithinidealpoint.extend([mv[slider] for tt,mv in enumerate(mechvals_eligibleforwithinidealpoint) if not whetherwithinidealpoint[tt][slider]])
+				lines_weights_conditionNOTbeingwithinidealpoint.extend([mv[slider] for tt,mv in enumerate(weights_for_full_as_well) if not whetherwithinidealpoint[tt][slider]])
+				lines_weights_order_conditionNOTbeingwithinidealpoint.extend([mv[slider] for tt,mv in enumerate(weights_for_full_as_well_order) if not whetherwithinidealpoint[tt][slider]])
+
+		# axarr_credits[slider].hist(lines_credits[slider], 10, label = mechnames)
+		# axarr_credits[slider].hist(lines_credits_conditiononbeingwithinidealpoint[slider], 10, alpha = .5, label = mechnames)
+		# axarr_credits[slider].hist(lines_credits_conditiononNOTbeingwithinidealpoint[slider], 10, alpha = .5, label = mechnames)
+	# lines_credits = [val/len(lines_credits) for val in lines_credits]
+	# lines_credits_conditiononbeingwithinidealpoint = [val/len(lines_credits_conditiononbeingwithinidealpoint) for val in lines_credits_conditiononbeingwithinidealpoint]
+	# lines_credits_conditiononNOTbeingwithinidealpoint = [val/len(lines_credits_conditiononNOTbeingwithinidealpoint) for val in lines_credits_conditiononNOTbeingwithinidealpoint]
+
+	plt.hist([lines_credits, lines_credits_conditiononbeingwithinidealpoint, lines_credits_conditiononNOTbeingwithinidealpoint], \
+	10, weights =[ np.ones_like(lines_credits) / len(lines_credits),np.ones_like(lines_credits_conditiononbeingwithinidealpoint) / len(lines_credits_conditiononbeingwithinidealpoint),np.ones_like(lines_credits_conditiononNOTbeingwithinidealpoint) / len(lines_credits_conditiononNOTbeingwithinidealpoint) ] ,\
+	label = ['All', 'Near Ideal Pt', 'Far from Ideal Pt'])
+
+	plt.legend(borderaxespad=0.5, ncol=3, fontsize=5)
+	plt.xlabel('Movement as fraction of possible movement', fontsize = 6.5)
+	plt.ylabel('Histogram pdf', fontsize = 6.5)
+	# plt.text(.5, 0.0, 'Movement as fraction of possible movement', ha='center', va='center', fontsize = 5)
+	# plt.text(0.2, 0.5, 'Histogram pdf', ha='center', va='center', rotation='vertical', fontsize = 5)
+	plt.tight_layout()
+	plt.savefig(LABEL + '_HistogramOfCreditsUsed_collapsed' + '_radiustobefar' + str(radiustobefar) + '_l2'   + '.pdf', format='pdf', dpi=1000)
+	plt.close()
+
+
+	plt.hist2d(lines_weights_conditionNOTbeingwithinidealpoint, lines_credits_conditiononNOTbeingwithinidealpoint, bins=Nbins, norm=LogNorm())
+	plt.colorbar()
+	plt.tight_layout()
+	plt.savefig(LABEL + '_2dHistOfCreditsUsedByWeight' + '_l2' + '_radiustobefar' + str(radiustobefar) + '_nbins' + str(Nbins)  + '.pdf', format='pdf', dpi=1000)
+	plt.close()
+
+	#create conditional line plots with the 2d data (full weights vs % of radius moved for far away from ideal)
+		#create Nbins number of arrays, 1 with each type of data
+		#plot each as a histogram, normalizing by the number of observations.
+	ranges = [int(x) for x in range(0, 10, int(10.0/Nbins))] #min value for each range, nbins has to be either 2, 5, or 10
+	binarrays = {}
+	for x in ranges:
+		binarrays[x] = []
+	for i in range(len(lines_weights_conditionNOTbeingwithinidealpoint)):
+		for x in ranges:
+			if lines_weights_conditionNOTbeingwithinidealpoint[i] < x + 10.0/Nbins:
+				binarrays[x].append(lines_credits_conditiononNOTbeingwithinidealpoint[i])
+	for x in ranges:
+		# binarrays[x] = [xx/len(binarrays[x]) for xx in binarrays[x]]
+		y,binEdges=np.histogram(binarrays[x],bins=10)
+		print y
+		y = [yy/float(len(binarrays[x])) for yy in y]
+		bincenters = 0.5*(binEdges[1:]+binEdges[:-1])
+		plt.plot(bincenters,y,'-', label = x)
+	plt.tight_layout()
+	plt.legend()
+	plt.savefig(LABEL + '_2dLineHistofCreditsByWeight' + '_2' + '_radiustobefar' + str(radiustobefar) + '_nbins' + str(Nbins)  + '.pdf', format='pdf', dpi=1000)
+	plt.close()
+
 
 	return None
 
@@ -850,7 +1092,7 @@ def analyze_data(organized_data, LABEL, lines_to_do):
 	# for comparisons & constrained movement, plot the locations for each slider (with labels) and deficit over time
 	# for raw elicitation, calculate the minimizer (optimal point)
 	# also calculate average time for each mechanism
-	# calculate_time_spent(organized_data, LABEL)
+	calculate_time_spent(organized_data, LABEL)
 
 	for key in organized_data:
 		if key not in lines_to_do[0]:
@@ -999,7 +1241,7 @@ def plot_percent_movements_combined_by_type(organized_data, LABEL, mechanism_sup
 					labelnames_credit.append(labelnames[-1])
 				dpoints_credits_bymost.append(
 					[labelnames[-1], xnames[idx], averages_creditpercentage_bymost[key][idx]])
-	barplot(np.array(dpoints_bymost), LABEL+"PercentOfMovement_by_order_all", 'Movement as fraction of radius',
+	barplot(np.array(dpoints_bymost), LABEL+"PercentOfMovement_by_order_all", 'Movement as fraction of total movement',
 			'Ranking of dimensions by movement for each voter', xnames, labelnames)
 	barplot(np.array(dpoints_credits_bymost), LABEL+"PercentOfCredits_by_order_all", 'Percent of credits used',
 			'Order by movement', xnames, labelnames_credit)
@@ -1087,10 +1329,16 @@ def analyze_movement_and_weights(organized_data, LABEL, mechanism_super_dictiona
 def get_credit_percentage(experiment, setnum):
 	movement = [experiment['question_data']['slider0' + str(setnum) + '_creditsused'], experiment['question_data']['slider1' + str(setnum) + '_creditsused'], experiment[
 															'question_data']['slider2' + str(setnum) + '_creditsused'], experiment['question_data']['slider3' + str(setnum) + '_creditsused']]
-	# if sum(movement) < .0001:  # did not move
-		# return None
-	# return movement / np.sum(movement)
 	return movement
+
+def get_credit_percentage_signed(experiment, setnum):
+	# movement = [min(1.0, max(-1.0, (experiment['question_data']['slider' + str(slider) + str(setnum) + '_loc'] -  experiment['question_data']['initial_slider' + str(slider) + str(setnum) + '_loc'])/experiment['radius'])) for slider in range(4)]
+	movement = [float(experiment['question_data']['slider' + str(slider) + str(setnum) + '_loc'] -  experiment['question_data']['initial_slider' + str(slider) + str(setnum) + '_loc'])/experiment['radius'] for slider in range(4)]
+
+	return movement
+
+def how_far_from_ideal_pt_fraction_radius(row, setnum, dist = None):
+	return [(row['question_data']['slider' + str(slider) + str(setnum) + '_loc'] -  row['extra_full_elicitation_data']['slider' + str(slider) + str(0) + '_loc'])/row['radius'] for slider in range(4)]
 
 def TwoSetComparisonsAnalysis(comparisonsdata):
 	differences_over_time = [[], [], [], []]
@@ -1244,7 +1492,6 @@ def calculate_time_spent(organized_data, LABEL):
 	# For each mechanism, calculate average time spent on each page and plot
 	# it in a chuncked bar graph
 	pagenames = ['Welcome Page', 'Instructions', 'Mechanism', 'Feedback']
-
 	# np.empty((len(organized_data.keys())* len(pagenames), 3), dtype = )
 	dpoints = []
 	for key in organized_data:
@@ -1256,7 +1503,47 @@ def calculate_time_spent(organized_data, LABEL):
 	barplot(np.array(dpoints), LABEL, 'Time (Seconds)',
 			'Page', pagenames, mechanism_names_fixed)
 
-def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary, collapse_dimensions = False):
+def calculate_time_spent_pretty(organized_data, LABEL, mechanism_super_dictionary, aggregateByType = True):
+	# For each mechanism, calculate average time spent on each page and plot
+	# it in a chuncked bar graph
+	pagenames = ['Welcome Page', 'Instructions', 'Mechanism', 'ExtraFull', 'Feedback']
+	data_by_type = {}
+	prettynames = ['Full Elicitation', '$\mathcal{L}^2$', '$\mathcal{L}^1$', '$\mathcal{L}^\infty$']
+	for t in ['full', 'l2', 'l1', 'linf']:
+		data_by_type[t] = {}
+		for pn in pagenames:
+			data_by_type[t][pn] = []
+
+	dpoints = []
+	dpoints_onlymechanism = []
+	for key in organized_data:
+		for page in range(0, len(pagenames)):
+			# if mechanism_super_dictionary[key]['do_full_as_well'] and page == 3: #feedbakc is actually page 4 if they did full as well
+			# 	data_by_type[mechanism_super_dictionary[key]['type']]['Feedback'].extend([d['time_page' + str(4)] for d in organized_data[key] if d['time_page' + str(4)] > 0 and d['time_page' + str(4)] < 60000])
+			# else:
+			data_by_type[mechanism_super_dictionary[key]['type']][pagenames[page]].extend([d['time_page' + str(page)] for d in organized_data[key] if d['time_page' + str(page)] > 0 and d['time_page' + str(page)] < 600])
+			print key, page, [d['time_page' + str(page)] for d in organized_data[key] if not (d['time_page' + str(page)] > 0 and d['time_page' + str(page)] < 600)]
+	for tt,key in enumerate(['full', 'l2', 'l1', 'linf']):
+		for k2 in pagenames:
+			if k2 is "ExtraFull":
+				continue
+			print key, k2, len(data_by_type[key][k2]), np.median(data_by_type[key][k2]),np.std(data_by_type[key][k2])
+			dpoints.append([prettynames[tt], k2, np.median(data_by_type[key][k2])])#, np.std(data_by_type[key][k2])])
+			if k2 is 'Mechanism':
+				dpoints_onlymechanism.append([prettynames[tt], k2, np.mean(data_by_type[key][k2])])
+
+	barplot(np.array(dpoints), LABEL + 'timeperpage', 'Time (Seconds)',	'Page', ['Welcome Page', 'Instructions', 'Mechanism', 'Feedback'], prettynames)
+	barplot(np.array(dpoints_onlymechanism), LABEL + 'timeperpageMechanismonly', 'Time (Seconds)',	'', ['Mechanism'], prettynames)
+
+			# if k2 == 'Feedback':
+				# print data_by_type[key][k2]
+	# print data_by_type
+			# print organized_data[key]
+			# print [d['time_page' + str(page)] for d in organized_data[key]]
+	# 		dpoints.append([mechanism_names_fixed[key], pagenames[page], np.mean(
+	# 			[d['time_page' + str(page)] for d in organized_data[key]])])
+
+def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary, collapse_dimensions = False, enforcecfarawayfromideal = True, radiustobefar = 25):
 # 			i. % of people that decreased/increased/constant both, or different things for each
 # 					a) Split by mechanism
 # 					b) Split by budget item as well
@@ -1327,30 +1614,32 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary,
 
 				if do_full_as_well and 'extra_full_elicitation_data' in experiment:
 					difkeyitem_fullaswell.append(abs(signs1[item]*per1[item] - signs0[item]*per0[item]))
+					bothfarfromideal = (not whether_with_ideal_point(experiment, 0, dist = radiustobefar)[item]) and (not whether_with_ideal_point(experiment, 1, dist = radiustobefar)[item])
+					print str(bothfarfromideal), str(item) + '\n\n'
 
 				if signs1[item] == 0 and signs0[item] == 0:
 					signskeyitem['00'] += 1
-					if do_full_as_well and 'extra_full_elicitation_data' in experiment:
+					if do_full_as_well and 'extra_full_elicitation_data' in experiment and ((not enforcecfarawayfromideal) or bothfarfromideal):
 						signskeyitem_fullconditioning['00'] += 1;
 				elif signs1[item] == -1 and signs0[item] == -1:
 					signskeyitem['-1-1'] += 1
-					if do_full_as_well and 'extra_full_elicitation_data' in experiment:
+					if do_full_as_well and 'extra_full_elicitation_data' in experiment and ((not enforcecfarawayfromideal) or bothfarfromideal):
 						signskeyitem_fullconditioning['-1-1'] += 1;
 				elif signs1[item] == 1 and signs0[item] == 1:
 					signskeyitem['11'] += 1
-					if do_full_as_well and 'extra_full_elicitation_data' in experiment:
+					if do_full_as_well and 'extra_full_elicitation_data' in experiment and ((not enforcecfarawayfromideal) or bothfarfromideal):
 						signskeyitem_fullconditioning['11'] += 1;
 				elif (signs1[item] == -1 and signs0[item] == 1) or (signs1[item] == 1 and signs0[item] == -1):
 					signskeyitem['1-1'] += 1
-					if do_full_as_well and 'extra_full_elicitation_data' in experiment:
+					if do_full_as_well and 'extra_full_elicitation_data' in experiment and ((not enforcecfarawayfromideal) or bothfarfromideal):
 						signskeyitem_fullconditioning['1-1'] += 1;
 				elif (signs1[item] == 0 and signs0[item] == 1) or (signs1[item] == 1 and signs0[item] == 0):
 					signskeyitem['01'] += 1
-					if do_full_as_well and 'extra_full_elicitation_data' in experiment:
+					if do_full_as_well and 'extra_full_elicitation_data' in experiment and ((not enforcecfarawayfromideal) or bothfarfromideal):
 						signskeyitem_fullconditioning['01'] += 1;
 				elif (signs1[item] == -1 and signs0[item] == 0) or (signs1[item] == 0 and signs0[item] == -1):
 					signskeyitem['0-1'] += 1
-					if do_full_as_well and 'extra_full_elicitation_data' in experiment:
+					if do_full_as_well and 'extra_full_elicitation_data' in experiment and ((not enforcecfarawayfromideal) or bothfarfromideal):
 						signskeyitem_fullconditioning['0-1'] += 1;
 
 				differences[key][item] = difkeyitem
@@ -1431,8 +1720,9 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary,
 
 
 	#for the mechanisms in which also did full elicitation, plot the signs histogram
-	print bysign_fullaswellconditioning
+	# print bysign_fullaswellconditioning
 	bysign_fullaswellconditioning_collapsed = {}
+
 	for key in bysign_fullaswellconditioning: #collapse dimensions
 		bysign_fullaswellconditioning_collapsed[key] = {}
 		for key2 in bysign_fullaswellconditioning[key]:
@@ -1441,7 +1731,14 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary,
 				for key3 in bysign_fullaswellconditioning[key][key2][collapsekey]:
 					d[key3] = d.get(key3,0) + bysign_fullaswellconditioning[key][key2][collapsekey][key3]
 			bysign_fullaswellconditioning_collapsed[key][key2] = d
+
 	print bysign_fullaswellconditioning_collapsed
+	bysign_fullaswellconditioning_collapsed_fraction = copy.deepcopy(bysign_fullaswellconditioning_collapsed)
+	for key in bysign_fullaswellconditioning_collapsed_fraction: #convert to fractions
+		for key2 in bysign_fullaswellconditioning_collapsed_fraction[key]:
+			summ = sum([bysign_fullaswellconditioning_collapsed_fraction[key][key2][k] for k in bysign_fullaswellconditioning_collapsed_fraction[key][key2]])
+			for k in bysign_fullaswellconditioning_collapsed_fraction[key][key2]:
+				bysign_fullaswellconditioning_collapsed_fraction[key][key2][k]/= float(summ)
 	# for keylinfl2orl1 in bysign_fullaswellconditioning:
 	# 	labelnames_signs = []
 	# 	signorder = []
@@ -1483,9 +1780,30 @@ def analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary,
 				dpoints_signs.append(
 					[labelnames_signs[ind], signkey, bysign_fullaswellconditioning_collapsed[keylinfl2orl1][key][signkey]])
 		print dpoints_signs
-		barplot(np.array(dpoints_signs), LABEL + ' Direction of Movement Conditioned on Full_collapsed_' + keylinfl2orl1, 'Number',
+		barplot(np.array(dpoints_signs), LABEL + '_DirMovementCondonFull_collapsed_enforcedfar' + str(enforcecfarawayfromideal) + str(radiustobefar) + "_" + keylinfl2orl1, 'Number',
 				'Directions', signorder, labelnames_signs)
 
+	for keylinfl2orl1 in bysign_fullaswellconditioning_collapsed_fraction:
+		labelnames_signs = []
+		signorder = []
+		f, axarr = plt.subplots(4, sharex=True)
+		lines = []
+		ind = -1
+		dpoints_signs = []
+		for key in bysign_fullaswellconditioning_collapsed_fraction[keylinfl2orl1]:
+			ind+=1
+			if key not in labelnames_signs:
+				labelnames_signs.append(key)
+
+			for signkey in bysign_fullaswellconditioning_collapsed_fraction[keylinfl2orl1][key]:
+				if signkey not in signorder:
+					signorder.append(signkey)
+				dpoints_signs.append(
+					[labelnames_signs[ind], signkey, bysign_fullaswellconditioning_collapsed_fraction[keylinfl2orl1][key][signkey]])
+		print dpoints_signs
+		barplot(np.array(dpoints_signs), LABEL + '_DirMovementCondonFull_collapsed_fraction_enforcedfar' + str(enforcecfarawayfromideal) + str(radiustobefar) + "_" + keylinfl2orl1, 'Number',
+				'Directions', signorder, labelnames_signs)
+		print bysign_fullaswellconditioning_collapsed_fraction['linf']
 	# #for those same mechanisms, plot the differences histogram
 	# for keylinfl2orl1 in differences_fullaswellconditioning:
 	# 	f, axarr = plt.subplots(4, sharex=True)
@@ -1683,12 +2001,14 @@ def analysis_call(filename, LABEL, mechanism_super_dictionary, alreadyPaidFiles 
 		# analyze_data_experiment_full(organized_data, LABEL, lines_to_do_fullhist, labels_fullhist, mechanism_super_dictionary)
 
 	if analyzeUtilityFunctions:
+		#calculate_time_spent_pretty(organized_data, LABEL, mechanism_super_dictionary, aggregateByType = True)
 		# plot_percent_movements_over_time(organized_data, LABEL, mechanism_super_dictionary)
 		# plot_histogram_of_credits_used(organized_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary)
+		#plot_scatterplot_percentmovedVSHowFarAway(organized_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary)
 		#plot_histogram_of_credits_used_pretty_conditioning_collapsemechanddimensions(organized_data, LABEL, lines_to_do_creditshist, labels_creditshist, mechanism_super_dictionary)
-		# plot_percent_movements_combined_by_type(organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
+		plot_percent_movements_combined_by_type(organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
 		#analyze_movement_and_weights (organized_data, LABEL, mechanism_super_dictionary, labels, lines_to_do)
-		analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary);
+		#analyze_utility_functions(organized_data, LABEL, mechanism_super_dictionary);
 
 	if plotAllOverTime:
 		plot_allmechansisms_together(organized_data, mechanism_super_dictionary, slider_order = slider_order, deficit_offset = deficit_offset, labels = labels, lines_to_do = lines_to_do, LABEL = LABEL, average_iteratively = average_iteratively)

@@ -286,7 +286,7 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
         	d['time_page1'] = ast.literal_eval(
         	    row['answer1.' + str(d['question_num']) + '.0'])['time'] / 1000.0  # in seconds
         else:
-        	d['time_page1'] = 300
+        	d['time_page1'] = -1
         d['time_page2'] = answerdict['time'] / 1000.0
 
         # either last page or extra full elicitation
@@ -305,11 +305,11 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
                 d['extra_full_elicitation_data'] = load_data_experiment_full(
                     extrafull_dict, row, 1, deficit_offset, isfullslider=True)
                 d['time_page3'] = extrafull_dict['time'] / 1000.0
-                d['time_page4'] = 300
+                d['time_page4'] = -1
         else:
             feedbackdict = {'feedback': ['']}
             d['time_page3'] = 0;
-            d['time_page4'] = 300
+            d['time_page4'] = -1
 
         if len(row['answer1.' + str(d['question_num']) + '.3']) > 0:  # last page
             feedbackdict = ast.literal_eval(
@@ -330,7 +330,7 @@ def clean_data(dirty, mechanism_super_dictionary, deficit_offset):
     return clean, organized_data
 
 
-def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, fig = None, ax=None, showplot=True, createlegend=True):
+def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, fig = None, ax=None, showplot=True, createlegend=True, doboxplot = True):
     '''
     copied from http://emptypipes.org/2013/11/09/matplotlib-multicategory-barchart/ on 6/27/2016
         modified to take in the matrix already rather than calculating mean values
@@ -374,8 +374,11 @@ def barplot(dpoints, label, ylabel, xlabel, categories_order, conditions_order, 
         for i, cond in enumerate(conditions):
             indeces = range(1, len(categories) + 1)
             vals = dpoints[dpoints[:, 0] == cond][:, 2].astype(np.float)
+            stds = None
+            if len(dpoints[0,:]) == 4: #includes standard deviations
+                stds = dpoints[dpoints[:, 0] == cond][:, 3].astype(np.float)
             pos = [j - (1 - space) / 2. + i * width for j in indeces]
-            ax.bar(pos, vals, width=width, label=cond,
+            ax.bar(pos, vals, width=width, label=cond, yerr = stds,
                    color=current_palette[i % len(current_palette)]
                    )
 
