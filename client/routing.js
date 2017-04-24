@@ -169,6 +169,42 @@ function makeid()
 //
 // });
 
+Router.route('/', function(){
+// Router.route('/radius=:rad&mechanism=:mec', function(){
+  var wid = makeid();
+  var asg_val = makeid();
+  var hit_val = makeid();
+  var demo = true; //demo mode
+  var radius_set = '-1';//this.params._rad;
+  var mechanism = 'l2';//this.params._mec;
+
+  Router.go('/radius/' + radius_set+'/mechanism/'+ mechanism+'/hitId/'+makeid()+'/workerId/'+makeid()+'/assignmentId/'+makeid());
+});
+
+Router.route('/radius/:_rad/', function(){
+// Router.route('/radius=:rad&mechanism=:mec', function(){
+  var wid = makeid();
+  var asg_val = makeid();
+  var hit_val = makeid();
+  var demo = true; //demo mode
+  var radius_set = this.params._rad;
+  var mechanism = 'l2';//this.params._mec;
+
+  Router.go('/radius/' + radius_set+'/mechanism/'+ mechanism+'/hitId/'+makeid()+'/workerId/'+makeid()+'/assignmentId/'+makeid());
+});
+
+Router.route('/mechanism/:_mec/', function(){
+// Router.route('/radius=:rad&mechanism=:mec', function(){
+  var wid = makeid();
+  var asg_val = makeid();
+  var hit_val = makeid();
+  var demo = true; //demo mode
+  var radius_set = '-1';//this.params._rad;
+  var mechanism = this.params._mec;
+
+  Router.go('/radius/' + radius_set+'/mechanism/'+ mechanism+'/hitId/'+makeid()+'/workerId/'+makeid()+'/assignmentId/'+makeid());
+});
+
 Router.route('/radius/:_rad/mechanism/:_mec/', function(){
 // Router.route('/radius=:rad&mechanism=:mec', function(){
   var wid = makeid();
