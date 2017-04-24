@@ -38,9 +38,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
       "question_ID": 2,
@@ -65,9 +65,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
       "question_ID": 3,
@@ -92,9 +92,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
       "question_ID": 4,
@@ -123,9 +123,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
       "question_ID": 5,
@@ -150,9 +150,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
       "question_ID": 6,
@@ -177,9 +177,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
         "question_ID": 7,
@@ -208,9 +208,9 @@
         "slider_2016_11": 1004,
         "slider_2016_21": 303,
         "slider_2016_31": 1460,
-        "number_to_average" : 10,
-        "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-        "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+        "number_to_average" : 1,
+        "averaging_status_array" : ["FREE"],
+        "averaging_array" : [[]]
     },
     {
         "question_ID": 8,
@@ -235,9 +235,9 @@
         "slider_2016_11": 1004,
         "slider_2016_21": 303,
         "slider_2016_31": 1460,
-        "number_to_average" : 10,
-        "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-        "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+        "number_to_average" : 1,
+        "averaging_status_array" : ["FREE"],
+        "averaging_array" : [[]]
     },
     {
         "question_ID": 9,
@@ -262,9 +262,9 @@
         "slider_2016_11": 1004,
         "slider_2016_21": 303,
         "slider_2016_31": 1460,
-        "number_to_average" : 10,
-        "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-        "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+        "number_to_average" : 1,
+        "averaging_status_array" : ["FREE"],
+        "averaging_array" : [[]]
     }
   ],
   "randomize_questions": true,

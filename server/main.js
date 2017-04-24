@@ -125,6 +125,9 @@ Meteor.startup(function() {
 
 Meteor.methods({
     initialPost: function(post, status) {
+        // console.log(post)
+        // console.log(post.radius)
+        // console.log(post.mechanism)
         //check if already present
         if (status == 'startup') {
             if (Answers.findOne({
@@ -138,7 +141,9 @@ Meteor.methods({
                 asg_ID: post.asg_ID,
                 hit_ID: post.hit_ID,
                 initial_time: initial_time_val,
-                latest_time: initial_time_val
+                latest_time: initial_time_val,
+                radius: post.radius, //for demo purposes
+                mechanism: post.mechanism
             });
             return;
         }
@@ -152,6 +157,8 @@ Meteor.methods({
                 asg_ID: post.asg_ID,
                 hit_ID: post.hit_ID,
                 initial_time: post.initial_time,
+                radius: post.radius, //for demo purposes
+                mechanism: post.mechanism,
                 begin_time: begin_time_val,
                 experiment_id: experiment_id_value,
                 avg_payment: 0,
@@ -193,7 +200,7 @@ Meteor.methods({
             'experiment_ID': experiment_id_value
         });
         var threshold = Meteor.settings.threshold_workers; //we need at least threshold users in every experiment
-
+        console.log(post);
         console.log("before the start entry");
         console.log("scheduling init timer is " + scheduling_entry.initial_timer);
         console.log("scheduling init counter is " + scheduling_entry.initial_counter);
@@ -214,7 +221,9 @@ Meteor.methods({
                 upsert: true,
                 multi: true
             });
-            Meteor.call('beginQuestionScheduler', experiment_id_value, 'false', 'initialPost');
+            console.log(post)
+            console.log(post.radius, post.mechanism)
+            Meteor.call('beginQuestionScheduler', experiment_id_value, 'false', 'initialPost', post.mechanism, post.radius);
             Scheduling.update({
                 'experiment_ID': experiment_id_value
             }, {
@@ -370,9 +379,13 @@ Meteor.methods({
         console.log("Feedback inserted for worker " + worker_ID_value);
     },
 
-    beginQuestionScheduler: function(experiment_id_value, wasTimedOut, calledBy) {
+    beginQuestionScheduler: function(experiment_id_value, wasTimedOut, calledBy, hardcode_mechanism, hardcode_radius) {
         wasTimedOut = (typeof wasTimedOut === 'undefined') ? 'false' : wasTimedOut;
         calledBy = (typeof calledBy === 'undefined') ? 'unknown caller' : calledBy;
+        hardcode_mechanism = (typeof hardcode_mechanism === 'undefined') ? '' : hardcode_mechanism;
+        hardcode_radius = (typeof hardcode_radius === 'undefined') ? -1 : hardcode_radius;
+
+        console.log('called by' + calledBy, " ", hardcode_radius, hardcode_mechanism)
 
         //update questions every duration seconds
         var curr_experiment = Answers.findOne({
@@ -404,6 +417,17 @@ Meteor.methods({
                         }).count() == 10) {
                         rnd_sample = Math.random();
                         question_selected = 0;
+                    } else if (hardcode_mechanism != ''){
+                      if (hardcode_mechanism == 'l1'){
+                        question_selected = 5;
+                      } else if (hardcode_mechanism == 'l2'){
+                        question_selected = 2;
+                      } else if (hardcode_mechanism == 'linf'){
+                        question_selected = 8;
+                      } else {
+                        question_selected = 0;
+                      }
+
                     } else {
                         var scheduling_entry = Scheduling.findOne({
                             'experiment_ID': experiment_id_value
@@ -601,23 +625,41 @@ Meteor.methods({
 
                 var radius_fn = function(previous_participants, questionnum) {
 
-                    summrad = 7;
+                    summrad = 1; //7; TODO change when not doing demo anymore
                     groupnum = 0;
                     while (previous_participants >= summrad) {
                         groupnum = groupnum + 1;
                         summrad += Math.max(4, 7 - 2*groupnum);
                     }
-                    //smaller radius for Linf
-                    if ([7, 8, 9].indexOf(questionnum) > -1) {
-                        rad = 100.0 / Math.max(1.0, groupnum + 1.0);
-                    } else {
-                        rad = 300.0 / Math.max(1.0, groupnum + 1.0);
-                    }
+                    rad = Questions.findOne({
+                        "question_ID": questionnum
+                    }).radius_start / Math.max(1.0, groupnum + 1.0);
+
+                    // //smaller radius for Linf
+                    //
+                    // if ([7, 8, 9].indexOf(questionnum) > -1) {
+                    //     rad = 100.0 / Math.max(1.0, groupnum + 1.0);
+                    // } else {
+                    //     rad = 300.0 / Math.max(1.0, groupnum + 1.0);
+                    // }
                     return rad;
                 };
-                var radius_val = radius_fn(Questions.findOne({
-                    "question_ID": next_question
-                }).previous_participants);
+                if (hardcode_radius != -1){
+                  var radius_val = hardcode_radius;
+                  Questions.update({
+                      "question_ID": next_question
+                  }, {
+                      $set: {
+                          "radius_start": radius_val,
+                      }
+                  });
+                }
+                else{
+                  var radius_val = radius_fn(Questions.findOne({
+                      "question_ID": next_question
+                  }).previous_participants, next_question);
+                }
+
                 if ([1, 2, 3, 4, 5, 6, 7, 8, 9].indexOf(next_question) > -1) {
                     var current_question = Questions.findOne({
                         "question_ID": next_question

@@ -1,6 +1,14 @@
-{
-  "threshold_workers": 1,
-  "questions": [
+/*mongo commands are:
+ meteor mongo btsturk.meteor.com
+ load("private/mongo_populate_questions.js")
+ */
+
+//remove old questions
+db.questions.remove({});
+
+//add questions
+db.questions.insert(
+    [
     {
       "question_ID": 0,
       "text": "full elicitation mechanism",
@@ -16,12 +24,12 @@
       "text": "L2 mech - bunch 1",
       "busy": false,
       "do_full_as_well" : true,
-      "radius_start" : 300,
       "fullslider0": 541,
       "fullslider1": 1004,
       "fullslider2": 303,
       "fullslider3": 1460,
       "previous_participants": 0,
+      "radius_start" : 300,
       "slider00": 500,
       "slider10": 1000,
       "slider20": 200,
@@ -38,9 +46,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
       "question_ID": 2,
@@ -65,9 +73,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
       "question_ID": 3,
@@ -92,9 +100,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
       "question_ID": 4,
@@ -115,17 +123,17 @@
       "slider_2016_10": 1004,
       "slider_2016_20": 303,
       "slider_2016_30": 1460,
-      "slider01": 541,
-      "slider11": 1004,
-      "slider21": 303,
-      "slider31": 1460,
+      "slider01": 200,
+      "slider11": 800,
+      "slider21": 300,
+      "slider31": 1400,
       "slider_2016_01": 541,
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
       "question_ID": 5,
@@ -150,9 +158,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
       "question_ID": 6,
@@ -177,9 +185,9 @@
       "slider_2016_11": 1004,
       "slider_2016_21": 303,
       "slider_2016_31": 1460,
-      "number_to_average" : 10,
-      "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-      "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+      "number_to_average" : 1,
+      "averaging_status_array" : ["FREE"],
+      "averaging_array" : [[]]
     },
     {
         "question_ID": 7,
@@ -200,17 +208,17 @@
         "slider_2016_10": 1004,
         "slider_2016_20": 303,
         "slider_2016_30": 1460,
-        "slider01": 541,
-        "slider11": 1004,
-        "slider21": 303,
-        "slider31": 1460,
+        "slider01": 200,
+        "slider11": 800,
+        "slider21": 300,
+        "slider31": 1400,
         "slider_2016_01": 541,
         "slider_2016_11": 1004,
         "slider_2016_21": 303,
         "slider_2016_31": 1460,
-        "number_to_average" : 10,
-        "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-        "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+        "number_to_average" : 1,
+        "averaging_status_array" : ["FREE"],
+        "averaging_array" : [[]]
     },
     {
         "question_ID": 8,
@@ -235,9 +243,9 @@
         "slider_2016_11": 1004,
         "slider_2016_21": 303,
         "slider_2016_31": 1460,
-        "number_to_average" : 10,
-        "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-        "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+        "number_to_average" : 1,
+        "averaging_status_array" : ["FREE"],
+        "averaging_array" : [[]]
     },
     {
         "question_ID": 9,
@@ -262,45 +270,9 @@
         "slider_2016_11": 1004,
         "slider_2016_21": 303,
         "slider_2016_31": 1460,
-        "number_to_average" : 10,
-        "averaging_status_array" : ["FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE", "FREE"],
-        "averaging_array" : [[],[],[],[],[],[],[],[],[],[]]
+        "number_to_average" : 1,
+        "averaging_status_array" : ["FREE"],
+        "averaging_array" : [[]]
     }
-  ],
-  "randomize_questions": true,
-  "questions_subset_size": 1,
-  "payment_function": "payment123",
-  "public": {
-    "answer_forms": [
-      {
-        "answer_ID": 0,
-        "template": "answer0",
-        "timer": 300
-      },
-      {
-        "answer_ID": 1,
-        "template": "answer1",
-        "timer": 600
-      },
-      {
-        "answer_ID": 2,
-        "template": "answer2",
-        "timer": 600
-      },
-      {
-        "answer_ID": 3,
-        "template": "answer3",
-        "timer": 0
-      }
-    ],
-    "show_payment": false,
-    "show_timer": true,
-    "show_history": false,
-    "history_duration": 3,
-    "history_fields": [
-      "Answer",
-      "Payment",
-      "monies"
     ]
-  }
-}
+);
