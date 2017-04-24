@@ -651,6 +651,7 @@ Meteor.methods({
                   }, {
                       $set: {
                           "radius_start": radius_val,
+                          "previous_participants" : 0
                       }
                   });
                 }
