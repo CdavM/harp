@@ -482,6 +482,8 @@ def plot_allmechansisms_together(
 		# plt.show()
 		# plt.tight_layout()
 		plt.savefig("" + LABEL + labels[ltd] + '.pdf',bbox_inches='tight', format='pdf', dpi=1000)
+		plt.savefig("" + LABEL + labels[ltd] + '.png',bbox_inches='tight', format='png', dpi=1000)
+
 		plt.close();
 
 
@@ -513,6 +515,7 @@ def analyze_data_experiment_full_allcombined(all_data, LABEL, lines_to_do_fullhi
 	lines_values = {0:[], 1:[],2:[],3:[],4:[]}
 	lines_weights = {0:[], 1:[],2:[],3:[],4:[]}
 
+	defaultvalues = [541, 1004, 303, 1460, 616]
 	mechnames = []
 	for mech in [0, 1, 4, 7]:
 		mechnames.append(mechanism_super_dictionary[mech]['name'])
@@ -529,8 +532,11 @@ def analyze_data_experiment_full_allcombined(all_data, LABEL, lines_to_do_fullhi
 		# axarr_values[slider].set_title(slider_order[slider])
 		# axarr_weights[slider].set_title(slider_order[slider])
 		axarr_values[slider].hist(lines_values[slider], 50, range =[-500, 2500])
-		print stats.mode(lines_values[slider])
+		axarr_values[slider].axvline(defaultvalues[slider], color = 'r', linewidth = 1)
+		print stats.mode(lines_values[slider]), np.median(lines_values[slider])
 		axarr_weights[slider].hist(lines_weights[slider], 30)
+		axarr_weights[slider].axvline(5, color = 'r', linewidth = 1)
+
 		latexify.format_axes(axarr_weights[slider])
 		latexify.format_axes(axarr_values[slider])
 

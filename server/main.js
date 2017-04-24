@@ -425,14 +425,14 @@ Meteor.methods({
                         console.log('least prev parts ' + lowest);
                         question_selected = 0;
                         do {
-                            rnd_sample = Math.random();
+                            rnd_sample = 0.6; //TODO change back Math.random();
 
                             //with 1/2 probability, pick one of the lowest prev_parts indices
                             if (rnd_sample <= .5){
                               question_selected = lowest[Math.floor(rnd_sample*2*lowest.length)];
                             }
                             else{
-                                rnd_sample = (rnd_sample - 0.5)*2;
+                                rnd_sample = 0.25;// TODO change back; //force question (l2) for demo//(rnd_sample - 0.5)*2;
                                 if (rnd_sample < (0.1* 1))
                                     question_selected = 1;
                                 else if (rnd_sample < (0.1 * 2))

@@ -91,8 +91,8 @@ def actual_experiment_analysis():
     #  lines_to_do_creditshist = lines_to_do_creditshist, labels_creditshist = labels_creditshist, plotHistogramOfFull=True)
 
     analyze_data_functionalized.analysis_call(filename, LABEL, copy.deepcopy(mechdict_to_use), alreadyPaidFiles=alreadyPaidFiles, deficit_offset=deficit_offset, \
-     lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=True, lines_to_do_fullhist = lines_to_do_fullhist, labels_fullhist = labels_fullhist, \
-     plotAllOverTime=False, organizePayment=False, analyzeExtraFull=False, average_iteratively =False,plotConvergenceAnalysis =False,\
+     lines_to_do=lines_to_do, labels=labels, analyzeUtilityFunctions=False, lines_to_do_fullhist = lines_to_do_fullhist, labels_fullhist = labels_fullhist, \
+     plotAllOverTime=True, organizePayment=False, analyzeExtraFull=False, average_iteratively =False,plotConvergenceAnalysis =False,\
      lines_to_do_creditshist = lines_to_do_creditshist, labels_creditshist = labels_creditshist, plotHistogramOfFull=False)
 
 mechanism_super_dictionary_linfonly= {0: {'type': 'full', 'name': 'Group 1 Full', 'do_full_as_well': False, 'numsets': 1, 'num_to_average_per_step': 1, 'initial_values': [[800, 1250, 400, 1500, 828]]},
